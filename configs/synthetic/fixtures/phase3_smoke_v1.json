@@ -1,0 +1,8 @@
+{
+  "runtime_config_version": "phase3_engineering_smoke_v1",
+  "inherits": "configs/synthetic/fixtures/phase3_fixture_v1.json",
+  "scope": "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC_NOT_FINAL_DATASET",
+  "mode": "smoke",
+  "primary_seed": 31002,
+  "n_subjects": 24
+}

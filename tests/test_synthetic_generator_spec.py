@@ -259,11 +259,12 @@ def test_spec_module_has_no_training_or_model_imports():
     assert "from evaluation" not in text
 
 
-def test_no_phase3_generator_or_final_data_was_created():
-    assert not (ROOT / "src/data/synthetic/generator.py").exists()
-    assert not (ROOT / "src/data/synthetic/generate_dataset.py").exists()
+def test_phase3_generator_does_not_turn_phase2_template_into_final_data():
+    assert (ROOT / "src/data/synthetic/generator.py").is_file()
     assert not (ROOT / "data/generated").exists()
-    assert not any(ROOT.glob("**/synthetic_dataset_manifest_v1.json"))
+    manifests = list((ROOT / "artifacts/data/synthetic").glob("**/synthetic_dataset_manifest_v1.json"))
+    for path in manifests:
+        assert json.loads(path.read_text())["manifest_status"] in {"FIXTURE", "SMOKE"}
 
 
 def test_validator_rejects_model_visible_target_alias(tmp_path):

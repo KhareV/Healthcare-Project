@@ -1,0 +1,40 @@
+{
+  "runtime_config_version": "phase3_engineering_fixture_v1",
+  "scope": "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC_NOT_FINAL_DATASET",
+  "mode": "fixture",
+  "primary_seed": 31001,
+  "n_subjects": 4,
+  "population": {
+    "age_min": 18, "age_max": 90,
+    "sex_categories": ["FEMALE", "MALE"], "sex_probabilities": [0.5, 0.5],
+    "condition_groups": ["SYNTHETIC_HF", "SYNTHETIC_ISCHEMIC", "SYNTHETIC_ARRHYTHMIA"],
+    "condition_probabilities": [0.4, 0.35, 0.25]
+  },
+  "calendar": {"maximum_intime_offset_days": 3650},
+  "duration": {
+    "minimum_hours": 20.0, "maximum_hours": 132.0, "intercept": 4.0,
+    "latent_coefficients": [0.16, 0.12, 0.08, 0.08, 0.04],
+    "support_propensity_coefficient": 0.08, "noise_scale": 0.35
+  },
+  "latent": {
+    "group_means": [[0.0,0.5,0.0,0.0,0.0],[0.1,0.7,0.0,0.0,0.0],[0.0,0.6,0.0,0.0,0.1]],
+    "group_covariance": [[0.35,0.05,0.02,0.02,0.01],[0.05,0.35,0.02,0.02,0.01],[0.02,0.02,0.3,0.03,0.01],[0.02,0.02,0.03,0.3,0.01],[0.01,0.01,0.01,0.01,0.25]],
+    "patient_effect_scale": 0.18, "mean_reversion": [0.06,0.05,0.06,0.05,0.06],
+    "drift_scale": 0.012,
+    "coupling_matrix": [[0,0.008,0.006,0.004,0],[0.008,0,0.003,0.003,0],[0.006,0.003,0,0.004,0],[0.004,0.003,0.004,0,0.002],[0,0,0,0.002,0]],
+    "shock_probability_per_hour": 0.018, "shock_scale": 0.35,
+    "innovation_loading": [0.10,0.10,0.09,0.09,0.08]
+  },
+  "observation": {"patient_effect_scale": 0.12, "minimum_rate_per_hour": 0.025, "maximum_rate_per_hour": 1.5, "severity_loading": 0.10},
+  "variables": {
+    "pao2": [95, -16, 7, 0.14], "fio2": [0.25, 0.09, 0.025, 0.18],
+    "platelet_count": [230, -32, 18, 0.08], "bilirubin_total": [0.8, 0.7, 0.22, 0.06],
+    "mean_arterial_pressure": [82, -9, 5, 0.45], "glasgow_coma_scale": [14.5, -1.8, 0.55, 0.11],
+    "creatinine": [0.9, 0.65, 0.16, 0.09], "urine_output_volume": [360, -85, 35, 0.16],
+    "heart_rate": [78, 12, 5, 0.7], "systolic_blood_pressure": [122, -13, 7, 0.6],
+    "diastolic_blood_pressure": [72, -7, 5, 0.6], "respiratory_rate": [17, 4, 2, 0.55],
+    "oxygen_saturation": [97, -4, 1.2, 0.8], "temperature": [36.8, 0.45, 0.22, 0.35],
+    "lactate": [1.2, 1.1, 0.3, 0.10]
+  },
+  "variable_tuple_contract": ["baseline", "latent_effect", "measurement_noise_scale", "base_rate_per_hour"]
+}
