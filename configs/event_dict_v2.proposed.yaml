@@ -1,0 +1,74 @@
+schema_version: event_dict_schema_v2_proposed
+event_dictionary_version: synthetic_event_dict_v2_proposed
+status: PROPOSED_NOT_AUTHORIZED
+source_profile: SYNTHETIC_SCIENTIFIC_NON_MIMIC
+production_execution_authorized: false
+approval_required: true
+endpoint:
+  name: new_organ_support_initiation
+  label_rule_version: organ_support_label_rule_v1_unchanged
+  horizon_hours: 24
+  future_interval: "(t,t+24h]"
+  baseline_event_at_t: true
+  continuation_is_initiation: false
+  component_at_risk_rule: BASELINE_COMPONENT_OFF
+  composite_at_risk_rule: AT_LEAST_ONE_COMPONENT_OFF
+  both_on_rule: INELIGIBLE_NOT_AT_RISK
+  positive_before_early_exit: true
+  early_exit_without_positive: CENSORED_NULL_TARGET
+  onset_equal_outtime: INVALID_AMBIGUOUS_RECORD_FAIL_CLOSED
+  unknown_state: FAIL_CLOSED_NOT_OFF
+  audit_vocabulary_version: organ_support_audit_disposition_synthetic_v2_proposed
+intervals:
+  convention: CLOSED_OPEN
+  normalized_state_at_start: ON
+  normalized_state_at_end: OFF
+  explicit_end_required: true
+  end_may_equal_episode_outtime: true
+  start_may_equal_episode_outtime: false
+  zero_duration: INVALID
+  future_end_visibility: HIDE_UNTIL_CESSATION_AS_OF_CUTOFF
+  duplicate_event_id: FAIL_CLOSED
+  semantic_duplicate_different_ids: FAIL_CLOSED
+  conflict_resolution_by_row_order: PROHIBITED
+vasopressor:
+  state_rule_version: vasopressor_state_rule_v1
+  normalized_contract_version: normalized_active_support_interval_v1
+  mapping_provenance_version: synthetic_vasoactive_mapping_v2_proposed
+  any_qualifying_active_interval_means_on: true
+  already_on_means_at_risk: false
+  canonical_rate_unit: ug/kg/min
+  missing_or_unknown_rate: FAIL_CLOSED
+  zero_rate_active_interval: INVALID
+  concepts:
+    norepinephrine: {endpoint_qualifying: true, sofa_relevant: true, rate_required: true}
+    epinephrine: {endpoint_qualifying: true, sofa_relevant: true, rate_required: true}
+    dopamine: {endpoint_qualifying: true, sofa_relevant: true, rate_required: true}
+    dobutamine: {endpoint_qualifying: false, sofa_relevant: true, rate_required: true}
+  same_agent_overlap: MERGE_CONTIGUOUS_CONTINUOUS_STATE_OR_FAIL
+  different_agent_overlap: ALLOWED_COLLAPSE_TO_BINARY_ON
+ventilation:
+  state_rule_version: invasive_ventilation_state_rule_v1
+  normalized_contract_version: normalized_ventilation_interval_v1
+  concept_name: SYNTHETIC_RESPIRATORY_SUPPORT
+  concept_version: synthetic_respiratory_support_v1_proposed
+  adapter_version: synthetic_ventilation_adapter_v2_proposed
+  known_categories: [INVASIVE, NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+  invasive_categories: [INVASIVE]
+  explicitly_noninvasive_categories: [NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+  unknown_category: FAIL_CLOSED_NOT_OFF
+  overlapping_categories: PRESERVE_ALL_INVASIVE_STATE_ON_WHILE_ANY_INVASIVE_ACTIVE
+sofa_alignment:
+  status: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  sofa_spec_version: synthetic_standard_sofa_v1
+  shared_vocabulary_version: synthetic_support_vocabulary_v2_proposed
+  interval_semantics_version: synthetic_support_closed_open_v1_proposed
+  vasoactive_concepts: [norepinephrine, epinephrine, dopamine, dobutamine]
+  vasoactive_unit: ug/kg/min
+  invasive_category: INVASIVE
+  noninvasive_exclusions: [NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+review:
+  Sanskruti_source_semantics: PENDING_HUMAN_APPROVAL
+  Pulkit_endpoint_compatibility: PENDING_HUMAN_APPROVAL
+  Vedant_receiver_compatibility: PENDING_HUMAN_APPROVAL
+  final_status: PROPOSED_NOT_AUTHORIZED

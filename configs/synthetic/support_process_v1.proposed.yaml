@@ -1,0 +1,264 @@
+proposal_version: synthetic_support_process_v1_proposed
+status: PROPOSED_NOT_AUTHORIZED
+scope: SYNTHETIC_ONLY_ADULT_CARDIAC_CRITICAL_CARE
+source_type: PROJECT_SYNTHETIC_DESIGN
+authorization:
+  production_generation_allowed: false
+  prevalence_allowed: false
+  labels_allowed: false
+  required_action: EXPLICIT_TEAM_APPROVAL_AND_VERSIONED_PROMOTION
+disclaimer: Project-designed benchmark parameters; not estimates of treatment propensity, treatment effect, or real-world cardiac care.
+
+time_process:
+  step_hours: 1
+  interval_convention: CLOSED_OPEN
+  state_at_start: ON
+  state_immediately_before_end: ON
+  state_at_end: OFF_UNLESS_ADJACENT_SAME_CONCEPT_INTERVAL
+  adjacent_same_concept_policy: MERGE_TO_CONTINUOUS_INTERVAL
+  open_ended_intervals: PROHIBITED_EXPLICIT_END_REQUIRED
+  episode_end_policy: ACTIVE_INTERVAL_END_MAY_EQUAL_OUTTIME
+  onset_equal_outtime_policy: INVALID_FAIL_CLOSED
+  zero_or_negative_duration_policy: INVALID_FAIL_CLOSED
+
+respiratory_vocabulary:
+  vocabulary_version: synthetic_respiratory_support_v1_proposed
+  generation_state: PER_CATEGORY_ACTIVE_FLAGS
+  candidate_category_draw: ONE_CATEGORY_PER_RESPIRATORY_START_CANDIDATE
+  other_category_active_does_not_block_candidate: true
+  selected_category_already_active_policy: CONTINUATION_NO_NEW_INTERVAL
+  categories:
+    - {canonical_name: INVASIVE, scientific_semantics: INVASIVE_MECHANICAL_VENTILATION_VIA_INVASIVE_AIRWAY, endpoint_qualifying: true, sofa_respiratory_relevant: true}
+    - {canonical_name: NON_INVASIVE, scientific_semantics: NONINVASIVE_POSITIVE_PRESSURE_INCLUDING_NONINVASIVE_CPAP_BIPAP, endpoint_qualifying: false, sofa_respiratory_relevant: false}
+    - {canonical_name: HFNC, scientific_semantics: HIGH_FLOW_NASAL_CANNULA, endpoint_qualifying: false, sofa_respiratory_relevant: false}
+    - {canonical_name: ORDINARY_OXYGEN, scientific_semantics: CONVENTIONAL_SUPPLEMENTAL_OXYGEN, endpoint_qualifying: false, sofa_respiratory_relevant: false}
+  unknown_category_policy: FAIL_CLOSED_NOT_OFF
+  category_selection_probabilities_when_respiratory_support_starts:
+    INVASIVE: 0.35
+    NON_INVASIVE: 0.30
+    HFNC: 0.20
+    ORDINARY_OXYGEN: 0.15
+
+vasoactive_vocabulary:
+  vocabulary_version: synthetic_vasoactive_v1_proposed
+  generation_state: PER_AGENT_ACTIVE_FLAGS
+  candidate_agent_draw: ONE_AGENT_PER_VASOACTIVE_START_CANDIDATE
+  other_agent_active_does_not_block_candidate: true
+  selected_agent_already_active_policy: CONTINUATION_NO_NEW_INTERVAL
+  canonical_rate_unit: ug/kg/min
+  missing_rate_policy: INVALID_FAIL_CLOSED
+  zero_rate_semantics: INACTIVE_INVALID_AS_ACTIVE_INTERVAL
+  conversion_policy: NO_UNIT_CONVERSION_GENERATOR_EMITS_CANONICAL_UNIT
+  cross_agent_equivalence: PROHIBITED
+  concepts:
+    - canonical_name: norepinephrine
+      endpoint_qualifying: true
+      sofa_cardiovascular_relevant: true
+      valid_rate_domain: [0.01, 0.50]
+      rate_distribution: {family: TRUNCATED_LOGNORMAL, median: 0.08, log_sigma: 0.60}
+      selection_probability: 0.50
+    - canonical_name: epinephrine
+      endpoint_qualifying: true
+      sofa_cardiovascular_relevant: true
+      valid_rate_domain: [0.01, 0.30]
+      rate_distribution: {family: TRUNCATED_LOGNORMAL, median: 0.06, log_sigma: 0.60}
+      selection_probability: 0.20
+    - canonical_name: dopamine
+      endpoint_qualifying: true
+      sofa_cardiovascular_relevant: true
+      valid_rate_domain: [1.0, 20.0]
+      rate_distribution: {family: TRUNCATED_LOGNORMAL, median: 7.0, log_sigma: 0.45}
+      selection_probability: 0.20
+    - canonical_name: dobutamine
+      endpoint_qualifying: false
+      sofa_cardiovascular_relevant: true
+      valid_rate_domain: [1.0, 15.0]
+      rate_distribution: {family: TRUNCATED_LOGNORMAL, median: 5.0, log_sigma: 0.40}
+      selection_probability: 0.10
+
+hazards:
+  link: DISCRETE_TIME_LOGISTIC_PROBABILITY_PER_ONE_HOUR_STEP
+  state_inputs_are_generator_internal_not_exported: true
+  recent_window_hours: 6
+  innovation_distribution: {family: NORMAL, mean: 0.0, standard_deviation: 0.15}
+  subject_random_effects:
+    family: INDEPENDENT_NORMAL_BY_SUPPORT_PROCESS
+    mean: 0.0
+    standard_deviation: 0.35
+    rng_stream: SeedSequence_primary_seed_subject_ordinal_component_code_7_child_0
+  vasopressor_off_to_on:
+    equation: sigmoid(intercept + systemic_severity*systemic + cardiac_stress*cardiac + recent_systemic_mean*recent_systemic + subject_effect + innovation)
+    coefficients: {intercept: -4.60, systemic_severity: 0.55, cardiac_stress: 0.75, recent_systemic_mean: 0.20}
+  respiratory_off_to_on:
+    equation: sigmoid(intercept + systemic_severity*systemic + respiratory_burden*respiratory + recent_respiratory_mean*recent_respiratory + subject_effect + innovation)
+    coefficients: {intercept: -4.80, systemic_severity: 0.55, respiratory_burden: 0.90, recent_respiratory_mean: 0.20}
+  rationale: Compact monotone hazards on the existing dimensionless latent scale; coefficients are proposed benchmark design values and were not prevalence-calibrated.
+  plausible_coefficient_ranges:
+    intercept: [-6.0, -3.5]
+    latent_loading: [0.2, 1.2]
+    recent_loading: [0.0, 0.4]
+
+cessation:
+  link: DISCRETE_TIME_LOGISTIC_PROBABILITY_PER_ONE_HOUR_STEP
+  duration_hours_cap_for_equation: 48
+  vasopressor_on_to_off:
+    equation: sigmoid(intercept + systemic_severity*systemic + cardiac_stress*cardiac + on_hours*duration + innovation)
+    coefficients: {intercept: -3.20, systemic_severity: -0.25, cardiac_stress: -0.25, duration: 0.055}
+  respiratory_on_to_off:
+    equation: sigmoid(intercept + systemic_severity*systemic + respiratory_burden*respiratory + on_hours*duration + innovation)
+    coefficients: {intercept: -3.40, systemic_severity: -0.25, respiratory_burden: -0.35, duration: 0.050}
+  minimum_duration_hours: 1
+  maximum_untruncated_duration_hours: 72
+  episode_boundary_truncates: true
+  rationale: Stateful cessation permits continuation and repeat episodes without forcing every interval to episode end.
+
+rate_process:
+  segment_width_hours: 1
+  rate_changes_require_new_segment_same_support_episode: true
+  log_rate_ar1: {coefficient: 0.85, innovation_standard_deviation: 0.18}
+  contemporaneous_severity_log_loading: 0.12
+  bounds_policy: REJECTION_RESAMPLE_THEN_HARD_FAILURE
+
+intervention_effects:
+  enabled: true
+  interpretation: SIMULATION_MECHANISM_NOT_CAUSAL_EFFECT
+  lag_hours: 2
+  response_multiplier: {family: TRUNCATED_LOGNORMAL, median: 1.0, log_sigma: 0.25, bounds: [0.5, 1.5]}
+  vasopressor_hourly_latent_drift_shift: {systemic_severity: -0.015, cardiac_stress: -0.025, respiratory_burden: 0.0, renal_burden: 0.0, neurologic_burden: 0.0}
+  invasive_ventilation_hourly_latent_drift_shift: {systemic_severity: -0.010, cardiac_stress: 0.0, respiratory_burden: -0.025, renal_burden: 0.0, neurologic_burden: 0.0}
+  noninvasive_categories_effect: ZERO_IN_V1_PROPOSAL
+  maximum_absolute_shift_per_state_per_hour: 0.04
+  leakage_guards: [NO_TARGET_INPUT, NO_SPLIT_INPUT, NO_OUTTIME_OR_REMAINING_TIME_INPUT, NO_EXPORTED_PROPENSITY, NO_FINAL_TRAJECTORY_CLASS]
+
+duplicates_and_overlaps:
+  duplicate_event_id: FAIL_CLOSED
+  semantic_duplicate_different_ids: FAIL_CLOSED
+  same_agent_overlap: GENERATOR_MUST_MERGE_OR_FAIL_BEFORE_EXPORT
+  different_vasoactive_agent_overlap: ALLOWED_BINARY_ENDPOINT_ON_WHILE_ANY_QUALIFYING_ACTIVE
+  respiratory_overlap_priority_for_invasive_state: INVASIVE_ACTIVE_DOMINATES_ONLY_INVASIVE_BINARY_QUERY
+  respiratory_noninvasive_rows_preserved: true
+  row_order_resolution: PROHIBITED
+  conflicting_interval: FAIL_CLOSED
+
+endpoint_alignment:
+  endpoint: NEW_ORGAN_SUPPORT_INITIATION_24H
+  horizon: "(t,t+24h]"
+  event_at_t: BASELINE_NOT_FUTURE_INITIATION
+  event_at_t_plus_24h: INCLUDED
+  continuation_is_initiation: false
+  both_components_on: NOT_AT_RISK
+  one_component_off: OFF_COMPONENT_REMAINS_AT_RISK
+  early_exit_no_initiation: CENSORED
+  positive_before_exit: POSITIVE
+  unknown_state_policy: FAIL_CLOSED_NOT_OFF
+  audit_vocabulary_version: organ_support_audit_disposition_synthetic_v2_proposed
+
+sofa_alignment:
+  sofa_spec_version: synthetic_standard_sofa_v1
+  vasoactive_concepts: [norepinephrine, epinephrine, dopamine, dobutamine]
+  dose_unit: ug/kg/min
+  active_interval_semantics: CLOSED_OPEN
+  respiratory_invasive_category: INVASIVE
+  noninvasive_exclusions: [NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+  shared_vocabulary_version: synthetic_support_vocabulary_v2_proposed
+  shared_interval_version: synthetic_support_closed_open_v1_proposed
+  proposed_event_dictionary: configs/event_dict_v2.proposed.yaml
+  thresholds_may_change: false
+
+final_generation_plan:
+  strategy: FULL_PHASE3_DETERMINISTIC_REPLAY_REQUIRED
+  reason: Support intervention effects alter future latent physiology; extension of existing zero-support physiology would create mixed provenance.
+  rng_policy: EXISTING_SUBJECT_LOCAL_SUPPORT_STREAM_COMPONENT_CODE_7
+  primary_seed: 20260921
+  primary_seed_status: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  n_subjects: 2000
+  n_subjects_status: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL_PENDING_COMPUTE_AND_GROUPED_EVALUATION_REVIEW
+  artifacts_requiring_regeneration: [raw_dataset, cohort, structural_index, canonical_timeline, sofa, features, recovery_labels, icu_time_labels, support_labels, all_manifests]
+  artifacts_prohibited_in_this_remediation: [support_intervals, organ_support_labels, prevalence_report, final_dataset]
+
+numerical_parameter_governance:
+  initiation_intercepts:
+    scale: HOURLY_LOGIT
+    proposed: {vasopressor: -4.60, respiratory: -4.80}
+    plausible_range: [-6.0, -3.5]
+    rationale: Avoid analytically near-certain hourly starts while permitting state-dependent events.
+    sensitivity_concern: Strongly controls interval incidence; must not be prevalence-tuned after freeze.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  initiation_current_state_loadings:
+    scale: LOGIT_PER_ONE_DIMENSIONLESS_LATENT_UNIT
+    proposed: {vasopressor_systemic: 0.55, vasopressor_cardiac: 0.75, respiratory_systemic: 0.55, respiratory_burden: 0.90}
+    plausible_range: [0.2, 1.2]
+    rationale: Monotone current-state relationship on existing latent coordinates.
+    sensitivity_concern: Excessive values could make support a deterministic latent threshold proxy.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  recent_state_loadings:
+    scale: LOGIT_PER_SIX_HOUR_MEAN_LATENT_UNIT
+    proposed: {vasopressor_recent_systemic: 0.20, respiratory_recent_burden: 0.20}
+    plausible_range: [0.0, 0.4]
+    rationale: Adds recent context without dominating contemporaneous state.
+    sensitivity_concern: Larger values increase persistence and event clustering.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  random_effect_and_innovation_sd:
+    scale: LOGIT
+    proposed: {subject_random_effect_sd: 0.35, hourly_innovation_sd: 0.15}
+    plausible_range: {subject_random_effect_sd: [0.1, 0.6], hourly_innovation_sd: [0.05, 0.3]}
+    rationale: Minimal between-subject heterogeneity plus stochastic hourly variation.
+    sensitivity_concern: Excess variance can decouple support from physiology.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  cessation_coefficients:
+    scale: HOURLY_LOGIT
+    proposed: {vasopressor_intercept: -3.20, respiratory_intercept: -3.40, burden_loadings: [-0.25, -0.35], duration_loadings: [0.050, 0.055]}
+    plausible_range: {intercept: [-4.5, -2.2], burden_loading: [-0.6, -0.1], duration_loading: [0.02, 0.09]}
+    rationale: Higher burden prolongs support while duration gradually increases cessation chance.
+    sensitivity_concern: Controls long intervals and repeat OFF-to-ON opportunities.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  rate_distribution_parameters:
+    scale: LOG_RATE_IN_UG_PER_KG_PER_MIN
+    proposed: AGENT_SPECIFIC_BOUNDS_MEDIANS_AND_LOG_SIGMAS_LISTED_IN_VOCABULARY
+    plausible_range: WITHIN_EACH_EXPLICIT_VALID_RATE_DOMAIN
+    rationale: Exercises existing SOFA categories with stochastic within-agent variation.
+    sensitivity_concern: Changes SOFA cardiovascular scores and downstream recovery labels.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  rate_ar1_parameters:
+    scale: HOURLY_LOG_RATE
+    proposed: {coefficient: 0.85, innovation_sd: 0.18, severity_loading: 0.12}
+    plausible_range: {coefficient: [0.6, 0.95], innovation_sd: [0.08, 0.3], severity_loading: [0.0, 0.25]}
+    rationale: Smooth but nonconstant dose segments.
+    sensitivity_concern: High persistence reduces within-episode rate diversity.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  intervention_effect_parameters:
+    scale: HOURLY_DIMENSIONLESS_LATENT_DRIFT_AFTER_TWO_HOUR_LAG
+    proposed: {vasopressor_systemic: -0.015, vasopressor_cardiac: -0.025, ventilation_systemic: -0.010, ventilation_respiratory: -0.025, absolute_cap: 0.04}
+    plausible_range: {nonzero_shift: [-0.04, -0.005], absolute_cap: [0.02, 0.06]}
+    rationale: Modest lagged stochastic feedback without perfect correction.
+    sensitivity_concern: Directly changes future measurements, SOFA, and recovery targets.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  respiratory_category_probabilities:
+    scale: CONDITIONAL_CATEGORICAL_PROBABILITY
+    proposed: {INVASIVE: 0.35, NON_INVASIVE: 0.30, HFNC: 0.20, ORDINARY_OXYGEN: 0.15}
+    plausible_range: EACH_STRICTLY_POSITIVE_AND_TOTAL_ONE
+    rationale: Structural coverage of every frozen category without a real prevalence claim.
+    sensitivity_concern: Controls availability of invasive endpoint events.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  vasoactive_selection_probabilities:
+    scale: CONDITIONAL_CATEGORICAL_PROBABILITY
+    proposed: {norepinephrine: 0.50, epinephrine: 0.20, dopamine: 0.20, dobutamine: 0.10}
+    plausible_range: EACH_STRICTLY_POSITIVE_AND_TOTAL_ONE
+    rationale: Structural coverage of endpoint and SOFA-only concepts.
+    sensitivity_concern: Alters endpoint qualification and cardiovascular SOFA mix.
+    source_type: PROJECT_SYNTHETIC_DESIGN
+  final_seed_and_size:
+    scale: GENERATION_IDENTITY_AND_INDEPENDENT_SUBJECT_COUNT
+    proposed: {primary_seed: 20260921, n_subjects: 2000}
+    plausible_range: {primary_seed: POSITIVE_32_BIT_INTEGER, n_subjects: [1000, 5000]}
+    rationale: Stable nonfixture seed and moderate benchmark size subject to compute/grouped-evaluation review.
+    sensitivity_concern: Size affects precision/compute; seed affects realized synthetic sample but never semantics.
+    source_type: ENGINEERING_ONLY
+
+approval_status:
+  endpoint_semantics: FROZEN_FROM_EXISTING_PROJECT_AUTHORITY
+  respiratory_taxonomy: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  vasoactive_vocabulary: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  numerical_simulation_parameters: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  final_seed_and_size: PROPOSED_FOR_EXPLICIT_TEAM_APPROVAL
+  final_status: PROPOSED_NOT_AUTHORIZED
