@@ -1,0 +1,53 @@
+cohort_spec_version: synthetic_cohort_v2
+status: DRAFT_IMPLEMENTATION_REVIEW_REQUIRED
+scope:
+  version: PROJECT_SCOPE_V2
+  path: configs/governance/project_scope_v2.json
+  sha256: 4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994
+source_contract:
+  generator_version: synthetic_generator_v1
+  raw_schema_version: synthetic_raw_schema_v1
+  accepted_engineering_statuses: [FIXTURE, SMOKE]
+  required_final_status: AUTHORIZED_FINAL_SYNTHETIC_DATA
+population:
+  domain: CARDIAC_HEART_DISEASE
+  adult_only: true
+  minimum_age_years: 18
+  maximum_age_years: null
+  cardiac_membership_field: cardiac_condition_group
+  cardiac_allowed_values_source: PHASE3_EFFECTIVE_RUNTIME_CONFIG_CONDITION_GROUPS
+episode:
+  policy: EXACTLY_ONE_GENERATED_EPISODE_PER_SUBJECT
+  multiple_episode_policy: HARD_FAILURE_GENERATOR_CONTRACT_VIOLATION
+  tie_policy: NOT_APPLICABLE_EXACTLY_ONE_EPISODE
+  required_fields: [subject_id, stay_id, intime, outtime]
+  boundaries: EXPLICIT_GENERATOR_FACTS_NOT_INFERRED_FROM_EVENTS
+  event_bounds: intime <= event_time <= outtime
+  duplicates: HARD_FAILURE
+timestamp_contract:
+  implementation: src/data/timestamps.py
+  version: timestamp_spec_v1
+  sha256: c7bd20e6d475ab3699fad5cbf829049311b010407bb387338dc35db5ed718e2c
+  legal_cutoff_requirement: AT_LEAST_ONE_ROW_FROM_EXISTING_GENERATOR
+outputs:
+  cohort_version: synthetic_retained_cohort_v2
+  structural_index_schema_version: synthetic_structural_index_v2
+  manifest_version: synthetic_cohort_manifest_v2
+  serialization: JSONL_CANONICAL_UTF8
+  order:
+    cohort: [subject_id, stay_id]
+    structural_index: [subject_id, stay_id, prediction_time, grid_index]
+prohibited_filters:
+  - OUTCOME
+  - TRAJECTORY
+  - SOFA
+  - SUPPORT_STATE_OR_INITIATION
+  - EVENT_DENSITY
+  - FEATURE_COMPLETENESS
+  - MODEL_PERFORMANCE
+  - SPLIT
+downstream_status:
+  split: NOT_ASSIGNED_PHASE_10
+  feature_schema: NOT_CREATED_PHASE_5_OR_7
+  sofa: NOT_COMPUTED_PHASE_6
+  labels: NOT_COMPUTED_PHASE_8_OR_9

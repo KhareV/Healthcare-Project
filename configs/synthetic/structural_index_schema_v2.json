@@ -1,0 +1,18 @@
+{
+  "schema_version": "synthetic_structural_index_v2",
+  "status": "OUTCOME_FREE_PRE_SPLIT_INDEX_SCHEMA",
+  "additional_fields_allowed": false,
+  "fields": [
+    {"name":"subject_id","type":"string","role":"INDEX_ROUTING","model_eligible":false,"outcome_free":true,"provenance":"Phase-3 subject identity"},
+    {"name":"stay_id","type":"string","role":"INDEX_ROUTING","model_eligible":false,"outcome_free":true,"provenance":"Phase-3 episode identity"},
+    {"name":"prediction_time","type":"timestamp_utc","role":"INDEX_ROUTING","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1"},
+    {"name":"grid_index","type":"integer","role":"INDEX_ROUTING","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1"},
+    {"name":"icu_elapsed_hours","type":"integer","role":"STRUCTURAL_TEMPORAL","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1"},
+    {"name":"recovery24_followup_available","type":"boolean","role":"STRUCTURAL_TEMPORAL_AVAILABILITY","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1; not final eligibility"},
+    {"name":"recovery48_followup_available","type":"boolean","role":"STRUCTURAL_TEMPORAL_AVAILABILITY","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1; not score availability or final eligibility"},
+    {"name":"support24_full_followup_available","type":"boolean","role":"STRUCTURAL_TEMPORAL_AVAILABILITY","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1; not support at-risk eligibility"},
+    {"name":"icu_time_temporally_eligible","type":"boolean","role":"STRUCTURAL_TEMPORAL_AVAILABILITY","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1; no remaining-time target"},
+    {"name":"timestamp_spec_version","type":"string","role":"PROVENANCE_ONLY","model_eligible":false,"outcome_free":true,"provenance":"Vedant timestamp_spec_v1"}
+  ],
+  "prohibited_semantics": ["FEATURE","SOFA","TARGET","LABEL","OUTCOME","SUPPORT_STATE","CENSOR_REASON","SPLIT","PREPROCESSING","MODEL_RESULT"]
+}

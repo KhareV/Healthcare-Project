@@ -1,0 +1,12 @@
+{
+  "schema_version": "synthetic_retained_cohort_v2",
+  "status": "STRUCTURAL_COHORT_METADATA_NOT_FEATURE_SCHEMA",
+  "additional_fields_allowed": false,
+  "fields": [
+    {"name":"subject_id","type":"string","role":"INDEX_ROUTING","model_eligible":false},
+    {"name":"stay_id","type":"string","role":"INDEX_ROUTING","model_eligible":false},
+    {"name":"intime","type":"timestamp_utc","role":"STRUCTURAL_LABEL_ONLY","model_eligible":false},
+    {"name":"outtime","type":"timestamp_utc","role":"STRUCTURAL_LABEL_ONLY","model_eligible":false},
+    {"name":"cohort_version","type":"string","role":"PROVENANCE_ONLY","model_eligible":false}
+  ]
+}
