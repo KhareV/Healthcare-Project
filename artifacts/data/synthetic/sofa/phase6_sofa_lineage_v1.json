@@ -1,0 +1,67 @@
+{
+  "lineage_version": "synthetic_sofa_lineage_v1",
+  "artifact_status": "ENGINE_IMPLEMENTED_FINAL_PRODUCTION_BLOCKED",
+  "project_scope": {
+    "path": "docs/governance/project_scope_v2.md",
+    "version": "PROJECT_SCOPE_V2",
+    "sha256": "09c2b15a05a87f78cc03b8be3f4e98475e34fdc01787fe6c58191e338e86a880"
+  },
+  "phase5_processed_manifest": {
+    "path": "artifacts/data/synthetic/timelines/smoke/phase5_smoke_v1/synthetic_processed_manifest_v1.json",
+    "version": "synthetic_processed_manifest_v1",
+    "sha256": "e73456990afdac79b155276f88ea5a1fb10a8c316ec35a18738f0664d2314c9b"
+  },
+  "canonical_timeline": {
+    "path": "artifacts/data/synthetic/timelines/smoke/phase5_smoke_v1/canonical_timeline.jsonl",
+    "version": "synthetic_processed_timeline_v1",
+    "sha256": "71b5eaabaf65d5a99df3646e749d2ac38cbd7a17d6131f3b855e59c3b92cd233"
+  },
+  "processed_schema": {
+    "path": "configs/synthetic/processed_schema_v1.json",
+    "version": "synthetic_processed_timeline_v1",
+    "sha256": "7e0ba3d3789b5b469198773a5b1a7af2062ad973466a4af0135fdf97383688d9"
+  },
+  "concept_map": {
+    "path": "configs/synthetic/concept_map_v1.json",
+    "version": "synthetic_concept_map_v1",
+    "sha256": "24de193ea0041c128d921d1585dff17cd461af5fc7c415853449aa400e7bf74d"
+  },
+  "feature_provenance": {
+    "path": "docs/sanskruti/feature_provenance_v1.csv",
+    "sha256": "ed6c06c04533bd8b07cef585c178e3d9d17fb3745d3aaba0cb0a736ef9b7757a"
+  },
+  "sofa_spec": {
+    "path": "configs/synthetic/sofa_spec_v1.json",
+    "version": "synthetic_standard_sofa_v1",
+    "sha256": "900504be9b2d1186c15b5893fcd1ea5e4aa3d3c54c60b44d7b4b0079c79e4c13",
+    "status": "DRAFT_REVIEW_REQUIRED_NOT_AUTHORIZED_FOR_FINAL_PRODUCTION"
+  },
+  "implementation": {
+    "path": "src/data/synthetic/sofa.py",
+    "version": "synthetic_sofa_at_v1",
+    "sha256": "a7911b98f904037208facb1f717f451b0aaaa5aba1dc440740b72562097001a9",
+    "source_commit_parent": "74835aa4e92362dec9c20686097ab0ece3f88c75"
+  },
+  "current_sofa_provider": {
+    "path": "src/data/synthetic/sofa_provider.py",
+    "version": "SyntheticCurrentSOFAProvider",
+    "sha256": "6a88187de153b6d83903d4acf1a7a9f1a8b9f196134c2e2ab87369853212d5e6",
+    "pulkit_receiver": "src/serving/recovery.py::CurrentSOFAProvider"
+  },
+  "support_contract": {
+    "path": "configs/event_dict_v1.yaml",
+    "sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
+    "production_status": "BLOCKED_PHASE9_SYNTHETIC_SUPPORT_VOCABULARY_RATE_AND_INTERVAL_CONTRACT_REQUIRED"
+  },
+  "fixture_qa": {
+    "path": "artifacts/data/synthetic/sofa/fixture/phase6_fixture_v1/sofa_fixture_qa.json",
+    "sha256": "8e82dccfb57827e60be3225d91b092d3c15a83fa81789313ab6c0f6cea130835",
+    "status": "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC"
+  },
+  "final_production_sofa": {
+    "status": "BLOCKED_PHASE9_SUPPORT_DEPENDENCY_AND_TEAM_REVIEW_REQUIRED",
+    "authorized_final_timeline_available": false,
+    "availability_qa_generated": false
+  },
+  "not_created": ["recovery_deltas", "remaining_stay_labels", "feature_grid", "split", "preprocessor", "model"]
+}

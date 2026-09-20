@@ -1,0 +1,29 @@
+{
+  "qa_version": "synthetic_sofa_phase6_qa_v1",
+  "status": "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC",
+  "fixture_cases": ["all_observed_normal", "all_six_maximum", "all_missing_known_support_coverage"],
+  "legal_production_cutoff_count": null,
+  "score_count": 3,
+  "score_range": [0, 24],
+  "total_score_distribution": {"0": 2, "24": 1},
+  "component_observed": {
+    "respiratory": {"count": 2, "rate": 0.6666666666666666},
+    "coagulation": {"count": 2, "rate": 0.6666666666666666},
+    "liver": {"count": 2, "rate": 0.6666666666666666},
+    "cardiovascular": {"count": 2, "rate": 0.6666666666666666},
+    "central_nervous_system": {"count": 2, "rate": 0.6666666666666666},
+    "renal": {"count": 2, "rate": 0.6666666666666666}
+  },
+  "all_six_observed": {"count": 2, "rate": 0.6666666666666666},
+  "observed_component_count_distribution": {"0": 1, "6": 2},
+  "component_score_distribution": {
+    "respiratory": {"0": 2, "4": 1},
+    "coagulation": {"0": 2, "4": 1},
+    "liver": {"0": 2, "4": 1},
+    "cardiovascular": {"0": 2, "4": 1},
+    "central_nervous_system": {"0": 2, "4": 1},
+    "renal": {"0": 2, "4": 1}
+  },
+  "blocked_or_error_count": 0,
+  "production_interpretation": "NONE_FIXTURE_ONLY"
+}

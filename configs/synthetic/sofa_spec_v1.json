@@ -1,0 +1,98 @@
+{
+  "specification_version": "synthetic_standard_sofa_v1",
+  "status": "DRAFT_REVIEW_REQUIRED_NOT_AUTHORIZED_FOR_FINAL_PRODUCTION",
+  "scientific_reference": {
+    "title": "The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure",
+    "authors": "Vincent JL, Moreno R, Takala J, et al.",
+    "journal": "Intensive Care Medicine 1996;22:707-710",
+    "doi": "10.1007/BF01709751",
+    "authoritative_copy_url": "https://www.esicm.org/wp-content/uploads/2018/03/esicmworking5-2.pdf",
+    "reference_verified_utc": "2026-09-20",
+    "table": "Table 3"
+  },
+  "scope": "STANDARD_SOFA_STYLE_OVER_CANONICAL_SYNTHETIC_FACTS",
+  "total_score": {"minimum": 0, "maximum": 24},
+  "component_order": ["respiratory", "coagulation", "liver", "cardiovascular", "central_nervous_system", "renal"],
+  "rolling_window": {
+    "duration_hours": 24,
+    "interval": "(T-24h,T]",
+    "left_inclusive": false,
+    "right_inclusive": true,
+    "freeze_status": "REVIEW_REQUIRED_SOFA_ROLLING_WINDOW_BOUNDARY"
+  },
+  "missing_component_convention": {
+    "score": 0,
+    "observed": false,
+    "majority_or_fifty_percent_exclusion_rule": false
+  },
+  "observed_definition": "sufficient genuine canonical evidence exists to score the component under this specification; observed is independent of whether score is zero",
+  "selection_rule": "score every valid candidate in the rolling window and retain the maximum component score; ties retain deterministically sorted evidence identities",
+  "respiratory": {
+    "concepts": {"pao2": {"unit": "mmHg", "valid_domain": [20.0, 600.0]}, "fio2": {"unit": "fraction", "valid_domain": [0.21, 1.0]}},
+    "pairing_rule": "EXACT_SAME_EVENT_TIME",
+    "pairing_rule_status": "REVIEW_REQUIRED_BEFORE_FINAL_PRODUCTION",
+    "ratio_unit": "mmHg",
+    "scores": [
+      {"score": 4, "ratio_less_than": 100.0, "invasive_respiratory_support_required": true},
+      {"score": 3, "ratio_less_than": 200.0, "invasive_respiratory_support_required": true},
+      {"score": 2, "ratio_less_than": 300.0, "invasive_respiratory_support_required": false},
+      {"score": 1, "ratio_less_than": 400.0, "invasive_respiratory_support_required": false},
+      {"score": 0, "otherwise": true, "invasive_respiratory_support_required": false}
+    ]
+  },
+  "coagulation": {
+    "concept": "platelet_count",
+    "unit": "10^9/L",
+    "valid_domain": [1.0, 1000.0],
+    "scores": [{"score": 4, "less_than": 20.0}, {"score": 3, "less_than": 50.0}, {"score": 2, "less_than": 100.0}, {"score": 1, "less_than": 150.0}, {"score": 0, "otherwise": true}]
+  },
+  "liver": {
+    "concept": "bilirubin_total",
+    "unit": "mg/dL",
+    "valid_domain": [0.0, 50.0],
+    "scores": [{"score": 4, "greater_than": 12.0}, {"score": 3, "greater_than_or_equal": 6.0}, {"score": 2, "greater_than_or_equal": 2.0}, {"score": 1, "greater_than_or_equal": 1.2}, {"score": 0, "otherwise": true}]
+  },
+  "cardiovascular": {
+    "map_concept": "mean_arterial_pressure",
+    "map_unit": "mmHg",
+    "map_valid_domain": [20.0, 200.0],
+    "map_score_one_less_than": 70.0,
+    "vasoactive_rate_unit": "ug/kg/min",
+    "minimum_exposure_minutes": 60,
+    "agents": {
+      "dobutamine": [{"score": 2, "any_positive_rate": true}],
+      "dopamine": [{"score": 4, "greater_than": 15.0}, {"score": 3, "greater_than": 5.0}, {"score": 2, "greater_than": 0.0}],
+      "epinephrine": [{"score": 4, "greater_than": 0.1}, {"score": 3, "greater_than": 0.0}],
+      "norepinephrine": [{"score": 4, "greater_than": 0.1}, {"score": 3, "greater_than": 0.0}]
+    }
+  },
+  "central_nervous_system": {
+    "concept": "glasgow_coma_scale",
+    "unit": "score",
+    "valid_domain": [3, 15],
+    "integer_required": true,
+    "scores": [{"score": 4, "less_than": 6}, {"score": 3, "less_than": 10}, {"score": 2, "less_than": 13}, {"score": 1, "less_than": 15}, {"score": 0, "otherwise": true}],
+    "sedation_adjustment": "NOT_IMPLEMENTED_NOT_AUTHORIZED"
+  },
+  "renal": {
+    "creatinine_concept": "creatinine",
+    "creatinine_unit": "mg/dL",
+    "creatinine_valid_domain": [0.1, 20.0],
+    "creatinine_scores": [{"score": 4, "greater_than": 5.0}, {"score": 3, "greater_than_or_equal": 3.5}, {"score": 2, "greater_than_or_equal": 2.0}, {"score": 1, "greater_than_or_equal": 1.2}, {"score": 0, "otherwise": true}],
+    "urine_concept": "urine_output_volume",
+    "urine_unit": "mL",
+    "urine_valid_domain": [0.0, 10000.0],
+    "urine_scores": [{"score": 4, "less_than": 200.0}, {"score": 3, "less_than": 500.0}, {"score": 0, "otherwise": true}],
+    "urine_coverage_rule": "EXACT_CONTIGUOUS_FULL_ROLLING_WINDOW_ONLY_NO_PRORATING",
+    "combination_rule": "MAX_OF_CREATININE_AND_COMPLETE_24H_URINE_OUTPUT_SCORE"
+  },
+  "support_state": {
+    "required": true,
+    "unknown_or_unavailable_policy": "BLOCKED_REQUIRED_SOFA_DEPENDENCY_UNAVAILABLE",
+    "respiratory_semantics": "invasive ventilation state must be known at each scored PaO2/FiO2 pair time",
+    "cardiovascular_semantics": "versioned dose/rate exposure segments overlapping the scoring window",
+    "production_contract_status": "DEFERRED_TO_PHASE_9"
+  },
+  "prohibited_shortcuts": ["sofa_score_source_column", "future_sofa", "component_point_source_columns", "proxy_score", "imputation", "forward_fill", "learned_estimate"],
+  "provenance_policy": "outputs bind computed spec SHA-256, Phase-5 processed schema/concept/provenance hashes, timeline source hash, and support-contract identity"
+}
