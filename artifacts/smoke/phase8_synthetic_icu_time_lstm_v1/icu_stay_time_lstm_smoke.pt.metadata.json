@@ -1,0 +1,64 @@
+{
+  "checkpoint_file": "icu_stay_time_lstm_smoke.pt",
+  "checkpoint_sha256": "9e61cbd87b726c85a98c59181a5abeebdc4e433cd675c4e1ed9349fa471936f6",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY",
+  "config_hash": "f33381302416953a712a0755c47de1836a04b96292b0162c7be0faaa560a5a40",
+  "dataset_sha256": "9269c98a0e5942f464d80f29054c174fc462223621c9f9ec8e136b0705c900df",
+  "epoch": 3,
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "gru_trainable_parameter_count": 13505,
+  "label_version": "synthetic_contract_labels_v1",
+  "lstm_trainable_parameter_count": 17985,
+  "mapped_config": {
+    "bidirectional": false,
+    "dropout": 0.1,
+    "feature_dim": 2,
+    "hidden_dim": 64,
+    "include_observation_mask": true,
+    "include_tslo": false,
+    "num_layers": 1,
+    "static_dim": 0
+  },
+  "mapped_training": {
+    "batch_size": 64,
+    "device": "cpu",
+    "early_stopping": {
+      "min_delta": 0.0,
+      "mode": "min",
+      "monitor": "validation_log_space_huber_loss",
+      "patience": 8
+    },
+    "max_epochs": 3,
+    "num_workers": 0,
+    "optimizer": {
+      "learning_rate": 0.001,
+      "name": "adamw",
+      "weight_decay": 1e-05
+    },
+    "seed": 161803
+  },
+  "model_family": "lstm",
+  "participates_in_lstm_search": false,
+  "participates_in_serving_selection": false,
+  "preprocessing": {
+    "postprocess_version": "icu_time_nonnegative_log_expm1_v1",
+    "target_scaler": null
+  },
+  "recurrent_cell": "lstm",
+  "run_id": "phase8_synthetic_icu_time_lstm_smoke_v1",
+  "run_type": "sensitivity_smoke",
+  "scientific_sensitivity": false,
+  "seed": 161803,
+  "seed_policy": "TEST_SEED_ONLY_NOT_PROJECT_PRIMARY_SEED",
+  "sensitivity_only": true,
+  "source_gru_checkpoint_hash": "382433b5ff30f6d4cc4ceeef6dfd21eea7ad674a67ce8c6855a461058ea80fa0",
+  "source_gru_config_hash": "47d05831c49b10137591793b937bb85236505e5a75966eef88782dc154c07194",
+  "source_gru_run_id": "phase6_synthetic_icu_time_gru_smoke_v1",
+  "source_selected_gru_run_id": null,
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "synthetic_smoke_test": true,
+  "task": "icu_stay_time",
+  "tensor_contract_version": "tensor_contract_v1",
+  "validation_monitor_name": "validation_log_space_huber_loss",
+  "validation_value": 2.4912989139556885
+}

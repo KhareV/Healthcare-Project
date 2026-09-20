@@ -1,0 +1,27 @@
+{
+  "manifest_version": "xgb_organ_support_synthetic_dry_run_v1",
+  "search_version": "xgb_organ_support_synthetic_dry_run_v1",
+  "status": "FROZEN_SYNTHETIC_DRY_RUN_MANIFEST_NOT_SCIENTIFIC_SEARCH",
+  "run_type": "synthetic_dry_run",
+  "task": "organ_support",
+  "family": "xgboost",
+  "search_space_ref": "configs/search_space_xgb_v1.json",
+  "search_space_hash": "90c54ad6c4c523ac8cbeae3078f6cd1c520a3c5439520320f2f94c1322c551c3",
+  "sampler": "deterministic_seeded_synthetic_dry_run_v1",
+  "sampler_status": "TEST_ONLY_NOT_APPROVED_SCIENTIFIC_SAMPLER",
+  "test_sampler_seed": 2102,
+  "candidate_count": 30,
+  "candidate_list_hash": "083bda7f9dd0b1421951eb6503aa1e951166b0042d850af9ea54438084786f8f",
+  "validation_objective": "validation_uncalibrated_auprc_max",
+  "split_ref": "tests/fixtures/canonical/canonical_synthetic_split_v1.csv",
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "feature_version": "synthetic_feature_schema_v1",
+  "label_version": "synthetic_manual_support_labels_v1",
+  "allowed_partitions": [
+    "train",
+    "validation"
+  ],
+  "test_accessed": false,
+  "scientific_candidate_slots_consumed": 0,
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY"
+}

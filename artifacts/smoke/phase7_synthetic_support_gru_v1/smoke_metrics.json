@@ -1,0 +1,30 @@
+{
+  "best_epoch": 1,
+  "best_validation_value_weighted_bce": 0.7133359313011169,
+  "checkpoint_sha256": "d2ae7f884826645eb71a6af50ce6d60c855910dacf301b0bb82604140d8eba81",
+  "class_weight_sha256": "e03d9f7eac8411cae7ed9b93d45f5e40d5c75abec0ae35aae909904769245b7f",
+  "device": "cpu",
+  "eligible_train_count": 2,
+  "epochs_completed": 3,
+  "model_family": "gru",
+  "negative_train_count": 1,
+  "operating_threshold_selected": false,
+  "participates_in_30_config_search": false,
+  "pos_weight": 1.0,
+  "positive_train_count": 1,
+  "probabilities_calibrated": false,
+  "probabilities_finite_in_unit_interval": true,
+  "probability_shape": [
+    3,
+    1
+  ],
+  "probability_transform": "sigmoid_uncalibrated_v1",
+  "reportable_scientific_performance": false,
+  "run_id": "phase7_synthetic_support_gru_smoke_v1",
+  "stopped_early": false,
+  "synthetic_smoke_test": true,
+  "task": "organ_support",
+  "test_examples_accessed": 0,
+  "train_examples": 2,
+  "validation_examples": 3
+}

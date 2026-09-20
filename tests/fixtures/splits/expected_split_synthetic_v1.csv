@@ -1,0 +1,5 @@
+subject_id,split,anchor_year_group
+A,train,2008-2010
+B,train,2011-2013
+C,validation,2014-2016
+D,test,2017-2019

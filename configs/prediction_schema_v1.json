@@ -1,0 +1,127 @@
+{
+  "contract_version": "prediction_schema_v1",
+  "contract_status": "PROPOSED_FOR_VEDANT_AND_SANSKRUTI_REVIEW",
+  "validation_format": "project_explicit_contract_v1",
+  "validation_format_status": "UNLOCKED_ENGINEERING_PARAMETER_PREDICTION_SCHEMA_VALIDATION_FORMAT",
+  "additional_properties_policy": "REJECT_IN_V1_PROPOSAL_PENDING_REVIEW",
+  "additional_properties_policy_status": "UNLOCKED_ENGINEERING_PARAMETER_ADDITIONAL_PROPERTIES_POLICY",
+  "endpoint": "POST /predict",
+  "mode": {
+    "required_value": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+    "meaning": "historical sequential replay from stored history truncated at the requested legal cutoff"
+  },
+  "request": {
+    "required": ["stay_id", "prediction_time"],
+    "properties": {
+      "stay_id": {
+        "types": ["non_boolean_integer", "non_empty_string"],
+        "meaning": "canonical stored or demo ICU stay identifier"
+      },
+      "prediction_time": {
+        "type": "timezone_aware_iso8601_string",
+        "meaning": "historical legal ICU prediction cutoff t",
+        "legal_grid_validation": "DEFERRED_TO_EXISTING_TIMESTAMP_MODULE_IN_LATER_SERVING_PHASE"
+      }
+    }
+  },
+  "response": {
+    "required": [
+      "schema_version",
+      "prediction_time",
+      "mode",
+      "model_versions",
+      "recovery",
+      "icu_stay_time_hours",
+      "organ_support_probability_calibrated",
+      "explanation_features",
+      "data_quality",
+      "model_metadata"
+    ],
+    "schema_version": "prediction_schema_v1",
+    "model_versions": {
+      "required_tasks": ["recovery", "icu_stay_time", "organ_support"],
+      "allowed_families": ["xgboost", "gru"],
+      "per_task_required": [
+        "family",
+        "model_version",
+        "artifact_sha256",
+        "preprocessor_sha256"
+      ],
+      "organ_support_additional_required": ["calibrator_sha256"]
+    },
+    "recovery": {
+      "required": [
+        "delta_24h",
+        "delta_48h",
+        "reconstructed_sofa_24h",
+        "reconstructed_sofa_48h"
+      ],
+      "number_contract": "finite_number",
+      "unit": "SOFA score points",
+      "delta_24h_meaning": "SOFA(t+24h) minus SOFA(t)",
+      "delta_48h_meaning": "SOFA(t+48h) minus SOFA(t)",
+      "horizon_relationship": "independent outputs; the 48-hour value is not chained through the 24-hour value",
+      "transform_implementation": "DEFERRED_TO_PULKIT_PHASE_6_OR_LATER"
+    },
+    "icu_stay_time_hours": {
+      "type": "finite_nonnegative_number",
+      "unit": "hours",
+      "meaning": "remaining time until the current ICU stay ends",
+      "postprocessing_implementation": "REUSE_FROZEN_EVALUATION_POSTPROCESSOR_IN_LATER_SERVING_PHASE"
+    },
+    "organ_support_probability_calibrated": {
+      "type": "finite_number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "meaning": "calibrated 24-hour probability of New Organ-Support Initiation",
+      "calibration_implementation": "DEFERRED_TO_SELECTED_MODEL_PIPELINE"
+    },
+    "support_alert_representation": {
+      "included_in_v1": false,
+      "status": "UNLOCKED_ENGINEERING_PARAMETER_SUPPORT_ALERT_CLASS_RESPONSE_REPRESENTATION"
+    },
+    "explanation_features": {
+      "required_tasks": ["recovery", "icu_stay_time", "organ_support"],
+      "routing": {
+        "xgboost": "tree_shap",
+        "gru": "integrated_gradients"
+      },
+      "per_task_required": ["family", "explanation_method", "items"],
+      "item_proposed_shape": {
+        "required": ["feature_name", "attribution"],
+        "feature_name": "non_empty_string",
+        "attribution": "finite_number"
+      },
+      "semantics": "non-causal model attributions",
+      "status": "UNLOCKED_ENGINEERING_PARAMETER_EXPLANATION_FEATURE_ITEM_SCHEMA_PHASE_9_10_REVIEW_REQUIRED"
+    },
+    "data_quality": {
+      "required": [
+        "total_bins",
+        "observed_bins",
+        "padding_bins",
+        "total_feature_values",
+        "observed_feature_values",
+        "missing_feature_values"
+      ],
+      "semantics": "explicit observed-bin, padding, observation-mask, and missingness counts; not prediction certainty",
+      "status": "UNLOCKED_ENGINEERING_PARAMETER_DATA_QUALITY_PAYLOAD_SHAPE_REVIEW_REQUIRED"
+    },
+    "model_metadata": {
+      "required": ["feature_version", "label_version", "split_version", "manifest_version"],
+      "feature_version": "per_task_non_empty_string_map",
+      "label_version": "per_task_non_empty_string_map",
+      "split_version": "non_empty_string",
+      "manifest_version": "non_empty_string",
+      "layout_status": "UNLOCKED_ENGINEERING_PARAMETER_ARTIFACT_VERSION_METADATA_LAYOUT"
+    }
+  },
+  "nullability": "SCIENTIFIC_PREDICTION_FIELDS_MUST_NOT_BE_NULL",
+  "real_artifact_policy": "real responses require 64-character lowercase SHA-256 values and reject synthetic markers",
+  "synthetic_fixture_policy": "synthetic placeholders are allowed only through explicit synthetic fixture validation and never authorize real serving",
+  "scientific_execution_in_phase_5": false,
+  "review": {
+    "required_reviewers": ["Vedant", "Sanskruti"],
+    "approval_status": "PENDING_NO_APPROVAL_FABRICATED"
+  }
+}

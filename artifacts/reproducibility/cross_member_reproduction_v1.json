@@ -1,0 +1,13 @@
+{
+  "command": null,
+  "comparison_outcome": null,
+  "designated_run_id": null,
+  "detail": "non-owner execution has not occurred; this is not signoff evidence",
+  "evidence_version": "cross_member_reproduction_v1",
+  "expected_metrics": null,
+  "reproduced_metrics": null,
+  "reproducer_name": null,
+  "reproducer_role": null,
+  "resulting_checkpoint_sha256": null,
+  "status": "BLOCKED"
+}

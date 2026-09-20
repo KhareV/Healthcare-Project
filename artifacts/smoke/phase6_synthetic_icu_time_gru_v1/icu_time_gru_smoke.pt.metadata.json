@@ -1,0 +1,32 @@
+{
+  "checkpoint_file": "icu_time_gru_smoke.pt",
+  "checkpoint_sha256": "382433b5ff30f6d4cc4ceeef6dfd21eea7ad674a67ce8c6855a461058ea80fa0",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY",
+  "config_hash": "47d05831c49b10137591793b937bb85236505e5a75966eef88782dc154c07194",
+  "epoch": 3,
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "loss": "huber_on_log1p_remaining_current_icu_hours",
+  "model_config": {
+    "bidirectional": false,
+    "dropout": 0.1,
+    "feature_dim": 2,
+    "hidden_dim": 64,
+    "include_observation_mask": true,
+    "include_tslo": false,
+    "num_layers": 1,
+    "static_dim": 0
+  },
+  "model_family": "gru",
+  "participates_in_30_config_search": false,
+  "postprocess_version": "icu_time_nonnegative_log_expm1_v1",
+  "raw_output_meaning": "log1p_remaining_current_icu_hours",
+  "run_id": "phase6_synthetic_icu_time_gru_smoke_v1",
+  "seed": 161803,
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "synthetic_smoke_test": true,
+  "target_scaler": null,
+  "task": "icu_stay_time",
+  "tensor_contract_version": "tensor_contract_v1",
+  "validation_monitor_name": "validation_log_space_huber_loss",
+  "validation_value": 2.1670377254486084
+}

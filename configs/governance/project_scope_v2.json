@@ -1,0 +1,181 @@
+{
+  "scope_version": "PROJECT_SCOPE_V2",
+  "scientific_version": "2.0-draft",
+  "status": "DRAFT_COMPLETE_TEAM_FREEZE_REQUIRED",
+  "approval_status": "REVIEW_REQUIRED",
+  "effective_scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA_CARDIAC_RETROSPECTIVE_SEQUENTIAL_FORECASTING",
+  "title": "Personalized Patient Recovery Trajectory",
+  "title_status": "REVIEW_REQUIRED_FINAL_PROJECT_TITLE",
+  "amends": [
+    "Personalized_Patient_Recovery_Trajectory_FINAL_Implementation_Master_Plan_v1.0",
+    "Personalized_Patient_Recovery_Trajectory_FINAL_Work_Division_3_Members_v1.0",
+    "docs/CODEX_PROJECT_CONTEXT_V1.md"
+  ],
+  "change_reason": "MIMIC authorization was requested but was not obtained; the team therefore adopted a fully synthetic cardiac dataset for the final academic implementation.",
+  "data": {
+    "final_scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA",
+    "engineering_fixture_scope": "ENGINEERING_SYNTHETIC_FIXTURE",
+    "source": "SYNTHETIC_PROJECT_DATA",
+    "mimic_patient_data_used": false,
+    "mimic_experimental_results_claimed": false,
+    "fixture_promotion_without_acceptance_prohibited": true,
+    "final_dataset_deliverables_status": "DEFERRED_TO_PHASE_2_PLUS"
+  },
+  "population": {
+    "domain": "CARDIAC_HEART_DISEASE",
+    "adult_only": true,
+    "heart_failure_only": false,
+    "exact_subtype_taxonomy_status": "DEFERRED_TO_PHASE_2_GENERATOR_SPECIFICATION",
+    "exact_subtype_distribution_status": "DEFERRED_TO_PHASE_2_GENERATOR_SPECIFICATION"
+  },
+  "episode": {
+    "unit": "SYNTHETIC_ICU_LIKE_CURRENT_CRITICAL_CARE_STAY",
+    "required_identifiers": ["subject_id", "stay_id"],
+    "required_boundaries": ["intime", "outtime"],
+    "boundary_source": "EXPLICIT_GENERATOR_FIELDS",
+    "first_or_last_measurement_as_boundary_allowed": false,
+    "canonical_retained_episode": "ONE_PER_SUBJECT",
+    "multiple_episode_policy": "CHRONOLOGICALLY_FIRST_ELIGIBLE_EPISODE"
+  },
+  "time": {
+    "mode": "RETROSPECTIVE_EVENT_TIME_FORECASTING",
+    "feature_availability_rule": "event_time <= prediction_time",
+    "timestamp_contract_ref": "configs/timestamp_spec_v1.yaml",
+    "timestamp_contract_sha256": "de3a424fcd60affda178afbde49a0c83fd51610f7682cf73306d124454b18a9b",
+    "candidate_formula": "t_k = intime + 24h + 6h*k",
+    "k_min": 0,
+    "k_max": 11,
+    "retention_rule": "t_k <= outtime - 6h",
+    "max_prediction_rows_per_stay": 12
+  },
+  "history": {
+    "interval": "(t-48h, t]",
+    "lookback_hours": 48,
+    "number_of_bins": 8,
+    "bin_width_hours": 6,
+    "bin_closure": "LEFT_OPEN_RIGHT_CLOSED",
+    "pre_episode_policy": "STRUCTURAL_PADDING",
+    "pre_lookback_seed_allowed": false,
+    "missingness_distinct_from_padding": true,
+    "genuine_observation_mask_required": true,
+    "tslo_required": true,
+    "padding_mask_required": true,
+    "learned_preprocessing_fit_scope": "TRAINING_SUBJECTS_ONLY"
+  },
+  "canonical_contract": {
+    "conceptual_receiver": "Vedant_CanonicalExample",
+    "tensor_contract_ref": "configs/tensor_contract_v1.json",
+    "tensor_contract_sha256": "d998456430d632b81778d52f33a9b98214e3599263d443b191f5f8f75e307e9e",
+    "runtime_contract_change_in_phase_1": false,
+    "synthetic_metadata_adapter_status": "FUTURE_VERSIONED_MIGRATION_REQUIRED"
+  },
+  "severity": {
+    "name": "SOFA",
+    "range": [0, 24],
+    "component_count": 6,
+    "function_semantics": "ONE_CUTOFF_SAFE_SOFA_AT_T_IMPLEMENTATION",
+    "component_observed_flags_required": 6,
+    "mimic_code_provenance_required": false,
+    "synthetic_standard_sofa_spec_status": "DEFERRED_TO_PHASE_6",
+    "custom_score_may_be_called_sofa": false
+  },
+  "tasks": {
+    "recovery": {
+      "type": "CONTINUOUS_INDEPENDENT_HORIZON_REGRESSION",
+      "delta_24h": "SOFA(t+24h) - SOFA(t)",
+      "delta_48h": "SOFA(t+48h) - SOFA(t)",
+      "chaining_allowed": false
+    },
+    "remaining_episode_time": {
+      "raw_target": "(outtime - t) hours",
+      "model_target": "log1p((outtime - t) hours)",
+      "episode": "CURRENT_SYNTHETIC_ICU_LIKE_EPISODE"
+    },
+    "organ_support": {
+      "type": "NEW_INITIATION_BINARY_RISK",
+      "window": "(t, t+24h]",
+      "positive": "OFF_TO_ON_QUALIFYING_VASOPRESSOR_OR_INVASIVE_MECHANICAL_VENTILATION",
+      "already_on_at_t": "NOT_INITIATION",
+      "partial_negative_followup": "CENSORED",
+      "positive_before_episode_end": "POSITIVE"
+    }
+  },
+  "models": {
+    "core_candidates": ["naive", "xgboost", "gru"],
+    "sensitivity": "ONE_FIXED_LSTM_RUN_PER_TASK",
+    "xgboost_gru_information_parity_required": true,
+    "xgboost_representation": "FLATTENED_CANONICAL_INFORMATION_ONLY",
+    "configurations_per_task": {"xgboost": 30, "gru": 30}
+  },
+  "evaluation": {
+    "selection_partition": "validation",
+    "recovery_primary_selection": "LOWEST_STAY_BALANCED_24H_MAE",
+    "remaining_time_selection": "LOWEST_STAY_BALANCED_WEIGHTED_MEDIAN_ABSOLUTE_ERROR_HOURS",
+    "support_selection": "HIGHEST_STAY_BALANCED_AUPRC_UNCALIBRATED",
+    "bootstrap_cluster": "stay_id",
+    "support_calibration": "VALIDATION_FITTED_ISOTONIC_SELECTED_CLASSIFIER_ONLY",
+    "support_threshold": "VALIDATION_PREDEFINED_F1_CRITERION",
+    "final_test_status": "SEALED_UNTIL_G3_EQUIVALENT_FREEZE"
+  },
+  "split": {
+    "mimic_anchor_era_policy": "SUPERSEDED",
+    "policy_status": "UNLOCKED_SCIENTIFIC_PARAMETER_SYNTHETIC_SUBJECT_SPLIT_POLICY",
+    "required_partitions": ["train", "validation", "test"],
+    "subject_level_separation": true,
+    "deterministic_assignment": true,
+    "immutable_artifact_and_hash": true,
+    "duplicate_or_clone_cross_split_allowed": false,
+    "percentages": null,
+    "seed": null,
+    "stratification": null,
+    "generator_batch_holdout": null,
+    "resolution_deadline": "BEFORE_PHASE_10_EXECUTION"
+  },
+  "serving": {
+    "prediction_schema_ref": "configs/prediction_schema_v1.json",
+    "prediction_schema_sha256": "db99a539c41a1e86a4bd3b9f6317aaf73a8481f8396854e6749cbb80869fc265",
+    "pipeline": "PredictionPipeline",
+    "feature_rule": "TRUNCATE_HISTORY_AT_T_AND_REUSE_TRAINING_BUILDER_AND_PREPROCESSOR",
+    "explanation_routing": {"xgboost": "TreeSHAP", "gru": "IntegratedGradients"},
+    "product_mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY_NOT_REAL_TIME_CLINICAL_PREDICTION"
+  },
+  "claims": {
+    "allowed": [
+      "METHODOLOGICAL_PROTOTYPE",
+      "SOFTWARE_RESEARCH_FRAMEWORK",
+      "EVALUATED_ON_VERSIONED_SYNTHETIC_CARDIAC_TRAJECTORIES",
+      "RETROSPECTIVE_SEQUENTIAL_FORECASTING_DEMONSTRATION",
+      "INTEGRATION_AND_REPRODUCIBILITY_DEMONSTRATION"
+    ],
+    "prohibited": [
+      "EXTERNAL_CLINICAL_VALIDATION",
+      "BEDSIDE_ACCURACY",
+      "DEPLOYMENT_READINESS",
+      "PATIENT_SPECIFIC_CLINICAL_UTILITY",
+      "CAUSAL_TREATMENT_RECOMMENDATION",
+      "REAL_WORLD_CARDIAC_PROGNOSIS_ACCURACY",
+      "MIMIC_VALIDATION",
+      "REAL_TIME_CLINICAL_PREDICTION"
+    ],
+    "clinical_validation_status": "NOT_CLINICALLY_VALIDATED"
+  },
+  "historical_candidate": {
+    "path": "Heart-Failure-Recovery-and-Deterioration-Trajectory-Prediction",
+    "status": "HISTORICAL_REFERENCE_IMPLEMENTATION_NOT_AUTHORITATIVE",
+    "merge_authorized": false,
+    "artifact_promotion_authorized": false
+  },
+  "phase_boundary": {
+    "phase": "SANSKRUTI_REBUILD_PHASE_1_OF_14",
+    "implementation_scope": "SPECIFICATION_AND_GOVERNANCE_ONLY",
+    "dataset_generation_authorized": false,
+    "model_training_authorized": false,
+    "final_test_access_authorized": false,
+    "downstream_runtime_contract_modification_authorized": false
+  },
+  "review": {
+    "team_freeze_required": true,
+    "approved_by": [],
+    "signoff_must_not_be_inferred_from_document_presence": true
+  }
+}

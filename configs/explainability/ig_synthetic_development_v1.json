@@ -1,0 +1,12 @@
+{
+  "classification": "SYNTHETIC DEVELOPMENT CONFIG — NOT A SCIENTIFIC IG FREEZE",
+  "version": "SYNTHETIC_IG_CONFIG_V1",
+  "n_steps": 32,
+  "method": "gausslegendre",
+  "internal_batch_size": null,
+  "return_convergence_delta": true,
+  "baseline_version": "SYNTHETIC_IG_BASELINE_V1",
+  "baseline_policy": "all attributable tensors zero; padding fixed and non-attributed",
+  "scientific_scope": "synthetic_development_only",
+  "real_execution_status": "BLOCKED — BASELINE, OUTPUT DOMAINS, SETTINGS, AND CAPTUM DEPENDENCY REQUIRE FREEZE"
+}

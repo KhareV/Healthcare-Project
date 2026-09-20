@@ -1,0 +1,35 @@
+{
+  "schema_version": "support_endpoint_signoff_schema_v1_proposed",
+  "schema_status": "UNLOCKED_ENGINEERING_PARAMETER_REVIEW_REQUIRED",
+  "endpoint_version": "organ_support_endpoint_v1",
+  "endpoint_name": "24-hour New Organ-Support Initiation Risk",
+  "event_dictionary_ref": "configs/event_dict_v1.yaml",
+  "event_dictionary_sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
+  "state_machine_test_evidence_ref": null,
+  "state_machine_test_evidence_sha256": null,
+  "real_prevalence_pre_freeze_attestation": "PENDING_HUMAN_ATTESTATION",
+  "reviewers": {
+    "Sanskruti": {
+      "role": "source_mapping_and_clinical_provenance_reviewer",
+      "decision": "PENDING",
+      "review_timestamp_utc": null,
+      "evidence_ref": null,
+      "reviewed_event_dictionary_sha256": null
+    },
+    "Vedant": {
+      "role": "timestamp_censoring_and_receiver_contract_reviewer",
+      "decision": "PENDING",
+      "review_timestamp_utc": null,
+      "evidence_ref": null,
+      "reviewed_event_dictionary_sha256": null
+    },
+    "Pulkit_team_approval": {
+      "role": "owner_after_team_agreement",
+      "decision": "PENDING",
+      "review_timestamp_utc": null,
+      "evidence_ref": null,
+      "reviewed_event_dictionary_sha256": null
+    }
+  }
+}
+

@@ -1,0 +1,33 @@
+{
+  "schema_version": "support_prevalence_governance_v1",
+  "endpoint_version": "organ_support_endpoint_v1",
+  "generator_version": "support_prevalence_generator_v1",
+  "real_population_status": "UNLOCKED_BLOCKED_PREVALENCE_REPORTING_POPULATION_REQUIRED",
+  "real_authorized_populations": [],
+  "synthetic_authorized_populations": [
+    {
+      "population_id": "SYNTHETIC_PHASE4_FIXTURE_ONLY",
+      "allowed_partitions": ["synthetic"],
+      "scope": "synthetic",
+      "authorizing_status": "SYNTHETIC_NON_SCIENTIFIC_NON_AUTHORIZING"
+    }
+  ],
+  "headline_denominator_status": "UNLOCKED_REPORTING_PARAMETER_ORGAN_SUPPORT_PREVALENCE_DENOMINATOR",
+  "headline_prevalence_enabled": false,
+  "required_raw_counts": [
+    "canonical_rows",
+    "eligible_rows",
+    "positive_rows",
+    "negative_rows",
+    "censored_rows",
+    "not_at_risk_rows",
+    "unique_stays",
+    "eligible_stays",
+    "positive_stays"
+  ],
+  "protected_test_partition": "test",
+  "test_access_requires_valid_g3": true,
+  "class_weight_fitting_in_scope": false,
+  "prevalence_range_acceptance_gate": false
+}
+

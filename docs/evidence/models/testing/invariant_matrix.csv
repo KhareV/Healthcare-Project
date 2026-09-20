@@ -1,0 +1,14 @@
+invariant,status,test_source,owner
+strict 48h lookback and future perturbation,IMPLEMENTED,tests/test_tensor_contract.py,Vedant/Sanskruti
+padding versus clinical missingness,IMPLEMENTED,tests/test_dataset.py,Vedant
+timestamp start/grid/cap,IMPLEMENTED,tests/test_timestamps.py,Vedant
+recovery independent horizons,IMPLEMENTED,tests/test_recovery_training.py,Vedant
+subject split isolation/hash,IMPLEMENTED,tests/test_split.py,Vedant
+XGBoost/GRU information parity,IMPLEMENTED,tests/test_search_information_parity.py,Vedant
+stay-balanced toy metrics,IMPLEMENTED,tests/test_stay_weights.py,Vedant
+whole-stay grouped bootstrap,IMPLEMENTED,tests/test_grouped_bootstrap.py,Vedant
+validation-only calibration,IMPLEMENTED,tests/test_calibration_isolation.py,Vedant
+mixed-family manifest,IMPLEMENTED,tests/test_selected_manifest.py,Vedant
+support OFF-to-ON/censoring,CONTRACT_TESTED,tests/test_support_eligibility.py,Pulkit
+training-serving equality,DEFERRED — PULKIT TRACK,,Pulkit
+API/replay regression fixture,DEFERRED — PULKIT TRACK,,Pulkit

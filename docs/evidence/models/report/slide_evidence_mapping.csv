@@ -1,0 +1,13 @@
+slide,topic,status,evidence
+1,Problem/research question,TEAM_PENDING,methods
+2,Dataset/cohort/split,SANSKRUTI_DEPENDENCY,split methods
+3,Temporal design,VEDANT_AVAILABLE,methods
+4,Targets,TEAM_PENDING,methods
+5,Leakage/reproducibility,VEDANT_AVAILABLE,reproducibility/testing
+6,Models,VEDANT_AVAILABLE,diagrams/tuning
+7,Evaluation,VEDANT_AVAILABLE,metrics/bootstrap
+8,Calibration/explanation,BLOCKED_AND_PULKIT_DEFERRED,blocked calibration/routing
+9,Replay demo,DEFERRED — PULKIT TRACK,gap checklist
+10,Error analysis/limitations,BLOCKED_RESULTS_METHODS_AVAILABLE,error slot/limitations
+11,Contributions,AVAILABLE,contribution table
+12,Conclusion,BLOCKED,real findings required

@@ -1,0 +1,71 @@
+{
+  "artifact_kind": "SYNTHETIC_MANUAL_ORGAN_SUPPORT_LABEL_HANDOFF_NOT_REAL_LABELS",
+  "contract_version": "synthetic_manual_support_labels_v1",
+  "event_dictionary_version": "UNAVAILABLE_SYNTHETIC_MANUAL_ONLY",
+  "ownership_status": "MANUAL_PHASE7_FIXTURE_DOES_NOT_IMPLEMENT_PULKIT_STATE_MACHINE",
+  "records": [
+    {
+      "stay_id": "SYNTH-STAY-A",
+      "prediction_time": "2026-01-02T03:17:00",
+      "split": "train",
+      "label": 1,
+      "eligible": true,
+      "audit_case": "positive_before_censor",
+      "audit_metadata": {"off_at_t": true, "qualifying_onset_hours_after_t": 10, "icu_exit_hours_after_t": 15, "censor_reason": null}
+    },
+    {
+      "stay_id": "SYNTH-STAY-A",
+      "prediction_time": "2026-01-03T03:17:00",
+      "split": "train",
+      "label": 0,
+      "eligible": true,
+      "audit_case": "complete_negative",
+      "audit_metadata": {"off_at_t": true, "qualifying_onset_hours_after_t": null, "followup_hours": 24, "censor_reason": null}
+    },
+    {
+      "stay_id": "SYNTH-STAY-B",
+      "prediction_time": "2026-02-02T09:23:00",
+      "split": "validation",
+      "label": 1,
+      "eligible": true,
+      "audit_case": "vasopressor_initiation_only",
+      "audit_metadata": {"vasopressor_initiation": true, "invasive_ventilation_initiation": false}
+    },
+    {
+      "stay_id": "SYNTH-STAY-B",
+      "prediction_time": "2026-02-02T15:23:00",
+      "split": "validation",
+      "label": 1,
+      "eligible": true,
+      "audit_case": "invasive_ventilation_initiation_only",
+      "audit_metadata": {"vasopressor_initiation": false, "invasive_ventilation_initiation": true}
+    },
+    {
+      "stay_id": "SYNTH-STAY-B",
+      "prediction_time": "2026-02-02T21:23:00",
+      "split": "validation",
+      "label": 0,
+      "eligible": true,
+      "audit_case": "neither_with_full_followup",
+      "audit_metadata": {"vasopressor_initiation": false, "invasive_ventilation_initiation": false, "followup_hours": 24}
+    },
+    {
+      "stay_id": "SYNTH-STAY-C",
+      "prediction_time": "2026-03-02T09:41:00",
+      "split": "test",
+      "label": null,
+      "eligible": false,
+      "audit_case": "no_event_before_early_exit",
+      "audit_metadata": {"off_at_t": true, "qualifying_onset_hours_after_t": null, "icu_exit_hours_after_t": 15, "censor_reason": "EARLY_ICU_EXIT_NO_POSITIVE"}
+    }
+  ],
+  "interface_cases": [
+    {"case": "positive_before_censor", "label": 1, "eligible": true},
+    {"case": "no_event_before_early_exit", "label": null, "eligible": false},
+    {"case": "already_on_continuation_other_component_negative", "label": 0, "eligible": true, "state_evidence": "vasopressor_on_at_t_continues; ventilation_off_at_t_no_initiation_full_followup"},
+    {"case": "vasopressor_initiation_only", "label": 1, "eligible": true},
+    {"case": "invasive_ventilation_initiation_only", "label": 1, "eligible": true},
+    {"case": "both_initiate", "label": 1, "eligible": true},
+    {"case": "neither_with_full_followup", "label": 0, "eligible": true}
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "artifact_version": "synthetic_task_adapter_metadata_phase6_v1",
+  "task": "recovery",
+  "family": "gru",
+  "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+  "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+  "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "label_version": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL",
+  "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080",
+  "output_contract": "independent_delta_24h_delta_48h",
+  "target_transform_required": false,
+  "synthetic": true,
+  "serving_authorized": false
+}

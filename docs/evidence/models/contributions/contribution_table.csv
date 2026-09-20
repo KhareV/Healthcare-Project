@@ -1,0 +1,4 @@
+member,area,status,evidence
+Vedant,"timestamps, split, tensors/loaders, GRU/LSTM, training, search governance, metrics/bootstrap, selection, calibration, ablations, error analysis, registry, test governance, evidence",IMPLEMENTED_FRAMEWORK_REAL_RESULTS_BLOCKED,src/data; src/models; src/training; src/evaluation; src/experiments; src/evidence
+Sanskruti,"extraction, cohort, features/provenance, SOFA, recovery/ICU labels, XGBoost",UPSTREAM_DEPENDENCY_NOT_PRESENT,DEFERRED_TO_OWNER_HANDOFF
+Pulkit,"support endpoint, PredictionPipeline, explanations, API, dashboard, packaging/integration",DEFERRED — PULKIT TRACK,docs/evidence/models/deferred/pulkit_evidence_checklist.md

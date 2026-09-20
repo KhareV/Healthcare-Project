@@ -1,0 +1,236 @@
+{
+  "schema_version": "synthetic_raw_schema_v1",
+  "specification_version": "synthetic_generator_v1",
+  "status": "DRAFT_SPECIFICATION_REVIEW_REQUIRED",
+  "scope_ref": "configs/governance/project_scope_v2.json",
+  "scope_version": "PROJECT_SCOPE_V2",
+  "scope_sha256": "4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994",
+  "data_scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA",
+  "artifact_status": "SPECIFICATION_ONLY_NO_DATA_GENERATED",
+  "timestamp_contract": {
+    "representation": "ISO_8601_UTC_Z_WITH_MICROSECOND_CAPABILITY",
+    "timezone": "UTC",
+    "mixed_naive_and_aware_allowed": false,
+    "event_semantics": "RETROSPECTIVE_EVENT_TIME",
+    "event_bounds": "intime <= event_time <= outtime",
+    "ordering": ["event_time", "event_id"]
+  },
+  "field_role_vocabulary": [
+    "MODEL_ELIGIBLE_RAW",
+    "STATIC_MODEL_ELIGIBLE",
+    "STRUCTURAL_LABEL_ONLY",
+    "PROVENANCE_ONLY",
+    "GENERATOR_INTERNAL_AUDIT_ONLY"
+  ],
+  "global_rules": {
+    "additional_fields_allowed": false,
+    "observed_null_event_allowed": false,
+    "no_event_meaning": "NO OBSERVATION EXISTS; DO NOT MATERIALIZE A NULL PLACEHOLDER ROW",
+    "duplicate_primary_keys_allowed": false,
+    "duplicate_semantic_events_in_final_data_allowed": false,
+    "model_eligibility_requires_cutoff_time_leq_prediction_time": true,
+    "structural_label_fields_never_enter_features": true,
+    "generator_internal_fields_exported_with_final_data": false
+  },
+  "tables": {
+    "subjects": {
+      "exported": true,
+      "primary_key": ["subject_id"],
+      "foreign_keys": [],
+      "description": "One synthetic adult cardiac subject; no real identifiers.",
+      "fields": [
+        {
+          "name": "subject_id",
+          "type": "string",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": null,
+          "allowed_domain": "NON_EMPTY_OPAQUE_SYNTHETIC_IDENTIFIER",
+          "description": "Deterministic opaque linkage identifier; contains no target, subtype, or split information."
+        },
+        {
+          "name": "age_years",
+          "type": "integer",
+          "nullable": false,
+          "role": "STATIC_MODEL_ELIGIBLE",
+          "model_eligible": true,
+          "unit": "years",
+          "allowed_domain": {"minimum": 18, "maximum": null, "status": "UNLOCKED_MAXIMUM_AND_DISTRIBUTION"},
+          "description": "Synthetic adult age; distribution is benchmark design, not epidemiology."
+        },
+        {
+          "name": "sex_category",
+          "type": "string",
+          "nullable": false,
+          "role": "STATIC_MODEL_ELIGIBLE",
+          "model_eligible": true,
+          "unit": null,
+          "allowed_domain": {"values": null, "status": "REVIEW_REQUIRED_STATIC_VOCABULARY"},
+          "description": "Synthetic sex/gender representation under a reviewed controlled vocabulary."
+        },
+        {
+          "name": "cardiac_condition_group",
+          "type": "string",
+          "nullable": false,
+          "role": "STATIC_MODEL_ELIGIBLE",
+          "model_eligible": true,
+          "unit": null,
+          "allowed_domain": {"values": null, "status": "REVIEW_REQUIRED_CARDIAC_SUBTYPE_TAXONOMY"},
+          "description": "Broad synthetic cardiac phenotype; composition is a design mixture, never prevalence."
+        }
+      ]
+    },
+    "episodes": {
+      "exported": true,
+      "primary_key": ["stay_id"],
+      "foreign_keys": [{"fields": ["subject_id"], "references": "subjects(subject_id)"}],
+      "description": "One canonical ICU-like episode per core-project subject.",
+      "fields": [
+        {
+          "name": "subject_id",
+          "type": "string",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": null,
+          "allowed_domain": "FOREIGN_KEY",
+          "description": "Subject linkage only."
+        },
+        {
+          "name": "stay_id",
+          "type": "string",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": null,
+          "allowed_domain": "NON_EMPTY_OPAQUE_SYNTHETIC_IDENTIFIER",
+          "description": "Deterministic opaque episode identifier; contains no outcome or split information."
+        },
+        {
+          "name": "intime",
+          "type": "timestamp",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": "UTC",
+          "allowed_domain": "ISO_8601_UTC",
+          "description": "Generated structural episode start used by downstream clock and padding logic."
+        },
+        {
+          "name": "outtime",
+          "type": "timestamp",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": "UTC",
+          "allowed_domain": "ISO_8601_UTC_STRICTLY_AFTER_INTIME",
+          "description": "Generated structural episode end used only for legality, eligibility, censoring, and labels."
+        },
+        {
+          "name": "episode_sequence",
+          "type": "integer",
+          "nullable": false,
+          "role": "STRUCTURAL_LABEL_ONLY",
+          "model_eligible": false,
+          "unit": null,
+          "allowed_domain": {"values": [1]},
+          "description": "Core v1 generates exactly one retained episode per subject."
+        },
+        {
+          "name": "generator_subject_stream_id",
+          "type": "string",
+          "nullable": false,
+          "role": "PROVENANCE_ONLY",
+          "model_eligible": false,
+          "unit": null,
+          "allowed_domain": "NON_EMPTY_DETERMINISTIC_STREAM_ID",
+          "description": "RNG substream identity for regeneration; never a feature."
+        }
+      ]
+    },
+    "raw_events": {
+      "exported": true,
+      "primary_key": ["event_id"],
+      "foreign_keys": [
+        {"fields": ["subject_id"], "references": "subjects(subject_id)"},
+        {"fields": ["stay_id"], "references": "episodes(stay_id)"}
+      ],
+      "description": "Long-form observed physiological events; absent measurements have no row.",
+      "fields": [
+        {"name": "event_id", "type": "string", "nullable": false, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "UNIQUE_OPAQUE_EVENT_IDENTIFIER", "description": "Deterministic event identity and stable tie-breaker."},
+        {"name": "subject_id", "type": "string", "nullable": false, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "FOREIGN_KEY", "description": "Subject linkage only."},
+        {"name": "stay_id", "type": "string", "nullable": false, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "FOREIGN_KEY", "description": "Episode linkage only."},
+        {"name": "event_time", "type": "timestamp", "nullable": false, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": "UTC", "allowed_domain": "INTIME_LEQ_EVENT_TIME_LEQ_OUTTIME", "description": "Availability time used for cutoff truncation; never a future-derived feature."},
+        {"name": "interval_start", "type": "timestamp", "nullable": true, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": "UTC", "allowed_domain": "NULL_FOR_POINT_EVENT_OR_INTIME_LEQ_START_LEQ_EVENT_TIME", "description": "Start of collection interval, required for interval measurements such as urine output."},
+        {"name": "interval_end", "type": "timestamp", "nullable": true, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": "UTC", "allowed_domain": "NULL_FOR_POINT_EVENT_OR_START_LT_END_EQ_EVENT_TIME", "description": "End/availability time of an interval measurement."},
+        {"name": "concept_code", "type": "string", "nullable": false, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": "RAW_VARIABLE_INVENTORY_KEY", "description": "Versioned physiological concept; eligibility still requires event_time <= cutoff."},
+        {"name": "value_numeric", "type": "number", "nullable": true, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": "CONCEPT_SPECIFIC", "allowed_domain": "FINITE_AND_WITHIN_CONCEPT_GENERATION_DOMAIN", "description": "Observed numeric value; exactly one of numeric/text value is present."},
+        {"name": "value_text", "type": "string", "nullable": true, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": "CONCEPT_SPECIFIC_CONTROLLED_VOCABULARY", "description": "Observed categorical value; exactly one of numeric/text value is present."},
+        {"name": "unit", "type": "string", "nullable": false, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "EXACT_UNIT_FROM_RAW_VARIABLE_INVENTORY", "description": "Canonical generator unit; categorical events use the literal unit 'category'."},
+        {"name": "generator_component", "type": "string", "nullable": false, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "VERSIONED_GENERATOR_COMPONENT_KEY", "description": "Process identity used for audit and regeneration."}
+      ]
+    },
+    "support_intervals": {
+      "exported": true,
+      "primary_key": ["support_event_id"],
+      "foreign_keys": [
+        {"fields": ["subject_id"], "references": "subjects(subject_id)"},
+        {"fields": ["stay_id"], "references": "episodes(stay_id)"}
+      ],
+      "description": "Closed-open support intervals that can be adapted to Pulkit state contracts.",
+      "fields": [
+        {"name": "support_event_id", "type": "string", "nullable": false, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "UNIQUE_OPAQUE_SUPPORT_EVENT_IDENTIFIER", "description": "Deterministic support interval identity."},
+        {"name": "subject_id", "type": "string", "nullable": false, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "FOREIGN_KEY", "description": "Subject linkage only."},
+        {"name": "stay_id", "type": "string", "nullable": false, "role": "STRUCTURAL_LABEL_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "FOREIGN_KEY", "description": "Episode linkage only."},
+        {"name": "support_type", "type": "string", "nullable": false, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": {"values": ["VASOPRESSOR", "RESPIRATORY"]}, "description": "Top-level support process; visible only through cutoff-safe state derivation."},
+        {"name": "support_category", "type": "string", "nullable": false, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": "VERSIONED_SUPPORT_VOCABULARY", "description": "Qualifying/nonqualifying category mapped by the future synthetic event dictionary."},
+        {"name": "agent_key", "type": "string", "nullable": true, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": "REQUIRED_FOR_VASOPRESSOR_NULL_FOR_RESPIRATORY", "description": "Synthetic vasopressor vocabulary key; final names require review."},
+        {"name": "respiratory_category", "type": "string", "nullable": true, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": null, "allowed_domain": {"values": ["INVASIVE", "NON_INVASIVE", "HFNC", "ORDINARY_OXYGEN"]}, "description": "Required for respiratory intervals; only INVASIVE qualifies for the endpoint."},
+        {"name": "interval_start", "type": "timestamp", "nullable": false, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": "UTC", "allowed_domain": "INTIME_LEQ_START_LT_OUTTIME", "description": "Genuine state transition time; visible at cutoffs on/after start."},
+        {"name": "interval_end", "type": "timestamp", "nullable": false, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": "UTC", "allowed_domain": "START_LT_END_LEQ_OUTTIME", "description": "Closed-open cessation boundary; future end must be hidden until it occurs."},
+        {"name": "rate_value", "type": "number", "nullable": true, "role": "MODEL_ELIGIBLE_RAW", "model_eligible": true, "unit": "RATE_UNIT_FIELD", "allowed_domain": "FINITE_NONNEGATIVE_OR_NULL_WHEN_NOT_APPLICABLE", "description": "Optional vasopressor rate for interval segment."},
+        {"name": "rate_unit", "type": "string", "nullable": true, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "VERSIONED_SUPPORT_VOCABULARY_UNIT", "description": "Required when rate_value is present; final vocabulary requires review."},
+        {"name": "normalization_provenance_ref", "type": "string", "nullable": false, "role": "PROVENANCE_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "NON_EMPTY_VERSIONED_REFERENCE", "description": "Binds interval to its synthetic mapping/adapter semantics."}
+      ]
+    },
+    "generator_internal_audit": {
+      "exported": false,
+      "persistence_default": "DO_NOT_PERSIST_PER_PATIENT_LATENT_TRAJECTORIES",
+      "primary_key": ["internal_state_id"],
+      "foreign_keys": [{"fields": ["stay_id"], "references": "episodes(stay_id)"}],
+      "description": "Optional development-only validation structure; prohibited from final raw artifacts.",
+      "fields": [
+        {"name": "internal_state_id", "type": "string", "nullable": false, "role": "GENERATOR_INTERNAL_AUDIT_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "UNIQUE_INTERNAL_IDENTIFIER", "description": "Internal trace identity."},
+        {"name": "stay_id", "type": "string", "nullable": false, "role": "GENERATOR_INTERNAL_AUDIT_ONLY", "model_eligible": false, "unit": null, "allowed_domain": "FOREIGN_KEY", "description": "Internal episode linkage."},
+        {"name": "simulation_time", "type": "timestamp", "nullable": false, "role": "GENERATOR_INTERNAL_AUDIT_ONLY", "model_eligible": false, "unit": "UTC", "allowed_domain": "INTIME_LEQ_TIME_LEQ_OUTTIME", "description": "Internal simulation step."},
+        {"name": "latent_state_vector", "type": "array_number", "nullable": false, "role": "GENERATOR_INTERNAL_AUDIT_ONLY", "model_eligible": false, "unit": "dimensionless", "allowed_domain": "FINITE_INTERNAL_VECTOR", "description": "Never exported, preprocessed, modeled, served, or included in final dataset."}
+      ]
+    }
+  },
+  "manifest_contract": {
+    "manifest_version": "synthetic_dataset_manifest_v1",
+    "template_ref": "configs/synthetic/synthetic_dataset_manifest_template_v1.json",
+    "required_fields": [
+      "manifest_version",
+      "manifest_status",
+      "project_scope_version",
+      "project_scope_sha256",
+      "generator_version",
+      "generator_code_identity",
+      "generator_config_version",
+      "generator_config_sha256",
+      "raw_schema_version",
+      "raw_schema_sha256",
+      "seed_policy_version",
+      "primary_seed_identity",
+      "environment_identity",
+      "generation_timestamp_utc",
+      "generation_command",
+      "requested_subject_count",
+      "generated_subject_count",
+      "record_counts",
+      "artifacts"
+    ]
+  }
+}

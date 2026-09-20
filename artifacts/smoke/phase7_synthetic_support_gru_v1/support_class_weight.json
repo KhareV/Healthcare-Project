@@ -1,0 +1,14 @@
+{
+  "eligible_train_count": 2,
+  "event_dictionary_version": "UNAVAILABLE_SYNTHETIC_MANUAL_ONLY",
+  "formula": "N_negative / N_positive",
+  "formula_version": "eligible_train_negative_over_positive_v1",
+  "label_contract_version": "synthetic_manual_support_labels_v1",
+  "negative_count": 1,
+  "pos_weight": 1.0,
+  "positive_count": 1,
+  "provenance": "ELIGIBLE_TRAIN_ROWS_ONLY",
+  "source_config_hash": "f482c5d01d517853225e0b3d802b449cdda4c8afd6402612c14cffd2c9079771",
+  "source_partition": "train",
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37"
+}

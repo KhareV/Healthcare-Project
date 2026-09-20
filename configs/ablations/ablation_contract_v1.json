@@ -1,0 +1,20 @@
+{
+  "contract_version": "recovery_ablation_contract_v1",
+  "task": "recovery",
+  "status": "FRAMEWORK_ONLY_SCIENTIFIC_VARIANTS_BLOCKED",
+  "scientific_variant_matrix": null,
+  "scientific_variant_matrix_status": "BLOCKED — EXACT MASK/TSLO ABLATION MATRIX REQUIRED",
+  "mask_feature_group": null,
+  "mask_feature_group_status": "BLOCKED — MASK FEATURE GROUP DEFINITION REQUIRED",
+  "tslo_status": "BLOCKED — PRODUCTION TSLO FEATURE CONTRACT REQUIRED",
+  "retraining_policy": null,
+  "retraining_policy_status": "UNLOCKED SCIENTIFIC/ENGINEERING PARAMETER — ABLATION RETRAINING POLICY",
+  "reserved_non_ablatable_groups": [
+    "task_eligibility",
+    "target_fields",
+    "padding_semantics",
+    "identifiers"
+  ],
+  "hyperparameter_search_budget": 0,
+  "real_execution_authorized": false
+}

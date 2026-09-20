@@ -1,0 +1,10 @@
+{
+  "classification": "SYNTHETIC DEVELOPMENT CONFIG — NOT A SCIENTIFIC TREESHAP FREEZE",
+  "version": "SYNTHETIC_TREESHAP_CONFIG_V1",
+  "feature_perturbation": "tree_path_dependent",
+  "model_output": "raw",
+  "background_policy": "none_tree_path_dependent_development_only",
+  "additivity_tolerance": 1e-6,
+  "scientific_scope": "synthetic_development_only",
+  "real_execution_status": "BLOCKED — REAL XGB LOADER, FLATTENED NAMES, OUTPUT DOMAIN, SHAP, XGBOOST, AND POLICY FREEZES REQUIRED"
+}

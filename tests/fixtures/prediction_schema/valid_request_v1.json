@@ -1,0 +1,8 @@
+{
+  "fixture_classification": "SYNTHETIC_MOCK_CONTRACT_OUTPUT_NOT_MODEL_PERFORMANCE_NOT_CLINICAL_DATA",
+  "payload_kind": "request",
+  "payload": {
+    "stay_id": "SYNTHETIC_DEMO_STAY_001",
+    "prediction_time": "2026-01-02T12:00:00+00:00"
+  }
+}

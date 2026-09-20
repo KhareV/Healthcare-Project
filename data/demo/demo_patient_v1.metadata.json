@@ -1,0 +1,18 @@
+{
+  "metadata_version": "demo_fixture_metadata_v1",
+  "fixture_version": "demo_patient_v1",
+  "fixture_ref": "data/demo/demo_patient_v1.json",
+  "fixture_sha256": "625289d3eaff3482cc94d4190bed61adb8f81c1a8eb24f2e148397b6a85d1a43",
+  "scope": "synthetic",
+  "scientific_status": "NON_SCIENTIFIC_ENGINEERING_DEMO_ONLY",
+  "schema_version": "synthetic_timeline_contract_phase7_v1",
+  "feature_schema_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "creation_method": "Manually constructed synthetic values and timestamps",
+  "contains_restricted_raw_mimic": false,
+  "repository_use": "Allowed as a synthetic engineering fixture; no legal/privacy certification claimed",
+  "legal_cutoffs": [
+    "2030-01-02T00:00:00+00:00",
+    "2030-01-02T06:00:00+00:00",
+    "2030-01-02T12:00:00+00:00"
+  ]
+}

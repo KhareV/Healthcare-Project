@@ -1,0 +1,21 @@
+{
+  "config_version": "bootstrap_v1",
+  "status": "FRAMEWORK_ONLY_NOT_FINAL_SCIENTIFIC_CI_CONFIG",
+  "method": "stay_cluster_percentile_bootstrap",
+  "cluster_unit": "stay_id",
+  "sampling_with_replacement": true,
+  "stay_copy_identity_required": true,
+  "ci_level": 0.95,
+  "ci_quantiles": [0.025, 0.975],
+  "percentile_convention": "linear_type7_index_equals_q_times_n_minus_one_v1",
+  "n_bootstrap": null,
+  "n_bootstrap_status": "UNLOCKED_PARAMETER_REQUIRES_FREEZE_BEFORE_FINAL_TEST_CI",
+  "seed": null,
+  "seed_status": "UNLOCKED_PARAMETER_REQUIRES_FREEZE_BEFORE_FINAL_TEST_CI",
+  "minimum_valid_replicates": null,
+  "minimum_valid_replicates_status": "UNLOCKED_REPORTING_QA_PARAMETER",
+  "metric_implementation_version": "stay_balanced_metrics_v1",
+  "bootstrap_implementation_version": "stay_cluster_percentile_bootstrap_v1",
+  "final_test_access_allowed": false,
+  "uncertainty_interpretation": "aggregate_performance_uncertainty_not_individual_patient_prediction_interval"
+}

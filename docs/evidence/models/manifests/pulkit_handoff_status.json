@@ -1,0 +1,15 @@
+{
+  "available": {
+    "evidence_manifest": "docs/evidence/models/evidence_manifest_v1.json",
+    "reproduction_report": "artifacts/reproducibility/reproduction_report_v1.json"
+  },
+  "missing": [
+    "selected_models_v1",
+    "real selected checkpoints",
+    "frozen preprocessors",
+    "support calibrator",
+    "support threshold"
+  ],
+  "pulkit_track": "DEFERRED \u2014 PULKIT TRACK",
+  "status": "BLOCKED"
+}

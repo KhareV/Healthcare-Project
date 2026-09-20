@@ -1,0 +1,62 @@
+{
+  "all_equal": true,
+  "comparison": "direct_pipeline_input_vs_api_serving_input",
+  "cutoffs": [
+    {
+      "api_serving_input_sha256_by_task": {
+        "icu_stay_time": "fcec00259e8358fea3d716e3627afd205232e4386cc9113acda7d49348728d03",
+        "organ_support": "aface59bc97ba98a10d46cb873be850b36faa54dd8d1836a18dd84be5a8f27fa",
+        "recovery": "aface59bc97ba98a10d46cb873be850b36faa54dd8d1836a18dd84be5a8f27fa"
+      },
+      "direct_input_sha256_by_task": {
+        "icu_stay_time": "fcec00259e8358fea3d716e3627afd205232e4386cc9113acda7d49348728d03",
+        "organ_support": "aface59bc97ba98a10d46cb873be850b36faa54dd8d1836a18dd84be5a8f27fa",
+        "recovery": "aface59bc97ba98a10d46cb873be850b36faa54dd8d1836a18dd84be5a8f27fa"
+      },
+      "equal_by_task": {
+        "icu_stay_time": true,
+        "organ_support": true,
+        "recovery": true
+      },
+      "prediction_time": "2030-01-02T00:00:00+00:00"
+    },
+    {
+      "api_serving_input_sha256_by_task": {
+        "icu_stay_time": "42728340af5a4e0c4bf2a634be7f5477dabf9368cc8140c94c0b67f5fa5d0156",
+        "organ_support": "c28690c34eeef659e806dc3c24f866c2b854f90f07487c08c161953b0a1ec5f6",
+        "recovery": "c28690c34eeef659e806dc3c24f866c2b854f90f07487c08c161953b0a1ec5f6"
+      },
+      "direct_input_sha256_by_task": {
+        "icu_stay_time": "42728340af5a4e0c4bf2a634be7f5477dabf9368cc8140c94c0b67f5fa5d0156",
+        "organ_support": "c28690c34eeef659e806dc3c24f866c2b854f90f07487c08c161953b0a1ec5f6",
+        "recovery": "c28690c34eeef659e806dc3c24f866c2b854f90f07487c08c161953b0a1ec5f6"
+      },
+      "equal_by_task": {
+        "icu_stay_time": true,
+        "organ_support": true,
+        "recovery": true
+      },
+      "prediction_time": "2030-01-02T06:00:00+00:00"
+    },
+    {
+      "api_serving_input_sha256_by_task": {
+        "icu_stay_time": "ca5574404c8f088ec9bccb727c69cad1718557e75d839c810e170815090b62bf",
+        "organ_support": "b6692fdcaeaf8442d0fedf8b6755758628086371436c9874c18817e6052db430",
+        "recovery": "b6692fdcaeaf8442d0fedf8b6755758628086371436c9874c18817e6052db430"
+      },
+      "direct_input_sha256_by_task": {
+        "icu_stay_time": "ca5574404c8f088ec9bccb727c69cad1718557e75d839c810e170815090b62bf",
+        "organ_support": "b6692fdcaeaf8442d0fedf8b6755758628086371436c9874c18817e6052db430",
+        "recovery": "b6692fdcaeaf8442d0fedf8b6755758628086371436c9874c18817e6052db430"
+      },
+      "equal_by_task": {
+        "icu_stay_time": true,
+        "organ_support": true,
+        "recovery": true
+      },
+      "prediction_time": "2030-01-02T12:00:00+00:00"
+    }
+  ],
+  "evidence_version": "system_equivalence_synthetic_v1",
+  "scope": "synthetic"
+}

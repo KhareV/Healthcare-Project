@@ -1,0 +1,28 @@
+{
+  "best_epoch": 3,
+  "best_validation_smoke_value": 2.5225090980529785,
+  "checkpoint_sha256": "87f211427c2d15d13ee60e28e6842bfcd367b8fa67e721c133c05b468d875fb2",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "gru_trainable_parameter_count": 13570,
+  "lstm_trainable_parameter_count": 18050,
+  "model_family": "lstm",
+  "participates_in_lstm_search": false,
+  "participates_in_serving_selection": false,
+  "prediction_shape": [
+    3,
+    2
+  ],
+  "predictions_finite": true,
+  "reportable_scientific_performance": false,
+  "run_id": "phase8_synthetic_recovery_lstm_smoke_v1",
+  "run_type": "sensitivity_smoke",
+  "scientific_sensitivity": false,
+  "sensitivity_only": true,
+  "source_gru_checkpoint_hash": "8c3c3efe140a683899692f7605cd07f42a5bc6ee7cfc547d5003ab0654527303",
+  "source_gru_config_hash": "79a2f26abbe339754bce18d9df9ea696ac6cfb9df8748c8eb4862c5cfed82d87",
+  "source_gru_run_id": "phase5_synthetic_recovery_gru_smoke_v1",
+  "source_selected_gru_run_id": null,
+  "task": "recovery",
+  "test_examples_accessed": 0
+}

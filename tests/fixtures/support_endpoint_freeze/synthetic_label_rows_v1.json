@@ -1,0 +1,15 @@
+{
+  "fixture_kind": "SYNTHETIC_PHASE4_LABEL_ROWS_NOT_REAL_NOT_AUTHORIZING",
+  "population_id": "SYNTHETIC_PHASE4_FIXTURE_ONLY",
+  "partition": "synthetic",
+  "data_version": "synthetic_phase4_population_v1",
+  "split_version": "synthetic_partition_only_v1",
+  "records": [
+    {"stay_id": "SYNTH_FREEZE_STAY_A", "prediction_time": "2026-01-02T12:00:00+00:00", "label": 1, "eligible": true, "audit_case": "INTERNAL_POSITIVE_INITIATION"},
+    {"stay_id": "SYNTH_FREEZE_STAY_A", "prediction_time": "2026-01-02T18:00:00+00:00", "label": 0, "eligible": true, "audit_case": "INTERNAL_NEGATIVE_FULL_FOLLOWUP"},
+    {"stay_id": "SYNTH_FREEZE_STAY_B", "prediction_time": "2026-01-03T12:00:00+00:00", "label": null, "eligible": false, "audit_case": "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION"},
+    {"stay_id": "SYNTH_FREEZE_STAY_C", "prediction_time": "2026-01-04T12:00:00+00:00", "label": null, "eligible": false, "audit_case": "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON"},
+    {"stay_id": "SYNTH_FREEZE_STAY_D", "prediction_time": "2026-01-05T12:00:00+00:00", "label": 1, "eligible": true, "audit_case": "INTERNAL_POSITIVE_INITIATION"}
+  ]
+}
+

@@ -1,0 +1,40 @@
+{
+  "config_version": "phase4_smoke_v1",
+  "status": "ENGINEERING_TEST_DEFAULTS_NOT_SCIENTIFIC_HYPERPARAMETERS",
+  "run_id": "phase4_synthetic_smoke_v1",
+  "task": "synthetic_recovery24_smoke",
+  "model_family": "smoke_test",
+  "synthetic_smoke_test": true,
+  "seed": 314159,
+  "seed_status": "TEST_SEED_ONLY_NOT_PROJECT_PRIMARY_SEED",
+  "fixture_path": "tests/fixtures/canonical/canonical_synthetic_v1.json",
+  "synthetic_split_path": "tests/fixtures/canonical/canonical_synthetic_split_v1.csv",
+  "tensor_contract_path": "configs/tensor_contract_v1.json",
+  "tensor_contract_version": "tensor_contract_v1",
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "feature_names": ["feature_0", "feature_1"],
+  "feature_schema_status": "SYNTHETIC_PLACEHOLDER_ONLY_NOT_FINAL_FEATURE_SCHEMA",
+  "label_version": "synthetic_contract_labels_v1",
+  "batch_size": 2,
+  "num_workers": 0,
+  "max_epochs": 4,
+  "device": "cpu",
+  "synthetic_missing_fill_value": 0.0,
+  "optimizer": {
+    "name": "adamw",
+    "learning_rate": 0.01,
+    "weight_decay": 0.0
+  },
+  "early_stopping": {
+    "monitor": "validation_loss",
+    "mode": "min",
+    "patience": 2,
+    "min_delta": 0.0
+  },
+  "output_directory": "artifacts/smoke/phase4_synthetic_smoke_v1",
+  "checkpoint_filename": "smoke_test_model.pt",
+  "log_filename": "training_log.jsonl",
+  "metrics_filename": "smoke_metrics.json",
+  "registry_path": "experiments/registry.csv",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY"
+}

@@ -1,0 +1,35 @@
+spec_version: split_spec_v1
+status: FROZEN_SCIENTIFIC_CONTRACT
+split_unit: subject_id
+holdout_description: coarse_temporal_holdout
+input_record_semantics: already_retained_chronologically_first_adult_ICU_stay
+input_field_names_status: ENGINEERING_CONTRACT_FIELD_NAME
+required_input_fields: [subject_id, anchor_year_group]
+optional_traceability_fields: [stay_id]
+external_schema_mapping: BLOCKED_UPSTREAM_SCHEMA_MAPPING_REQUIRED
+era_string_normalization: none_exact_match_required
+train_anchor_year_groups: ["2008-2010", "2011-2013"]
+validation_anchor_year_groups: ["2014-2016"]
+test_anchor_year_groups: ["2017-2019"]
+supported_era_mapping: {"2008-2010": train, "2011-2013": train, "2014-2016": validation, "2017-2019": test}
+randomness_used: false
+row_level_splitting_allowed: false
+stratification_allowed: false
+performance_based_reassignment_allowed: false
+duplicate_identical_subject_policy: deterministic_deduplication_with_count
+conflicting_subject_metadata_policy: hard_failure
+subject_overlap_allowed: false
+artifact_version: split_v1
+final_artifact_path: artifacts/splits/split_v1.csv
+metadata_sidecar_path: artifacts/splits/split_v1.metadata.json
+artifact_columns: [subject_id, split, anchor_year_group]
+artifact_order: deterministic_subject_id_order
+artifact_hash: SHA-256_exact_file_bytes
+test_influence_allowed: false
+scientific_source: Personalized_Patient_Recovery_Trajectory_FINAL_Implementation_Master_Plan
+scientific_source_version: "1.0"
+ownership_source: Personalized_Patient_Recovery_Trajectory_FINAL_Work_Division_3_Members
+ownership_source_version: "1.0"
+owner: Vedant_Khare
+mandatory_reviewer: Sanskruti_Satish_Shete
+

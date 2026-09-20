@@ -1,0 +1,49 @@
+{
+  "classification": "SYNTHETIC NON-SENSITIVE DEMO FIXTURE — NON-SCIENTIFIC OUTPUTS",
+  "fixture_version": "demo_patient_v1",
+  "scope": "synthetic",
+  "creation_method": "Manually constructed synthetic point events; not derived from a MIMIC patient",
+  "contains_restricted_raw_mimic": false,
+  "feature_schema": {
+    "version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+    "feature_names": ["SYNTHETIC_SIGNAL_A", "SYNTHETIC_SIGNAL_B"],
+    "static_feature_names": ["SYNTHETIC_STATIC_SIGNAL"],
+    "tslo_no_observation_value": 999.0,
+    "unit": "SYNTHETIC_UNIT_NOT_CLINICAL"
+  },
+  "contract": {
+    "version": "synthetic_timeline_contract_phase7_v1",
+    "scope": "SYNTHETIC_ENGINEERING_FIXTURE_NOT_A_MIMIC_SCHEMA_CLAIM",
+    "stay_id_field": "synthetic_stay_key",
+    "event_time_field": "synthetic_available_time",
+    "event_time_semantics": "SYNTHETIC_POINT_EVENT_AVAILABLE_AT_EVENT_TIME",
+    "stateful_intervals_present": false
+  },
+  "timelines": [
+    {
+      "subject_id": "SYNTHETIC_DEMO_PATIENT_V1",
+      "stay_id": "SYNTHETIC_DEMO_PATIENT_V1_STAY",
+      "intime": "2030-01-01T00:00:00+00:00",
+      "outtime": "2030-01-04T00:00:00+00:00",
+      "source_version": "demo_patient_v1_synthetic_timeline",
+      "source_sha256": "1a84f2c60f0a3470869753c062e728f0a0520fb0d61594706bcd0f171fda94f2",
+      "approved_cutoffs": [
+        "2030-01-02T00:00:00+00:00",
+        "2030-01-02T06:00:00+00:00",
+        "2030-01-02T12:00:00+00:00"
+      ],
+      "current_sofa": {
+        "2030-01-02T00:00:00+00:00": 8.0,
+        "2030-01-02T06:00:00+00:00": 7.0,
+        "2030-01-02T12:00:00+00:00": 7.0
+      },
+      "events": [
+        {"synthetic_stay_key": "SYNTHETIC_DEMO_PATIENT_V1_STAY", "synthetic_available_time": "2030-01-01T06:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 82.0, "synthetic_sequence": 1, "synthetic_category": "vital", "synthetic_label": "Synthetic signal A"},
+        {"synthetic_stay_key": "SYNTHETIC_DEMO_PATIENT_V1_STAY", "synthetic_available_time": "2030-01-01T18:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 1.1, "synthetic_sequence": 2, "synthetic_category": "lab", "synthetic_label": "Synthetic signal B"},
+        {"synthetic_stay_key": "SYNTHETIC_DEMO_PATIENT_V1_STAY", "synthetic_available_time": "2030-01-02T03:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 79.0, "synthetic_sequence": 3, "synthetic_category": "vital", "synthetic_label": "Synthetic signal A"},
+        {"synthetic_stay_key": "SYNTHETIC_DEMO_PATIENT_V1_STAY", "synthetic_available_time": "2030-01-02T10:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 0.0, "synthetic_sequence": 4, "synthetic_category": "support_state", "synthetic_label": "Synthetic normalized support-state signal"},
+        {"synthetic_stay_key": "SYNTHETIC_DEMO_PATIENT_V1_STAY", "synthetic_available_time": "2030-01-02T18:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 76.0, "synthetic_sequence": 5, "synthetic_category": "vital", "synthetic_label": "Synthetic future signal A"}
+      ]
+    }
+  ]
+}

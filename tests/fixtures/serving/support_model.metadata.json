@@ -1,0 +1,15 @@
+{
+  "artifact_version": "synthetic_task_adapter_metadata_phase6_v1",
+  "task": "organ_support",
+  "family": "gru",
+  "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+  "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+  "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "label_version": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+  "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204",
+  "output_contract": "uncalibrated_probability",
+  "target_transform_required": false,
+  "synthetic": true,
+  "serving_authorized": false
+}

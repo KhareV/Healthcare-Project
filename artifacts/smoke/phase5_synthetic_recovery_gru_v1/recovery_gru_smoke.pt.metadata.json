@@ -1,0 +1,36 @@
+{
+  "checkpoint_file": "recovery_gru_smoke.pt",
+  "checkpoint_sha256": "8c3c3efe140a683899692f7605cd07f42a5bc6ee7cfc547d5003ab0654527303",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY",
+  "config_hash": "79a2f26abbe339754bce18d9df9ea696ac6cfb9df8748c8eb4862c5cfed82d87",
+  "epoch": 3,
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "horizon_order": [
+    "delta_sofa_24h",
+    "delta_sofa_48h"
+  ],
+  "loss": "huber",
+  "loss_aggregation": "equal_mean_across_available_horizons",
+  "model_config": {
+    "bidirectional": false,
+    "dropout": 0.1,
+    "feature_dim": 2,
+    "hidden_dim": 64,
+    "include_observation_mask": true,
+    "include_tslo": false,
+    "num_layers": 1,
+    "static_dim": 0
+  },
+  "model_family": "gru",
+  "participates_in_30_config_search": false,
+  "run_id": "phase5_synthetic_recovery_gru_smoke_v1",
+  "seed": 271828,
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "synthetic_smoke_test": true,
+  "target_scaler_artifact": "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_target_scaler.json",
+  "target_scaler_sha256": "c34ce85b8b5e1e04ced3ceead6a9fc4ff6e39d5727191180c44c8035a49ab72f",
+  "task": "recovery",
+  "tensor_contract_version": "tensor_contract_v1",
+  "validation_monitor_name": "validation_standardized_huber_loss",
+  "validation_value": 2.7394418716430664
+}

@@ -1,0 +1,36 @@
+{
+  "suite_version": "full_real_validation_suite_v1",
+  "acceptance_report_ref": "artifacts/data_acceptance/history/real_data_acceptance_v1_3a7ad8edee17a4d1.json",
+  "acceptance_report_sha256": "3a7ad8edee17a4d1844e82695498ca41e93818924828c18a3a9690a7523b93b4",
+  "acceptance_artifact_id": "phase18:data_acceptance:3a7ad8edee17a4d1",
+  "allowed_partitions": ["train", "validation"],
+  "test_partition_allowed": false,
+  "tasks": ["recovery", "icu_stay_time", "organ_support"],
+  "families": ["xgboost", "gru"],
+  "candidate_budget_per_family_task": 30,
+  "search_spaces": {
+    "xgboost": "configs/search_space_xgb_v1.json",
+    "gru": "configs/search_space_gru_v1.json"
+  },
+  "scientific_candidate_manifests": {
+    "recovery:xgboost": "artifacts/search/real/xgb_recovery_v1.json",
+    "recovery:gru": "artifacts/search/real/gru_recovery_v1.json",
+    "icu_stay_time:xgboost": "artifacts/search/real/xgb_icu_stay_time_v1.json",
+    "icu_stay_time:gru": "artifacts/search/real/gru_icu_stay_time_v1.json",
+    "organ_support:xgboost": "artifacts/search/real/xgb_organ_support_v1.json",
+    "organ_support:gru": "artifacts/search/real/gru_organ_support_v1.json"
+  },
+  "seed_policy": {
+    "status": "BLOCKED_PROJECT_SEED_POLICY_REQUIRED",
+    "policy_version": null,
+    "seeds": null,
+    "approved_for_real": false
+  },
+  "threshold_policy": {
+    "status": "BLOCKED_REAL_THRESHOLD_POLICY_REQUIRED",
+    "approved_for_real": false
+  },
+  "xgboost_entrypoint": null,
+  "validation_suite_state": "artifacts/validation/validation_suite_state_v1.json",
+  "preflight_report": "artifacts/validation/phase19_preflight_v1.json"
+}

@@ -1,0 +1,56 @@
+{
+  "fixture_type": "SYNTHETIC_ONLY_NOT_REAL_COHORT",
+  "field_names_status": "ENGINEERING_CONTRACT_FIELD_NAME",
+  "rows": [
+    {
+      "subject_id": "A",
+      "stay_id": "stay-A",
+      "anchor_year_group": "2008-2010",
+      "prediction_time": "synthetic-t1",
+      "future_sofa": 1,
+      "icu_time_target": 999,
+      "organ_support_label": 0,
+      "missingness": 0.1
+    },
+    {
+      "subject_id": "A",
+      "stay_id": "stay-A",
+      "anchor_year_group": "2008-2010",
+      "prediction_time": "synthetic-t2",
+      "future_sofa": 24,
+      "icu_time_target": 1,
+      "organ_support_label": 1,
+      "missingness": 0.9
+    },
+    {
+      "subject_id": "B",
+      "stay_id": "stay-B",
+      "anchor_year_group": "2011-2013"
+    },
+    {
+      "subject_id": "C",
+      "stay_id": "stay-C",
+      "anchor_year_group": "2014-2016"
+    },
+    {
+      "subject_id": "D",
+      "stay_id": "stay-D",
+      "anchor_year_group": "2017-2019"
+    }
+  ],
+  "expected": {
+    "total_input_rows": 5,
+    "total_subjects": 4,
+    "train_subjects": 2,
+    "validation_subjects": 1,
+    "test_subjects": 1,
+    "duplicate_input_count": 1,
+    "counts_by_anchor_year_group": {
+      "2008-2010": 1,
+      "2011-2013": 1,
+      "2014-2016": 1,
+      "2017-2019": 1
+    }
+  }
+}
+

@@ -1,0 +1,18 @@
+{
+  "artifact_kind": "SYNTHETIC_ORGAN_SUPPORT_TRUTH_TABLE_NOT_REAL_LABELS",
+  "label_rule_version": "organ_support_label_rule_v1",
+  "cutoff": "2026-01-02T12:00:00Z",
+  "cases": [
+    {"case": "A_vaso_positive", "vaso_on": false, "vent_on": false, "outtime_hours": 10, "onsets": [{"component": "VASOPRESSOR", "hours": 5}], "expected_label": 1, "expected_eligible": true},
+    {"case": "B_vent_positive", "vaso_on": false, "vent_on": false, "outtime_hours": 10, "onsets": [{"component": "INVASIVE_VENTILATION", "hours": 5}], "expected_label": 1, "expected_eligible": true},
+    {"case": "C_both_positive", "vaso_on": false, "vent_on": false, "outtime_hours": 30, "onsets": [{"component": "VASOPRESSOR", "hours": 4}, {"component": "INVASIVE_VENTILATION", "hours": 7}], "expected_label": 1, "expected_eligible": true},
+    {"case": "D_full_negative", "vaso_on": false, "vent_on": false, "outtime_hours": 24, "onsets": [], "expected_label": 0, "expected_eligible": true},
+    {"case": "E_early_censored", "vaso_on": false, "vent_on": false, "outtime_hours": 10, "onsets": [], "expected_label": null, "expected_eligible": false},
+    {"case": "F_vaso_on_vent_positive", "vaso_on": true, "vent_on": false, "outtime_hours": 30, "onsets": [{"component": "INVASIVE_VENTILATION", "hours": 6}], "expected_label": 1, "expected_eligible": true},
+    {"case": "G_vaso_on_vent_negative", "vaso_on": true, "vent_on": false, "outtime_hours": 30, "onsets": [], "expected_label": 0, "expected_eligible": true},
+    {"case": "H_both_on_not_at_risk", "vaso_on": true, "vent_on": true, "outtime_hours": 30, "onsets": [], "expected_label": null, "expected_eligible": false},
+    {"case": "I_vent_on_vaso_positive_early", "vaso_on": false, "vent_on": true, "outtime_hours": 10, "onsets": [{"component": "VASOPRESSOR", "hours": 5}], "expected_label": 1, "expected_eligible": true},
+    {"case": "J_vent_on_vaso_censored", "vaso_on": false, "vent_on": true, "outtime_hours": 10, "onsets": [], "expected_label": null, "expected_eligible": false}
+  ]
+}
+

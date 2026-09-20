@@ -1,0 +1,28 @@
+{
+  "config_version": "final_test_evaluation_v1",
+  "g3_marker_ref": "artifacts/governance/g3_freeze.json",
+  "required_g3_scope": "real",
+  "bootstrap_config_ref": "configs/evaluation/bootstrap_v1.json",
+  "bootstrap_config_sha256": "1b8694b37f82c2c97f0bea043d1468661665a229b1d43f063a2680f7ed8bd930",
+  "retry_policy": {
+    "status": "BLOCKED_FINAL_TEST_RETRY_POLICY_REQUIRED",
+    "approved_before_test": false,
+    "policy_version": null
+  },
+  "final_evaluation_plan": {
+    "status": "BLOCKED_FROZEN_FINAL_EVALUATION_PLAN_REQUIRED",
+    "selected_models_only": true,
+    "evaluate_naive": null,
+    "evaluate_nonselected_families": null,
+    "evaluate_lstm": null,
+    "icu_error_percentiles": null
+  },
+  "error_analysis_spec_ref": "configs/error_analysis/error_analysis_v1.json",
+  "g4_schema": {
+    "status": "UNLOCKED_ENGINEERING_PARAMETER",
+    "schema_version": null
+  },
+  "pretest_audit_ref": "artifacts/governance/phase20_pretest_audit_v1.json",
+  "real_test_loader_entrypoint": null,
+  "real_test_evaluator_entrypoint": null
+}

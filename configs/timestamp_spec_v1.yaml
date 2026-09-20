@@ -1,0 +1,39 @@
+spec_version: timestamp_spec_v1
+status: FROZEN_SCIENTIFIC_CONTRACT
+prediction_unit: ICU_stay
+input_record_semantics: already_retained_chronologically_first_adult_ICU_stay
+input_field_names_status: ENGINEERING_CONTRACT_FIELD_NAME
+input_fields: [subject_id, stay_id, intime, outtime]
+external_schema_mapping: BLOCKED_UPSTREAM_SCHEMA_MAPPING_REQUIRED
+earliest_offset_hours: 24
+spacing_hours: 6
+k_min: 0
+k_max: 11
+max_examples_per_stay: 12
+minimum_time_before_outtime_hours: 6
+candidate_formula: "t_k = intime + 24h + 6h*k"
+retention_rule: "t_k <= outtime - 6h"
+equality_at_retention_boundary_is_legal: true
+post_cap_sampling: false
+random_sampling: false
+grid_anchor: exact_ICU_intime_without_rounding
+lookback_hours: 48
+number_of_bins: 8
+bin_width_hours: 6
+lookback_interval_semantics: "(t-48h, t]"
+bin_boundary_convention: "(t-48,t-42], (t-42,t-36], (t-36,t-30], (t-30,t-24], (t-24,t-18], (t-18,t-12], (t-12,t-6], (t-6,t]"
+pre_ICU_policy: padding
+pre_ICU_hospital_history_allowed: false
+recovery_24h_followup_condition: "t + 24h <= outtime"
+recovery_48h_followup_condition: "t + 48h <= outtime"
+support_24h_full_followup_condition: "t + 24h <= outtime"
+support_followup_is_final_eligibility: false
+icu_time_temporally_eligible_for_every_emitted_row: true
+label_calculation_in_scope: false
+scientific_source: Personalized_Patient_Recovery_Trajectory_FINAL_Implementation_Master_Plan
+scientific_source_version: "1.0"
+ownership_source: Personalized_Patient_Recovery_Trajectory_FINAL_Work_Division_3_Members
+ownership_source_version: "1.0"
+owner: Vedant_Khare
+mandatory_reviewer: Sanskruti_Satish_Shete
+

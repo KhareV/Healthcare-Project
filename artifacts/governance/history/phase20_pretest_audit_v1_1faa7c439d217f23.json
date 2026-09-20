@@ -1,0 +1,69 @@
+{
+  "blockers": [
+    "active_g3: BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_freeze.json",
+    "bootstrap: BLOCKED \u2014 BOOTSTRAP REPLICATE COUNT REQUIRED",
+    "retry_policy: BLOCKED \u2014 FINAL TEST RETRY POLICY REQUIRED",
+    "final_evaluation_plan: BLOCKED \u2014 FROZEN FINAL EVALUATION PLAN REQUIRED",
+    "error_analysis_slices: BLOCKED \u2014 FROZEN FINAL ERROR-ANALYSIS SLICES REQUIRED",
+    "execution_entrypoints: BLOCKED \u2014 REAL FINAL-TEST LOADER/EVALUATOR ENTRYPOINTS REQUIRED",
+    "g4_schema: UNLOCKED ENGINEERING PARAMETER \u2014 G4 EVALUATION FREEZE SCHEMA",
+    "test_access_state: final-test access is not authorized for exactly one run"
+  ],
+  "items": [
+    {
+      "detail": "final_test_evaluation_v1",
+      "name": "phase20_config",
+      "status": "PASS"
+    },
+    {
+      "detail": "BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_freeze.json",
+      "name": "active_g3",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 BOOTSTRAP REPLICATE COUNT REQUIRED",
+      "name": "bootstrap",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 FINAL TEST RETRY POLICY REQUIRED",
+      "name": "retry_policy",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 FROZEN FINAL EVALUATION PLAN REQUIRED",
+      "name": "final_evaluation_plan",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 FROZEN FINAL ERROR-ANALYSIS SLICES REQUIRED",
+      "name": "error_analysis_slices",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 REAL FINAL-TEST LOADER/EVALUATOR ENTRYPOINTS REQUIRED",
+      "name": "execution_entrypoints",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "UNLOCKED ENGINEERING PARAMETER \u2014 G4 EVALUATION FREEZE SCHEMA",
+      "name": "g4_schema",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "critical lineage clean",
+      "name": "registry_lineage",
+      "status": "PASS"
+    },
+    {
+      "detail": "final-test access is not authorized for exactly one run",
+      "name": "test_access_state",
+      "status": "BLOCKED"
+    }
+  ],
+  "overall_status": "BLOCKED",
+  "report_sha256": "95268054bb833024602fd7beef9f2912cf057e78e4684e7447f829461de63e9d",
+  "report_version": "phase20_pretest_audit_v1",
+  "test_data_accessed": false,
+  "test_loader_calls": 0
+}

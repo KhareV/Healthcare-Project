@@ -1,0 +1,23 @@
+{
+  "code_commit": null,
+  "commit_provenance_status": "BLOCKED_FOR_REAL_FREEZE",
+  "endpoint_implementation_ref": "src/labels/organ_support.py",
+  "endpoint_implementation_sha256": "216f066ed837a634b66cb5aa0e7741c5dcfb914243e1b0eb03c8198ed67c3058",
+  "endpoint_name": "24-hour New Organ-Support Initiation Risk",
+  "endpoint_version": "organ_support_endpoint_v1",
+  "event_dictionary_ref": "configs/event_dict_v1.yaml",
+  "event_dictionary_semantics_status": "DRAFT_SYNTHETIC_ONLY",
+  "event_dictionary_sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
+  "freeze_active": true,
+  "freeze_id": "support_endpoint_synthetic_v1",
+  "freeze_scope": "synthetic",
+  "freeze_status": "ACTIVE_SYNTHETIC_NON_AUTHORIZING",
+  "freeze_timestamp_utc": "2026-09-18T23:03:29.923508Z",
+  "prevalence_access_authorized": true,
+  "real_data_access_authorized": false,
+  "record_version": "support_endpoint_freeze_record_v1",
+  "review_status": "SYNTHETIC_FIXTURE_ONLY_NO_HUMAN_APPROVAL",
+  "test_label_access_authorized": false,
+  "timestamp_spec_ref": "configs/timestamp_spec_v1.yaml",
+  "timestamp_spec_sha256": "de3a424fcd60affda178afbde49a0c83fd51610f7682cf73306d124454b18a9b"
+}

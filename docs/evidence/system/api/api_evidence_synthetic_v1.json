@@ -1,0 +1,381 @@
+{
+  "evidence_version": "system_api_evidence_synthetic_v1",
+  "health": {
+    "response": {
+      "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+      "ready": false,
+      "serving_scope": "synthetic",
+      "status": "alive"
+    },
+    "status_code": 200
+  },
+  "model_metadata": {
+    "response": {
+      "manifest_sha256": "a7832fce35122eeb59e384cef87896b4938c2e76e544633a6503f04d8ee9d68c",
+      "manifest_version": "selected_models_synthetic_phase6_v1",
+      "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+      "organ_support": {
+        "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+        "comparator": "greater_than_or_equal",
+        "threshold": 0.5,
+        "threshold_sha256": "dd6573e4fffed3cd56cde0f3091894dcb628ce831ab734702ac232bf88602ddd"
+      },
+      "serving_scope": "synthetic",
+      "split_version": "SYNTHETIC_SPLIT_PHASE6_NOT_REAL",
+      "tasks": {
+        "icu_stay_time": {
+          "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+          "explanation_method": "tree_shap",
+          "family": "xgboost",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+          "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "organ_support": {
+          "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+          "explanation_method": "integrated_gradients",
+          "family": "gru",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+          "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        },
+        "recovery": {
+          "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+          "explanation_method": "integrated_gradients",
+          "family": "gru",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+          "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      }
+    },
+    "status_code": 200
+  },
+  "predictions": [
+    {
+      "direct_pipeline_equal": true,
+      "request": {
+        "prediction_time": "2030-01-02T00:00:00+00:00",
+        "stay_id": "SYNTHETIC_DEMO_PATIENT_V1_STAY"
+      },
+      "response": {
+        "data_quality": {
+          "missing_feature_values": 14,
+          "observed_bins": 2,
+          "observed_feature_values": 2,
+          "padding_bins": 4,
+          "total_bins": 8,
+          "total_feature_values": 16
+        },
+        "explanation_features": {
+          "icu_stay_time": {
+            "explanation_method": "tree_shap",
+            "family": "xgboost",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ICU_STAY_TIME"
+              }
+            ]
+          },
+          "organ_support": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ORGAN_SUPPORT"
+              }
+            ]
+          },
+          "recovery": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_RECOVERY"
+              }
+            ]
+          }
+        },
+        "icu_stay_time_hours": 19.085536923187668,
+        "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+        "model_metadata": {
+          "feature_version": {
+            "icu_stay_time": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL"
+          },
+          "label_version": {
+            "icu_stay_time": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL"
+          },
+          "manifest_version": "selected_models_synthetic_phase6_v1",
+          "split_version": "SYNTHETIC_SPLIT_PHASE6_NOT_REAL"
+        },
+        "model_versions": {
+          "icu_stay_time": {
+            "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+            "family": "xgboost",
+            "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92"
+          },
+          "organ_support": {
+            "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+            "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+            "family": "gru",
+            "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204"
+          },
+          "recovery": {
+            "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+            "family": "gru",
+            "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080"
+          }
+        },
+        "organ_support_probability_calibrated": 0.25,
+        "prediction_time": "2030-01-02T00:00:00+00:00",
+        "recovery": {
+          "delta_24h": 0.25,
+          "delta_48h": -0.5,
+          "reconstructed_sofa_24h": 8.25,
+          "reconstructed_sofa_48h": 7.5
+        },
+        "schema_version": "prediction_schema_v1"
+      },
+      "status_code": 200
+    },
+    {
+      "direct_pipeline_equal": true,
+      "request": {
+        "prediction_time": "2030-01-02T06:00:00+00:00",
+        "stay_id": "SYNTHETIC_DEMO_PATIENT_V1_STAY"
+      },
+      "response": {
+        "data_quality": {
+          "missing_feature_values": 13,
+          "observed_bins": 3,
+          "observed_feature_values": 3,
+          "padding_bins": 3,
+          "total_bins": 8,
+          "total_feature_values": 16
+        },
+        "explanation_features": {
+          "icu_stay_time": {
+            "explanation_method": "tree_shap",
+            "family": "xgboost",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ICU_STAY_TIME"
+              }
+            ]
+          },
+          "organ_support": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ORGAN_SUPPORT"
+              }
+            ]
+          },
+          "recovery": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_RECOVERY"
+              }
+            ]
+          }
+        },
+        "icu_stay_time_hours": 19.085536923187668,
+        "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+        "model_metadata": {
+          "feature_version": {
+            "icu_stay_time": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL"
+          },
+          "label_version": {
+            "icu_stay_time": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL"
+          },
+          "manifest_version": "selected_models_synthetic_phase6_v1",
+          "split_version": "SYNTHETIC_SPLIT_PHASE6_NOT_REAL"
+        },
+        "model_versions": {
+          "icu_stay_time": {
+            "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+            "family": "xgboost",
+            "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92"
+          },
+          "organ_support": {
+            "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+            "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+            "family": "gru",
+            "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204"
+          },
+          "recovery": {
+            "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+            "family": "gru",
+            "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080"
+          }
+        },
+        "organ_support_probability_calibrated": 0.25,
+        "prediction_time": "2030-01-02T06:00:00+00:00",
+        "recovery": {
+          "delta_24h": 0.25,
+          "delta_48h": -0.5,
+          "reconstructed_sofa_24h": 7.25,
+          "reconstructed_sofa_48h": 6.5
+        },
+        "schema_version": "prediction_schema_v1"
+      },
+      "status_code": 200
+    },
+    {
+      "direct_pipeline_equal": true,
+      "request": {
+        "prediction_time": "2030-01-02T12:00:00+00:00",
+        "stay_id": "SYNTHETIC_DEMO_PATIENT_V1_STAY"
+      },
+      "response": {
+        "data_quality": {
+          "missing_feature_values": 12,
+          "observed_bins": 4,
+          "observed_feature_values": 4,
+          "padding_bins": 2,
+          "total_bins": 8,
+          "total_feature_values": 16
+        },
+        "explanation_features": {
+          "icu_stay_time": {
+            "explanation_method": "tree_shap",
+            "family": "xgboost",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ICU_STAY_TIME"
+              }
+            ]
+          },
+          "organ_support": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_ORGAN_SUPPORT"
+              }
+            ]
+          },
+          "recovery": {
+            "explanation_method": "integrated_gradients",
+            "family": "gru",
+            "items": [
+              {
+                "attribution": 0.125,
+                "feature_name": "SYNTHETIC_FEATURE_RECOVERY"
+              }
+            ]
+          }
+        },
+        "icu_stay_time_hours": 19.085536923187668,
+        "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+        "model_metadata": {
+          "feature_version": {
+            "icu_stay_time": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL"
+          },
+          "label_version": {
+            "icu_stay_time": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+            "organ_support": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+            "recovery": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL"
+          },
+          "manifest_version": "selected_models_synthetic_phase6_v1",
+          "split_version": "SYNTHETIC_SPLIT_PHASE6_NOT_REAL"
+        },
+        "model_versions": {
+          "icu_stay_time": {
+            "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+            "family": "xgboost",
+            "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92"
+          },
+          "organ_support": {
+            "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+            "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+            "family": "gru",
+            "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204"
+          },
+          "recovery": {
+            "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+            "family": "gru",
+            "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+            "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080"
+          }
+        },
+        "organ_support_probability_calibrated": 0.25,
+        "prediction_time": "2030-01-02T12:00:00+00:00",
+        "recovery": {
+          "delta_24h": 0.25,
+          "delta_48h": -0.5,
+          "reconstructed_sofa_24h": 7.25,
+          "reconstructed_sofa_48h": 6.5
+        },
+        "schema_version": "prediction_schema_v1"
+      },
+      "status_code": 200
+    }
+  ],
+  "scientific_status": "NON_SCIENTIFIC_SYSTEM_FUNCTION_EVIDENCE_ONLY",
+  "scope": "synthetic",
+  "structured_errors": {
+    "illegal_prediction_time": {
+      "response": {
+        "error": {
+          "code": "illegal_prediction_time",
+          "message": "prediction_time is not a legal cutoff for the requested stay"
+        }
+      },
+      "status_code": 422
+    },
+    "serving_unavailable": {
+      "response": {
+        "error": {
+          "code": "serving_unavailable",
+          "message": "validated serving dependencies are unavailable"
+        }
+      },
+      "status_code": 503
+    },
+    "unknown_stay": {
+      "response": {
+        "error": {
+          "code": "unknown_stay",
+          "message": "requested stay is unavailable"
+        }
+      },
+      "status_code": 404
+    }
+  }
+}

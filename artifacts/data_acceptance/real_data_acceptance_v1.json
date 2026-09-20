@@ -1,0 +1,134 @@
+{
+  "acceptance_decision_sha256": "893da549f43bbb28ce13473397c06d72cb2b0f88c8a79584b58ac311b3aa8989",
+  "checks": [
+    {
+      "detail": "BLOCKED \u2014 INFORMATION REQUIRED: real-data input manifest",
+      "name": "upstream_inputs",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 INFORMATION REQUIRED: Sanskruti canonical/schema/feature/SOFA/label artifacts",
+      "name": "upstream_inputs",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 INFORMATION REQUIRED: frozen split_v1 artifact",
+      "name": "upstream_inputs",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 PULKIT REAL ORGAN-SUPPORT LABEL ARTIFACT REQUIRED",
+      "name": "upstream_inputs",
+      "status": "BLOCKED"
+    }
+  ],
+  "counts": {},
+  "input_inventory": [
+    {
+      "name": "canonical_dataset",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/feature_dataset_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "feature_dictionary",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/feature_provenance_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "feature_schema",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/feature_schema_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "label_spec",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/label_spec_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "protected_test_labels",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/protected/test_labels_v1.parquet",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "schema_sidecar",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/processed_schema_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "sofa_provenance",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/sofa_provenance_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "split",
+      "owner": "Vedant",
+      "ref": "artifacts/splits/split_v1.csv",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "split_metadata",
+      "owner": "Vedant",
+      "ref": "artifacts/splits/split_v1.metadata.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "structural_index",
+      "owner": "Sanskruti",
+      "ref": "artifacts/data/canonical_structural_index_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "support_handoff",
+      "owner": "Pulkit",
+      "ref": "artifacts/data/organ_support_handoff_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    {
+      "name": "tensor_contract",
+      "owner": "Vedant",
+      "ref": "configs/tensor_contract_v1.json",
+      "sha256": "d998456430d632b81778d52f33a9b98214e3599263d443b191f5f8f75e307e9e",
+      "status": "PRESENT_UNBOUND"
+    },
+    {
+      "name": "timestamp_spec",
+      "owner": "Vedant",
+      "ref": "configs/timestamp_spec_v1.yaml",
+      "sha256": "de3a424fcd60affda178afbde49a0c83fd51610f7682cf73306d124454b18a9b",
+      "status": "PRESENT_UNBOUND"
+    }
+  ],
+  "input_manifest": "artifacts/data/real_data_inputs_v1.json",
+  "missingness_structural_audit": {},
+  "overall_status": "BLOCKED",
+  "performance_inspected": false,
+  "phase19_authorized": false,
+  "report_content_sha256": "269596b2f98f2cfd22a64a02f45eeb08a1a2b4bd1a82f0799fb3ab31449a1879",
+  "report_version": "real_data_acceptance_v1",
+  "test_labels_accessed": false,
+  "unresolved_blockers": [
+    "BLOCKED \u2014 INFORMATION REQUIRED: real-data input manifest",
+    "BLOCKED \u2014 INFORMATION REQUIRED: Sanskruti canonical/schema/feature/SOFA/label artifacts",
+    "BLOCKED \u2014 INFORMATION REQUIRED: frozen split_v1 artifact",
+    "BLOCKED \u2014 PULKIT REAL ORGAN-SUPPORT LABEL ARTIFACT REQUIRED"
+  ],
+  "versions": {}
+}

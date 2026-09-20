@@ -1,0 +1,74 @@
+{
+  "audit": {
+    "artifact_count": 56,
+    "broken_artifact_parents": [],
+    "broken_parent_runs": [],
+    "duplicate_run_ids": 0,
+    "final_test_accessed": false,
+    "g3_marker_created": false,
+    "hash_mismatches": [],
+    "incompatible_dependencies": [],
+    "incomplete_historical_provenance": 7,
+    "missing_artifacts": [],
+    "orphan_artifacts": [
+      "artifacts/data_acceptance/real_data_acceptance_v1.json",
+      "artifacts/error_analysis/synthetic/error_analysis_table.csv",
+      "artifacts/governance/README.md",
+      "artifacts/governance/g3_audit_report.json",
+      "artifacts/governance/phase20_pretest_audit_v1.json",
+      "artifacts/search/dry_run/gru_icu_stay_time_v1.json",
+      "artifacts/search/dry_run/gru_organ_support_v1.json",
+      "artifacts/search/dry_run/gru_recovery_v1.json",
+      "artifacts/search/dry_run/xgb_icu_stay_time_v1.json",
+      "artifacts/search/dry_run/xgb_organ_support_v1.json",
+      "artifacts/search/dry_run/xgb_recovery_v1.json",
+      "artifacts/smoke/phase4_synthetic_smoke_v1/smoke_test_model.pt.metadata.json",
+      "artifacts/smoke/phase4_synthetic_smoke_v1/training_log.jsonl",
+      "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_gru_smoke.pt.metadata.json",
+      "artifacts/smoke/phase5_synthetic_recovery_gru_v1/training_log.jsonl",
+      "artifacts/smoke/phase6_synthetic_icu_time_gru_v1/icu_time_gru_smoke.pt.metadata.json",
+      "artifacts/smoke/phase6_synthetic_icu_time_gru_v1/training_log.jsonl",
+      "artifacts/smoke/phase7_synthetic_support_gru_v1/support_gru_smoke.pt.metadata.json",
+      "artifacts/smoke/phase7_synthetic_support_gru_v1/training_log.jsonl",
+      "artifacts/smoke/phase8_synthetic_icu_time_lstm_v1/icu_stay_time_lstm_smoke.pt.metadata.json",
+      "artifacts/smoke/phase8_synthetic_icu_time_lstm_v1/training_log.jsonl",
+      "artifacts/smoke/phase8_synthetic_recovery_lstm_v1/recovery_lstm_smoke.pt.metadata.json",
+      "artifacts/smoke/phase8_synthetic_recovery_lstm_v1/training_log.jsonl",
+      "artifacts/smoke/phase8_synthetic_support_lstm_v1/organ_support_lstm_smoke.pt.metadata.json",
+      "artifacts/smoke/phase8_synthetic_support_lstm_v1/training_log.jsonl",
+      "artifacts/validation/phase19_preflight_v1.json"
+    ],
+    "run_count": 7,
+    "run_reference_mismatches": [],
+    "runs_by_family": {
+      "gru": 3,
+      "lstm": 3,
+      "smoke_test": 1
+    },
+    "runs_by_status": {
+      "completed": 7
+    },
+    "runs_by_task": {
+      "icu_stay_time": 2,
+      "organ_support": 2,
+      "recovery": 2,
+      "synthetic_recovery24_smoke": 1
+    },
+    "runs_by_type": {
+      "sensitivity_smoke": 3,
+      "synthetic": 4
+    },
+    "scientific_orphan_artifacts": [],
+    "unknown_artifact_producers": [],
+    "untraceable_result_artifacts": [
+      "phase4_synthetic_smoke_v1:metrics",
+      "phase5_synthetic_recovery_gru_smoke_v1:metrics",
+      "phase6_synthetic_icu_time_gru_smoke_v1:metrics",
+      "phase7_synthetic_support_gru_smoke_v1:metrics",
+      "phase8_synthetic_icu_time_lstm_smoke_v1:metrics",
+      "phase8_synthetic_recovery_lstm_smoke_v1:metrics",
+      "phase8_synthetic_support_lstm_smoke_v1:metrics"
+    ]
+  },
+  "evidence_version": "registry_lineage_audit_v1"
+}

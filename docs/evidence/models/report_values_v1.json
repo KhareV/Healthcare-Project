@@ -1,0 +1,15 @@
+{
+  "display_precision": 4,
+  "display_precision_status": "FROZEN_BEFORE_RESULT_GENERATION",
+  "final_test_results": {
+    "detail": "BLOCKED \u2014 ACTIVE G3 / FINAL TEST REQUIRED",
+    "status": "BLOCKED"
+  },
+  "manual_scientific_values_allowed": false,
+  "report_values_version": "report_values_v1",
+  "scientific_values": [],
+  "validation_results": {
+    "detail": "BLOCKED \u2014 EVIDENCE SOURCE ARTIFACT REQUIRED",
+    "status": "BLOCKED"
+  }
+}

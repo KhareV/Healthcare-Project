@@ -1,0 +1,11 @@
+{
+  "artifact_version": "synthetic_fixed_threshold_phase6_v1",
+  "threshold": 0.5,
+  "comparator": "greater_than_or_equal",
+  "selected_model_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+  "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+  "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "selection_performed_in_serving": false,
+  "synthetic": true,
+  "serving_authorized": false
+}

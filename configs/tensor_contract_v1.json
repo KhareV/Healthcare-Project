@@ -1,0 +1,126 @@
+{
+  "contract_version": "tensor_contract_v1",
+  "status": "PARTIALLY_BLOCKED_UPSTREAM_CONTRACT",
+  "sequence": {
+    "batch_rank": 3,
+    "batch_shape": ["B", 8, "F"],
+    "example_rank": 2,
+    "example_shape": [8, "F"],
+    "sequence_length": 8,
+    "bin_width_hours": 6,
+    "lookback_hours": 48,
+    "lookback_interval": "(t-48h, t]",
+    "bin_boundaries": [
+      "(t-48h,t-42h]",
+      "(t-42h,t-36h]",
+      "(t-36h,t-30h]",
+      "(t-30h,t-24h]",
+      "(t-24h,t-18h]",
+      "(t-18h,t-12h]",
+      "(t-12h,t-6h]",
+      "(t-6h,t]"
+    ],
+    "value_dtype": "float32",
+    "json_transport_missing_value": null,
+    "json_transport_missing_value_status": "UNLOCKED_ENGINEERING_PARAMETER_SYNTHETIC_FIXTURES_ONLY",
+    "feature_dimension": {
+      "symbol": "F",
+      "value": null,
+      "source": "feature_schema_v1 supplied by Sanskruti",
+      "status": "BLOCKED_FINAL_FEATURE_ORDER_FEATURE_DIM_REQUIRED"
+    },
+    "feature_order": {
+      "value": null,
+      "source": "feature_schema_v1 supplied by Sanskruti",
+      "status": "BLOCKED_FINAL_FEATURE_CONTRACT_FROM_SANSKRUTI_REQUIRED"
+    },
+    "axes": ["batch", "oldest_to_newest_6h_bin", "feature_schema_order"]
+  },
+  "padding_mask": {
+    "batch_shape": ["B", 8],
+    "example_shape": [8],
+    "dtype": "bool",
+    "true": "bin predates usable ICU history and is padding",
+    "false": "bin is within ICU history",
+    "rule": "padding is a prefix only; padded values contain no pre-ICU clinical observations"
+  },
+  "observation_mask": {
+    "batch_shape": ["B", 8, "F"],
+    "example_shape": [8, "F"],
+    "dtype": "bool",
+    "true": "at least one genuine observation exists for this feature in this bin under the frozen feature schema",
+    "false": "no genuine in-bin observation; imputed numerical presence must never set this true",
+    "feature_alignment": "identical to feature_schema_v1 order"
+  },
+  "tslo": {
+    "batch_shape": ["B", 8, "F"],
+    "example_shape": [8, "F"],
+    "dtype": "float32",
+    "units": "hours",
+    "meaning": "time since last genuine observation inside the active lookback",
+    "feature_alignment": "identical to feature_schema_v1 order",
+    "no_observation_representation": null,
+    "no_observation_representation_source": "feature_schema_v1 supplied by Sanskruti",
+    "status": "BLOCKED_TSLO_NO_OBSERVATION_REPRESENTATION_REQUIRED",
+    "synthetic_fixture_policy": "tslo_hours remains null until the upstream representation is frozen"
+  },
+  "static_features": {
+    "batch_shape": ["B", "S"],
+    "example_shape": ["S"],
+    "dtype": "float32",
+    "feature_order": null,
+    "feature_order_source": "feature_schema_v1 supplied by Sanskruti",
+    "status": "BLOCKED_STATIC_FEATURE_CONTRACT_REQUIRED",
+    "temporal_repetition_allowed": false,
+    "synthetic_fixture_policy": "static_features remains null until the upstream contract is frozen"
+  },
+  "targets": {
+    "recovery24_delta_sofa": {"shape": ["B"], "independent_horizon": true},
+    "recovery48_delta_sofa": {"shape": ["B"], "independent_horizon": true},
+    "icu_time_log1p_hours": {"shape": ["B"]},
+    "organ_support_target": {"shape": ["B"], "values_when_eligible": [0, 1]}
+  },
+  "eligibility": {
+    "shape_per_mask": ["B"],
+    "dtype": "bool",
+    "masks": [
+      "recovery24_eligible",
+      "recovery48_eligible",
+      "icu_time_eligible",
+      "organ_support_eligible"
+    ],
+    "independent": true,
+    "inference_from_target_nullness_allowed": false,
+    "ineligible_target_policy": "target must be null and excluded by its explicit mask"
+  },
+  "identifiers": {
+    "required": ["subject_id", "stay_id", "prediction_time", "grid_index"],
+    "canonical_key": ["stay_id", "prediction_time"],
+    "duplicates_allowed": false
+  },
+  "versions": {
+    "timestamp_spec_version": "timestamp_spec_v1",
+    "feature_schema_reference": "BLOCKED_FEATURE_SCHEMA_V1_REQUIRED",
+    "label_spec_reference": "BLOCKED_LABEL_SPEC_V1_REQUIRED",
+    "event_dict_reference": "BLOCKED_EVENT_DICT_V1_REQUIRED"
+  },
+  "information_parity": {
+    "gru_view": "preserve each canonical temporal field in [8,F] order",
+    "xgboost_view": "row-major flatten the identical canonical temporal fields only",
+    "xgboost_only_features_allowed": false
+  },
+  "synthetic_fixture_serialization": {
+    "format": "canonical UTF-8 JSON",
+    "status": "UNLOCKED_ENGINEERING_PARAMETER_SYNTHETIC_FIXTURES_ONLY",
+    "determinism": "sort object keys and canonicalize examples by subject/stay/prediction time",
+    "production_storage_claim": false
+  },
+  "scientific_source": {
+    "document": "Personalized_Patient_Recovery_Trajectory_FINAL_Implementation_Master_Plan",
+    "version": "1.0"
+  },
+  "ownership": {
+    "owner": "Vedant Khare",
+    "mandatory_reviewers": ["Sanskruti Satish Shete", "Pulkit"]
+  }
+}

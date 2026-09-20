@@ -1,0 +1,13 @@
+layer,status,detail
+artifact_integrity,PASS,
+bootstrap_regeneration,BLOCKED,real bootstrap B/seed and final predictions unavailable
+cross_member_train_eval,BLOCKED,no designated real frozen run and no non-owner evidence
+environment,BLOCKED,BLOCKED — EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM
+frozen_inference,BLOCKED,real selected model/prediction fixture unavailable
+full_demo,DEFERRED_TO_PULKIT,product packaging and demo layer are outside Phase 21
+metric_regeneration,BLOCKED,real frozen final predictions/metrics unavailable
+path_portability,PASS,immutable historical reports may contain diagnostic absolute paths but are not execution inputs
+registry_trace,PASS,registered development/synthetic artifacts trace; no final result row exists
+restricted_data,PASS,
+synthetic_ci,PASS,synthetic_ci_only
+upstream_data_regeneration,PENDING,pending Sanskruti/team cross-reproduction

@@ -1,0 +1,11 @@
+{
+  "classification": "SYNTHETIC ROUTER FIXTURE — NOT A SCIENTIFIC EXPLANATION",
+  "manifest_pattern": {
+    "recovery": {"family": "gru", "method": "integrated_gradients"},
+    "icu_stay_time": {"family": "xgboost", "method": "tree_shap"},
+    "organ_support": {"family": "gru", "method": "integrated_gradients"}
+  },
+  "interpretation": "Synthetic feature attribution contributed to a mock prediction; it is descriptive and non-causal.",
+  "real_attribution_available": false,
+  "g3_authorizing": false
+}

@@ -1,0 +1,70 @@
+{
+  "audit_version": "g3_prerequisite_audit_v1",
+  "authorization": false,
+  "blockers": [
+    "split: split metadata is unreadable",
+    "selected_models_manifest: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/models/selected_models_v1.json",
+    "validation_searches: recovery xgboost search lacks exact-30 completed candidates",
+    "lstm_sensitivity: selected manifest prerequisite failed",
+    "support_calibrator: selected manifest prerequisite failed",
+    "support_threshold: selected manifest prerequisite failed",
+    "explanation_adapters: BLOCKED \u2014 PULKIT EXPLANATION ADAPTER G3 DEPENDENCY",
+    "review_signoffs: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_review_signoffs.json"
+  ],
+  "created_at_utc": "2026-09-18T19:44:52.448728Z",
+  "freeze_scope": "real",
+  "items": [
+    {
+      "detail": "split metadata is unreadable",
+      "name": "split",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/models/selected_models_v1.json",
+      "name": "selected_models_manifest",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "recovery xgboost search lacks exact-30 completed candidates",
+      "name": "validation_searches",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "selected manifest prerequisite failed",
+      "name": "lstm_sensitivity",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "selected manifest prerequisite failed",
+      "name": "support_calibrator",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "selected manifest prerequisite failed",
+      "name": "support_threshold",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "critical lineage clean; development-history issues are noncritical",
+      "name": "registry_lineage",
+      "status": "PASS"
+    },
+    {
+      "detail": "BLOCKED \u2014 PULKIT EXPLANATION ADAPTER G3 DEPENDENCY",
+      "name": "explanation_adapters",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_review_signoffs.json",
+      "name": "review_signoffs",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "state never opened; manifest/search/calibration inputs are train/validation only",
+      "name": "test_nonuse",
+      "status": "PASS"
+    }
+  ],
+  "overall": "BLOCKED",
+  "test_data_accessed": false
+}

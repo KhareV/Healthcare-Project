@@ -1,0 +1,77 @@
+{
+  "fixture_classification": "SYNTHETIC_MOCK_CONTRACT_OUTPUT_NOT_MODEL_PERFORMANCE_NOT_CLINICAL_DATA",
+  "payload_kind": "response",
+  "payload": {
+    "schema_version": "prediction_schema_v1",
+    "prediction_time": "2026-01-02T12:00:00+00:00",
+    "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+    "model_versions": {
+      "recovery": {
+        "family": "gru",
+        "model_version": "SYNTHETIC_RECOVERY_MODEL_NOT_REAL",
+        "artifact_sha256": "SYNTHETIC_HASH_NOT_REAL",
+        "preprocessor_sha256": "SYNTHETIC_HASH_NOT_REAL"
+      },
+      "icu_stay_time": {
+        "family": "gru",
+        "model_version": "SYNTHETIC_ICU_TIME_MODEL_NOT_REAL",
+        "artifact_sha256": "SYNTHETIC_HASH_NOT_REAL",
+        "preprocessor_sha256": "SYNTHETIC_HASH_NOT_REAL"
+      },
+      "organ_support": {
+        "family": "gru",
+        "model_version": "SYNTHETIC_SUPPORT_MODEL_NOT_REAL",
+        "artifact_sha256": "SYNTHETIC_HASH_NOT_REAL",
+        "preprocessor_sha256": "SYNTHETIC_HASH_NOT_REAL",
+        "calibrator_sha256": "SYNTHETIC_HASH_NOT_REAL"
+      }
+    },
+    "recovery": {
+      "delta_24h": 0.25,
+      "delta_48h": -0.5,
+      "reconstructed_sofa_24h": 4.25,
+      "reconstructed_sofa_48h": 3.5
+    },
+    "icu_stay_time_hours": 42.0,
+    "organ_support_probability_calibrated": 0.25,
+    "explanation_features": {
+      "recovery": {
+        "family": "gru",
+        "explanation_method": "integrated_gradients",
+        "items": [{"feature_name": "SYNTHETIC_FEATURE_A", "attribution": 0.125}]
+      },
+      "icu_stay_time": {
+        "family": "gru",
+        "explanation_method": "integrated_gradients",
+        "items": [{"feature_name": "SYNTHETIC_FEATURE_B", "attribution": -0.125}]
+      },
+      "organ_support": {
+        "family": "gru",
+        "explanation_method": "integrated_gradients",
+        "items": [{"feature_name": "SYNTHETIC_FEATURE_C", "attribution": 0.25}]
+      }
+    },
+    "data_quality": {
+      "total_bins": 8,
+      "observed_bins": 6,
+      "padding_bins": 2,
+      "total_feature_values": 80,
+      "observed_feature_values": 48,
+      "missing_feature_values": 32
+    },
+    "model_metadata": {
+      "feature_version": {
+        "recovery": "SYNTHETIC_FEATURES_NOT_REAL",
+        "icu_stay_time": "SYNTHETIC_FEATURES_NOT_REAL",
+        "organ_support": "SYNTHETIC_FEATURES_NOT_REAL"
+      },
+      "label_version": {
+        "recovery": "SYNTHETIC_RECOVERY_LABELS_NOT_REAL",
+        "icu_stay_time": "SYNTHETIC_ICU_TIME_LABELS_NOT_REAL",
+        "organ_support": "SYNTHETIC_SUPPORT_LABELS_NOT_REAL"
+      },
+      "split_version": "SYNTHETIC_SPLIT_NOT_REAL",
+      "manifest_version": "SYNTHETIC_MANIFEST_NOT_REAL_SELECTION"
+    }
+  }
+}

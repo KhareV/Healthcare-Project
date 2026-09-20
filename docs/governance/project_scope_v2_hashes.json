@@ -1,0 +1,16 @@
+{
+  "scope_version": "PROJECT_SCOPE_V2",
+  "status": "DRAFT_COMPLETE_TEAM_FREEZE_REQUIRED",
+  "algorithm": "SHA-256",
+  "files": {
+    "configs/governance/project_scope_v2.json": "4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994",
+    "docs/governance/project_scope_v2.md": "09c2b15a05a87f78cc03b8be3f4e98475e34fdc01787fe6c58191e338e86a880",
+    "docs/governance/project_scope_v2_delta.csv": "f04e2a151fe278d16f15f43d02f0684bc6c9c380f3d2766b8e2587df511d5a5b",
+    "docs/governance/project_scope_v2_impact.md": "53b8dbaf953cb714721264c8e7d84e8ca967af716c68d8d0258290e510ef7ec3",
+    "docs/CODEX_PROJECT_CONTEXT_V2.md": "d74de3b2cc89dea44da187efc0a059076afd29f3b9659d44ec25c9fa48805f8c"
+  },
+  "notes": [
+    "Hashes cover the authoritative Phase-1 Scope v2 package and successor agent context.",
+    "This integrity manifest records content identity only; it is not evidence of review or approval."
+  ]
+}

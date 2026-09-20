@@ -1,0 +1,166 @@
+schema_version: event_dict_schema_v1
+event_dictionary_version: event_dict_v1
+status: DRAFT_NON_AUTHORIZING
+scope: PULKIT_PHASE_1_TO_PHASE_3_SUPPORT_LABEL_FOUNDATION
+real_scientific_execution_authorized: false
+scientific_source: Personalized_Patient_Recovery_Trajectory_FINAL_Implementation_Master_Plan
+scientific_source_version: "1.0"
+ownership_source: Personalized_Patient_Recovery_Trajectory_FINAL_Work_Division_3_Members
+ownership_source_version: "1.0"
+owner: Pulkit
+vasopressor:
+  state_rule_version: vasopressor_state_rule_v1
+  normalized_contract_version: normalized_active_support_interval_v1
+  endpoint_semantics: binary_support_state_only_not_escalation
+  any_qualifying_active_interval_means_on: true
+  already_on_means_at_risk: false
+  mapping:
+    verification_status: UNRESOLVED_REQUIRES_MIMIC_SCHEMA_MAPPING_VERIFICATION
+    qualifying_agent_keys: []
+    source_mapping: null
+    mapping_provenance_version: null
+  scientific_boundary_policy:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    interval_convention: null
+  scientific_activity_rule:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    rule_version: null
+    units_and_rate_semantics: null
+  duplicate_conflict_policy:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    real_source_rule: null
+  reviewers:
+    Sanskruti:
+      status: PENDING
+      evidence_ref: null
+    Vedant:
+      status: PENDING
+      evidence_ref: null
+  synthetic_test_profile:
+    synthetic_only: true
+    qualifying_agent_keys:
+      - QUALIFYING_AGENT_A
+      - QUALIFYING_AGENT_B
+    interval_convention: CLOSED_OPEN
+    mapping_provenance_version: SYNTHETIC_MAPPING_V1_NOT_MIMIC
+invasive_ventilation:
+  status: DRAFT_NON_AUTHORIZING
+  real_scientific_execution_authorized: false
+  state_rule_version: invasive_ventilation_state_rule_v1
+  normalized_contract_version: normalized_ventilation_interval_v1
+  endpoint_semantics: binary_invasive_state_only_not_intensity_or_escalation
+  any_active_invasive_interval_means_on: true
+  already_on_means_at_risk: false
+  concept:
+    verification_status: UNRESOLVED_REQUIRES_PINNED_MIMIC_CODE_CONCEPT
+    concept_name: null
+    source_repository: null
+    source_commit: null
+    concept_version: null
+    output_schema_version: null
+    adapter_version: null
+  category_mapping:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    raw_to_internal_category_mapping: null
+    invasive_internal_category: INVASIVE
+    explicit_exclusion_semantics:
+      NON_INVASIVE: null
+      HFNC: null
+      ORDINARY_OXYGEN: null
+    unknown_category_policy: HARD_FAILURE
+  scientific_output_semantics:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    output_representation: null
+    interval_convention: null
+    event_time_semantics: null
+  duplicate_overlap_policy:
+    verification_status: UNRESOLVED_REQUIRES_VERIFICATION
+    real_source_rule: null
+  sofa_alignment:
+    status: UNRESOLVED_REQUIRES_SOFA_CONCEPT_PROVENANCE
+    expected_concept_version: null
+    evidence_ref: null
+  reviewers:
+    Sanskruti:
+      status: PENDING
+      evidence_ref: null
+  synthetic_test_profile:
+    synthetic_only: true
+    concept_name: SYNTHETIC_VENTILATION_CONCEPT_NOT_MIMIC_CODE
+    concept_version: SYNTHETIC_VENT_CONCEPT_V1_NOT_MIMIC
+    adapter_version: SYNTHETIC_VENT_ADAPTER_V1_NOT_MIMIC
+    known_internal_categories:
+      - INVASIVE
+      - NON_INVASIVE
+      - HFNC
+      - ORDINARY_OXYGEN
+    invasive_internal_categories:
+      - INVASIVE
+    explicitly_non_invasive_categories:
+      - NON_INVASIVE
+      - HFNC
+      - ORDINARY_OXYGEN
+    unknown_category_policy: HARD_FAILURE
+    interval_convention: CLOSED_OPEN
+organ_support_label:
+  status: DRAFT_NON_AUTHORIZING
+  real_scientific_execution_authorized: false
+  label_rule_version: organ_support_label_rule_v1
+  onset_evidence_contract_version: component_off_to_on_evidence_v1
+  phase7_handoff_record_contract: SupportLabelRecord_v1_existing_phase7_interface
+  endpoint_name: new_organ_support_initiation
+  horizon_hours: 24
+  future_interval_semantics: "(t,t+24h]"
+  left_boundary_inclusive: false
+  right_boundary_inclusive: true
+  component_at_risk_rule: baseline_component_must_be_OFF
+  composite_at_risk_rule: at_least_one_component_OFF_at_t
+  both_components_on_rule: ineligible_not_at_risk
+  positive_rule: eligible_OFF_to_ON_before_ICU_exit_within_horizon
+  positive_precedence_over_incomplete_followup: true
+  negative_rule: full_24h_followup_and_no_eligible_initiation
+  censored_rule: early_ICU_exit_without_prior_eligible_initiation
+  censored_target: null
+  onset_outtime_tie_policy:
+    status: UNRESOLVED_REQUIRES_VERIFICATION
+    rule: null
+  unknown_component_state_policy:
+    status: UNRESOLVED_FOR_REAL_LABELING
+    current_guard: HARD_FAILURE
+  audit_reason_vocabulary:
+    status: INTERNAL_NONFINAL_REVIEW_REQUIRED
+    version: organ_support_audit_disposition_internal_v1
+  reviewers:
+    Vedant:
+      status: PENDING
+      evidence_ref: null
+    Sanskruti_compatibility:
+      status: PENDING
+      evidence_ref: null
+  real_handoff_artifact:
+    status: BLOCKED_REAL_STATE_DEFINITIONS_AND_DATA_REQUIRED
+    artifact_ref: null
+    artifact_sha256: null
+unresolved_required_items:
+  - exact_qualifying_vasopressor_mapping
+  - actual_MIMIC_source_and_fields
+  - event_time_field
+  - units_and_rate_activity_semantics
+  - interval_boundary_semantics
+  - duplicate_and_conflict_handling
+  - Sanskruti_review
+  - Vedant_review
+  - exact_MIMIC_Code_ventilation_source
+  - exact_MIMIC_Code_ventilation_commit
+  - verified_invasive_ventilation_concept
+  - ventilation_concept_output_schema
+  - ventilation_category_mapping
+  - ventilation_interval_event_semantics
+  - ventilation_duplicate_overlap_policy
+  - SOFA_support_ventilation_concept_alignment
+  - Sanskruti_ventilation_review
+  - support_onset_ICU_exit_same_timestamp_policy
+  - unknown_support_state_label_policy
+  - final_organ_support_audit_reason_vocabulary
+  - real_organ_support_handoff_artifact
+  - Vedant_composite_label_review

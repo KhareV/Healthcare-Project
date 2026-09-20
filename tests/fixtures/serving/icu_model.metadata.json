@@ -1,0 +1,15 @@
+{
+  "artifact_version": "synthetic_task_adapter_metadata_phase6_v1",
+  "task": "icu_stay_time",
+  "family": "xgboost",
+  "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+  "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+  "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "label_version": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+  "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92",
+  "output_contract": "log1p_remaining_current_icu_hours",
+  "target_transform_required": false,
+  "synthetic": true,
+  "serving_authorized": false
+}

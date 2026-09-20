@@ -1,0 +1,4 @@
+subject_id,split,anchor_year_group
+SYNTH-A,train,2008-2010
+SYNTH-B,validation,2014-2016
+SYNTH-C,test,2017-2019

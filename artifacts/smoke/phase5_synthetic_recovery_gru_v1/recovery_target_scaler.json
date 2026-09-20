@@ -1,0 +1,16 @@
+{
+  "eligible_count_24": 2,
+  "eligible_count_48": 1,
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "mean_24": -1.5,
+  "mean_48": -3.0,
+  "provenance": "TRAIN_PARTITION_ELIGIBLE_TARGETS_ONLY",
+  "scale_24": 0.5,
+  "scale_48": 1.0,
+  "scaler_version": "recovery_target_scaler_v1",
+  "source_partition": "train",
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "tensor_contract_version": "tensor_contract_v1",
+  "variance_convention": "population_std_ddof_0",
+  "zero_variance_policy": "unit_scale"
+}

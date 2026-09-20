@@ -1,0 +1,28 @@
+{
+  "best_epoch": 3,
+  "best_validation_value_standardized_huber": 2.7394418716430664,
+  "checkpoint_sha256": "8c3c3efe140a683899692f7605cd07f42a5bc6ee7cfc547d5003ab0654527303",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "horizon_order": [
+    "delta_sofa_24h",
+    "delta_sofa_48h"
+  ],
+  "inverse_prediction_shape": [
+    3,
+    2
+  ],
+  "inverse_predictions_finite": true,
+  "model_family": "gru",
+  "participates_in_30_config_search": false,
+  "raw_delta_predictions_clipped": false,
+  "reportable_scientific_performance": false,
+  "run_id": "phase5_synthetic_recovery_gru_smoke_v1",
+  "stopped_early": false,
+  "synthetic_smoke_test": true,
+  "target_scaler_sha256": "c34ce85b8b5e1e04ced3ceead6a9fc4ff6e39d5727191180c44c8035a49ab72f",
+  "task": "recovery",
+  "test_examples_accessed": 0,
+  "train_examples": 2,
+  "validation_examples": 3
+}

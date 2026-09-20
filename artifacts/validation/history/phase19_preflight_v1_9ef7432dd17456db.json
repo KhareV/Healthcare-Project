@@ -1,0 +1,92 @@
+{
+  "blockers": [
+    "real_data_acceptance: Phase 19 refused: real data are not ACCEPTED",
+    "candidate_manifest:recovery:xgboost: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_recovery_v1.json",
+    "candidate_manifest:recovery:gru: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_recovery_v1.json",
+    "candidate_manifest:icu_stay_time:xgboost: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_icu_stay_time_v1.json",
+    "candidate_manifest:icu_stay_time:gru: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_icu_stay_time_v1.json",
+    "candidate_manifest:organ_support:xgboost: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_organ_support_v1.json",
+    "candidate_manifest:organ_support:gru: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_organ_support_v1.json",
+    "project_seed_policy: BLOCKED \u2014 PROJECT SEED POLICY REQUIRED",
+    "threshold_policy: BLOCKED \u2014 REAL THRESHOLD POLICY REQUIRED",
+    "xgboost_entrypoint: BLOCKED \u2014 REQUIRED VALIDATION DEPENDENCY MISSING: Sanskruti XGBoost entrypoint"
+  ],
+  "items": [
+    {
+      "detail": "Phase 19 refused: real data are not ACCEPTED",
+      "name": "real_data_acceptance",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "NEVER_OPENED; train+validation only",
+      "name": "test_lock",
+      "status": "PASS"
+    },
+    {
+      "detail": "90c54ad6c4c523ac8cbeae3078f6cd1c520a3c5439520320f2f94c1322c551c3",
+      "name": "search_space:xgboost",
+      "status": "PASS"
+    },
+    {
+      "detail": "057c19d8ffe176ea56dbb798dc369f385ff272bca44924ffec5be54117f8a997",
+      "name": "search_space:gru",
+      "status": "PASS"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_recovery_v1.json",
+      "name": "candidate_manifest:recovery:xgboost",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_recovery_v1.json",
+      "name": "candidate_manifest:recovery:gru",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_icu_stay_time_v1.json",
+      "name": "candidate_manifest:icu_stay_time:xgboost",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_icu_stay_time_v1.json",
+      "name": "candidate_manifest:icu_stay_time:gru",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/xgb_organ_support_v1.json",
+      "name": "candidate_manifest:organ_support:xgboost",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/search/real/gru_organ_support_v1.json",
+      "name": "candidate_manifest:organ_support:gru",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 PROJECT SEED POLICY REQUIRED",
+      "name": "project_seed_policy",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 REAL THRESHOLD POLICY REQUIRED",
+      "name": "threshold_policy",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "BLOCKED \u2014 REQUIRED VALIDATION DEPENDENCY MISSING: Sanskruti XGBoost entrypoint",
+      "name": "xgboost_entrypoint",
+      "status": "BLOCKED"
+    },
+    {
+      "detail": "critical lineage clean",
+      "name": "registry_lineage",
+      "status": "PASS"
+    }
+  ],
+  "overall_status": "BLOCKED",
+  "report_sha256": "34b3e568d394eb68bd78f63d4336bfc6efe98d30e643b9d9b2c6e2aa4b9eb312",
+  "report_version": "phase19_preflight_v1",
+  "scientific_commands_executed": 0,
+  "suite_version": "full_real_validation_suite_v1",
+  "test_accessed": false
+}

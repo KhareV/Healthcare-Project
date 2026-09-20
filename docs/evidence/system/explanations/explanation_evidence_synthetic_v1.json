@@ -1,0 +1,51 @@
+{
+  "actual_adapter_validation": {
+    "integrated_gradients": "tests/test_integrated_gradients.py and tests/test_integrated_gradients_integration.py",
+    "tree_shap": "tests/test_tree_shap.py and tests/test_tree_shap_integration.py"
+  },
+  "evidence_version": "explanation_evidence_synthetic_v1",
+  "feature_schema_by_task": {
+    "icu_stay_time": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+    "organ_support": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+    "recovery": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL"
+  },
+  "manifest_version": "selected_models_synthetic_phase6_v1",
+  "prediction_time": "2030-01-02T00:00:00+00:00",
+  "scope": "synthetic",
+  "status": "SYSTEM_CONTRACT_ADAPTER_OUTPUT_NOT_REAL_LIBRARY_ATTRIBUTION",
+  "tasks": {
+    "icu_stay_time": {
+      "family": "xgboost",
+      "items": [
+        {
+          "attribution": 0.125,
+          "feature_name": "SYNTHETIC_FEATURE_ICU_STAY_TIME"
+        }
+      ],
+      "method": "tree_shap",
+      "model_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd"
+    },
+    "organ_support": {
+      "family": "gru",
+      "items": [
+        {
+          "attribution": 0.125,
+          "feature_name": "SYNTHETIC_FEATURE_ORGAN_SUPPORT"
+        }
+      ],
+      "method": "integrated_gradients",
+      "model_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141"
+    },
+    "recovery": {
+      "family": "gru",
+      "items": [
+        {
+          "attribution": 0.125,
+          "feature_name": "SYNTHETIC_FEATURE_RECOVERY"
+        }
+      ],
+      "method": "integrated_gradients",
+      "model_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32"
+    }
+  }
+}

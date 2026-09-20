@@ -1,0 +1,11 @@
+{
+  "classification": "SYNTHETIC ENGINEERING FIXTURE — NOT A MIMIC SCHEMA CLAIM",
+  "version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "feature_names": ["SYNTHETIC_SIGNAL_A", "SYNTHETIC_SIGNAL_B"],
+  "aggregation": "latest synthetic point event by explicit time then synthetic sequence",
+  "lookback": "(t-48h,t] in eight disjoint six-hour bins",
+  "tslo_no_observation_value": 999.0,
+  "tslo_no_observation_source": "SYNTHETIC_PHASE7_FIXTURE_ONLY",
+  "static_feature_names": ["SYNTHETIC_STATIC_SIGNAL"],
+  "unit": "SYNTHETIC_UNIT_NOT_CLINICAL"
+}

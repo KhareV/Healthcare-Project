@@ -1,0 +1,59 @@
+{
+  "classification": "SYNTHETIC DASHBOARD DEVELOPMENT FIXTURE — NON-SCIENTIFIC — NOT FINAL DEMO DATA",
+  "scope": "synthetic",
+  "sofa_version": "SYNTHETIC_SOFA_AT_T_PHASE12_V1",
+  "timeline_contract": {
+    "event_time_field": "synthetic_available_time",
+    "category_field": "synthetic_category",
+    "label_field": "synthetic_label",
+    "value_field": "synthetic_value",
+    "observed_field": "synthetic_observed"
+  },
+  "stays": [
+    {
+      "subject_id": "SYNTHETIC_DEMO_SUBJECT_A",
+      "stay_id": "SYNTHETIC_PHASE13_STAY_A",
+      "intime": "2026-02-01T00:00:00+00:00",
+      "outtime": "2026-02-04T18:00:00+00:00",
+      "approved_cutoffs": [
+        "2026-02-02T00:00:00+00:00",
+        "2026-02-02T06:00:00+00:00",
+        "2026-02-02T12:00:00+00:00"
+      ],
+      "current_sofa": {
+        "2026-02-02T00:00:00+00:00": 10.0,
+        "2026-02-02T06:00:00+00:00": 9.0,
+        "2026-02-02T12:00:00+00:00": 11.0
+      },
+      "events": [
+        {"synthetic_available_time": "2026-02-01T18:00:00+00:00", "synthetic_category": "vital", "synthetic_label": "Synthetic heart-rate signal", "synthetic_value": 88.0, "synthetic_observed": true},
+        {"synthetic_available_time": "2026-02-02T00:00:00+00:00", "synthetic_category": "lab", "synthetic_label": "Synthetic creatinine signal", "synthetic_value": 1.2, "synthetic_observed": true},
+        {"synthetic_available_time": "2026-02-02T04:00:00+00:00", "synthetic_category": "support_state", "synthetic_label": "Qualifying vasopressor support", "synthetic_value": "OFF", "synthetic_observed": true},
+        {"synthetic_available_time": "2026-02-02T10:00:00+00:00", "synthetic_category": "vital", "synthetic_label": "Synthetic oxygen signal", "synthetic_value": 96.0, "synthetic_observed": true},
+        {"synthetic_available_time": "2026-02-02T18:00:00+00:00", "synthetic_category": "lab", "synthetic_label": "Synthetic future lab", "synthetic_value": 7.0, "synthetic_observed": true}
+      ]
+    },
+    {
+      "subject_id": "SYNTHETIC_DEMO_SUBJECT_B",
+      "stay_id": "SYNTHETIC_PHASE13_STAY_B",
+      "intime": "2026-03-01T12:00:00+00:00",
+      "outtime": "2026-03-05T00:00:00+00:00",
+      "approved_cutoffs": [
+        "2026-03-02T12:00:00+00:00",
+        "2026-03-02T18:00:00+00:00",
+        "2026-03-03T00:00:00+00:00"
+      ],
+      "current_sofa": {
+        "2026-03-02T12:00:00+00:00": 6.0,
+        "2026-03-02T18:00:00+00:00": 7.0,
+        "2026-03-03T00:00:00+00:00": 7.0
+      },
+      "events": [
+        {"synthetic_available_time": "2026-03-02T08:00:00+00:00", "synthetic_category": "vital", "synthetic_label": "Synthetic blood-pressure signal", "synthetic_value": 72.0, "synthetic_observed": true},
+        {"synthetic_available_time": "2026-03-02T16:00:00+00:00", "synthetic_category": "support_state", "synthetic_label": "Invasive mechanical ventilation", "synthetic_value": "OFF", "synthetic_observed": true},
+        {"synthetic_available_time": "2026-03-02T23:00:00+00:00", "synthetic_category": "lab", "synthetic_label": "Synthetic platelet signal", "synthetic_value": 150.0, "synthetic_observed": true},
+        {"synthetic_available_time": "2026-03-03T06:00:00+00:00", "synthetic_category": "vital", "synthetic_label": "Synthetic future signal", "synthetic_value": 999.0, "synthetic_observed": true}
+      ]
+    }
+  ]
+}

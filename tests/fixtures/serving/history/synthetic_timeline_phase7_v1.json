@@ -1,0 +1,45 @@
+{
+  "classification": "SYNTHETIC ENGINEERING FIXTURE — NOT A MIMIC SCHEMA CLAIM",
+  "storage_status": "UNLOCKED ENGINEERING PARAMETER — DEMO TIMELINE STORAGE FORMAT",
+  "contract": {
+    "version": "synthetic_timeline_contract_phase7_v1",
+    "scope": "SYNTHETIC_ENGINEERING_FIXTURE_NOT_A_MIMIC_SCHEMA_CLAIM",
+    "stay_id_field": "synthetic_stay_key",
+    "event_time_field": "synthetic_available_time",
+    "event_time_semantics": "SYNTHETIC_POINT_EVENT_AVAILABLE_AT_EVENT_TIME",
+    "stateful_intervals_present": false
+  },
+  "timelines": [
+    {
+      "subject_id": "SYNTHETIC_SUBJECT_A",
+      "stay_id": "SYNTHETIC_PHASE6_STAY",
+      "intime": "2026-01-01T12:00:00+00:00",
+      "outtime": "2026-01-06T12:00:00+00:00",
+      "source_version": "synthetic_raw_timeline_phase7_v1",
+      "source_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "events": [
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2025-12-31T10:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 900.0, "synthetic_sequence": 1},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-02T00:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 600.0, "synthetic_sequence": 2},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-02T12:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 480.0, "synthetic_sequence": 3},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-02T12:00:01+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 1.0, "synthetic_sequence": 4},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-03T03:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 2.0, "synthetic_sequence": 5},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-04T06:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 3.0, "synthetic_sequence": 6},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-04T12:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 4.0, "synthetic_sequence": 7},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-04T12:00:01+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 999999.0, "synthetic_sequence": 8},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-04T17:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": 5.0, "synthetic_sequence": 9},
+        {"synthetic_stay_key": "SYNTHETIC_PHASE6_STAY", "synthetic_available_time": "2026-01-05T12:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_B", "synthetic_value": 999998.0, "synthetic_sequence": 10}
+      ]
+    },
+    {
+      "subject_id": "SYNTHETIC_SUBJECT_B",
+      "stay_id": "SYNTHETIC_OTHER_STAY",
+      "intime": "2026-01-01T12:00:00+00:00",
+      "outtime": "2026-01-06T12:00:00+00:00",
+      "source_version": "synthetic_raw_timeline_phase7_v1",
+      "source_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "events": [
+        {"synthetic_stay_key": "SYNTHETIC_OTHER_STAY", "synthetic_available_time": "2026-01-04T12:00:00+00:00", "synthetic_feature": "SYNTHETIC_SIGNAL_A", "synthetic_value": -999999.0, "synthetic_sequence": 1}
+      ]
+    }
+  ]
+}

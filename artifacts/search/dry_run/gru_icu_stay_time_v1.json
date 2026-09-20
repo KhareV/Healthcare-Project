@@ -1,0 +1,27 @@
+{
+  "manifest_version": "gru_icu_stay_time_synthetic_dry_run_v1",
+  "search_version": "gru_icu_stay_time_synthetic_dry_run_v1",
+  "status": "FROZEN_SYNTHETIC_DRY_RUN_MANIFEST_NOT_SCIENTIFIC_SEARCH",
+  "run_type": "synthetic_dry_run",
+  "task": "icu_stay_time",
+  "family": "gru",
+  "search_space_ref": "configs/search_space_gru_v1.json",
+  "search_space_hash": "057c19d8ffe176ea56dbb798dc369f385ff272bca44924ffec5be54117f8a997",
+  "sampler": "deterministic_seeded_synthetic_dry_run_v1",
+  "sampler_status": "TEST_ONLY_NOT_APPROVED_SCIENTIFIC_SAMPLER",
+  "test_sampler_seed": 1101,
+  "candidate_count": 30,
+  "candidate_list_hash": "0b7dc4d2f5c5318c9e79e9f427b3dd67f5072c3a48ab7f46a2815de13f32ea48",
+  "validation_objective": "validation_median_absolute_error_hours_min",
+  "split_ref": "tests/fixtures/canonical/canonical_synthetic_split_v1.csv",
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "feature_version": "synthetic_feature_schema_v1",
+  "label_version": "synthetic_contract_labels_v1",
+  "allowed_partitions": [
+    "train",
+    "validation"
+  ],
+  "test_accessed": false,
+  "scientific_candidate_slots_consumed": 0,
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY"
+}

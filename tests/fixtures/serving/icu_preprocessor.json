@@ -1,0 +1,10 @@
+{
+  "artifact_version": "synthetic_identity_preprocessor_phase6_v1",
+  "task": "icu_stay_time",
+  "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+  "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "fit_partition": "train",
+  "operation": "identity_for_orchestration_test_only",
+  "synthetic": true,
+  "serving_authorized": false
+}

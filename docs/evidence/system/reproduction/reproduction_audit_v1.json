@@ -1,0 +1,44 @@
+{
+  "artifacts": {
+    "failures": {},
+    "registered_artifact_count": 53,
+    "status": "PASS"
+  },
+  "environment": {
+    "detail": "BLOCKED \u2014 EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM",
+    "lock_ref": null,
+    "lock_sha256": null,
+    "status": "BLOCKED"
+  },
+  "evidence_version": "system_reproduction_audit_v1",
+  "local_process_test": {
+    "command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
+    "counts": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 906,
+      "skipped": 2,
+      "tests": 908
+    },
+    "evidence_version": "phase16_test_report_v1",
+    "junit_sha256": "68204383c69a178d468dfed75717738136e45f3276c10f913f549676cce8cbec",
+    "python": "3.9.6",
+    "scope": "repository",
+    "status": "PASS"
+  },
+  "non_owner": {
+    "detail": "No non-owner clean-machine execution or valid signoff exists",
+    "status": "BLOCKED"
+  },
+  "portability": {
+    "detail": "immutable historical reports may contain diagnostic absolute paths but are not execution inputs",
+    "historical_evidence_paths_scanned": false,
+    "operational_absolute_path_findings": [],
+    "status": "PASS"
+  },
+  "restricted_data": {
+    "audit_scope": "artifact classes plus structured config/artifact secret values",
+    "prohibited_index_or_secret_findings": [],
+    "status": "PASS"
+  }
+}

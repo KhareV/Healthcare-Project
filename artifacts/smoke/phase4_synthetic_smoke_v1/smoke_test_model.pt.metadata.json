@@ -1,0 +1,17 @@
+{
+  "checkpoint_file": "smoke_test_model.pt",
+  "checkpoint_sha256": "ec121653422647e1e6313a2bee7becd85cf58142a97151d41944b21b0c13adc9",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY",
+  "config_hash": "403ec56e024738b2fd2546f18c7b24edd61fcc73cb2bb290f2b32dd1dab78135",
+  "epoch": 1,
+  "feature_schema_version": "synthetic_feature_schema_v1",
+  "model_family": "smoke_test",
+  "run_id": "phase4_synthetic_smoke_v1",
+  "seed": 314159,
+  "split_hash": "217184e2dc4e9e2092aec962bf5523660006e3e4ffa35d2f807bafdfbb871b37",
+  "synthetic_smoke_test": true,
+  "task": "synthetic_recovery24_smoke",
+  "tensor_contract_version": "tensor_contract_v1",
+  "validation_monitor_name": "validation_loss",
+  "validation_value": 0.06949249655008316
+}

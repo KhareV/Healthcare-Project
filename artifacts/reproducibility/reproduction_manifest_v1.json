@@ -1,0 +1,177 @@
+{
+  "credentials_included": false,
+  "cross_member": {
+    "designated_run_id": null,
+    "designation_status": "UNLOCKED_ENGINEERING_PARAMETER",
+    "execution_status": "BLOCKED_NO_REAL_FROZEN_RUN",
+    "required_reproducer_role": "non_owner"
+  },
+  "environment_lock_ref": null,
+  "environment_lock_sha256": null,
+  "frozen_inference_tolerance": null,
+  "manifest_version": "reproduction_manifest_v1",
+  "metric_regeneration_tolerance": 0.0,
+  "registered_artifacts": [
+    {
+      "artifact_id": "phase4_synthetic_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase4_synthetic_smoke_v1/smoke_test_model.pt",
+      "artifact_sha256": "ec121653422647e1e6313a2bee7becd85cf58142a97151d41944b21b0c13adc9",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase4_synthetic_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase4_synthetic_smoke_v1/smoke_metrics.json",
+      "artifact_sha256": "2e0267cd32d3911ba1cddfdc1c75d719f31a2e933689ca2d56c57812dc84a688",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase5_synthetic_recovery_gru_smoke_v1:preprocessor",
+      "artifact_ref": "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_target_scaler.json",
+      "artifact_sha256": "c34ce85b8b5e1e04ced3ceead6a9fc4ff6e39d5727191180c44c8035a49ab72f",
+      "artifact_version": "historical_synthetic_preprocessor_v1"
+    },
+    {
+      "artifact_id": "phase5_synthetic_recovery_gru_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_gru_smoke.pt",
+      "artifact_sha256": "8c3c3efe140a683899692f7605cd07f42a5bc6ee7cfc547d5003ab0654527303",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase5_synthetic_recovery_gru_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase5_synthetic_recovery_gru_v1/smoke_metrics.json",
+      "artifact_sha256": "788e231df61cc5ae1ca1601371ad6b11bbfe730cf8bb69197e3ebafd9b2db76b",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase6_synthetic_icu_time_gru_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase6_synthetic_icu_time_gru_v1/icu_time_gru_smoke.pt",
+      "artifact_sha256": "382433b5ff30f6d4cc4ceeef6dfd21eea7ad674a67ce8c6855a461058ea80fa0",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase6_synthetic_icu_time_gru_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase6_synthetic_icu_time_gru_v1/smoke_metrics.json",
+      "artifact_sha256": "e2689614b5cb754a5f5e04d790e133060b7a4b0a5bc43599ec2fd875c5327e1e",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase7_synthetic_support_gru_smoke_v1:preprocessor",
+      "artifact_ref": "artifacts/smoke/phase7_synthetic_support_gru_v1/support_class_weight.json",
+      "artifact_sha256": "e03d9f7eac8411cae7ed9b93d45f5e40d5c75abec0ae35aae909904769245b7f",
+      "artifact_version": "historical_synthetic_preprocessor_v1"
+    },
+    {
+      "artifact_id": "phase7_synthetic_support_gru_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase7_synthetic_support_gru_v1/support_gru_smoke.pt",
+      "artifact_sha256": "d2ae7f884826645eb71a6af50ce6d60c855910dacf301b0bb82604140d8eba81",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase7_synthetic_support_gru_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase7_synthetic_support_gru_v1/smoke_metrics.json",
+      "artifact_sha256": "3fdd1c36c5cfe2c71910c181a875b0e7f0acab5940b0afb333e352bc4b1ccc28",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_icu_time_lstm_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_icu_time_lstm_v1/icu_stay_time_lstm_smoke.pt",
+      "artifact_sha256": "9e61cbd87b726c85a98c59181a5abeebdc4e433cd675c4e1ed9349fa471936f6",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_icu_time_lstm_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_icu_time_lstm_v1/smoke_metrics.json",
+      "artifact_sha256": "cca9a69207e9c65b2a8a9302c9eb82c4922dd68972fda508d39f4d1c5287594a",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_recovery_lstm_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_recovery_lstm_v1/recovery_lstm_smoke.pt",
+      "artifact_sha256": "87f211427c2d15d13ee60e28e6842bfcd367b8fa67e721c133c05b468d875fb2",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_recovery_lstm_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_recovery_lstm_v1/smoke_metrics.json",
+      "artifact_sha256": "741d3c5671791647b2fc5e80a9c2ba0da3dc6f57b4b4267f9e79cb2cd2f890bf",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_support_lstm_smoke_v1:checkpoint",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_support_lstm_v1/organ_support_lstm_smoke.pt",
+      "artifact_sha256": "4973b6cd58e23fff36fae47a86d5a4ae921ca70e6dc307f600c60206e875db0a",
+      "artifact_version": "historical_synthetic_checkpoint_v1"
+    },
+    {
+      "artifact_id": "phase8_synthetic_support_lstm_smoke_v1:metrics",
+      "artifact_ref": "artifacts/smoke/phase8_synthetic_support_lstm_v1/smoke_metrics.json",
+      "artifact_sha256": "49aa8c19fbe7946470c54a371bd54f463682ceb3705b4e0f1fc2577b44f3088a",
+      "artifact_version": "historical_synthetic_metrics_v1"
+    },
+    {
+      "artifact_id": "phase18:data_acceptance:3a7ad8edee17a4d1",
+      "artifact_ref": "artifacts/data_acceptance/history/real_data_acceptance_v1_3a7ad8edee17a4d1.json",
+      "artifact_sha256": "3a7ad8edee17a4d1844e82695498ca41e93818924828c18a3a9690a7523b93b4",
+      "artifact_version": "real_data_acceptance_v1"
+    },
+    {
+      "artifact_id": "phase19:preflight:9ef7432dd17456db",
+      "artifact_ref": "artifacts/validation/history/phase19_preflight_v1_9ef7432dd17456db.json",
+      "artifact_sha256": "9ef7432dd17456dba76130b989ddf104ce86918f32fce270efd693bdb7c0dffa",
+      "artifact_version": "phase19_preflight_v1"
+    },
+    {
+      "artifact_id": "phase20:pretest:56e271a598a3e909",
+      "artifact_ref": "artifacts/governance/history/phase20_pretest_audit_v1_56e271a598a3e909.json",
+      "artifact_sha256": "56e271a598a3e909feedcdf17437467707fd099b5a8bf5fa2833296a777f76e7",
+      "artifact_version": "phase20_pretest_audit_v1"
+    },
+    {
+      "artifact_id": "phase20:pretest:1faa7c439d217f23",
+      "artifact_ref": "artifacts/governance/history/phase20_pretest_audit_v1_1faa7c439d217f23.json",
+      "artifact_sha256": "1faa7c439d217f23d8c9c1568819242006beeba6363c93d0df6f9025454c1ca0",
+      "artifact_version": "phase20_pretest_audit_v1"
+    }
+  ],
+  "repository_commit": null,
+  "repository_commit_status": "BLOCKED_NOT_A_GIT_REPOSITORY",
+  "reproduction_commands": [
+    "PYTHONPATH=src python3 -m reproducibility.reproduce audit --root .",
+    "PYTHONPATH=src python3 -m reproducibility.reproduce synthetic --root .",
+    "PYTHONPATH=src python3 -m reproducibility.reproduce frozen-artifacts --root ."
+  ],
+  "required_final_artifacts": {
+    "g3": {
+      "ref": "artifacts/governance/g3_freeze.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    "g4": {
+      "ref": "artifacts/governance/g4_evaluation_freeze.json",
+      "sha256": null,
+      "status": "MISSING"
+    },
+    "selected_models": {
+      "ref": "artifacts/models/selected_models_v1.json",
+      "sha256": null,
+      "status": "MISSING"
+    }
+  },
+  "scientific_bindings": {
+    "dataset_version": null,
+    "extraction_sha256": null,
+    "feature_schema_sha256": null,
+    "feature_version": null,
+    "final_metric_hashes": null,
+    "final_prediction_hashes": null,
+    "label_versions": null,
+    "preprocessor_hashes": null,
+    "selected_model_hashes": null,
+    "split_hash": null,
+    "status": "UNAVAILABLE_REAL_PHASE19_20_NOT_EXECUTED",
+    "support_calibrator_sha256": null,
+    "support_threshold_sha256": null
+  },
+  "status": "BLOCKED_REAL_REPRODUCTION_PREREQUISITES",
+  "training_reproduction_tolerance": null
+}

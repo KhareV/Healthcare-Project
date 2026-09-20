@@ -1,0 +1,16 @@
+{
+  "evidence_version": "output_contract_synthetic_v1",
+  "icu_stay_time_hours": 19.085536923187668,
+  "organ_support_probability_calibrated": 0.25,
+  "prediction_time": "2030-01-02T00:00:00+00:00",
+  "recovery": {
+    "delta_24h": 0.25,
+    "delta_48h": -0.5,
+    "reconstructed_sofa_24h": 8.25,
+    "reconstructed_sofa_48h": 7.5
+  },
+  "recovery_horizons_independent": true,
+  "scope": "synthetic",
+  "source_response_sha256": "bbfd6e9c5543c1620ed9c1b6bc75f01ff125fc7d668cf249d85c0cec77f97ca4",
+  "support_calibration_fit_calls": 0
+}

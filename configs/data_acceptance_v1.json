@@ -1,0 +1,32 @@
+{
+  "config_version": "real_data_acceptance_config_v1",
+  "input_manifest": "artifacts/data/real_data_inputs_v1.json",
+  "output_report": "artifacts/data_acceptance/real_data_acceptance_v1.json",
+  "expected_inputs": {
+    "canonical_dataset": "artifacts/data/feature_dataset_v1.json",
+    "schema_sidecar": "artifacts/data/processed_schema_v1.json",
+    "feature_schema": "artifacts/data/feature_schema_v1.json",
+    "feature_dictionary": "artifacts/data/feature_provenance_v1.json",
+    "structural_index": "artifacts/data/canonical_structural_index_v1.json",
+    "split": "artifacts/splits/split_v1.csv",
+    "split_metadata": "artifacts/splits/split_v1.metadata.json",
+    "sofa_provenance": "artifacts/data/sofa_provenance_v1.json",
+    "label_spec": "artifacts/data/label_spec_v1.json",
+    "support_handoff": "artifacts/data/organ_support_handoff_v1.json",
+    "protected_test_labels": "artifacts/data/protected/test_labels_v1.parquet",
+    "tensor_contract": "configs/tensor_contract_v1.json",
+    "timestamp_spec": "configs/timestamp_spec_v1.yaml"
+  },
+  "expected_contracts": {
+    "tensor_contract": "tensor_contract_v1",
+    "timestamp_spec": "timestamp_spec_v1",
+    "split": "split_v1",
+    "processed_schema": "processed_schema_v1",
+    "feature_schema": "feature_schema_v1",
+    "label_spec": "label_spec_v1",
+    "canonical_dataset": "feature_dataset_v1"
+  },
+  "test_policy": "STRUCTURAL_INDEX_ONLY_TEST_LABELS_PROTECTED",
+  "performance_evaluation_allowed": false,
+  "phase19_training_allowed_before_acceptance": false
+}

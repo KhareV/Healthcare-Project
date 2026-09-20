@@ -1,0 +1,14 @@
+{
+  "config_version": "vedant_evidence_v1",
+  "evidence_root": "docs/evidence/models",
+  "generated_at": "2026-09-19",
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY",
+  "display_precision": 4,
+  "display_precision_status": "FROZEN_BEFORE_RESULT_GENERATION",
+  "include_negative_findings": true,
+  "show_only_positive_results": false,
+  "latest_authorized_scientific_state": "NO_REAL_VALIDATION_OR_FINAL_TEST_RESULTS",
+  "allowed_statuses": ["FINAL", "VALIDATION-ONLY", "BLOCKED", "DEFERRED"],
+  "final_test_status": "BLOCKED — ACTIVE G3 / FINAL TEST REQUIRED",
+  "pulkit_status": "DEFERRED — PULKIT TRACK"
+}

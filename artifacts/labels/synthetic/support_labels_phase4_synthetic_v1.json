@@ -1,0 +1,56 @@
+{
+  "artifact_scope": "synthetic",
+  "artifact_version": "support_label_artifact_v1",
+  "data_version": "synthetic_phase4_population_v1",
+  "endpoint_version": "organ_support_endpoint_v1",
+  "event_dictionary_sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
+  "freeze_ref": "artifacts/labels/synthetic/support_endpoint_freeze_synthetic_v1.json",
+  "freeze_sha256": "8124d4d74246d2b24643e5c85f1f763fca84d3832c63176b55565f4ba31464e6",
+  "generated_at_utc": "2026-09-18T23:03:29.930809Z",
+  "generator_implementation_ref": "src/labels/support_prevalence.py",
+  "generator_implementation_sha256": "892788cadef66561a8791374fbe54ed290ea66ea6c7346dcba4bae0cb529d74b",
+  "partition": "synthetic",
+  "population_id": "SYNTHETIC_PHASE4_FIXTURE_ONLY",
+  "records": [
+    {
+      "audit_case": "INTERNAL_POSITIVE_INITIATION",
+      "eligible": true,
+      "label": 1,
+      "prediction_time": "2026-01-02T12:00:00+00:00",
+      "stay_id": "SYNTH_FREEZE_STAY_A"
+    },
+    {
+      "audit_case": "INTERNAL_NEGATIVE_FULL_FOLLOWUP",
+      "eligible": true,
+      "label": 0,
+      "prediction_time": "2026-01-02T18:00:00+00:00",
+      "stay_id": "SYNTH_FREEZE_STAY_A"
+    },
+    {
+      "audit_case": "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION",
+      "eligible": false,
+      "label": null,
+      "prediction_time": "2026-01-03T12:00:00+00:00",
+      "stay_id": "SYNTH_FREEZE_STAY_B"
+    },
+    {
+      "audit_case": "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON",
+      "eligible": false,
+      "label": null,
+      "prediction_time": "2026-01-04T12:00:00+00:00",
+      "stay_id": "SYNTH_FREEZE_STAY_C"
+    },
+    {
+      "audit_case": "INTERNAL_POSITIVE_INITIATION",
+      "eligible": true,
+      "label": 1,
+      "prediction_time": "2026-01-05T12:00:00+00:00",
+      "stay_id": "SYNTH_FREEZE_STAY_D"
+    }
+  ],
+  "source_fixture_ref": "tests/fixtures/support_endpoint_freeze/synthetic_label_rows_v1.json",
+  "source_fixture_sha256": "29ba171bbf5cf8538230813bf662276e89cda6bdd733ab0521d589fa328a1f2a",
+  "split_version": "synthetic_partition_only_v1",
+  "synthetic_only": true,
+  "timestamp_spec_version": "timestamp_spec_v1"
+}

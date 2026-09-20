@@ -1,0 +1,10 @@
+{
+  "cutoff": "2030-01-02T00:00:00+00:00",
+  "evidence_version": "dashboard_render_metadata_v1",
+  "fixture_sha256": "625289d3eaff3482cc94d4190bed61adb8f81c1a8eb24f2e148397b6a85d1a43",
+  "html_sha256": "6c2afe8c43b609dabfe5c3cc9a411d3559f4371890d0d4855631b1e16e16d007",
+  "mandatory_banner_present": true,
+  "scope": "synthetic",
+  "screenshot_status": "BLOCKED_NO_BROWSER_CAPTURE_TOOL_AVAILABLE",
+  "status_code": 200
+}

@@ -1,0 +1,93 @@
+{
+  "failures": [
+    "BLOCKED \u2014 EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM",
+    "BLOCKED \u2014 REAL PHASE-19/20/G4 ARTIFACTS REQUIRED",
+    "UNLOCKED ENGINEERING PARAMETER \u2014 CROSS-MEMBER REPRODUCTION RUN",
+    "BLOCKED \u2014 RETRAINING REPRODUCIBILITY TOLERANCE REQUIRED"
+  ],
+  "final_test_reopened": false,
+  "layers": {
+    "artifact_integrity": {
+      "failures": {},
+      "registered_artifact_count": 20,
+      "status": "PASS"
+    },
+    "bootstrap_regeneration": {
+      "detail": "real bootstrap B/seed and final predictions unavailable",
+      "status": "BLOCKED"
+    },
+    "cross_member_train_eval": {
+      "detail": "no designated real frozen run and no non-owner evidence",
+      "status": "BLOCKED"
+    },
+    "environment": {
+      "detail": "BLOCKED \u2014 EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM",
+      "lock_ref": null,
+      "lock_sha256": null,
+      "status": "BLOCKED"
+    },
+    "frozen_inference": {
+      "detail": "real selected model/prediction fixture unavailable",
+      "status": "BLOCKED"
+    },
+    "full_demo": {
+      "detail": "product packaging and demo layer are outside Phase 21",
+      "status": "DEFERRED_TO_PULKIT"
+    },
+    "metric_regeneration": {
+      "detail": "real frozen final predictions/metrics unavailable",
+      "status": "BLOCKED"
+    },
+    "path_portability": {
+      "detail": "immutable historical reports may contain diagnostic absolute paths but are not execution inputs",
+      "historical_evidence_paths_scanned": false,
+      "operational_absolute_path_findings": [],
+      "status": "PASS"
+    },
+    "registry_trace": {
+      "detail": "registered development/synthetic artifacts trace; no final result row exists",
+      "status": "PASS"
+    },
+    "restricted_data": {
+      "audit_scope": "artifact classes plus structured config/artifact secret values",
+      "prohibited_index_or_secret_findings": [],
+      "status": "PASS"
+    },
+    "synthetic_ci": {
+      "bootstrap_regeneration": {
+        "ci_lower": 1.0875,
+        "ci_upper": 2.0,
+        "invalid_replicates": 0,
+        "requested_replicates": 8,
+        "status": "PASS",
+        "valid_replicates": 8
+      },
+      "metric_regeneration": {
+        "expected": [
+          1.5,
+          1.5811388300841898
+        ],
+        "reproduced": [
+          1.5,
+          1.5811388300841898
+        ],
+        "status": "PASS"
+      },
+      "scope": "synthetic_ci_only",
+      "status": "PASS"
+    },
+    "upstream_data_regeneration": {
+      "detail": "pending Sanskruti/team cross-reproduction",
+      "status": "PENDING"
+    }
+  },
+  "mode": "repository_audit_plus_synthetic_ci",
+  "overall_status": "BLOCKED",
+  "report_version": "reproduction_report_v1",
+  "runtime": {
+    "implementation": "CPython",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "python": "3.9.6"
+  },
+  "scientific_outputs_modified": false
+}

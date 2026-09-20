@@ -1,0 +1,74 @@
+{
+  "evidence_version": "serving_manifest_status_v1",
+  "real": {
+    "present": false,
+    "required_path": "artifacts/models/selected_models_v1.json",
+    "status": "BLOCKED"
+  },
+  "synthetic": {
+    "manifest": {
+      "manifest_sha256": "06dc6e1dd48ab7e510538dd88a306a993d9c1e1c9eea20b80b6955fd13d1c9aa",
+      "manifest_version": "selected_models_synthetic_phase6_v1",
+      "selection_mode": "synthetic",
+      "serving_ready": false,
+      "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "split_version": "SYNTHETIC_SPLIT_PHASE6_NOT_REAL",
+      "status": "SYNTHETIC_NON_SCIENTIFIC_NON_SERVING_NON_G3_AUTHORIZING",
+      "tasks": {
+        "icu_stay_time": {
+          "artifact_metadata_ref": "tests/fixtures/serving/icu_model.metadata.json",
+          "artifact_metadata_sha256": "8f285c8f4f739f6cde9e7cb04d1e963548bff0f7803ce7dc27162e97ea431e2a",
+          "artifact_ref": "tests/fixtures/serving/icu_xgboost.mock",
+          "artifact_sha256": "04d539bf029944ea554c45ac2ebcb831ce810f399fc97c91362f90dcfc25dfcd",
+          "explanation_method": "tree_shap",
+          "family": "xgboost",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_ICU_TIME_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_ICU_XGBOOST_PHASE6_NOT_REAL",
+          "preprocessor_ref": "tests/fixtures/serving/icu_preprocessor.json",
+          "preprocessor_sha256": "fb7f28b4fab6dee4a9abc72057e5ee287ea0eae2240b0ea36bceaecc1491bf92",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "target_transform_required": false
+        },
+        "organ_support": {
+          "artifact_metadata_ref": "tests/fixtures/serving/support_model.metadata.json",
+          "artifact_metadata_sha256": "d4ca35cc9b8613b18a77302bae2860456c515b38e09f182056c3fc0d6da82a87",
+          "artifact_ref": "tests/fixtures/serving/support_gru.mock",
+          "artifact_sha256": "6ac37f3e213308e4a72fafd132856d59b1b2c0c76b7336e7ecb8151a15e60141",
+          "calibrator_ref": "tests/fixtures/serving/support_calibrator.json",
+          "calibrator_sha256": "900b725284b574113cb9ba3a5b3cace10d5452ebbb99899ca0031cb4bf798c62",
+          "explanation_method": "integrated_gradients",
+          "family": "gru",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_SUPPORT_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_SUPPORT_GRU_PHASE6_NOT_REAL",
+          "preprocessor_ref": "tests/fixtures/serving/support_preprocessor.json",
+          "preprocessor_sha256": "43d1b451327375ddeb92966b749082f122f6a7dbdb104c3eb39afb8ad19b6204",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "target_transform_required": false,
+          "threshold_ref": "tests/fixtures/serving/support_threshold.json",
+          "threshold_sha256": "dd6573e4fffed3cd56cde0f3091894dcb628ce831ab734702ac232bf88602ddd"
+        },
+        "recovery": {
+          "artifact_metadata_ref": "tests/fixtures/serving/recovery_model.metadata.json",
+          "artifact_metadata_sha256": "f4897873dcdf2adc2a37b2243cf6fda742da807ae9d30ab30d0c48daa523ec79",
+          "artifact_ref": "tests/fixtures/serving/recovery_gru.mock",
+          "artifact_sha256": "4b8228d07a3a8a14e3eccb3ac9232760e996d3cd06066a3dcae2357c69085c32",
+          "explanation_method": "integrated_gradients",
+          "family": "gru",
+          "feature_version": "SYNTHETIC_FEATURES_PHASE6_NOT_REAL",
+          "label_version": "SYNTHETIC_RECOVERY_LABELS_PHASE6_NOT_REAL",
+          "model_version": "SYNTHETIC_RECOVERY_GRU_PHASE6_NOT_REAL",
+          "preprocessor_ref": "tests/fixtures/serving/recovery_preprocessor.json",
+          "preprocessor_sha256": "d5d242887c5fb05634e6f771b49b72e4db49569f2a0d6d111c56f9e6741f9080",
+          "split_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "target_transform_required": false
+        }
+      },
+      "test_accessed": false
+    },
+    "path": "tests/fixtures/serving/selected_models_synthetic_phase6_v1.json",
+    "sha256": "a7832fce35122eeb59e384cef87896b4938c2e76e544633a6503f04d8ee9d68c",
+    "status": "PASS"
+  }
+}

@@ -1,0 +1,597 @@
+generator_spec_version: synthetic_generator_v1
+config_version: synthetic_generator_config_v1
+status: DRAFT_SPECIFICATION_REVIEW_REQUIRED
+artifact_status: SPECIFICATION_ONLY_NO_DATA_GENERATED
+implementation_phase: SANSKRUTI_REBUILD_PHASE_3_NOT_IMPLEMENTED
+
+scope:
+  version: PROJECT_SCOPE_V2
+  path: configs/governance/project_scope_v2.json
+  sha256: 4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994
+  final_data_scope: AUTHORIZED_FINAL_SYNTHETIC_DATA
+  population_domain: CARDIAC_HEART_DISEASE
+  adult_only: true
+  clinical_validation_status: NOT_CLINICALLY_VALIDATED
+
+raw_schema:
+  version: synthetic_raw_schema_v1
+  path: configs/synthetic/synthetic_schema_v1.json
+  sha256: 85751b498c7529f465ace6c07fae064902f7f06d8e243000d59de31c86a0b51c
+  representation: LONG_FORM_EVENT_TABLES
+  canonical_model_schema_owned_by: PHASE_5_AND_PHASE_7
+
+architecture:
+  layers:
+    - SUBJECT_AND_EPISODE_STRUCTURE
+    - HIDDEN_DYNAMIC_PHYSIOLOGICAL_STATE
+    - TRUE_PHYSIOLOGICAL_VARIABLES
+    - OBSERVATION_PROCESS
+    - INTERVENTION_AND_SUPPORT_PROCESS
+    - EXPORTED_RAW_DATA
+    - DOWNSTREAM_DERIVATION_NOT_GENERATOR_OWNED
+  exported_objects:
+    - subjects
+    - episodes
+    - raw_events
+    - support_intervals
+    - synthetic_dataset_manifest_v1
+  generator_must_not_emit:
+    - prediction_cutoffs
+    - canonical_examples
+    - six_hour_bins
+    - model_tensors
+    - imputed_values
+    - normalized_values
+    - recovery_labels
+    - remaining_stay_labels
+    - organ_support_labels
+    - task_eligibility
+    - split_membership
+    - model_predictions
+
+rng_policy:
+  version: synthetic_rng_policy_v1
+  primary_seed_field: primary_seed
+  primary_seed: null
+  primary_seed_status: UNLOCKED_FINAL_GENERATOR_PARAMETER
+  engine: numpy.random.Generator
+  bit_generator: PCG64
+  global_rng_mutation_allowed: false
+  deterministic_substreams:
+    derivation: numpy.random.SeedSequence([primary_seed, subject_ordinal, component_code])
+    component_codes:
+      identity_and_statics: 1
+      episode_duration_and_calendar: 2
+      latent_state: 3
+      physiological_noise: 4
+      observation_process: 5
+      measurement_noise: 6
+      support_process: 7
+    spawn_order_dependency_allowed: false
+  reproducibility_identity:
+    bind_code_identity: true
+    bind_config_sha256: true
+    bind_schema_sha256: true
+    bind_python_version: true
+    bind_numpy_version: true
+    identical_inputs_expectation: BYTE_EQUIVALENT_AFTER_CANONICAL_SERIALIZATION
+
+identity:
+  subject_id_format: "SYN-S-{subject_ordinal:08d}"
+  stay_id_format: "SYN-E-{subject_ordinal:08d}"
+  event_id_derivation: DETERMINISTIC_FROM_STAY_CONCEPT_EVENT_ORDINAL
+  support_event_id_derivation: DETERMINISTIC_FROM_STAY_SUPPORT_TYPE_INTERVAL_ORDINAL
+  embeds_target_or_subtype: false
+  real_identifier_sources_allowed: false
+  collision_policy: HARD_FAILURE
+
+population:
+  n_subjects: null
+  n_subjects_status: UNLOCKED_FINAL_SYNTHETIC_COHORT_SIZE
+  sizing_procedure:
+    required_inputs:
+      - independent_subject_count
+      - episode_count
+      - resulting_legal_cutoff_count
+      - per_task_eligible_subject_and_stay_counts
+      - validation_search_stability_requirements
+      - grouped_evaluation_and_bootstrap_requirements
+      - compute_and_storage_budget
+    prohibited_shortcut: REUSE_OLD_CANDIDATE_DEFAULT_100
+    statistical_power_claim_allowed_without_analysis: false
+  age:
+    minimum_years: 18
+    maximum_years: null
+    distribution: null
+    status: UNLOCKED_MAXIMUM_AND_SYNTHETIC_DESIGN_DISTRIBUTION
+  sex_category:
+    vocabulary: null
+    distribution: null
+    status: REVIEW_REQUIRED_STATIC_VOCABULARY
+  cardiac_condition_group:
+    vocabulary: null
+    mixture_weights: null
+    status: REVIEW_REQUIRED_CARDIAC_SUBTYPE_TAXONOMY
+    mixture_interpretation: SYNTHETIC_BENCHMARK_COMPOSITION_NOT_EPIDEMIOLOGIC_PREVALENCE
+    heart_failure_only: false
+  additional_comorbidities:
+    fields: []
+    status: NONE_IN_V1_SPEC_UNLESS_SEPARATELY_JUSTIFIED_AND_REVIEWED
+
+episode_process:
+  episodes_per_subject: 1
+  retained_episode_policy: ONE_CANONICAL_SYNTHETIC_CRITICAL_CARE_EPISODE_PER_SUBJECT
+  explicit_boundaries_required: [intime, outtime]
+  infer_boundaries_from_measurements: false
+  duration_model:
+    algorithm: TRUNCATED_LOGNORMAL_LATENT_BURDEN_MODEL
+    equation: "log(duration_hours) = duration_intercept + duration_latent_coefficients dot z_0 + duration_support_propensity_coefficient * support_propensity + duration_noise"
+    noise_distribution: "Normal(0, duration_noise_scale)"
+    minimum_hours: null
+    maximum_hours: null
+    duration_intercept: null
+    duration_latent_coefficients: null
+    duration_support_propensity_coefficient: null
+    duration_noise_scale: null
+    parameter_status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+    variability_required: true
+    fixed_duration_prohibited: true
+    single_visible_feature_determinism_prohibited: true
+    structural_coverage_goal:
+      - episodes_with_no_legal_cutoff
+      - episodes_with_one_legal_cutoff
+      - episodes_with_multiple_legal_cutoffs
+      - recovery24_available_but_recovery48_unavailable
+      - support_horizon_censored
+      - long_episode_reaching_later_grid_positions
+    prevalence_quota: null
+  outtime_rule: intime_plus_generated_duration
+  outtime_model_eligible: false
+
+calendar_policy:
+  timezone: UTC
+  timestamp_representation: ISO_8601_UTC_Z_WITH_MICROSECOND_CAPABILITY
+  deterministic_epoch: "2100-01-01T00:00:00Z"
+  intime_derivation: DETERMINISTIC_SUBJECT_STREAM_OFFSET_FROM_SYNTHETIC_EPOCH
+  calendar_effects_modeled: false
+  calendar_year_model_eligible: false
+  calendar_year_split_allowed: false
+  fake_mimic_anchor_year_groups_allowed: false
+  daylight_saving_time_handling: NOT_APPLICABLE_UTC_ONLY
+
+latent_state_process:
+  exported: false
+  persistence_default: DO_NOT_PERSIST_PER_PATIENT_LATENT_TRAJECTORIES
+  state_names:
+    - systemic_severity
+    - cardiac_stress
+    - respiratory_burden
+    - renal_burden
+    - neurologic_burden
+  outcome_class_or_trajectory_class_present: false
+  internal_step_hours: 1
+  update_algorithm: COUPLED_MEAN_REVERTING_STOCHASTIC_STATE_WITH_SPARSE_SHOCKS
+  equation: "z_(n+1) = z_n + K*(mu_i-z_n)*dt + d_i*dt + C*tanh(z_n)*dt + shock_(i,n) + L*epsilon_(i,n)*sqrt(dt) + documented_intervention_effect_(i,n)"
+  parameter_definitions:
+    z_n: continuous five-dimensional hidden state at internal step n
+    mu_i: patient-specific equilibrium from population mixture and continuous random effects
+    K: diagonal or reviewed stable mean-reversion matrix
+    d_i: continuous patient-specific drift vector
+    C: cross-domain coupling matrix with bounded spectral behavior
+    shock_i_n: sparse signed pulse with stochastic onset, duration, magnitude, and affected domains
+    L: noise-loading matrix supporting shared and domain-specific innovations
+    epsilon_i_n: independent standard-normal innovation from the subject latent substream
+  required_config_parameters:
+    - population_latent_mean_and_covariance_by_reviewed_condition_group
+    - patient_random_effect_covariance
+    - mean_reversion_matrix
+    - drift_distribution
+    - coupling_matrix
+    - shock_hazard_duration_and_magnitude_distributions
+    - innovation_loading_matrix
+  parameter_values_status: REVIEW_REQUIRED_BEFORE_PHASE_3_FINAL_IMPLEMENTATION
+  design_constraints:
+    - continuous_between_patient_heterogeneity
+    - continuous_within_patient_variation
+    - temporal_persistence_without_perfect_linearity
+    - improving_worsening_fluctuating_and_stable_behaviors_emerge_without_labels
+    - shared_factors_plus_variable_specific_noise
+    - no_deterministic_three_template_process
+    - history_informative_but_not_deterministic
+
+true_physiology_process:
+  equation: "x_v(t) = inverse_link_v(baseline_v + patient_effect_v + loading_v dot z(t) + periodic_term_v(t) + process_error_v(t))"
+  categorical_equation: "category_v(t) is sampled from softmax(category_intercepts_v + category_loadings_v dot z(t))"
+  process_error:
+    temporally_correlated: true
+    model: VARIABLE_SPECIFIC_AR1_AROUND_LATENT_DRIVEN_MEAN
+  cross_variable_dependence:
+    shared_latent_loadings_required: true
+    independent_generation_of_all_variables_prohibited: true
+    all_variables_deterministic_from_one_scalar_prohibited: true
+  parameter_values_status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+
+raw_variable_inventory:
+  pao2:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: RESPIRATORY
+    value_type: number
+    unit: mmHg
+    synthetic_generation_domain: [20.0, 600.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [respiratory_burden, systemic_severity]
+    missingness_allowed: true
+  fio2:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: RESPIRATORY
+    value_type: number
+    unit: fraction
+    synthetic_generation_domain: [0.21, 1.0]
+    event_semantics: POINT_OR_SUPPORT_CONTEXT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [respiratory_burden]
+    missingness_allowed: true
+  platelet_count:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: COAGULATION
+    value_type: number
+    unit: 10^9/L
+    synthetic_generation_domain: [1.0, 1000.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [systemic_severity]
+    missingness_allowed: true
+  bilirubin_total:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: LIVER
+    value_type: number
+    unit: mg/dL
+    synthetic_generation_domain: [0.0, 50.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [systemic_severity]
+    missingness_allowed: true
+  mean_arterial_pressure:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: CARDIOVASCULAR
+    value_type: number
+    unit: mmHg
+    synthetic_generation_domain: [20.0, 200.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [cardiac_stress, systemic_severity]
+    missingness_allowed: true
+  glasgow_coma_scale:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: CNS
+    value_type: integer
+    unit: score
+    synthetic_generation_domain: [3, 15]
+    event_semantics: POINT_ASSESSMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [neurologic_burden, systemic_severity]
+    missingness_allowed: true
+  creatinine:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: RENAL
+    value_type: number
+    unit: mg/dL
+    synthetic_generation_domain: [0.1, 20.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [renal_burden, systemic_severity]
+    missingness_allowed: true
+  urine_output_volume:
+    class: MANDATORY_SOFA_PREREQUISITE
+    domain: RENAL
+    value_type: number
+    unit: mL
+    synthetic_generation_domain: [0.0, 10000.0]
+    event_semantics: INTERVAL_VOLUME_AVAILABLE_AT_INTERVAL_END
+    interval_start_required: true
+    interval_end_required: true
+    latent_dependencies: [renal_burden, systemic_severity]
+    missingness_allowed: true
+  heart_rate:
+    class: CANDIDATE_CARDIAC_CRITICAL_CARE_FEATURE
+    domain: CARDIAC
+    value_type: number
+    unit: beats/min
+    synthetic_generation_domain: [20.0, 250.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [cardiac_stress, systemic_severity]
+    missingness_allowed: true
+  systolic_blood_pressure:
+    class: CANDIDATE_CARDIAC_CRITICAL_CARE_FEATURE
+    domain: CARDIAC
+    value_type: number
+    unit: mmHg
+    synthetic_generation_domain: [40.0, 300.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [cardiac_stress, systemic_severity]
+    missingness_allowed: true
+  diastolic_blood_pressure:
+    class: CANDIDATE_CARDIAC_CRITICAL_CARE_FEATURE
+    domain: CARDIAC
+    value_type: number
+    unit: mmHg
+    synthetic_generation_domain: [20.0, 200.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [cardiac_stress, systemic_severity]
+    missingness_allowed: true
+  respiratory_rate:
+    class: CANDIDATE_CRITICAL_CARE_FEATURE
+    domain: RESPIRATORY
+    value_type: number
+    unit: breaths/min
+    synthetic_generation_domain: [4.0, 60.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [respiratory_burden, systemic_severity]
+    missingness_allowed: true
+  oxygen_saturation:
+    class: CANDIDATE_CRITICAL_CARE_FEATURE
+    domain: RESPIRATORY
+    value_type: number
+    unit: percent
+    synthetic_generation_domain: [50.0, 100.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [respiratory_burden]
+    missingness_allowed: true
+  temperature:
+    class: CANDIDATE_CRITICAL_CARE_FEATURE
+    domain: SYSTEMIC
+    value_type: number
+    unit: degree_Celsius
+    synthetic_generation_domain: [30.0, 43.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [systemic_severity]
+    missingness_allowed: true
+  lactate:
+    class: CANDIDATE_CRITICAL_CARE_FEATURE
+    domain: SYSTEMIC
+    value_type: number
+    unit: mmol/L
+    synthetic_generation_domain: [0.1, 30.0]
+    event_semantics: POINT_MEASUREMENT_AVAILABLE_AT_EVENT_TIME
+    latent_dependencies: [systemic_severity, cardiac_stress]
+    missingness_allowed: true
+
+domain_interpretation:
+  bounds_status: SYNTHETIC_GENERATOR_SAFETY_DOMAINS_NOT_CLINICAL_REFERENCE_RANGES
+  sofa_thresholds_in_generator: false
+  canonical_feature_order_frozen_here: false
+  phase_5_selects_model_features: true
+  impossible_value_policy: HARD_FAILURE_BEFORE_EXPORT
+  clipping_policy: DOCUMENTED_TRUNCATED_SAMPLING_OR_LINK_TRANSFORM_NOT_SILENT_POST_HOC_REPAIR
+
+observation_process:
+  model: VARIABLE_SPECIFIC_SEVERITY_MODULATED_RENEWAL_PROCESS
+  equation: "lambda_v(t) = base_rate_v * exp(observation_loading_v dot z(t) + patient_observation_effect_v), bounded by configured min/max rates"
+  event_time_generation: EXPONENTIAL_WAITING_TIME_FROM_LOCAL_OBSERVATION_SUBSTREAM
+  variable_specific_rates_required: true
+  temporally_varying_density_allowed: true
+  severity_informative_observation_density_allowed: true
+  severity_effect_must_be_documented: true
+  perfectly_regular_authoritative_grid_prohibited: true
+  base_rates_and_loadings: null
+  parameter_status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+  missingness_representation: ABSENCE_OF_EVENT_ROW
+  observed_null_rows_allowed: false
+  duplicates_in_final_authoritative_data: false
+  duplicate_hostile_cases_location: ENGINEERING_FIXTURES_ONLY
+
+measurement_noise:
+  conceptual_separation: TRUE_PHYSIOLOGY_DISTINCT_FROM_OBSERVED_VALUE
+  equation: "observed_v = bounded_inverse_link_v(link_v(true_v) + bias_subject_v + measurement_error_v)"
+  error_distribution: VARIABLE_SPECIFIC_ZERO_MEAN_DISTRIBUTION_FROM_MEASUREMENT_SUBSTREAM
+  subject_bias_distribution: null
+  variable_noise_scales: null
+  parameter_status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+  finite_values_required: true
+  invalid_value_policy: HARD_FAILURE
+  silent_clipping_allowed: false
+
+support_process:
+  output: RAW_CLOSED_OPEN_INTERVALS_NOT_LABELS
+  interval_convention: CLOSED_OPEN
+  transition_model: STOCHASTIC_MARKOV_HAZARD_CONDITIONED_ON_CURRENT_AND_RECENT_LATENT_STATE
+  off_to_on_equation: "P(OFF_TO_ON during step) = sigmoid(alpha_start + beta_current dot z(t) + beta_recent dot recent_state_summary + random_effect + innovation)"
+  on_to_off_equation: "P(ON_TO_OFF during step) = sigmoid(alpha_stop + gamma_current dot z(t) + duration_effect + innovation)"
+  deterministic_single_threshold_copy_prohibited: true
+  independent_coin_flip_prohibited: true
+  spans_multiple_prediction_cutoffs_supported: true
+  episode_end_truncates_active_interval: true
+  intervention_effects:
+    enabled_in_concept: true
+    mechanism: BOUNDED_DELAYED_SHIFT_TO_RELEVANT_LATENT_DRIFT_WHILE_SUPPORT_ACTIVE
+    instantaneous_severity_reset_prohibited: true
+    causal_claim_allowed: false
+    parameters: null
+    status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+  vasopressor:
+    required_fields: [agent_key, interval_start, interval_end, rate_value, rate_unit]
+    vocabulary: null
+    vocabulary_status: REVIEW_REQUIRED_SYNTHETIC_SUPPORT_VOCABULARY
+    qualifying_vs_nonqualifying_explicit: true
+    pulkit_adapter_target: NormalizedActiveInterval
+    compatible_test_profile_keys: [QUALIFYING_AGENT_A, QUALIFYING_AGENT_B]
+    rate_segments_required_when_rate_changes: true
+  ventilation:
+    required_fields: [respiratory_category, interval_start, interval_end]
+    internal_categories: [INVASIVE, NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+    endpoint_qualifying_categories: [INVASIVE]
+    explicitly_nonqualifying_categories: [NON_INVASIVE, HFNC, ORDINARY_OXYGEN]
+    unknown_category_policy: HARD_FAILURE
+    pulkit_adapter_target: NormalizedVentilationInterval
+  parameters:
+    start_hazard_coefficients: null
+    stop_hazard_coefficients: null
+    random_effect_distributions: null
+    rate_distributions: null
+    status: REVIEW_REQUIRED_SYNTHETIC_DESIGN_PARAMETERS
+
+downstream_separation:
+  prediction_cutoffs:
+    owner: VEDANT_TIMESTAMP_SPEC_V1
+    generator_emits: false
+  canonical_binning_masks_tslo:
+    owner: SANSKRUTI_PHASE_7_SHARED_BUILDER
+    generator_emits: false
+  sofa_at_t:
+    owner: SANSKRUTI_PHASE_6
+    generator_emits: false
+  recovery_labels:
+    owner: SANSKRUTI_PHASE_8
+    generator_emits: false
+  remaining_episode_time:
+    owner: SANSKRUTI_PHASE_8
+    generator_emits: false
+  support_state_labels_and_censoring:
+    owner: PULKIT_STATE_AND_LABEL_ENGINE_WITH_PHASE_9_HANDOFF
+    generator_emits: false
+  subject_split:
+    owner: SANSKRUTI_PHASE_10
+    generator_emits: false
+  model_preprocessing:
+    owner: DOWNSTREAM_TRAIN_ONLY_PREPROCESSING
+    generator_emits: false
+
+forbidden_exports:
+  exact_names:
+    - trajectory
+    - trajectory_class
+    - outcome_class
+    - recovery_class
+    - deterioration_class
+    - future_state
+    - future_sofa
+    - delta_sofa_24
+    - delta_sofa_48
+    - remaining_stay
+    - remaining_stay_hours
+    - support_label
+    - support_will_start
+    - organ_support_label
+    - target
+    - y
+    - risk_group
+    - final_outcome
+    - split
+    - split_membership
+    - train_val_test
+  semantic_categories:
+    - TARGET_OR_LABEL
+    - FUTURE_OUTCOME_SUMMARY
+    - FUTURE_ELIGIBILITY_OR_CENSOR_REASON
+    - LATENT_OUTCOME_TEMPLATE
+    - SPLIT_IDENTITY
+    - TOTAL_OR_REMAINING_EPISODE_DURATION_AS_FEATURE
+  outtime_export_policy: STRUCTURAL_LABEL_ONLY_NEVER_MODEL_ELIGIBLE
+  full_episode_future_events_policy: STORED_BUT_EXCLUDED_BY_CUTOFF_TRUNCATION
+
+output_policy:
+  storage_format: null
+  storage_format_status: UNLOCKED_ENGINEERING_PARAMETER
+  allowed_candidates_for_review: [PARQUET, ARROW_IPC, CSV, JSONL]
+  primary_format_count: 1
+  database_server_required: false
+  canonical_ordering:
+    subjects: [subject_id]
+    episodes: [subject_id, stay_id]
+    raw_events: [stay_id, event_time, event_id]
+    support_intervals: [stay_id, interval_start, support_event_id]
+  canonical_serialization_required_for_hashing: true
+  output_root_status: UNLOCKED_PHASE_3_ENGINEERING_PARAMETER
+
+manifest_and_provenance:
+  manifest_version: synthetic_dataset_manifest_v1
+  template_path: configs/synthetic/synthetic_dataset_manifest_template_v1.json
+  template_status: SPECIFICATION_ONLY_NO_DATA_GENERATED
+  required_identity:
+    - project_scope_version_and_sha256
+    - generator_version_and_code_identity
+    - generator_config_version_and_sha256
+    - raw_schema_version_and_sha256
+    - seed_policy_and_primary_seed_identity
+    - Python_and_environment_identity
+    - generation_timestamp_and_command
+    - requested_and_generated_subject_counts
+    - per_table_record_counts
+    - every_artifact_path_format_record_count_and_sha256
+  registry_policy: DO_NOT_REGISTER_TEMPLATE_AS_SCIENTIFIC_DATA
+
+validation_contract_for_phase_3:
+  required_checks:
+    - deterministic_reproduction_for_identical_bound_inputs
+    - unique_subject_ids
+    - unique_stay_ids
+    - one_episode_per_subject
+    - outtime_strictly_after_intime
+    - no_event_before_intime_or_after_outtime
+    - unique_event_and_support_ids
+    - valid_concept_units_types_and_domains
+    - finite_observed_numeric_values
+    - exactly_one_numeric_or_text_event_value
+    - interval_measurement_boundaries_valid
+    - support_intervals_closed_open_nonempty_and_within_episode
+    - no_forbidden_or_model_visible_latent_fields
+    - no_split_target_prediction_or_canonical_columns
+    - no_exact_subject_clones_from_rng_defect
+    - manifest_counts_and_hashes_match_artifacts
+  descriptive_reports_not_quality_gates:
+    - support_initiation_frequency
+    - recovery_direction_distribution
+    - sofa_delta_distribution
+    - legal_cutoff_counts
+    - horizon_availability_counts
+  feasibility_failure: ZERO_EXAMPLES_FOR_A_REQUIRED_ENDPOINT_AFTER_APPROVED_FINAL_GENERATION
+
+engineering_fixture_coverage_spec:
+  scope: ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC_NOT_FINAL_DATASET
+  scenarios:
+    - episode_shorter_than_24h_with_no_legal_cutoff
+    - one_legal_cutoff
+    - multiple_legal_cutoffs
+    - recovery24_available_recovery48_unavailable
+    - support_already_on_at_cutoff
+    - support_starts_after_cutoff
+    - support_start_exact_boundary
+    - episode_ends_before_support_horizon
+    - missing_variable_inside_real_bin
+    - sparse_measurements
+    - long_episode
+  artifacts_created_in_phase_2: false
+
+change_control:
+  performance_driven_generator_editing_allowed: false
+  post_test_generator_tuning_allowed: false
+  trajectory_changing_config_change_requires_new_hash_and_regeneration: true
+  scientific_semantic_change_requires_generator_version_bump: true
+  schema_shape_or_field_semantic_change_requires_schema_version_review: true
+  cosmetic_documentation_change_requires_generator_version_bump: false
+
+limitations:
+  purpose: METHODOLOGICAL_AND_SOFTWARE_EVALUATION_ON_PROJECT_DESIGNED_SYNTHETIC_CARDIAC_TRAJECTORIES
+  not_a_mimic_replica: true
+  not_epidemiology: true
+  not_a_digital_twin: true
+  not_a_causal_simulator: true
+  not_clinically_validated: true
+  no_real_world_prevalence_claim: true
+  no_individual_patient_fidelity_claim: true
+  no_clinical_deployment_claim: true
+  synthetic_data_reason: MIMIC_AUTHORIZATION_WAS_REQUESTED_BUT_NOT_OBTAINED
+
+unresolved_parameters:
+  - UNLOCKED_FINAL_SYNTHETIC_COHORT_SIZE
+  - UNLOCKED_FINAL_GENERATOR_PRIMARY_SEED
+  - REVIEW_REQUIRED_CARDIAC_SUBTYPE_TAXONOMY_AND_MIXTURE
+  - REVIEW_REQUIRED_STATIC_SEX_GENDER_VOCABULARY_AND_DISTRIBUTION
+  - REVIEW_REQUIRED_AGE_MAXIMUM_AND_DISTRIBUTION
+  - REVIEW_REQUIRED_EPISODE_DURATION_PARAMETERS
+  - REVIEW_REQUIRED_LATENT_DYNAMICS_PARAMETERS
+  - REVIEW_REQUIRED_TRUE_PHYSIOLOGY_PARAMETERS
+  - REVIEW_REQUIRED_OBSERVATION_AND_MISSINGNESS_PARAMETERS
+  - REVIEW_REQUIRED_MEASUREMENT_NOISE_PARAMETERS
+  - REVIEW_REQUIRED_SYNTHETIC_SUPPORT_VOCABULARY_AND_HAZARDS
+  - UNLOCKED_PRIMARY_STORAGE_FORMAT_AND_OUTPUT_LOCATION
+  - UNLOCKED_FINAL_ENVIRONMENT_AND_PACKAGE_MANAGER
+
+review:
+  approved_by: []
+  team_freeze_required: true
+  required_reviewers: [Sanskruti, Vedant, Pulkit]

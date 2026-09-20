@@ -1,0 +1,28 @@
+{
+  "best_epoch": 3,
+  "best_validation_smoke_value": 2.4912989139556885,
+  "checkpoint_sha256": "9e61cbd87b726c85a98c59181a5abeebdc4e433cd675c4e1ed9349fa471936f6",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "gru_trainable_parameter_count": 13505,
+  "lstm_trainable_parameter_count": 17985,
+  "model_family": "lstm",
+  "participates_in_lstm_search": false,
+  "participates_in_serving_selection": false,
+  "prediction_shape": [
+    3,
+    1
+  ],
+  "predictions_finite": true,
+  "reportable_scientific_performance": false,
+  "run_id": "phase8_synthetic_icu_time_lstm_smoke_v1",
+  "run_type": "sensitivity_smoke",
+  "scientific_sensitivity": false,
+  "sensitivity_only": true,
+  "source_gru_checkpoint_hash": "382433b5ff30f6d4cc4ceeef6dfd21eea7ad674a67ce8c6855a461058ea80fa0",
+  "source_gru_config_hash": "47d05831c49b10137591793b937bb85236505e5a75966eef88782dc154c07194",
+  "source_gru_run_id": "phase6_synthetic_icu_time_gru_smoke_v1",
+  "source_selected_gru_run_id": null,
+  "task": "icu_stay_time",
+  "test_examples_accessed": 0
+}

@@ -1,0 +1,115 @@
+{
+  "evidence_version": "pulkit_completion_audit_v1",
+  "final_test_accessed": false,
+  "framework_track": "PASS_SYNTHETICALLY_VERIFIED",
+  "g3": "BLOCKED",
+  "g4_present": false,
+  "phase17_exists": false,
+  "phase_count": 16,
+  "phases": [
+    {
+      "framework_status": "PASS",
+      "name": "vasopressor state definition",
+      "phase": 1,
+      "real_release_status": "REVIEW_REQUIRED_FOR_REAL_RELEASE"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "invasive ventilation state definition",
+      "phase": 2,
+      "real_release_status": "REVIEW_REQUIRED_FOR_REAL_RELEASE"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "composite support label and censoring",
+      "phase": 3,
+      "real_release_status": "REVIEW_REQUIRED_FOR_REAL_RELEASE"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "endpoint freeze and prevalence discipline",
+      "phase": 4,
+      "real_release_status": "REVIEW_REQUIRED_FOR_REAL_RELEASE"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "prediction schema contract",
+      "phase": 5,
+      "real_release_status": "REVIEW_REQUIRED_FOR_REAL_RELEASE"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "pipeline and artifact compatibility",
+      "phase": 6,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "history truncation and preprocessing equivalence",
+      "phase": 7,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "model and explanation router",
+      "phase": 8,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "Integrated Gradients adapter",
+      "phase": 9,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "TreeSHAP adapter",
+      "phase": 10,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "FastAPI and ICU-time postprocess",
+      "phase": 11,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "recovery reconstruction",
+      "phase": 12,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "dashboard and replay",
+      "phase": 13,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "full integration",
+      "phase": 14,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "packaging and demo fixture",
+      "phase": 15,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    },
+    {
+      "framework_status": "PASS",
+      "name": "release evidence and completion audit",
+      "phase": 16,
+      "real_release_status": "BLOCKED_UPSTREAM_REAL_ARTIFACTS"
+    }
+  ],
+  "real_release": "BLOCKED",
+  "unmet_final_conditions": [
+    "approved exact environment lock",
+    "real selected bundle",
+    "dashboard screenshots",
+    "non-owner clean-machine execution",
+    "required member reviews"
+  ]
+}

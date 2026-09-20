@@ -1,0 +1,14 @@
+{
+  "best_epoch": 1,
+  "best_validation_value": 0.06949249655008316,
+  "checkpoint_sha256": "ec121653422647e1e6313a2bee7becd85cf58142a97151d41944b21b0c13adc9",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "reportable_scientific_performance": false,
+  "run_id": "phase4_synthetic_smoke_v1",
+  "stopped_early": true,
+  "synthetic_smoke_test": true,
+  "test_examples_accessed": 0,
+  "train_examples": 2,
+  "validation_examples": 3
+}

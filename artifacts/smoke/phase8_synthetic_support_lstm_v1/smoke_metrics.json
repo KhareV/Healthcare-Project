@@ -1,0 +1,28 @@
+{
+  "best_epoch": 1,
+  "best_validation_smoke_value": 0.6966564655303955,
+  "checkpoint_sha256": "4973b6cd58e23fff36fae47a86d5a4ae921ca70e6dc307f600c60206e875db0a",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "gru_trainable_parameter_count": 13505,
+  "lstm_trainable_parameter_count": 17985,
+  "model_family": "lstm",
+  "participates_in_lstm_search": false,
+  "participates_in_serving_selection": false,
+  "prediction_shape": [
+    3,
+    1
+  ],
+  "predictions_finite": true,
+  "reportable_scientific_performance": false,
+  "run_id": "phase8_synthetic_support_lstm_smoke_v1",
+  "run_type": "sensitivity_smoke",
+  "scientific_sensitivity": false,
+  "sensitivity_only": true,
+  "source_gru_checkpoint_hash": "d2ae7f884826645eb71a6af50ce6d60c855910dacf301b0bb82604140d8eba81",
+  "source_gru_config_hash": "f482c5d01d517853225e0b3d802b449cdda4c8afd6402612c14cffd2c9079771",
+  "source_gru_run_id": "phase7_synthetic_support_gru_smoke_v1",
+  "source_selected_gru_run_id": null,
+  "task": "organ_support",
+  "test_examples_accessed": 0
+}

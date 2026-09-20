@@ -1,0 +1,97 @@
+{
+  "audit": {
+    "audit_version": "support_endpoint_freeze_audit_v1",
+    "blockers": [
+      "event_dictionary_global_freeze",
+      "phase1_vasopressor_real_definition",
+      "phase2_ventilation_real_definition",
+      "phase3_composite_real_definition",
+      "team_endpoint_signoff",
+      "state_machine_test_evidence",
+      "prevalence_noninspection_attestation",
+      "repository_commit_provenance"
+    ],
+    "code_commit": null,
+    "endpoint_implementation_ref": "src/labels/organ_support.py",
+    "endpoint_implementation_sha256": "216f066ed837a634b66cb5aa0e7741c5dcfb914243e1b0eb03c8198ed67c3058",
+    "endpoint_name": "24-hour New Organ-Support Initiation Risk",
+    "endpoint_version": "organ_support_endpoint_v1",
+    "event_dictionary_ref": "configs/event_dict_v1.yaml",
+    "event_dictionary_sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
+    "generated_at_utc": "2026-09-18T23:03:29.922797Z",
+    "items": [
+      {
+        "detail": "validated",
+        "name": "event_dictionary_parse",
+        "status": "PASS"
+      },
+      {
+        "detail": "requires frozen global status, authorization, and no unresolved items",
+        "name": "event_dictionary_global_freeze",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "requires verified qualifying mapping/activity/boundary provenance",
+        "name": "phase1_vasopressor_real_definition",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "requires pinned reviewed MIMIC-Code concept and SOFA alignment",
+        "name": "phase2_ventilation_real_definition",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "requires resolved tie/unknown/vocabulary policies and reviews",
+        "name": "phase3_composite_real_definition",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "timestamp_spec_v1 must be present and hash-bound",
+        "name": "timestamp_contract",
+        "status": "PASS"
+      },
+      {
+        "detail": "proposed schema and exact event-dictionary hash must match",
+        "name": "team_signoff_schema",
+        "status": "PASS"
+      },
+      {
+        "detail": "genuine Sanskruti, Vedant, and Pulkit-after-team-agreement approvals required",
+        "name": "team_endpoint_signoff",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "reviewed Phase-3 test evidence must be hash-bound",
+        "name": "state_machine_test_evidence",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "human attestation required before real freeze",
+        "name": "prevalence_noninspection_attestation",
+        "status": "BLOCKED"
+      },
+      {
+        "detail": "exact immutable Git commit required for formal real freeze",
+        "name": "repository_commit_provenance",
+        "status": "BLOCKED"
+      }
+    ],
+    "label_or_prevalence_data_accessed": false,
+    "overall": "BLOCKED",
+    "scope": "real",
+    "signoff_ref": "configs/support_endpoint_signoff_v1.json",
+    "signoff_sha256": "e360928acd5634ffadccf56424e1a3b982e73d84aa2ea2ac848a15bdb926a0d2",
+    "timestamp_spec_ref": "configs/timestamp_spec_v1.yaml",
+    "timestamp_spec_sha256": "de3a424fcd60affda178afbde49a0c83fd51610f7682cf73306d124454b18a9b"
+  },
+  "endpoint_name": "24-hour New Organ-Support Initiation Risk",
+  "endpoint_version": "organ_support_endpoint_v1",
+  "freeze_active": false,
+  "freeze_id": "support_endpoint_real_v1_blocked_audit",
+  "freeze_scope": "real",
+  "freeze_status": "BLOCKED_PREREQUISITES",
+  "freeze_timestamp_utc": "2026-09-18T23:03:29.922797Z",
+  "prevalence_access_authorized": false,
+  "record_version": "support_endpoint_freeze_record_v1",
+  "test_label_access_authorized": false
+}

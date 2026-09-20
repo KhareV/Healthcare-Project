@@ -1,0 +1,19 @@
+section,title,status,vedant_evidence
+1,Introduction,VEDANT COMPLETE / TEAM PENDING,limitations/non-claims
+2,Literature,BLOCKED,bibliography verification pending
+3,Objectives and scope,VEDANT COMPLETE / TEAM PENDING,methods/limitations
+4,Dataset/cohort/split,SANSKRUTI DEPENDENCY,split method only
+5,Temporal representation/features,SANSKRUTI DEPENDENCY,tensor method only
+6,SOFA,SANSKRUTI DEPENDENCY,complete-component slot blocked
+7,Targets/masks,VEDANT COMPLETE / TEAM PENDING,method contracts
+8,Models/tuning,VEDANT COMPLETE / TEAM PENDING,diagrams and planned budgets
+9,Metrics/bootstrap/test isolation,COMPLETE,method evidence
+10,Selection/calibration,BLOCKED,real sources absent
+11,Results,BLOCKED,real sources absent
+12,Error/sensitivity,BLOCKED,real sources absent
+13,Explainability,PULKIT DEFERRED,routing only after selection
+14,Pipeline/API/dashboard,PULKIT DEFERRED,gap checklist
+15,Reproducibility/registry/tests,VEDANT COMPLETE / TEAM PENDING,Phase-21 and registry evidence
+16,Limitations/ethics,VEDANT COMPLETE / TEAM PENDING,limitations evidence
+17,Conclusion,BLOCKED,requires real findings
+18,Appendices,VEDANT COMPLETE / TEAM PENDING,hashes/tests/configs

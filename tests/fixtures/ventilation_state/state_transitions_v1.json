@@ -1,0 +1,40 @@
+{
+  "artifact_kind": "SYNTHETIC_NORMALIZED_VENTILATION_FIXTURE_NOT_MIMIC_CODE",
+  "contract_version": "normalized_ventilation_interval_v1",
+  "concept_version": "SYNTHETIC_VENT_CONCEPT_V1_NOT_MIMIC",
+  "adapter_version": "SYNTHETIC_VENT_ADAPTER_V1_NOT_MIMIC",
+  "stay_id": "SYNTHETIC_STAY_VENT_A",
+  "intervals": [
+    {
+      "stay_id": "SYNTHETIC_STAY_VENT_A",
+      "category": "NON_INVASIVE",
+      "interval_start": "2026-01-02T08:00:00Z",
+      "interval_end": "2026-01-02T10:00:00Z",
+      "source_state_ref": "SYNTHETIC_NIV_INTERVAL",
+      "concept_version": "SYNTHETIC_VENT_CONCEPT_V1_NOT_MIMIC",
+      "adapter_version": "SYNTHETIC_VENT_ADAPTER_V1_NOT_MIMIC",
+      "normalization_provenance_ref": "SYNTHETIC_NORMALIZER_V1_NOT_MIMIC_CODE"
+    },
+    {
+      "stay_id": "SYNTHETIC_STAY_VENT_A",
+      "category": "INVASIVE",
+      "interval_start": "2026-01-02T10:00:00Z",
+      "interval_end": "2026-01-02T14:00:00Z",
+      "source_state_ref": "SYNTHETIC_INVASIVE_INTERVAL",
+      "concept_version": "SYNTHETIC_VENT_CONCEPT_V1_NOT_MIMIC",
+      "adapter_version": "SYNTHETIC_VENT_ADAPTER_V1_NOT_MIMIC",
+      "normalization_provenance_ref": "SYNTHETIC_NORMALIZER_V1_NOT_MIMIC_CODE"
+    },
+    {
+      "stay_id": "SYNTHETIC_STAY_VENT_A",
+      "category": "NON_INVASIVE",
+      "interval_start": "2026-01-02T14:00:00Z",
+      "interval_end": "2026-01-02T16:00:00Z",
+      "source_state_ref": "SYNTHETIC_POST_INVASIVE_NIV_INTERVAL",
+      "concept_version": "SYNTHETIC_VENT_CONCEPT_V1_NOT_MIMIC",
+      "adapter_version": "SYNTHETIC_VENT_ADAPTER_V1_NOT_MIMIC",
+      "normalization_provenance_ref": "SYNTHETIC_NORMALIZER_V1_NOT_MIMIC_CODE"
+    }
+  ]
+}
+

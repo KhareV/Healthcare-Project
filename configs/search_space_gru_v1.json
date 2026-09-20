@@ -1,0 +1,28 @@
+{
+  "search_space_version": "gru_search_space_v1",
+  "family": "gru",
+  "scientific_source": "FINAL_IMPLEMENTATION_MASTER_PLAN_SECTION_21",
+  "budget_per_task": 30,
+  "parameters": {
+    "hidden_dim": {"type": "categorical", "values": [64, 128, 192]},
+    "num_layers": {"type": "categorical", "values": [1, 2]},
+    "dropout": {"type": "continuous", "minimum": 0.1, "maximum": 0.4, "distribution": "UNRESOLVED"},
+    "learning_rate": {"type": "continuous", "minimum": 0.0001, "maximum": 0.003, "distribution": "log_uniform"},
+    "batch_size": {"type": "categorical", "values": [64, 128]},
+    "weight_decay": {"type": "continuous", "minimum": 0.000001, "maximum": 0.001, "distribution": "log_uniform"}
+  },
+  "training": {
+    "maximum_epochs": 60,
+    "early_stopping_patience": 8,
+    "early_stopping_monitor": null,
+    "early_stopping_monitor_status": "BLOCKED_REQUIRES_SCIENTIFIC_FREEZE",
+    "optimizer": "adamw",
+    "restore_best_epoch": true
+  },
+  "sampler": null,
+  "sampler_status": "UNLOCKED_ENGINEERING_PARAMETER_REQUIRES_APPROVAL",
+  "scientific_seed": null,
+  "freeze_status": "AUTHORITATIVE_RANGES_SERIALIZED_EXECUTION_NOT_FROZEN",
+  "freeze_timestamp": null,
+  "code_commit": "UNAVAILABLE_NOT_GIT_REPOSITORY"
+}

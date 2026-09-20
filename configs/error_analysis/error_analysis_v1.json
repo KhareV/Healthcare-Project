@@ -1,0 +1,97 @@
+{
+  "spec_version": "prespecified_error_analysis_slice_spec_v1",
+  "status": "FRAMEWORK_ONLY_REAL_SLICE_EXECUTION_BLOCKED",
+  "final_test_authorized": false,
+  "final_test_status": "FINAL TEST ERROR ANALYSIS — DEFERRED UNTIL PHASE 20",
+  "minimum_sample_size": null,
+  "minimum_sample_size_status": "UNLOCKED REPORTING PARAMETER — MINIMUM SLICE SAMPLE SIZE",
+  "all_groups_required": true,
+  "model_retraining_allowed": false,
+  "slice_specific_model_selection_allowed": false,
+  "slice_specific_calibration_allowed": false,
+  "slice_specific_threshold_selection_allowed": false,
+  "task_slice_applicability": {
+    "baseline_sofa": ["recovery", "icu_stay_time", "organ_support"],
+    "remaining_icu_duration": ["recovery", "icu_stay_time", "organ_support"],
+    "observation_density": ["recovery", "icu_stay_time", "organ_support"],
+    "icu_type": ["recovery", "icu_stay_time", "organ_support"],
+    "cutoff_timing": ["recovery", "icu_stay_time", "organ_support"],
+    "medical_surgical": ["recovery", "icu_stay_time", "organ_support"],
+    "baseline_support": ["recovery", "icu_stay_time"],
+    "complete_component_sofa": ["recovery"]
+  },
+  "slices": [
+    {
+      "slice_name": "baseline_sofa",
+      "source_variable": "baseline_sofa_at_t",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "pinned sofa_at(t) output",
+      "status": "BLOCKED — BASELINE SOFA BAND DEFINITIONS REQUIRED"
+    },
+    {
+      "slice_name": "remaining_icu_duration",
+      "source_variable": "remaining_current_icu_hours_at_t",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "target-side analysis metadata only; never model input",
+      "status": "BLOCKED — REMAINING ICU-STAY SLICE BOUNDARIES REQUIRED"
+    },
+    {
+      "slice_name": "observation_density",
+      "source_variable": "canonical_observation_density",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "canonical genuine-observation statistic excluding structural padding",
+      "status": "BLOCKED — MISSINGNESS / OBSERVATION-DENSITY SLICE DEFINITION REQUIRED"
+    },
+    {
+      "slice_name": "icu_type",
+      "source_variable": "frozen_icu_type",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "authoritative frozen ICU-type mapping required",
+      "status": "BLOCKED — ICU-TYPE MAPPING AND MISSING-VALUE POLICY REQUIRED"
+    },
+    {
+      "slice_name": "cutoff_timing",
+      "source_variable": "canonical_cutoff_index",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "canonical prediction-grid cutoff index",
+      "status": "BLOCKED — EARLY/LATER CUTOFF DEFINITION REQUIRED"
+    },
+    {
+      "slice_name": "medical_surgical",
+      "source_variable": "frozen_medical_surgical_group",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "reliable reviewed category mapping required",
+      "status": "NOT REPORTED — RELIABLE MEDICAL/SURGICAL MAPPING UNAVAILABLE"
+    },
+    {
+      "slice_name": "baseline_support",
+      "source_variable": "frozen_support_state_at_t",
+      "groups": null,
+      "missing_value_policy": null,
+      "mapping_version": null,
+      "provenance": "Pulkit-owned frozen baseline support state at t",
+      "status": "BLOCKED — BASELINE SUPPORT SLICE TASK-APPLICABILITY RULE REQUIRED"
+    },
+    {
+      "slice_name": "complete_component_sofa",
+      "source_variable": "phase14_complete_component_included",
+      "groups": ["complete", "incomplete"],
+      "missing_value_policy": "group_as_incomplete_via_phase14_logic",
+      "mapping_version": "phase14_complete_component_included_v1",
+      "provenance": "evaluation.sensitivity.complete_component_included; horizon-specific",
+      "status": "SUPPORTED_FRAMEWORK_REQUIRES_AUTHORITATIVE_COMPONENT_FLAGS"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "phase": "SANSKRUTI_REBUILD_PHASE_2_OF_14",
+  "status": "DRAFT_SPECIFICATION_REVIEW_REQUIRED",
+  "algorithm": "SHA-256",
+  "files": {
+    "configs/synthetic/synthetic_generator_v1.yaml": "5f7d3f73572a34282c214860f1c0c656b18727a16fa0c4687caf071f690a7484",
+    "configs/synthetic/synthetic_schema_v1.json": "85751b498c7529f465ace6c07fae064902f7f06d8e243000d59de31c86a0b51c",
+    "configs/synthetic/synthetic_dataset_manifest_template_v1.json": "3b9b14b63d18083f1a236ce1a496f1a698358f609202bae2781eaf772b435fa7",
+    "docs/sanskruti/SYNTHETIC_GENERATOR_SPEC_V1.md": "a069de5db5c4088fa5102657c4919b2618d3586e9b9dcb453fb810ed87df7b16",
+    "docs/sanskruti/SYNTHETIC_GENERATOR_LEAKAGE_THREAT_MODEL_V1.md": "5906e326d57c02579da9c04c582ea02d049f68c52529973d7f9c36c8ef83d89d",
+    "docs/sanskruti/SYNTHETIC_FIELD_ROLE_MATRIX_V1.csv": "0a27348d2ab38c3c3565eaea8d7aa2fb0a6132ecaa2d2490081c74a8c32115c8"
+  },
+  "non_authorizing_note": "Content hashes establish artifact identity only. They do not approve the specification or claim that any dataset was generated."
+}

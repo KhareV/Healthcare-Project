@@ -1,0 +1,27 @@
+{
+  "best_epoch": 3,
+  "best_validation_value_log_space_huber": 2.1670377254486084,
+  "checkpoint_sha256": "382433b5ff30f6d4cc4ceeef6dfd21eea7ad674a67ce8c6855a461058ea80fa0",
+  "device": "cpu",
+  "epochs_completed": 3,
+  "model_family": "gru",
+  "participates_in_30_config_search": false,
+  "postprocess_version": "icu_time_nonnegative_log_expm1_v1",
+  "postprocessed_hours_finite": true,
+  "postprocessed_hours_nonnegative": true,
+  "postprocessed_hours_shape": [
+    3,
+    1
+  ],
+  "raw_output_meaning": "log1p_remaining_current_icu_hours",
+  "reportable_scientific_performance": false,
+  "run_id": "phase6_synthetic_icu_time_gru_smoke_v1",
+  "stopped_early": false,
+  "synthetic_smoke_test": true,
+  "task": "icu_stay_time",
+  "test_examples_accessed": 0,
+  "train_eligible_count": 2,
+  "train_examples": 2,
+  "validation_eligible_count": 3,
+  "validation_examples": 3
+}

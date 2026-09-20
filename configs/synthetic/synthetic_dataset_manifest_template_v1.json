@@ -1,0 +1,49 @@
+{
+  "template_version": "synthetic_dataset_manifest_template_v1",
+  "manifest_version": "synthetic_dataset_manifest_v1",
+  "manifest_status": "SPECIFICATION_ONLY_NO_DATA_GENERATED",
+  "project_scope_version": "PROJECT_SCOPE_V2",
+  "project_scope_sha256": "4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994",
+  "generator_version": "synthetic_generator_v1",
+  "generator_code_identity": null,
+  "generator_config_version": "synthetic_generator_config_v1",
+  "generator_config_sha256": null,
+  "raw_schema_version": "synthetic_raw_schema_v1",
+  "raw_schema_sha256": "85751b498c7529f465ace6c07fae064902f7f06d8e243000d59de31c86a0b51c",
+  "seed_policy_version": "synthetic_rng_policy_v1",
+  "primary_seed_identity": null,
+  "environment_identity": null,
+  "generation_timestamp_utc": null,
+  "generation_command": null,
+  "requested_subject_count": null,
+  "generated_subject_count": null,
+  "record_counts": {
+    "subjects": null,
+    "episodes": null,
+    "raw_events": null,
+    "support_intervals": null
+  },
+  "artifacts": [],
+  "required_artifact_entry_fields": [
+    "logical_name",
+    "repository_relative_path",
+    "schema_table",
+    "serialization_format",
+    "record_count",
+    "sha256"
+  ],
+  "generation_assertions": {
+    "contains_real_patient_data": false,
+    "contains_model_ready_examples": false,
+    "contains_prediction_cutoffs": false,
+    "contains_labels": false,
+    "contains_split_membership": false,
+    "contains_generator_latent_state": false,
+    "final_artifact_manifest_complete": null
+  },
+  "template_rules": [
+    "Null values are placeholders and make this template non-authorizing.",
+    "Phase 3 must populate values from actual execution and calculate every artifact hash.",
+    "This template is not a dataset manifest and must never be registered as produced scientific data."
+  ]
+}

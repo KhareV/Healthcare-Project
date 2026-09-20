@@ -1,0 +1,34 @@
+{
+  "snapshot_version": "observed_environment_phase15_v1",
+  "status": "NON_FINAL_DEVELOPMENT_SNAPSHOT",
+  "package_manager_status": "BLOCKED_UNRESOLVED",
+  "final_environment_lock": null,
+  "python": {
+    "implementation": "CPython",
+    "version": "3.9.6"
+  },
+  "platform": {
+    "os": "macOS 27.0",
+    "architecture": "arm64",
+    "device_policy": "OBSERVED_CPU_ONLY_NOT_FINAL_POLICY",
+    "torch_cuda_build": null,
+    "cuda_available": false
+  },
+  "packages": {
+    "captum": null,
+    "fastapi": "0.128.8",
+    "httpx": "0.28.1",
+    "jinja2": "3.1.6",
+    "numpy": "2.0.2",
+    "pandas": "2.3.3",
+    "pydantic": "2.13.5",
+    "pytest": "8.4.2",
+    "scikit-learn": "1.6.1",
+    "shap": null,
+    "torch": "2.8.0",
+    "uvicorn": "0.39.0",
+    "xgboost": "2.1.4"
+  },
+  "missing_required_real_stack_packages": ["captum", "shap"],
+  "warning": "This is an observation of the Phase-15 development runtime, not an approved lock, install specification, or evidence for earlier scientific runs."
+}

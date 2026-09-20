@@ -1,0 +1,25 @@
+{
+  "config_version": "reproducibility_v1",
+  "environment_lock_ref": null,
+  "environment_lock_sha256": null,
+  "repository_commit": null,
+  "training_reproduction_tolerance": null,
+  "frozen_inference_tolerance": null,
+  "metric_regeneration_tolerance": 0.0,
+  "synthetic_ci": {
+    "bootstrap_replicates": 8,
+    "bootstrap_seed": 1729,
+    "status": "TEST_ONLY_NOT_SCIENTIFIC_DEFAULT"
+  },
+  "cross_member": {
+    "designation_status": "UNLOCKED_ENGINEERING_PARAMETER",
+    "designated_run_id": null,
+    "required_reproducer_role": "non_owner",
+    "execution_status": "BLOCKED_NO_REAL_FROZEN_RUN"
+  },
+  "outputs": {
+    "manifest": "artifacts/reproducibility/reproduction_manifest_v1.json",
+    "report": "artifacts/reproducibility/reproduction_report_v1.json",
+    "cross_member": "artifacts/reproducibility/cross_member_reproduction_v1.json"
+  }
+}

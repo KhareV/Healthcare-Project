@@ -1,0 +1,13 @@
+task,family,role,planned_scientific_candidates,registered_real_candidates,execution_attempts,failed_attempts,retry_attempts,candidate_list_hash,search_space_hash,status,note
+recovery,xgboost,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+recovery,gru,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+recovery,lstm,fixed_sensitivity_only,1,,,,,,,BLOCKED,one fixed run required; no independent tuning
+recovery,naive,reference_only,0,,,,,,,BLOCKED,reference baseline is not a search candidate
+icu_stay_time,xgboost,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+icu_stay_time,gru,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+icu_stay_time,lstm,fixed_sensitivity_only,1,,,,,,,BLOCKED,one fixed run required; no independent tuning
+icu_stay_time,naive,reference_only,0,,,,,,,BLOCKED,reference baseline is not a search candidate
+organ_support,xgboost,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+organ_support,gru,serving_candidate,30,,,,,,,BLOCKED,real candidate manifest and execution registry absent
+organ_support,lstm,fixed_sensitivity_only,1,,,,,,,BLOCKED,one fixed run required; no independent tuning
+organ_support,naive,reference_only,0,,,,,,,BLOCKED,reference baseline is not a search candidate
