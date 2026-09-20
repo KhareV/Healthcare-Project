@@ -43,6 +43,7 @@ class FeatureSchemaReference:
     tslo_no_observation_value: Optional[float] = None
     tslo_no_observation_source: Optional[str] = None
     static_feature_names: Optional[Tuple[str, ...]] = None
+    schema_sha256: Optional[str] = None
 
     @property
     def feature_dim(self) -> int:
@@ -90,6 +91,35 @@ class CanonicalExample:
     static_status: str
     eligibility: TaskEligibility
     targets: TaskTargets
+    case_tags: Tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class CanonicalFeatureInput:
+    """Label-free preprocessor input produced before Phase 8 and Phase 10."""
+
+    subject_id: Identifier
+    stay_id: Identifier
+    prediction_time: str
+    grid_index: int
+    icu_elapsed_hours: int
+    tensor_contract_version: str
+    timestamp_spec_version: str
+    feature_schema_version: str
+    feature_schema_sha256: str
+    temporal_feature_names: Tuple[str, ...]
+    history_dtype: str
+    history_values: Tuple[Tuple[Optional[Number], ...], ...]
+    padding_mask_dtype: str
+    padding_mask: Tuple[bool, ...]
+    observation_mask_dtype: str
+    observation_mask: Tuple[Tuple[bool, ...], ...]
+    tslo_hours: Tuple[Tuple[float, ...], ...]
+    tslo_status: str
+    static_features: Tuple[object, ...]
+    static_feature_names: Tuple[str, ...]
+    static_status: str
+    quality_metadata: Mapping[str, int]
     case_tags: Tuple[str, ...]
 
 
@@ -176,7 +206,65 @@ def _validate_targets(example: CanonicalExample) -> None:
         example.targets.organ_support_target is not None
         and example.targets.organ_support_target not in (0, 1)
     ):
-        raise TensorContractError("organ_support_target must be 0, 1, or null")
+            raise TensorContractError("organ_support_target must be 0, 1, or null")
+
+
+def validate_canonical_feature_input(
+    item: CanonicalFeatureInput, feature_schema: FeatureSchemaReference
+) -> None:
+    """Validate Phase-7 inputs without inventing split, labels, or eligibility."""
+    if not _valid_identifier(item.subject_id) or not _valid_identifier(item.stay_id):
+        raise TensorContractError("subject_id and stay_id are required")
+    try:
+        datetime.fromisoformat(item.prediction_time.replace("Z", "+00:00"))
+    except (TypeError, ValueError) as error:
+        raise TensorContractError("prediction_time must be ISO-8601") from error
+    if isinstance(item.grid_index, bool) or not isinstance(item.grid_index, int) or not 0 <= item.grid_index <= 11:
+        raise TensorContractError("grid_index must be in 0..11")
+    if item.icu_elapsed_hours != 24 + 6 * item.grid_index:
+        raise TensorContractError("icu_elapsed_hours does not match timestamp grid")
+    if item.tensor_contract_version != TENSOR_CONTRACT_VERSION or item.timestamp_spec_version != TIMESTAMP_SPEC_VERSION:
+        raise TensorContractError("tensor/timestamp contract version mismatch")
+    if item.feature_schema_version != feature_schema.version:
+        raise TensorContractError("feature schema version mismatch")
+    if feature_schema.schema_sha256 is not None and item.feature_schema_sha256 != feature_schema.schema_sha256:
+        raise TensorContractError("feature schema hash mismatch")
+    if not feature_schema.feature_names or len(set(feature_schema.feature_names)) != feature_schema.feature_dim:
+        raise TensorContractError("feature names must be nonempty, unique, and ordered")
+    if item.temporal_feature_names != feature_schema.feature_names:
+        raise TensorContractError("temporal feature order mismatch")
+    if item.history_dtype != HISTORY_DTYPE or item.padding_mask_dtype != MASK_DTYPE or item.observation_mask_dtype != MASK_DTYPE:
+        raise TensorContractError("history/mask dtype mismatch")
+    feature_dim = feature_schema.feature_dim
+    _validate_matrix_shape(item.history_values, SEQUENCE_LENGTH, feature_dim, "history_values")
+    _validate_matrix_shape(item.observation_mask, SEQUENCE_LENGTH, feature_dim, "observation_mask")
+    _validate_matrix_shape(item.tslo_hours, SEQUENCE_LENGTH, feature_dim, "tslo_hours")
+    if len(item.padding_mask) != SEQUENCE_LENGTH or any(not isinstance(v, bool) for v in item.padding_mask):
+        raise TensorContractError("padding_mask must be boolean [8]")
+    valid_seen = False
+    for b in range(SEQUENCE_LENGTH):
+        padded = item.padding_mask[b]
+        if not padded:
+            valid_seen = True
+        elif valid_seen:
+            raise TensorContractError("padding must be a contiguous prefix")
+        for f in range(feature_dim):
+            value, observed, tslo = item.history_values[b][f], item.observation_mask[b][f], item.tslo_hours[b][f]
+            if not isinstance(observed, bool) or not _is_number(tslo):
+                raise TensorContractError("mask must be boolean and TSLO finite")
+            if padded and (value is not None or observed):
+                raise TensorContractError("padded bins cannot contain clinical values or observations")
+            if padded and tslo != feature_schema.tslo_no_observation_value:
+                raise TensorContractError("padded bins must use the frozen TSLO sentinel")
+            if not padded and observed != (value is not None):
+                raise TensorContractError("Phase-7 no-carry value and observation mask must agree")
+            if value is not None and not _is_number(value):
+                raise TensorContractError("temporal values must be finite numeric or null")
+    expected_static = feature_schema.static_feature_names
+    if expected_static is None or item.static_feature_names != expected_static or len(item.static_features) != len(expected_static):
+        raise TensorContractError("raw static feature order/shape mismatch")
+    if any(value is None or isinstance(value, bool) or not isinstance(value, (str, int, float)) for value in item.static_features):
+        raise TensorContractError("raw statics must be non-null scalar preprocessor inputs")
 
 
 def validate_canonical_example(
@@ -533,7 +621,7 @@ def deserialize_canonical_dataset(
     return dataset
 
 
-def temporal_information_views(example: CanonicalExample) -> Mapping[str, object]:
+def temporal_information_views(example: Union[CanonicalExample, CanonicalFeatureInput]) -> Mapping[str, object]:
     """Expose parity views without adding model-family-specific information."""
 
     history_flat = tuple(value for row in example.history_values for value in row)
