@@ -1954,7 +1954,7 @@
         },
         {
           "path": "tests/test_support_endpoint_freeze.py",
-          "sha256": "37b1f68a1a0253977a8b4fea57e757b032a3f1ca8750c67098bb41500f13707b"
+          "sha256": "aa1787273fb9ea527e78c205a2296fe3c5ecb35a4beaab7cd7fe4fe01e2425a5"
         },
         {
           "path": "tests/test_support_loss.py",

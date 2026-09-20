@@ -41,7 +41,10 @@ def test_real_freeze_audit_is_blocked_without_accessing_labels():
     assert "phase2_ventilation_real_definition" in audit["blockers"]
     assert "phase3_composite_real_definition" in audit["blockers"]
     assert "team_endpoint_signoff" in audit["blockers"]
-    assert "repository_commit_provenance" in audit["blockers"]
+    assert "repository_commit_provenance" not in audit["blockers"]
+    assert isinstance(audit["code_commit"], str)
+    assert len(audit["code_commit"]) == 40
+    int(audit["code_commit"], 16)
 
 
 def test_real_freeze_creation_refuses_and_writes_nothing(tmp_path):
@@ -102,4 +105,3 @@ def test_signoff_file_contains_no_fabricated_approvals():
     signoff = json.loads((ROOT / "configs/support_endpoint_signoff_v1.json").read_text())
     assert signoff["schema_status"].startswith("UNLOCKED_")
     assert {entry["decision"] for entry in signoff["reviewers"].values()} == {"PENDING"}
-
