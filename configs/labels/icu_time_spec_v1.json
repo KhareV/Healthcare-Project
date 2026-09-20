@@ -1,0 +1,15 @@
+{
+  "specification_version": "synthetic_remaining_episode_time_v1",
+  "status": "PHASE8_FROZEN",
+  "task": "icu_time",
+  "scientific_name": "remaining current synthetic ICU-like critical-care episode time",
+  "source_boundary": "retained current episode outtime",
+  "remaining_formula": "(outtime-prediction_time).total_seconds()/3600",
+  "target_formula": "log1p(remaining_hours)",
+  "raw_units": "hours",
+  "eligibility_source": "icu_time_temporally_eligible from timestamp_spec_v1",
+  "clipping": "NONE",
+  "target_scaler": "NONE",
+  "prediction_postprocess": "existing expm1(max(0,prediction)) is serving-only",
+  "prohibited": ["hospital_discharge", "hospital_length_of_stay", "survival_time", "recovery_time", "bin_count_approximation", "rounding", "outtime_as_model_input"]
+}

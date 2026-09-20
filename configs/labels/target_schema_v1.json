@@ -1,0 +1,21 @@
+{
+  "schema_version": "synthetic_phase8_target_schema_v1",
+  "status": "PHASE8_PARTIAL_RECOVERY_DEPENDENCY_EXPLICIT",
+  "identity": ["subject_id", "stay_id", "prediction_time", "grid_index"],
+  "join_key": ["stay_id", "prediction_time"],
+  "recovery_horizon_order": ["delta_sofa_24h", "delta_sofa_48h"],
+  "fields": {
+    "recovery24_structurally_eligible": "boolean",
+    "recovery48_structurally_eligible": "boolean",
+    "recovery24_eligible": "boolean_or_null_when_generation_blocked",
+    "recovery48_eligible": "boolean_or_null_when_generation_blocked",
+    "delta_sofa_24": "number_or_null",
+    "delta_sofa_48": "number_or_null",
+    "icu_time_eligible": "boolean",
+    "remaining_hours": "positive_number",
+    "icu_time_log1p": "positive_number"
+  },
+  "organ_support_fields": "NOT_OWNED_PHASE9",
+  "split": "ABSENT_PHASE10",
+  "preprocessing": "ABSENT_PHASE10"
+}

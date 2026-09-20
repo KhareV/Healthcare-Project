@@ -1,0 +1,18 @@
+{
+  "specification_version": "synthetic_recovery_labels_v1",
+  "status": "ENGINE_IMPLEMENTED_FINAL_ARTIFACT_BLOCKED_PHASE9_SUPPORT",
+  "task": "recovery",
+  "horizon_order": ["delta_sofa_24h", "delta_sofa_48h"],
+  "horizons_hours": [24, 48],
+  "formula_24h": "SOFA(t+24h)-SOFA(t)",
+  "formula_48h": "SOFA(t+48h)-SOFA(t)",
+  "same_baseline_required": true,
+  "independent_horizons": true,
+  "units": "SOFA points",
+  "clipping": "NONE",
+  "temporal_availability_source": "Phase-4 structural index flags from timestamp_spec_v1",
+  "ineligible_target": null,
+  "missing_component_convention": "INHERIT_SYNTHETIC_STANDARD_SOFA_V1_ZERO_POINTS_OBSERVED_FALSE",
+  "sofa_spec": {"path": "configs/synthetic/sofa_spec_v1.json", "version": "synthetic_standard_sofa_v1", "sha256": "900504be9b2d1186c15b5893fcd1ea5e4aa3d3c54c60b44d7b4b0079c79e4c13"},
+  "prohibited": ["horizon_chaining", "categorical_trajectory", "sign_reversal", "target_clipping", "target_standardization", "complete_component_filter", "fifty_percent_filter", "future_score_as_model_input"]
+}

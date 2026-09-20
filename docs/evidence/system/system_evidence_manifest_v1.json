@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "2b09ed97f7b09a2c34feecb2dc39ca641be43c04e83c444e2dd44aaa7c6ad19f",
+      "output_sha256": "e6cede0d16e6e1f6920673201b0b7439aab2ff9f487d320558530c88f3c10eea",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1037,6 +1037,10 @@
           "sha256": "fb8149b5ffa9c450c015e14eeacaaddd9298fa116c3cd0479b6d6899b2887d7b"
         },
         {
+          "path": "src/labels/icu_time.py",
+          "sha256": "06cfeb3d29e3bb6d54260fcad84925a40371d6885b47d6514d663b4e9bdc8e59"
+        },
+        {
           "path": "src/labels/organ_support.py",
           "sha256": "216f066ed837a634b66cb5aa0e7741c5dcfb914243e1b0eb03c8198ed67c3058"
         },
@@ -1045,12 +1049,20 @@
           "sha256": "2a5eee8a2a5ce8b696c8852b4f969e2619a88e675cbf579be134cc487346b392"
         },
         {
+          "path": "src/labels/recovery.py",
+          "sha256": "700fafda4b0e24f825ae9f704cdaa3f0dd619c5147ba6f934018a2eedb64f775"
+        },
+        {
           "path": "src/labels/support_prevalence.py",
           "sha256": "892788cadef66561a8791374fbe54ed290ea66ea6c7346dcba4bae0cb529d74b"
         },
         {
           "path": "src/labels/support_state.py",
           "sha256": "ebb7674fea80ea6b207244aba3c2ab37dedc9d172948be83c12c10fe177e1167"
+        },
+        {
+          "path": "src/labels/synthetic_manifest.py",
+          "sha256": "e7eec247372e953cf37fcaf89d67f3de946f20bb1247a2266baa4e6ebe528208"
         },
         {
           "path": "src/labels/ventilation_state.py",
@@ -1853,6 +1865,22 @@
           "sha256": "b0005bdbcf190e127388ad950b2303c3487345da0530ca4c74ba9384b626cd5c"
         },
         {
+          "path": "tests/test_phase8_icu_time_labels.py",
+          "sha256": "13ab63793d39ccd36991faa2c28d5323c0c74a9e0d88b04069d0c4be9d06b8f1"
+        },
+        {
+          "path": "tests/test_phase8_label_feature_isolation.py",
+          "sha256": "07490db3a105fb72007665c1b634c6eeeceaca277ed81643025442de60498641"
+        },
+        {
+          "path": "tests/test_phase8_recovery_labels.py",
+          "sha256": "2525f0cd31ebad53a94da86e761e96b1da98a1a9febb485f510a6e359d38d546"
+        },
+        {
+          "path": "tests/test_phase8_target_manifest.py",
+          "sha256": "8b1189850fe40a436039ba47f3b1a4e597771542ed7cadb16f9db4a4a632a35b"
+        },
+        {
           "path": "tests/test_prediction_pipeline.py",
           "sha256": "e0f722b726201cbe41aba9f31b24a6ea51f9ee1691ded43aeb0aaf993d22f3e8"
         },
@@ -2329,6 +2357,22 @@
           "sha256": "4fcab7045b30b631bdbb9e8219226c93288d6ef1c2550125d3456ab431d04994"
         },
         {
+          "path": "configs/labels/icu_time_spec_v1.json",
+          "sha256": "c64c69d95c14f3df7e6c8d45f28b1098b585e0b81c7e19119370acb8a0f8f420"
+        },
+        {
+          "path": "configs/labels/recovery_spec_v1.json",
+          "sha256": "102fc750d8f63c8caba94b7373c12c156e6c39b002d7ac197a3f2592624085eb"
+        },
+        {
+          "path": "configs/labels/target_provenance_v1.json",
+          "sha256": "2b43fc2aafdaec014bda7a04befd3cbf94cea3351129ee257568cbf440853cf3"
+        },
+        {
+          "path": "configs/labels/target_schema_v1.json",
+          "sha256": "498e4ff7674bad3bbbb0d7953a1db0dba10ef19b733c3b549d3b5589ffa4a019"
+        },
+        {
           "path": "configs/prediction_schema_v1.json",
           "sha256": "db99a539c41a1e86a4bd3b9f6317aaf73a8481f8396854e6749cbb80869fc265"
         },
@@ -2446,7 +2490,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "3639e0d72017449853893fb0dc597f9c9f5666eb8483a5ee8b788dd36a43237e",
+      "output_sha256": "f2037f2f35f7028e3d97c6c58aa5dba2a7c6b2bbc98ad7375cbeac2faf7a2f09",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2484,7 +2528,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "200af7c18ee928d752326119e10850dc45822c31ead019e92a99e8194a388702",
+      "output_sha256": "016b299eb5c050685a7163b33dd897e15cecd6a89909696116a6c92fc28a97d9",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2505,7 +2549,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "aadddb7dca466937da83075ee3587ee8297262171bbc4f97386093b243e4a682",
+      "output_sha256": "c45fe293ce55560e6298cb4778c9827c9128d888d950870f8f8c920b0561a571",
       "scope": "repository",
       "source_artifacts": [
         {

@@ -1,0 +1,11 @@
+{
+  "provenance_version": "synthetic_phase8_target_provenance_v1",
+  "targets": [
+    {"field":"delta_sofa_24","task":"recovery24","source_fields":["stay_id","prediction_time","recovery24_followup_available"],"future_dependency":"SOFA(t+24h)","formula":"SOFA(t+24h)-SOFA(t)","units":"SOFA points","eligibility_source":"recovery24_followup_available plus executable Phase-6 SOFA","leakage_role":"LABEL_ONLY_FUTURE","model_input":false,"derivation_version":"synthetic_recovery_labels_v1"},
+    {"field":"delta_sofa_48","task":"recovery48","source_fields":["stay_id","prediction_time","recovery48_followup_available"],"future_dependency":"SOFA(t+48h)","formula":"SOFA(t+48h)-SOFA(t)","units":"SOFA points","eligibility_source":"recovery48_followup_available plus executable Phase-6 SOFA","leakage_role":"LABEL_ONLY_FUTURE","model_input":false,"derivation_version":"synthetic_recovery_labels_v1"},
+    {"field":"remaining_hours","task":"icu_time","source_fields":["prediction_time","current_episode_outtime","icu_time_temporally_eligible"],"future_dependency":"current retained episode boundary","formula":"(outtime-t).total_seconds()/3600","units":"hours","eligibility_source":"icu_time_temporally_eligible","leakage_role":"STRUCTURAL_LABEL_ONLY","model_input":false,"derivation_version":"synthetic_remaining_episode_time_v1"},
+    {"field":"icu_time_log1p","task":"icu_time","source_fields":["remaining_hours"],"future_dependency":"current retained episode boundary","formula":"log1p(remaining_hours)","units":"log-hours","eligibility_source":"icu_time_temporally_eligible","leakage_role":"LABEL_ONLY","model_input":false,"derivation_version":"synthetic_remaining_episode_time_v1"}
+  ],
+  "support_targets": "NOT_CREATED_PHASE9",
+  "split": "NOT_ASSIGNED_PHASE10"
+}
