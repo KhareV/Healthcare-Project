@@ -1,0 +1,15 @@
+{
+  "schema_version":"synthetic_canonical_statics_v1",
+  "status":"PHASE5_STATIC_AND_STRUCTURAL_METADATA",
+  "additional_fields_allowed":false,
+  "fields":[
+    {"name":"subject_id","role":"INDEX_ROUTING","model_eligible":false,"provenance":"Phase-3 subject identity"},
+    {"name":"stay_id","role":"INDEX_ROUTING","model_eligible":false,"provenance":"Phase-4 retained stay"},
+    {"name":"age_years","role":"STATIC_MODEL_CANDIDATE_PHASE7_PENDING","model_eligible":"PHASE7_DECISION_PENDING","provenance":"Phase-3 subject static"},
+    {"name":"sex_category","role":"STATIC_MODEL_CANDIDATE_PHASE7_PENDING","model_eligible":"PHASE7_DECISION_PENDING","provenance":"Phase-3 subject static"},
+    {"name":"cardiac_condition_group","role":"STATIC_MODEL_CANDIDATE_PHASE7_PENDING","model_eligible":"PHASE7_DECISION_PENDING","provenance":"Phase-3 cardiac population static"},
+    {"name":"intime","role":"STRUCTURAL_ONLY","model_eligible":false,"provenance":"Phase-3 explicit episode boundary"},
+    {"name":"outtime","role":"STRUCTURAL_LABEL_ONLY","model_eligible":false,"provenance":"Phase-3 explicit episode boundary"},
+    {"name":"provenance_id","role":"PROVENANCE_ONLY","model_eligible":false,"provenance":"Phase-5 static lineage registry key"}
+  ]
+}

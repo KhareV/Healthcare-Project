@@ -1,0 +1,25 @@
+{
+  "concept_map_version":"synthetic_concept_map_v1",
+  "input_stage":"RAW_PHASE3_SYNTHETIC_EVENTS",
+  "output_stage":"CANONICAL_TIMELINE",
+  "unknown_concept_policy":"HARD_FAILURE",
+  "unsupported_unit_policy":"HARD_FAILURE",
+  "invalid_value_policy":"HARD_FAILURE_NO_CLIPPING",
+  "mappings":{
+    "pao2":{"canonical_concept":"pao2","event_kind":"point","raw_unit":"mmHg","canonical_unit":"mmHg","conversion":"IDENTITY","value_type":"number","domain":[20.0,600.0],"provenance_id":"PROV-RAW-PAO2-V1","sofa_dependency":"RESPIRATORY","support_dependency":"VENTILATION_CONTEXT_DEFERRED_PHASE9"},
+    "fio2":{"canonical_concept":"fio2","event_kind":"point","raw_unit":"fraction","canonical_unit":"fraction","conversion":"IDENTITY","value_type":"number","domain":[0.21,1.0],"provenance_id":"PROV-RAW-FIO2-V1","sofa_dependency":"RESPIRATORY","support_dependency":"VENTILATION_CONTEXT_DEFERRED_PHASE9"},
+    "platelet_count":{"canonical_concept":"platelet_count","event_kind":"point","raw_unit":"10^9/L","canonical_unit":"10^9/L","conversion":"IDENTITY","value_type":"number","domain":[1.0,1000.0],"provenance_id":"PROV-RAW-PLATELET-V1","sofa_dependency":"COAGULATION","support_dependency":"NONE"},
+    "bilirubin_total":{"canonical_concept":"bilirubin_total","event_kind":"point","raw_unit":"mg/dL","canonical_unit":"mg/dL","conversion":"IDENTITY","value_type":"number","domain":[0.0,50.0],"provenance_id":"PROV-RAW-BILIRUBIN-V1","sofa_dependency":"LIVER","support_dependency":"NONE"},
+    "mean_arterial_pressure":{"canonical_concept":"mean_arterial_pressure","event_kind":"point","raw_unit":"mmHg","canonical_unit":"mmHg","conversion":"IDENTITY","value_type":"number","domain":[20.0,200.0],"provenance_id":"PROV-RAW-MAP-V1","sofa_dependency":"CARDIOVASCULAR","support_dependency":"VASOPRESSOR_CONTEXT_DEFERRED_PHASE9"},
+    "glasgow_coma_scale":{"canonical_concept":"glasgow_coma_scale","event_kind":"point","raw_unit":"score","canonical_unit":"score","conversion":"IDENTITY","value_type":"integer","domain":[3,15],"provenance_id":"PROV-RAW-GCS-V1","sofa_dependency":"CNS","support_dependency":"NONE"},
+    "creatinine":{"canonical_concept":"creatinine","event_kind":"point","raw_unit":"mg/dL","canonical_unit":"mg/dL","conversion":"IDENTITY","value_type":"number","domain":[0.1,20.0],"provenance_id":"PROV-RAW-CREATININE-V1","sofa_dependency":"RENAL","support_dependency":"NONE"},
+    "urine_output_volume":{"canonical_concept":"urine_output_volume","event_kind":"quantity_interval","raw_unit":"mL","canonical_unit":"mL","conversion":"IDENTITY","value_type":"number","domain":[0.0,10000.0],"provenance_id":"PROV-RAW-URINE-V1","sofa_dependency":"RENAL","support_dependency":"NONE"},
+    "heart_rate":{"canonical_concept":"heart_rate","event_kind":"point","raw_unit":"beats/min","canonical_unit":"beats/min","conversion":"IDENTITY","value_type":"number","domain":[20.0,250.0],"provenance_id":"PROV-RAW-HR-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "systolic_blood_pressure":{"canonical_concept":"systolic_blood_pressure","event_kind":"point","raw_unit":"mmHg","canonical_unit":"mmHg","conversion":"IDENTITY","value_type":"number","domain":[40.0,300.0],"provenance_id":"PROV-RAW-SBP-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "diastolic_blood_pressure":{"canonical_concept":"diastolic_blood_pressure","event_kind":"point","raw_unit":"mmHg","canonical_unit":"mmHg","conversion":"IDENTITY","value_type":"number","domain":[20.0,200.0],"provenance_id":"PROV-RAW-DBP-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "respiratory_rate":{"canonical_concept":"respiratory_rate","event_kind":"point","raw_unit":"breaths/min","canonical_unit":"breaths/min","conversion":"IDENTITY","value_type":"number","domain":[4.0,60.0],"provenance_id":"PROV-RAW-RR-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "oxygen_saturation":{"canonical_concept":"oxygen_saturation","event_kind":"point","raw_unit":"percent","canonical_unit":"percent","conversion":"IDENTITY","value_type":"number","domain":[50.0,100.0],"provenance_id":"PROV-RAW-SPO2-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "temperature":{"canonical_concept":"temperature","event_kind":"point","raw_unit":"degree_Celsius","canonical_unit":"degree_Celsius","conversion":"IDENTITY","value_type":"number","domain":[30.0,43.0],"provenance_id":"PROV-RAW-TEMP-V1","sofa_dependency":"NONE","support_dependency":"NONE"},
+    "lactate":{"canonical_concept":"lactate","event_kind":"point","raw_unit":"mmol/L","canonical_unit":"mmol/L","conversion":"IDENTITY","value_type":"number","domain":[0.1,30.0],"provenance_id":"PROV-RAW-LACTATE-V1","sofa_dependency":"NONE","support_dependency":"NONE"}
+  }
+}

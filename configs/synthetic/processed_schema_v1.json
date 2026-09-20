@@ -1,0 +1,27 @@
+{
+  "schema_version":"synthetic_processed_timeline_v1",
+  "status":"DRAFT_PHASE5_CANONICAL_EVENT_CONTRACT",
+  "stage":"CANONICAL_TIMELINE",
+  "additional_fields_allowed":false,
+  "event_time_field":"event_time",
+  "ordering":["subject_id","stay_id","event_time","canonical_concept","event_id"],
+  "fields":[
+    {"name":"event_id","type":"string","nullable":false,"role":"PROVENANCE_ONLY","model_eligible":false},
+    {"name":"subject_id","type":"string","nullable":false,"role":"INDEX_ROUTING","model_eligible":false},
+    {"name":"stay_id","type":"string","nullable":false,"role":"INDEX_ROUTING","model_eligible":false},
+    {"name":"event_time","type":"timestamp_utc","nullable":false,"role":"EVENT_AVAILABILITY","model_eligible":false},
+    {"name":"interval_start","type":"timestamp_utc","nullable":true,"role":"EVENT_SEMANTICS","model_eligible":false},
+    {"name":"interval_end","type":"timestamp_utc","nullable":true,"role":"EVENT_SEMANTICS","model_eligible":false},
+    {"name":"canonical_concept","type":"string","nullable":false,"role":"MODEL_ELIGIBLE_RAW_CANDIDATE","model_eligible":"PHASE7_DECISION_PENDING"},
+    {"name":"value_numeric","type":"number","nullable":false,"role":"MODEL_ELIGIBLE_RAW_CANDIDATE","model_eligible":"PHASE7_DECISION_PENDING"},
+    {"name":"unit","type":"string","nullable":false,"role":"SCIENTIFIC_SEMANTICS","model_eligible":false},
+    {"name":"event_kind","type":"string","nullable":false,"role":"EVENT_SEMANTICS","model_eligible":false},
+    {"name":"provenance_id","type":"string","nullable":false,"role":"PROVENANCE_ONLY","model_eligible":false},
+    {"name":"source_concept","type":"string","nullable":false,"role":"PROVENANCE_ONLY","model_eligible":false},
+    {"name":"source_schema_version","type":"string","nullable":false,"role":"PROVENANCE_ONLY","model_eligible":false},
+    {"name":"normalization_version","type":"string","nullable":false,"role":"PROVENANCE_ONLY","model_eligible":false}
+  ],
+  "event_kinds":["point","quantity_interval"],
+  "event_availability_semantics":"event_time is the first instant the complete observation is available; quantity_interval event_time equals interval_end",
+  "prohibited_fields":["trajectory","trajectory_pattern","deterioration_class","outcome_class","latent_state","future_state","total_episode_duration","remaining_stay","max_future_value","final_severity","future_sofa","delta_sofa","support_label","censor_reason","split","anchor_year_group"]
+}
