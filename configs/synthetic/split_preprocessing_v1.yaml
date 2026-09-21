@@ -1,0 +1,53 @@
+contract_version: synthetic_split_preprocessing_v1
+status: FROZEN_SYNTHETIC_AUTHORIZED
+decision_authority: USER_DELEGATED_AI_PROJECT_DECISION
+scope: AUTHORIZED_FINAL_SYNTHETIC_BENCHMARK_ONLY
+
+split:
+  artifact_version: synthetic_subject_split_v2
+  unit: subject_id
+  method: SEEDED_SHA256_RANK_EXACT_COUNT
+  seed: 20260921
+  hash_namespace: healthcare-project/synthetic-subject-split/v2
+  fractions:
+    train: 0.70
+    validation: 0.15
+    test: 0.15
+  count_rounding: LARGEST_REMAINDER_TRAIN_VALIDATION_TEST_TIE_ORDER
+  stratification: NONE
+  labels_or_performance_used: false
+  fake_calendar_fields_allowed: false
+  row_level_assignment_allowed: false
+  duplicate_or_clone_cross_split_allowed: false
+  clone_policy: GROUP_EXACT_RAW_TRAJECTORY_FINGERPRINTS_BEFORE_ASSIGNMENT
+  final_test_access: SEALED_UNTIL_G3_EQUIVALENT_FREEZE
+
+feature_preprocessing:
+  artifact_version: synthetic_feature_preprocessor_v1
+  fit_partition: train
+  dynamic_imputation: TRAIN_GENUINE_OBSERVATION_MEDIAN_PER_CHANNEL
+  dynamic_scaling: TRAIN_ACTIVE_BIN_POPULATION_ZSCORE_AFTER_IMPUTATION
+  zero_variance_policy: UNIT_SCALE
+  padding_output_value: 0.0
+  observation_mask: PRESERVE_GENUINE_OBSERVATION_BITS
+  padding_mask: PRESERVE_STRUCTURAL_PADDING_BITS
+  tslo_transform: IDENTITY_FROZEN_HOURS
+  tslo_no_observation_sentinel: 54.0
+  static_age_transform: TRAIN_POPULATION_ZSCORE
+  static_categorical_encoding: TRAIN_VOCABULARY_FULL_ONE_HOT_WITH_UNKNOWN_BUCKET
+  unknown_category_token: __UNKNOWN__
+  validation_or_test_statistics_used: false
+
+target_preprocessing:
+  recovery: TRAIN_ELIGIBLE_PER_HORIZON_POPULATION_ZSCORE
+  icu_time: IDENTITY_ALREADY_LOG1P_HOURS
+  organ_support_class_weight: TRAIN_ELIGIBLE_NEGATIVE_OVER_POSITIVE
+  validation_or_test_statistics_used: false
+
+governance:
+  generator_reconfiguration_after_split: PROHIBITED_FOR_PERFORMANCE_OR_PREVALENCE
+  model_training: NOT_PART_OF_PHASE10
+  hyperparameter_search: NOT_PART_OF_PHASE10
+  calibration: NOT_PART_OF_PHASE10
+  threshold_selection: NOT_PART_OF_PHASE10
+  final_test_evaluation: NOT_PART_OF_PHASE10

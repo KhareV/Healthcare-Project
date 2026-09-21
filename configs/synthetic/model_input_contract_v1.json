@@ -1,0 +1,57 @@
+{
+  "contract_version": "synthetic_model_input_contract_v1",
+  "status": "FROZEN_SYNTHETIC_AUTHORIZED",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "source_feature_schema_version": "synthetic_feature_schema_v2",
+  "sequence": {
+    "shape": ["B", 8, 21],
+    "dtype": "float32",
+    "field": "sequence_values",
+    "missing_cells": "TRAIN_MEDIAN_IMPUTED_THEN_TRAIN_ZSCORED",
+    "padding_cells": 0.0
+  },
+  "observation_mask": {
+    "shape": ["B", 8, 21],
+    "dtype": "bool",
+    "semantics": "UNCHANGED_GENUINE_IN_BIN_EVIDENCE"
+  },
+  "tslo_hours": {
+    "shape": ["B", 8, 21],
+    "dtype": "float32",
+    "transform": "IDENTITY",
+    "no_observation_sentinel": 54.0
+  },
+  "padding_mask": {
+    "shape": ["B", 8],
+    "dtype": "bool",
+    "semantics": "UNCHANGED_STRUCTURAL_PREFIX_PADDING"
+  },
+  "static_features": {
+    "shape": ["B", 8],
+    "dtype": "float32",
+    "ordered_names": [
+      "age_years__z",
+      "sex_category==FEMALE",
+      "sex_category==MALE",
+      "sex_category==__UNKNOWN__",
+      "cardiac_condition_group==SYNTHETIC_ARRHYTHMIA",
+      "cardiac_condition_group==SYNTHETIC_HF",
+      "cardiac_condition_group==SYNTHETIC_ISCHEMIC",
+      "cardiac_condition_group==__UNKNOWN__"
+    ],
+    "temporal_repetition": false
+  },
+  "information_parity": {
+    "gru": "sequence, observation mask, TSLO, padding mask, and static vector in structured form",
+    "xgboost": "row-major flattening of the same four temporal fields followed by the identical static vector",
+    "xgboost_only_features_allowed": false,
+    "gru_only_features_allowed": false,
+    "xgboost_flat_dimension": 520
+  },
+  "target_transforms": {
+    "recovery": "separate frozen train-fit z-score for 24h and 48h",
+    "icu_time": "identity on existing log1p-hours target",
+    "organ_support": "identity binary target with frozen train-fit positive class weight"
+  },
+  "final_test": "SEALED_UNTIL_G3_EQUIVALENT_FREEZE"
+}

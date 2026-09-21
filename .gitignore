@@ -28,6 +28,7 @@ artifacts/data/synthetic/cohorts/final/
 artifacts/data/synthetic/timelines/final/
 artifacts/data/synthetic/features/final/
 artifacts/data/synthetic/pre_split/final/
+artifacts/data/synthetic/phase10/final/
 artifacts/test-results/
 
 # Read-only historical/reference repository; never vendor as an embedded Git repo.
