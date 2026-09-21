@@ -15,7 +15,7 @@
       "model_family": null,
       "notes": "phase22 outputs excluded to prevent self-referential evidence hashes",
       "output_path": "docs/evidence/models/manifests/artifacts_input_snapshot.csv",
-      "output_sha256": "916fa860f2fb58bc2944b37d2feaa57593075ddc8717394fe5ad2f2329a36456",
+      "output_sha256": "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af",
       "run_ids": [],
       "split": null,
       "status": "FINAL",
@@ -35,10 +35,10 @@
         "src/models/gru_support.py"
       ],
       "input_hashes": [
-        "483ec3c360b8614c454b42f38c4b35dcbb15c5467416b5645d6a5b55b4c09d09",
-        "f128fd0a322af2653f4d30995651ff1259c581f49a1511e133ad6209cf854ff4",
-        "2f16b8a6c382549f582313b30658759b45c993362cb5b9eed5a9dce170a93fe0",
-        "88f9e2e9cd176c88e2a01d2640006f2cbdd9ba151e356dff8ddd51c41814024f"
+        "91d84f1cf14b03587e0abfe6c43819aa63df0bc98d7d709b3d051157e5441e6f",
+        "7d43a68355a41a39619796b7f9a1a0df57d61b56f590df7db9754d33837d3ca4",
+        "5ca3348d3a522a711a5baee49fd57238344601ffd0e7ff0d0776e6ab7b1f2027",
+        "d1f963dce9cb2746f7b9458c11b32e2d2ccbfb3177f4a45cbf68a231ee674afa"
       ],
       "model_family": null,
       "notes": "",
@@ -373,7 +373,7 @@
         "artifacts/reproducibility/reproduction_report_v1.json"
       ],
       "input_hashes": [
-        "916fa860f2fb58bc2944b37d2feaa57593075ddc8717394fe5ad2f2329a36456",
+        "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af",
         "714d84bce5abdd29c3132bddad5731f9a410f6e0cd9e4f75e398f0fcbb5d1110"
       ],
       "model_family": null,
@@ -396,12 +396,12 @@
         "docs/evidence/models/manifests/artifacts_input_snapshot.csv"
       ],
       "input_hashes": [
-        "916fa860f2fb58bc2944b37d2feaa57593075ddc8717394fe5ad2f2329a36456"
+        "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af"
       ],
       "model_family": null,
       "notes": "",
       "output_path": "docs/evidence/models/manifests/artifact_hashes.csv",
-      "output_sha256": "0c1ab059890d54935302ab05c0edf88e0a5eb21b4378e9bfdce977645a0be5a6",
+      "output_sha256": "fbbdff97c377f7af09625ddd72dce69187ca8bf65e1265f2823285d5f70b4905",
       "run_ids": [],
       "split": null,
       "status": "FINAL",

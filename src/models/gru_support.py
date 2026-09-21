@@ -28,7 +28,7 @@ class OrganSupportGRU(torch.nn.Module):
     def __init__(self, config: GRUEncoderConfig) -> None:
         super().__init__()
         self.encoder = GRUEncoder(config)
-        self.head = torch.nn.Linear(config.hidden_dim, 1)
+        self.head = torch.nn.Linear(self.encoder.output_dim, 1)
 
     @property
     def model_config(self):

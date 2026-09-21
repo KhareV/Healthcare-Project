@@ -27,7 +27,7 @@ class RecoveryGRU(torch.nn.Module):
     def __init__(self, config: GRUEncoderConfig) -> None:
         super().__init__()
         self.encoder = GRUEncoder(config)
-        self.head = torch.nn.Linear(config.hidden_dim, len(RECOVERY_HORIZON_ORDER))
+        self.head = torch.nn.Linear(self.encoder.output_dim, len(RECOVERY_HORIZON_ORDER))
 
     @property
     def horizon_order(self):

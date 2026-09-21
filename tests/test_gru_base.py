@@ -73,14 +73,17 @@ class GRUEncoderTests(unittest.TestCase):
         with self.assertRaises(ModelContractError):
             GRUEncoder(legal_config(feature_dim=3))(batch)
 
-    def test_static_input_is_rejected_while_contract_is_blocked(self):
+    def test_static_input_is_explicitly_dimensioned_and_concatenated(self):
         batch = validation_batch()
         with self.assertRaises(ModelContractError):
             GRUEncoder(legal_config())(
                 replace(batch, static_features=torch.zeros((3, 2)))
             )
+        configured = GRUEncoder(legal_config(static_dim=2))
+        output = configured(replace(batch, static_features=torch.zeros((3, 2))))
+        self.assertEqual(tuple(output.shape), (3, 66))
         with self.assertRaises(ModelContractError):
-            legal_config(static_dim=2).validate()
+            configured(batch)
 
     def test_bidirectional_and_out_of_search_configuration_fail(self):
         for changes in (

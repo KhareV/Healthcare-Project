@@ -1,0 +1,39 @@
+{
+  "contract_version": "synthetic_gru_xgb_information_parity_v1",
+  "status": "FROZEN_SYNTHETIC_AUTHORIZED",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "common_input": "synthetic_model_input_contract_v1",
+  "temporal_feature_count": 21,
+  "temporal_bins": 8,
+  "encoded_static_count": 8,
+  "required_information": [
+    "sequence_values",
+    "observation_mask",
+    "tslo_hours",
+    "padding_mask",
+    "static_features"
+  ],
+  "gru_view": {
+    "representation": "STRUCTURED_SEQUENCE",
+    "sequence_values_shape": [8, 21],
+    "observation_mask_shape": [8, 21],
+    "tslo_hours_shape": [8, 21],
+    "padding_mask_shape": [8],
+    "static_features_shape": [8],
+    "include_observation_mask": true,
+    "include_tslo": true,
+    "static_dim": 8
+  },
+  "xgboost_view": {
+    "representation": "DETERMINISTIC_CONCATENATED_FLATTENING",
+    "block_order": ["value", "observation_mask", "tslo", "padding", "static"],
+    "flat_dimension": 520,
+    "dtype": "float32"
+  },
+  "allowed_difference": "REPRESENTATION_AND_MODEL_FAMILY_ONLY",
+  "xgboost_only_features_allowed": false,
+  "gru_only_features_allowed": false,
+  "identifiers_are_predictors": false,
+  "eligibility_is_predictor": false,
+  "split_is_predictor": false
+}

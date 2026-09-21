@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "ead0358035f64c0619b8ad70ee0dc994927183e9a3b0501ebad8851c13fc88de",
+      "output_sha256": "8095a9b67dd1982c84c3458309bb440bfe9dfaebaff6fc584e9ba04db09cdc17",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -829,6 +829,10 @@
           "sha256": "c7bd20e6d475ab3699fad5cbf829049311b010407bb387338dc35db5ed718e2c"
         },
         {
+          "path": "src/data/xgb_canonical.py",
+          "sha256": "9754627d24b94efe431bc4e744b177888120ab1ba1c3a128ea104947edfd8530"
+        },
+        {
           "path": "src/demo/__init__.py",
           "sha256": "f028690ef95fbf4e89d10a2e7c53a5b6da650d58f673e5a0d2896f6bd9db8757"
         },
@@ -938,7 +942,7 @@
         },
         {
           "path": "src/evidence/generate.py",
-          "sha256": "6c9014a1c0c47b82d8673a0fe0a3a9a1379c1bd2c3dc9a53bd6d622f4a1c9f3c"
+          "sha256": "0bf4ad13bb63556636d84ee01123a2d6388b68fad487b94a286544ed7df4a776"
         },
         {
           "path": "src/evidence/report_values.py",
@@ -1090,19 +1094,19 @@
         },
         {
           "path": "src/models/gru.py",
-          "sha256": "483ec3c360b8614c454b42f38c4b35dcbb15c5467416b5645d6a5b55b4c09d09"
+          "sha256": "91d84f1cf14b03587e0abfe6c43819aa63df0bc98d7d709b3d051157e5441e6f"
         },
         {
           "path": "src/models/gru_icu_time.py",
-          "sha256": "2f16b8a6c382549f582313b30658759b45c993362cb5b9eed5a9dce170a93fe0"
+          "sha256": "5ca3348d3a522a711a5baee49fd57238344601ffd0e7ff0d0776e6ab7b1f2027"
         },
         {
           "path": "src/models/gru_recovery.py",
-          "sha256": "f128fd0a322af2653f4d30995651ff1259c581f49a1511e133ad6209cf854ff4"
+          "sha256": "7d43a68355a41a39619796b7f9a1a0df57d61b56f590df7db9754d33837d3ca4"
         },
         {
           "path": "src/models/gru_support.py",
-          "sha256": "88f9e2e9cd176c88e2a01d2640006f2cbdd9ba151e356dff8ddd51c41814024f"
+          "sha256": "d1f963dce9cb2746f7b9458c11b32e2d2ccbfb3177f4a45cbf68a231ee674afa"
         },
         {
           "path": "src/models/icu_time_postprocess.py",
@@ -1114,15 +1118,23 @@
         },
         {
           "path": "src/models/lstm.py",
-          "sha256": "89dc904733cfb0d04ffe191eb68a627c2112bc616615fc8cace353ec749673b5"
+          "sha256": "ab309faca5c2287bd3c2e4b2109d7a8ce6c04e4ad24713acd95d34a71e1e9c27"
         },
         {
           "path": "src/models/recovery_output.py",
           "sha256": "e9e1cb685359aee2774da805c83a73dcc80050c3ddfae974a20a0303bc650ed7"
         },
         {
+          "path": "src/models/xgb_canonical.py",
+          "sha256": "eaa6687c3ced01450382f9bf0425c414e977a48814e434156bd2d8689edb3c89"
+        },
+        {
           "path": "src/preprocess/__init__.py",
           "sha256": "b16ecc837b0efc45057ab6f1b4e75bbad902d6ccd29983d1d079a19e19d61dad"
+        },
+        {
+          "path": "src/preprocess/synthetic_phase10.py",
+          "sha256": "7171e367bb64fab122557f953250e43b82cb8e3dc90d3111fa233cd3b3e35ba6"
         },
         {
           "path": "src/preprocess/target_scaler.py",
@@ -1766,7 +1778,7 @@
         },
         {
           "path": "tests/test_gru_base.py",
-          "sha256": "4dc02db60f7b9e7a72b572b40e3f12c8c2281c192ae1928056220813f21a5165"
+          "sha256": "cc64f15ec9a418a0db024753c81c0403babed47d88ba3bb95aab06de0cbfb03c"
         },
         {
           "path": "tests/test_gru_icu_time.py",
@@ -1879,6 +1891,10 @@
         {
           "path": "tests/test_phase0_infrastructure.py",
           "sha256": "b0005bdbcf190e127388ad950b2303c3487345da0530ca4c74ba9384b626cd5c"
+        },
+        {
+          "path": "tests/test_phase11_xgb_canonical.py",
+          "sha256": "0c6d3cf4bed5f606dfe5d13212175395c1f4062cdccd4de7f324594f7f42d054"
         },
         {
           "path": "tests/test_phase8_icu_time_labels.py",
@@ -2185,6 +2201,10 @@
           "sha256": "844cc92923bbd83a92a84f28a8e128252acb4ed05a486d36b7495e9c1e92c7b7"
         },
         {
+          "path": "tests/test_synthetic_phase10.py",
+          "sha256": "2c97a2dac3b568005b61155105f21fc888ca34826fb8e407929da0803fe5a2f5"
+        },
+        {
           "path": "tests/test_synthetic_processed_manifest.py",
           "sha256": "2a04cdb6bfc451fb8d16d4663a30e10ed1594add61d29239e8d436ee9844f12a"
         },
@@ -2417,6 +2437,10 @@
           "sha256": "c2f2148757630341ba09fc5d3d117611d9b6062bce16d001beb88bebe3de70c1"
         },
         {
+          "path": "configs/search_space_xgb_v2.json",
+          "sha256": "efbebec31ec012f6b5cacbf06948b9c90c15feb696db7c43f51d628fe1613f26"
+        },
+        {
           "path": "configs/smoke/gru_icu_time_phase6_v1.json",
           "sha256": "47d05831c49b10137591793b937bb85236505e5a75966eef88782dc154c07194"
         },
@@ -2477,8 +2501,16 @@
           "sha256": "ecb6eaac443badd7f590399a7311819de98dabce1c41d0429d533599171e0cbe"
         },
         {
+          "path": "configs/synthetic/information_parity_v1.json",
+          "sha256": "b425cd028c6473ac8f1d6e962b9c106a5ecd915438f5a2e1b60e074b3e4b4830"
+        },
+        {
           "path": "configs/synthetic/latent_process_v1.yaml",
           "sha256": "f943781f057eff8631e951bf6b667ff70c20073e060e7008e3da242f4c28082f"
+        },
+        {
+          "path": "configs/synthetic/model_input_contract_v1.json",
+          "sha256": "e594ac8577c300db57e29aa5ced145e289ef0e4388ec4d4f934c1d7729cc19c5"
         },
         {
           "path": "configs/synthetic/processed_schema_v1.json",
@@ -2491,6 +2523,10 @@
         {
           "path": "configs/synthetic/sofa_spec_v1.json",
           "sha256": "1c170bc24ebf6c0c34d203b56822d98a5e2d19ce095a991d99e9c4f662096b71"
+        },
+        {
+          "path": "configs/synthetic/split_preprocessing_v1.yaml",
+          "sha256": "a6d305d7c884b1c95d3f524ef679038564e523b4d8c8e385ac6e62483032ae0a"
         },
         {
           "path": "configs/synthetic/structural_index_schema_v2.json",
@@ -2521,6 +2557,10 @@
           "sha256": "85751b498c7529f465ace6c07fae064902f7f06d8e243000d59de31c86a0b51c"
         },
         {
+          "path": "configs/synthetic/xgb_target_contract_v1.json",
+          "sha256": "537df57a9726f8ba0465cb29d70f3f267db300fc72f93aace0a2982dc1dc0e93"
+        },
+        {
           "path": "configs/tensor_contract_v1.json",
           "sha256": "d998456430d632b81778d52f33a9b98214e3599263d443b191f5f8f75e307e9e"
         },
@@ -2542,7 +2582,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "3a3841ec8900f7df92a885a65a2941e0f233b6c7b4ed059972a68c086d3e3d0a",
+      "output_sha256": "1a4dd5591d788553bb77afa000bbc344c45a01947f9bce40d0268b692696c328",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2580,7 +2620,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "ad1fa6de276def73e4cb9d358e5a8cd24ea79c26b8b3c61a96cd0d624c12f7c8",
+      "output_sha256": "604db18c1e0750cb75afd94f66fe05d023619c4a04737b3ef3600815b96c6e99",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2589,7 +2629,7 @@
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "93ae092fdcfa4bae5e07eae1a583129c3c6142bc4bf88fa87c6383176e947fdc"
+          "sha256": "0dbbde611e9aaa7310e611ced7bcadad8b6bbd83863440de2faa273870650de5"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2601,7 +2641,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "eac801420845bb040592b2f752befc1fb1801a918ec0195247d58fdbffb9810a",
+      "output_sha256": "92787e9beebcf813927677aac965e3e9b85f9cc45fd8f41a5174ac53b2258dfc",
       "scope": "repository",
       "source_artifacts": [
         {

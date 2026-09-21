@@ -40,10 +40,8 @@ class GRUEncoderConfig:
             raise ModelContractError("dropout is outside the frozen GRU search space")
         if not self.include_observation_mask:
             raise ModelContractError("observation masks are mandatory model information")
-        if self.static_dim != 0:
-            raise ModelContractError(
-                "BLOCKED — STATIC INPUT CONTRACT REQUIRED; static_dim must remain zero"
-            )
+        if isinstance(self.static_dim, bool) or not isinstance(self.static_dim, int) or self.static_dim < 0:
+            raise ModelContractError("static_dim must be a nonnegative integer")
         if self.bidirectional:
             raise ModelContractError("bidirectional recurrent lookahead is not permitted")
 
@@ -70,6 +68,7 @@ class GRUEncoder(torch.nn.Module):
         )
         # The searched dropout is applied once to the final temporal representation.
         self.output_dropout = torch.nn.Dropout(config.dropout)
+        self.output_dim = config.hidden_dim + config.static_dim
 
     def _validate_batch(self, batch: CanonicalBatch) -> None:
         if batch.sequence.ndim != 3:
@@ -83,8 +82,13 @@ class GRUEncoder(torch.nn.Module):
             raise ModelContractError("padding_mask must have shape [B,8]")
         if batch.observation_mask.shape != batch.sequence.shape:
             raise ModelContractError("observation_mask must have shape [B,8,F]")
-        if batch.static_features is not None:
-            raise ModelContractError("BLOCKED — STATIC INPUT CONTRACT REQUIRED")
+        if self.config.static_dim == 0:
+            if batch.static_features is not None:
+                raise ModelContractError("static features are present but disabled")
+        elif batch.static_features is None or batch.static_features.shape != (batch_size, self.config.static_dim):
+            raise ModelContractError("configured static input must have shape [B,S]")
+        elif not torch.isfinite(batch.static_features).all():
+            raise ModelContractError("static features must be finite")
         if self.config.include_tslo:
             if batch.tslo is None or batch.tslo.shape != batch.sequence.shape:
                 raise ModelContractError("configured TSLO input must have shape [B,8,F]")
@@ -126,4 +130,7 @@ class GRUEncoder(torch.nn.Module):
             enforce_sorted=False,
         )
         _, hidden = self.gru(packed)
-        return self.output_dropout(hidden[-1])
+        encoded = self.output_dropout(hidden[-1])
+        if self.config.static_dim:
+            encoded = torch.cat((encoded, batch.static_features), dim=-1)
+        return encoded

@@ -33,14 +33,17 @@ class LSTMEncoder(GRUEncoder):
             enforce_sorted=False,
         )
         _, (hidden, _) = self.lstm(packed)
-        return self.output_dropout(hidden[-1])
+        encoded = self.output_dropout(hidden[-1])
+        if self.config.static_dim:
+            encoded = torch.cat((encoded, batch.static_features), dim=-1)
+        return encoded
 
 
 class RecoveryLSTM(torch.nn.Module):
     def __init__(self, config: GRUEncoderConfig) -> None:
         super().__init__()
         self.encoder = LSTMEncoder(config)
-        self.head = torch.nn.Linear(config.hidden_dim, 2)
+        self.head = torch.nn.Linear(self.encoder.output_dim, 2)
 
     @property
     def model_config(self):
@@ -61,7 +64,7 @@ class ICUTimeLSTM(torch.nn.Module):
     def __init__(self, config: GRUEncoderConfig) -> None:
         super().__init__()
         self.encoder = LSTMEncoder(config)
-        self.head = torch.nn.Linear(config.hidden_dim, 1)
+        self.head = torch.nn.Linear(self.encoder.output_dim, 1)
 
     @property
     def model_config(self):
@@ -82,7 +85,7 @@ class OrganSupportLSTM(torch.nn.Module):
     def __init__(self, config: GRUEncoderConfig) -> None:
         super().__init__()
         self.encoder = LSTMEncoder(config)
-        self.head = torch.nn.Linear(config.hidden_dim, 1)
+        self.head = torch.nn.Linear(self.encoder.output_dim, 1)
 
     @property
     def model_config(self):
