@@ -61,6 +61,7 @@ class StoredStayTimeline:
     intime: datetime
     outtime: datetime
     events: Tuple[Mapping[str, object], ...]
+    support_intervals: Tuple[Mapping[str, object], ...]
     contract: TimelineContract
     source_version: str
     source_sha256: str
@@ -74,18 +75,20 @@ class StoredStayTimeline:
         intime: datetime,
         outtime: datetime,
         events: Sequence[Mapping[str, object]],
+        support_intervals: Sequence[Mapping[str, object]] = (),
         contract: TimelineContract,
         source_version: str,
         source_sha256: str,
     ) -> "StoredStayTimeline":
         # Copy and freeze each row so truncation cannot mutate the backing store.
         frozen = tuple(MappingProxyType(dict(row)) for row in events)
+        frozen_support = tuple(MappingProxyType(dict(row)) for row in support_intervals)
         return cls(
             subject_id=subject_id,
             stay_id=stay_id,
             intime=intime,
             outtime=outtime,
-            events=frozen,
+            events=frozen, support_intervals=frozen_support,
             contract=contract,
             source_version=source_version,
             source_sha256=source_sha256,
@@ -111,6 +114,7 @@ class TruncatedStayHistory:
     intime: datetime
     outtime: datetime
     events: Tuple[Mapping[str, object], ...]
+    support_intervals: Tuple[Mapping[str, object], ...]
     contract: TimelineContract
     prediction_row: PredictionTimestamp
     trace: HistoryTrace
@@ -223,6 +227,17 @@ class SyntheticPointEventHistoryTruncator:
             if _instant(event_time) <= _instant(requested):
                 retained.append(row)
                 retained_times.append(event_time)
+        # Support intervals are a separate frozen semantic source.  Only
+        # intervals whose onset is known by the cutoff enter the builder.
+        # Their cessation bound is used internally solely for state-as-of
+        # queries and is never emitted as a predictor.
+        support_intervals = []
+        for row in timeline.support_intervals:
+            interval_start = _parse_datetime(row.get("interval_start"), "interval_start")
+            if (interval_start.utcoffset() is None) != (requested.utcoffset() is None):
+                raise HistoryContractError("support interval and cutoff timezone awareness differ")
+            if _instant(interval_start) <= _instant(requested):
+                support_intervals.append(row)
         max_time = max(retained_times, key=_instant) if retained_times else None
         trace = HistoryTrace(
             requested_cutoff=prediction_row.prediction_time.isoformat(),
@@ -237,7 +252,7 @@ class SyntheticPointEventHistoryTruncator:
             stay_id=timeline.stay_id,
             intime=timeline.intime,
             outtime=timeline.outtime,
-            events=tuple(retained),
+            events=tuple(retained), support_intervals=tuple(support_intervals),
             contract=contract,
             prediction_row=prediction_row,
             trace=trace,
