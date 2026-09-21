@@ -705,9 +705,17 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "29ad5bafad327fbac85e31e16773f548018c58c5447051fa8704d82dfbf8c72b",
+      "output_sha256": "3518b93bcfc0fa3e194f1528d57690177f39bea47d0823111947e9abe64d83dd",
       "scope": "repository",
       "source_artifacts": [
+        {
+          "path": "src/acceptance/__init__.py",
+          "sha256": "b29f63d0fd67d577f697b53adbd122cfe154b8bee6fd10e3bb294f37e4dde5ae"
+        },
+        {
+          "path": "src/acceptance/phase13.py",
+          "sha256": "4d7ec9576b99c52d2889e24bff6a26db06c5b96e4f67ebfd8135f7af376f1d83"
+        },
         {
           "path": "src/data/__init__.py",
           "sha256": "6a184f5a4d9aa19be47db1723851f2c9f255293550360e8a84c7de2b04c0800a"
@@ -1905,6 +1913,10 @@
           "sha256": "9181417e2f08d3b96816cc9e0cf7b7af764a1fec103f35fb2663e6677900ec45"
         },
         {
+          "path": "tests/test_phase13_g1_acceptance.py",
+          "sha256": "06fa6ea62cc51e2f027f20a520a958a9d5cbc6a0c0c43c1654fbd940a0ca6271"
+        },
+        {
           "path": "tests/test_phase8_icu_time_labels.py",
           "sha256": "13ab63793d39ccd36991faa2c28d5323c0c74a9e0d88b04069d0c4be9d06b8f1"
         },
@@ -2594,7 +2606,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "84a385c1959c585869d3cf3c1428d77f647149e48b36fab905b19f8639164a7f",
+      "output_sha256": "28ae5326e27f5d1def279ba93002d1f2c0bbfa65616de47d7d0049f0bad5f346",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2632,7 +2644,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "3703695add14e35553fc4364101b0abd0f4d542b297eba03363c1637c384dc78",
+      "output_sha256": "0ebceddf9d454e4bc56851d8a45dd95d22359510e52184e7640d455de82aff44",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2653,7 +2665,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "ad7966ceb3ff565e2908c435b90e33f9121111813f402e0b2e28e53de257a444",
+      "output_sha256": "494443c3ef692ca1f6ac7cee2113e3b11cd48893982db54f69bf6a5c2f4314bf",
       "scope": "repository",
       "source_artifacts": [
         {

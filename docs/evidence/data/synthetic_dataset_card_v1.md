@@ -1,0 +1,5 @@
+# Final Synthetic Cardiac Dataset Card
+
+Purpose: retrospective sequential forecasting methodology on 2,000 adult synthetic cardiac subjects, one ICU-like episode each. The canonical grid starts at +24h, advances every 6h, has at most 12 cutoffs, and uses `(t-48h,t]` in eight 6h bins. Features include 15 physiology channels plus six cutoff-safe support state/rate channels; missingness, observation masks, TSLO, and pre-ICU padding are distinct. Targets are independent 24h/48h SOFA deltas, remaining ICU-episode time, and 24h eligible OFF-to-ON support initiation. Split is deterministic 70/15/15 by subject; all learned preprocessing uses train only.
+
+Synthetic methodology benchmark only; not real-patient evidence, bedside validation, causal treatment evidence, external validation, or deployment authorization. Generated support hazards/rates are project-designed, not observed treatment statistics. Intended use is reproducible ML systems and temporal-method evaluation. Prohibited interpretations include prevalence estimation, clinical treatment effects, real-world calibration, causal inference, or clinical decision support.

@@ -1,0 +1,3 @@
+# Synthetic Circularity Threat Model
+
+PASS. Generator exports physiology and support intervals, not labels/classes/latent coordinates. Recovery is derived `future physiology -> sofa_at -> DeltaSOFA`; ICU time is derived from structural outtime; support is derived `latent/physiology/support process -> intervals -> Pulkit state engine -> OFF-to-ON endpoint`. No target is generated first and backfilled. Feature/schema commits precede Phase-12 search, and model scores/importances do not feed generator or feature code. Support-process parameters were frozen upstream of final prevalence and Phase-12 search.
