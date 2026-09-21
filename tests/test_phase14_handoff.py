@@ -140,9 +140,10 @@ def test_phase14_artifacts_are_portable_and_secret_free():
 
 
 def test_handoff_generation_is_deterministic():
-    path = build_handoff(ROOT)
+    frozen_commit = validate_handoff(ROOT)["code_commit"]
+    path = build_handoff(ROOT, code_commit=frozen_commit)
     first = path.read_bytes()
-    assert build_handoff(ROOT).read_bytes() == first
+    assert build_handoff(ROOT, code_commit=frozen_commit).read_bytes() == first
 
 
 def test_phase14_status_is_not_final_project_completion():
@@ -152,4 +153,3 @@ def test_phase14_status_is_not_final_project_completion():
     assert status["final_model_selection"] == "PENDING_DOWNSTREAM_VEDANT"
     assert status["g3"] == "NOT_CREATED"
     assert status["final_test"] == "NEVER_OPENED"
-
