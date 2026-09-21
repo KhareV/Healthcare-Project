@@ -1,0 +1,50 @@
+latent_process_version: synthetic_latent_process_v1
+status: FROZEN_SYNTHETIC_PROJECT_DESIGN
+source_type: PROJECT_SYNTHETIC_DESIGN
+decision_authority: USER_DELEGATED_AI_PROJECT_DECISION
+clinical_estimate: false
+step_hours: 1
+state_order: [systemic_severity, cardiac_stress, respiratory_burden, renal_burden, neurologic_burden]
+initial_distribution:
+  family: CONDITION_GROUP_MULTIVARIATE_NORMAL
+  group_means:
+    - [0.0, 0.5, 0.0, 0.0, 0.0]
+    - [0.1, 0.7, 0.0, 0.0, 0.0]
+    - [0.0, 0.6, 0.0, 0.0, 0.1]
+  covariance:
+    - [0.35, 0.05, 0.02, 0.02, 0.01]
+    - [0.05, 0.35, 0.02, 0.02, 0.01]
+    - [0.02, 0.02, 0.30, 0.03, 0.01]
+    - [0.02, 0.02, 0.03, 0.30, 0.01]
+    - [0.01, 0.01, 0.01, 0.01, 0.25]
+equilibrium_distribution:
+  equation: equilibrium = initial_state + Normal(0, patient_effect_scale) independently by coordinate
+  patient_effect_scale: 0.18
+subject_heterogeneity:
+  drift_distribution: {family: INDEPENDENT_NORMAL, mean: 0.0, standard_deviation: 0.012}
+mean_reversion: [0.06, 0.05, 0.06, 0.05, 0.06]
+coupling_matrix:
+  - [0.0, 0.008, 0.006, 0.004, 0.0]
+  - [0.008, 0.0, 0.003, 0.003, 0.0]
+  - [0.006, 0.003, 0.0, 0.004, 0.0]
+  - [0.004, 0.003, 0.004, 0.0, 0.002]
+  - [0.0, 0.0, 0.0, 0.002, 0.0]
+innovation_loading: [0.10, 0.10, 0.09, 0.09, 0.08]
+shock_process:
+  probability_per_hour: 0.018
+  duration_hours: {integer_minimum: 2, integer_maximum_inclusive: 8}
+  vector_distribution: {family: INDEPENDENT_NORMAL, mean: 0.0, standard_deviation: 0.35}
+  application: vector_divided_equally_over_remaining_shock_hours
+bounds_and_clipping: NONE_FINITE_STOCHASTIC_STATE
+rng:
+  engine: numpy.random.Generator
+  bit_generator: PCG64
+  derivation: numpy.random.SeedSequence([primary_seed, subject_ordinal, component_code, child])
+  component_code: 3
+  initial_and_equilibrium_child: 0
+  trajectory_child: 1
+equation: z_next = z + K*(equilibrium-z) + drift + C*tanh(z) + shock_pulse + L*epsilon + lagged_intervention_effect
+provenance:
+  numerical_source: configs/synthetic/fixtures/phase3_fixture_v1.json
+  implementation_source: src/data/synthetic/latent_state.py
+  interpretation: DIMENSIONLESS_PROJECT_SIMULATION_COORDINATES_NOT_CLINICAL_ESTIMATES

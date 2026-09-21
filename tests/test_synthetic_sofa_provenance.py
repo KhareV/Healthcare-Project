@@ -19,7 +19,10 @@ def test_lineage_hashes_are_computed_file_identities():
     ):
         entry = payload[name]
         assert sha256_file(ROOT / entry["path"]) == entry["sha256"], name
-    assert payload["final_production_sofa"]["status"].startswith("BLOCKED_")
+    production=payload["final_production_sofa"]
+    assert production["status"]=="GENERATED_IN_PHASE9_PRE_SPLIT_PACKAGE"
+    assert production["authorized_final_timeline_available"] is True
+    assert sha256_file(ROOT/production["manifest_path"])==production["manifest_sha256"]
 
 
 def test_fixture_qa_is_recomputed_from_three_declared_golden_cases():
@@ -45,7 +48,4 @@ def test_fixture_qa_is_recomputed_from_three_declared_golden_cases():
 
 def test_lineage_declares_no_later_phase_artifacts():
     payload = json.loads(LINEAGE.read_text())
-    assert set(payload["not_created"]) == {
-        "recovery_deltas", "remaining_stay_labels", "feature_grid", "split",
-        "preprocessor", "model",
-    }
+    assert set(payload["not_created"]) == {"split", "preprocessor", "model"}

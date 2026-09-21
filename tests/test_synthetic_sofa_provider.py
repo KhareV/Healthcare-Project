@@ -95,8 +95,10 @@ def test_pulkit_adapter_reuses_existing_ventilation_state_engine():
         vasoactive_dose_contract_sha256="f" * 64,
         vasoactive_coverage_known=True,
     )
-    with pytest.raises(SOFADependencyUnavailable, match="CUTOFF-TRUNCATED"):
-        leaking_adapter.evidence(
-            stay_id="A", window_start=cutoff - timedelta(hours=24), cutoff=cutoff,
-            respiratory_times=(cutoff,),
-        )
+    cutoff_safe = leaking_adapter.evidence(
+        stay_id="A", window_start=cutoff - timedelta(hours=24), cutoff=cutoff,
+        respiratory_times=(cutoff,),
+    )
+    assert cutoff_safe.ventilation[0].state.value == "ACTIVE"
+    assert cutoff_safe.ventilation[0].source_ref == "vent-1"
+    assert not hasattr(cutoff_safe.ventilation[0], "interval_end")

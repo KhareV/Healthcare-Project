@@ -36,7 +36,7 @@ def validate_field_roles(schema: Mapping[str, object]) -> None:
                 raise SyntheticValidationError("episodes.outtime must be STRUCTURAL_LABEL_ONLY and not model eligible")
 
 
-def validate_dataset(subjects: Sequence[Mapping], episodes: Sequence[Mapping], events: Sequence[Mapping], supports: Sequence[Mapping], schema: Mapping, inventory: Mapping):
+def validate_dataset(subjects: Sequence[Mapping], episodes: Sequence[Mapping], events: Sequence[Mapping], supports: Sequence[Mapping], schema: Mapping, inventory: Mapping, *, allow_support: bool = False):
     validate_field_roles(schema)
     forbidden = {"trajectory","trajectory_class","outcome_class","target","delta_sofa_24","delta_sofa_48","remaining_stay","future_support","support_label","organ_support_label","split","latent_state","latent_state_vector","future_state"}
     tables = {"subjects": subjects, "episodes": episodes, "raw_events": events, "support_intervals": supports}
@@ -88,7 +88,27 @@ def validate_dataset(subjects: Sequence[Mapping], episodes: Sequence[Mapping], e
         key = (row["stay_id"], row["event_time"], row["event_id"])
         if last_key is not None and key < last_key: raise SyntheticValidationError("raw events are not canonically ordered")
         last_key = key
-    if supports: raise SyntheticValidationError("Phase 3 support_intervals must remain an empty Phase-9 placeholder")
+    if supports and not allow_support: raise SyntheticValidationError("non-final Phase 3 support_intervals must remain empty")
+    seen_support_ids=set(); last_support=None
+    allowed_agents={"norepinephrine","epinephrine","dopamine","dobutamine"}
+    allowed_resp={"INVASIVE","NON_INVASIVE","HFNC","ORDINARY_OXYGEN"}
+    for row in supports:
+        event_id=row["support_event_id"]
+        if event_id in seen_support_ids: raise SyntheticValidationError("duplicate support_event_id")
+        seen_support_ids.add(event_id)
+        if row["stay_id"] not in episode_by_stay: raise SyntheticValidationError("support stay foreign key invalid")
+        subject_id,start,end=episode_by_stay[row["stay_id"]]
+        left,right=parse_utc(row["interval_start"]),parse_utc(row["interval_end"])
+        if row["subject_id"]!=subject_id or not start<=left<right<=end: raise SyntheticValidationError("support interval identity/bounds invalid")
+        if row["support_type"]=="VASOPRESSOR":
+            if row["agent_key"] not in allowed_agents or row["support_category"]!=row["agent_key"] or row["respiratory_category"] is not None: raise SyntheticValidationError("invalid vasoactive vocabulary")
+            if row["rate_unit"]!="ug/kg/min" or not isinstance(row["rate_value"],(int,float)) or row["rate_value"]<=0: raise SyntheticValidationError("invalid vasoactive rate/unit")
+        elif row["support_type"]=="RESPIRATORY":
+            if row["respiratory_category"] not in allowed_resp or row["support_category"]!=row["respiratory_category"] or row["agent_key"] is not None or row["rate_value"] is not None or row["rate_unit"] is not None: raise SyntheticValidationError("invalid respiratory vocabulary")
+        else: raise SyntheticValidationError("unknown support type")
+        key=(row["stay_id"],row["interval_start"],row["support_event_id"])
+        if last_support is not None and key<last_support: raise SyntheticValidationError("support rows not canonically ordered")
+        last_support=key
     return True
 
 

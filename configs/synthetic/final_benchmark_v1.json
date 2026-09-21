@@ -1,0 +1,14 @@
+{
+  "inherits": "configs/synthetic/fixtures/phase3_fixture_v1.json",
+  "runtime_config_version": "synthetic_final_benchmark_v1",
+  "scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA",
+  "mode": "final",
+  "primary_seed": 20260921,
+  "n_subjects": 2000,
+  "accepted_subject_policy": "DETERMINISTIC_REPLACEMENT_UNTIL_2000_WITH_AT_LEAST_ONE_LEGAL_CUTOFF",
+  "minimum_accepted_episode_hours": 30.0,
+  "latent_process_path": "configs/synthetic/latent_process_v1.yaml",
+  "support_process_path": "configs/synthetic/support_process_v1.yaml",
+  "event_dictionary_path": "configs/event_dict_v2.yaml",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION"
+}

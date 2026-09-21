@@ -35,10 +35,14 @@ def test_existing_authorities_remain_byte_identical():
     assert sha256_file(ROOT/"configs/synthetic/synthetic_generator_v1.yaml")=="5f7d3f73572a34282c214860f1c0c656b18727a16fa0c4687caf071f690a7484"
     assert sha256_file(ROOT/"configs/event_dict_v1.yaml")=="717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620"
 
-def test_no_support_or_label_artifact_generated_by_remediation():
+def test_historical_proposal_remediation_paths_remain_separate_from_final_outputs():
     assert not (ROOT/"artifacts/data/synthetic/support").exists()
     assert not (ROOT/"artifacts/labels/synthetic_phase9").exists()
-    assert not (ROOT/"artifacts/data/synthetic/final").exists()
+    final = ROOT/"artifacts/data/synthetic/final/phase9_final_v1/synthetic_dataset_manifest_v1.json"
+    if final.exists():
+        payload=json.loads(final.read_text())
+        assert payload["manifest_status"]=="AUTHORIZED_FINAL_SYNTHETIC_DATA"
+        assert payload["scientific_support_generation_status"]=="GENERATED_FROZEN_PHASE9"
     for p in ROOT.glob("artifacts/data/synthetic/*/phase3_*_v1/support_intervals.jsonl"):
         assert p.read_text()==""
 

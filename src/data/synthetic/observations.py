@@ -26,15 +26,16 @@ def _bounded_measurement(baseline, effect, noise, driver, low, high, rng, intege
     return int(round(value)) if integer else round(float(value), 6)
 
 
-def generate_events(config, subject, episode, intime: datetime, duration_hours: float, states: np.ndarray, inventory: Mapping[str, object]):
+def generate_events(config, subject, episode, intime: datetime, duration_hours: float, states: np.ndarray, inventory: Mapping[str, object], rng_subject_ordinal=None):
     rows = []
     observation = config.values["observation"]
-    patient_rng = subject_rng(config.seed, int(subject.subject_id[-8:]), "observation")
+    rng_ordinal = int(subject.subject_id[-8:]) if rng_subject_ordinal is None else int(rng_subject_ordinal)
+    patient_rng = subject_rng(config.seed, rng_ordinal, "observation")
     patient_effect = float(patient_rng.normal(0.0, observation["patient_effect_scale"]))
     for concept_index, (concept, spec) in enumerate(inventory.items(), start=1):
         baseline, effect, noise, base_rate = config.values["variables"][concept]
-        obs_rng = subject_rng(config.seed, int(subject.subject_id[-8:]), "observation", concept_index)
-        measure_rng = subject_rng(config.seed, int(subject.subject_id[-8:]), "measurement", concept_index)
+        obs_rng = subject_rng(config.seed, rng_ordinal, "observation", concept_index)
+        measure_rng = subject_rng(config.seed, rng_ordinal, "measurement", concept_index)
         dependencies = [STATE_INDEX[name] for name in spec["latent_dependencies"]]
         elapsed = float(obs_rng.exponential(1.0 / float(base_rate)))
         ordinal = 0

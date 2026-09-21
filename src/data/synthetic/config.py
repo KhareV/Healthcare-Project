@@ -14,6 +14,7 @@ import yaml
 
 GENERATOR_VERSION = "synthetic_generator_v1"
 RUNTIME_SCOPE = "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC_NOT_FINAL_DATASET"
+FINAL_SCOPE = "AUTHORIZED_FINAL_SYNTHETIC_DATA"
 
 
 class SyntheticConfigError(ValueError):
@@ -67,12 +68,23 @@ def load_runtime_config(path: Path, repo_root: Path) -> RuntimeConfig:
     if mode not in {"fixture", "smoke", "final"}:
         raise SyntheticConfigError(f"mode expected fixture|smoke|final; observed {mode!r}")
     if mode == "final":
-        spec = yaml.safe_load((repo_root / "configs/synthetic/synthetic_generator_v1.yaml").read_text())
-        unresolved = spec.get("unresolved_parameters", [])
-        raise SyntheticConfigError(
-            "FINAL mode refused: Phase-2 required parameters remain unresolved: " + ", ".join(unresolved)
-        )
-    if values.get("scope") != RUNTIME_SCOPE:
+        if values.get("scope") != FINAL_SCOPE:
+            raise SyntheticConfigError("FINAL mode refused: final scope must be AUTHORIZED_FINAL_SYNTHETIC_DATA")
+        if values.get("primary_seed") != 20260921 or values.get("n_subjects") != 2000:
+            raise SyntheticConfigError("final generation identity must be seed 20260921 and 2000 subjects")
+        if values.get("accepted_subject_policy") != "DETERMINISTIC_REPLACEMENT_UNTIL_2000_WITH_AT_LEAST_ONE_LEGAL_CUTOFF" or values.get("minimum_accepted_episode_hours") != 30.0:
+            raise SyntheticConfigError("final accepted-cohort replacement policy is not frozen")
+        for field in ("latent_process_path", "support_process_path", "event_dictionary_path"):
+            target = repo_root / str(values.get(field, ""))
+            if not target.is_file():
+                raise SyntheticConfigError("final config missing frozen dependency: " + field)
+        support = yaml.safe_load((repo_root / values["support_process_path"]).read_text())
+        latent_path = repo_root / values["latent_process_path"]
+        if support.get("status") != "FROZEN_SYNTHETIC_AUTHORIZED":
+            raise SyntheticConfigError("support process is not frozen and authorized")
+        if support.get("latent_process_sha256") != hashlib.sha256(latent_path.read_bytes()).hexdigest():
+            raise SyntheticConfigError("support/latent atomic hash binding mismatch")
+    elif values.get("scope") != RUNTIME_SCOPE:
         raise SyntheticConfigError("fixture/smoke scope must explicitly be non-scientific and not final")
     if not isinstance(values.get("primary_seed"), int) or values["primary_seed"] < 0:
         raise SyntheticConfigError("primary_seed expected a nonnegative integer fixture/smoke seed")

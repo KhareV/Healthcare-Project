@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Generate Phase-3 fixture/smoke raw artifacts; final mode fails closed."""
+"""Generate governed fixture, smoke, or authorized final synthetic artifacts."""
 import argparse, sys
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]; sys.path.insert(0,str(ROOT/"src"))

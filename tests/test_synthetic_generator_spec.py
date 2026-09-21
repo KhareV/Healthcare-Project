@@ -264,7 +264,7 @@ def test_phase3_generator_does_not_turn_phase2_template_into_final_data():
     assert not (ROOT / "data/generated").exists()
     manifests = list((ROOT / "artifacts/data/synthetic").glob("**/synthetic_dataset_manifest_v1.json"))
     for path in manifests:
-        assert json.loads(path.read_text())["manifest_status"] in {"FIXTURE", "SMOKE"}
+        assert json.loads(path.read_text())["manifest_status"] in {"FIXTURE", "SMOKE", "AUTHORIZED_FINAL_SYNTHETIC_DATA"}
 
 
 def test_validator_rejects_model_visible_target_alias(tmp_path):

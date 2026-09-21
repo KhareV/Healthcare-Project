@@ -40,14 +40,21 @@ def build_feature_bundle(*, processed_manifest_path:Path, structural_index_path:
     feature_schema_path=feature_schema_path if feature_schema_path.is_absolute() else root/feature_schema_path
     output=output if output.is_absolute() else root/output
     processed=validate_processed_manifest(processed_manifest_path,root)
-    if mode=="final":
+    if mode=="final" and processed["manifest_status"]!="CANONICAL_SYNTHETIC_TIMELINE":
         raise ValueError("final feature generation requires an authorized final canonical timeline")
-    if mode!="engineering" or not processed["manifest_status"].startswith("ENGINEERING_"):
+    if mode=="engineering" and not processed["manifest_status"].startswith("ENGINEERING_"):
         raise ValueError("engineering feature build requires engineering canonical timeline")
+    if mode not in {"engineering","final"}: raise ValueError("unknown feature build mode")
     artifacts={a["logical_name"]:root/a["repository_relative_path"] for a in processed["artifacts"]}
     timeline=load_jsonl(artifacts["canonical_timeline"]); statics=load_jsonl(artifacts["canonical_statics"]); structural=load_jsonl(structural_index_path)
+    phase3=json.loads((root/processed["phase3_manifest_path"]).read_text())
+    support_path=next(root/a["repository_relative_path"] for a in phase3["artifacts"] if a["logical_name"]=="support_intervals")
+    supports=load_jsonl(support_path)
     by_stay={row["stay_id"]:[] for row in statics}
     for row in timeline: by_stay[row["stay_id"]].append(row)
+    support_by_stay={row["stay_id"]:[] for row in statics}
+    for row in supports:
+        if row["stay_id"] in support_by_stay: support_by_stay[row["stay_id"]].append(row)
     statics_by={row["stay_id"]:row for row in statics}
     builder=SyntheticCanonicalFeatureBuilder(schema_path=feature_schema_path,root=root,statics_by_stay=statics_by)
     seen=set(); results=[]
@@ -56,7 +63,7 @@ def build_feature_bundle(*, processed_manifest_path:Path, structural_index_path:
         if key in seen: raise ValueError("duplicate structural identity")
         seen.add(key); static=statics_by.get(row["stay_id"])
         if static is None or static["subject_id"]!=row["subject_id"]: raise ValueError("structural/static identity mismatch")
-        context=FeatureBuildContext(subject_id=row["subject_id"],stay_id=row["stay_id"],intime=_dt(static["intime"]),outtime=_dt(static["outtime"]),events=tuple(by_stay[row["stay_id"]]),prediction_time=_dt(row["prediction_time"]),prediction_time_text=row["prediction_time"],grid_index=row["grid_index"],icu_elapsed_hours=row["icu_elapsed_hours"])
+        context=FeatureBuildContext(subject_id=row["subject_id"],stay_id=row["stay_id"],intime=_dt(static["intime"]),outtime=_dt(static["outtime"]),events=tuple(by_stay[row["stay_id"]]),prediction_time=_dt(row["prediction_time"]),prediction_time_text=row["prediction_time"],grid_index=row["grid_index"],icu_elapsed_hours=row["icu_elapsed_hours"],support_intervals=tuple(support_by_stay[row["stay_id"]]))
         results.append(builder.build(context))
     rows=[_mapping(item) for item in results]
     output.parent.mkdir(parents=True,exist_ok=True); temp=Path(tempfile.mkdtemp(prefix=".phase7-",dir=output.parent))
@@ -70,10 +77,10 @@ def build_feature_bundle(*, processed_manifest_path:Path, structural_index_path:
             for f,name in enumerate(builder.feature_schema.feature_names):
                 observed[name]+=sum(row[f] for row in item.observation_mask)
                 sentinel[name]+=sum(row[f]==builder.feature_schema.tslo_no_observation_value for row in item.tslo_hours)
-        qa={"qa_version":"synthetic_feature_qa_v1","status":"ENGINEERING_DESCRIPTIVE_NO_OUTCOMES","structural_rows":len(structural),"built_examples":len(rows),"F":builder.feature_schema.feature_dim,"raw_S":len(builder.feature_schema.static_feature_names or ()),"padding_bin_distribution":{str(k):v for k,v in sorted(padding.items())},"observation_mask_rate":{k:observed[k]/(len(rows)*8) for k in builder.feature_schema.feature_names},"tslo_sentinel_rate":{k:sentinel[k]/(len(rows)*8) for k in builder.feature_schema.feature_names},"raw_missing_cells":total_cells-sum(observed.values()),"split_status":"NOT_ASSIGNED_PHASE10","label_status":"NOT_CREATED_PHASE8_OR9","preprocessor_status":"NOT_FIT_PHASE10"}
+        qa={"qa_version":"synthetic_feature_qa_v1","status":("FINAL_PRE_SPLIT_DESCRIPTIVE_NO_OUTCOMES" if mode=="final" else "ENGINEERING_DESCRIPTIVE_NO_OUTCOMES"),"structural_rows":len(structural),"built_examples":len(rows),"F":builder.feature_schema.feature_dim,"raw_S":len(builder.feature_schema.static_feature_names or ()),"padding_bin_distribution":{str(k):v for k,v in sorted(padding.items())},"observation_mask_rate":{k:observed[k]/(len(rows)*8) for k in builder.feature_schema.feature_names},"tslo_sentinel_rate":{k:sentinel[k]/(len(rows)*8) for k in builder.feature_schema.feature_names},"raw_missing_cells":total_cells-sum(observed.values()),"split_status":"NOT_ASSIGNED_PHASE10","label_status":"NOT_CREATED_PHASE8_OR9","preprocessor_status":"NOT_FIT_PHASE10"}
         (temp/"feature_qa.json").write_bytes(canonical_json_bytes(qa))
         schema_hash=sha256_file(feature_schema_path)
-        manifest={"manifest_version":MANIFEST_VERSION,"status":"ENGINEERING_CANONICAL_FEATURE_INPUTS","project_scope_version":processed["project_scope_version"],"project_scope_sha256_current":sha256_file(root/"docs/governance/project_scope_v2.md"),"processed_manifest_path":str(processed_manifest_path.relative_to(root)),"processed_manifest_sha256":sha256_file(processed_manifest_path),"structural_index_path":str(structural_index_path.relative_to(root)),"structural_index_sha256":sha256_file(structural_index_path),"feature_schema_path":str(feature_schema_path.relative_to(root)),"feature_schema_version":builder.feature_schema.version,"feature_schema_sha256":schema_hash,"timestamp_spec_sha256":builder.spec["timestamp_spec"]["sha256"],"tensor_contract_sha256":builder.spec["tensor_contract"]["sha256"],"builder_version":builder.version,"builder_path":"src/features/synthetic.py","builder_sha256":sha256_file(root/"src/features/synthetic.py"),"example_count":len(rows),"F":builder.feature_schema.feature_dim,"raw_S":len(builder.feature_schema.static_feature_names or ()),"support_dependency_status":"NO_SUPPORT_CHANNELS_IN_V1_PHASE9_NOT_FABRICATED","labels":"NOT_CREATED","split":"NOT_ASSIGNED","preprocessor":"NOT_FIT","generation_timestamp_utc":generation_timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),"artifacts":[{"logical_name":"canonical_feature_inputs","path":str((output/feature_file.name).relative_to(root)),"sha256":sha256_file(feature_file),"semantic_sha256":semantic_sha256("canonical_feature_inputs",rows),"record_count":len(rows)},{"logical_name":"feature_qa","path":str((output/"feature_qa.json").relative_to(root)),"sha256":sha256_file(temp/"feature_qa.json"),"semantic_sha256":sha256_file(temp/"feature_qa.json"),"record_count":1}]}
+        manifest={"manifest_version":MANIFEST_VERSION,"status":("FINAL_PRE_SPLIT_CANONICAL_FEATURE_INPUTS" if mode=="final" else "ENGINEERING_CANONICAL_FEATURE_INPUTS"),"project_scope_version":processed["project_scope_version"],"project_scope_sha256_current":sha256_file(root/"docs/governance/project_scope_v2.md"),"processed_manifest_path":str(processed_manifest_path.relative_to(root)),"processed_manifest_sha256":sha256_file(processed_manifest_path),"structural_index_path":str(structural_index_path.relative_to(root)),"structural_index_sha256":sha256_file(structural_index_path),"feature_schema_path":str(feature_schema_path.relative_to(root)),"feature_schema_version":builder.feature_schema.version,"feature_schema_sha256":schema_hash,"timestamp_spec_sha256":builder.spec["timestamp_spec"]["sha256"],"tensor_contract_sha256":builder.spec["tensor_contract"]["sha256"],"builder_version":builder.version,"builder_path":"src/features/synthetic.py","builder_sha256":sha256_file(root/"src/features/synthetic.py"),"example_count":len(rows),"F":builder.feature_schema.feature_dim,"raw_S":len(builder.feature_schema.static_feature_names or ()),"support_dependency_status":("FROZEN_SUPPORT_CHANNELS_INCLUDED" if builder.feature_schema.version=="synthetic_feature_schema_v2" else "NO_SUPPORT_CHANNELS_IN_V1_PHASE9_NOT_FABRICATED"),"labels":"NOT_CREATED","split":"NOT_ASSIGNED","preprocessor":"NOT_FIT","generation_timestamp_utc":generation_timestamp or datetime.now(timezone.utc).isoformat().replace("+00:00","Z"),"artifacts":[{"logical_name":"canonical_feature_inputs","path":str((output/feature_file.name).relative_to(root)),"sha256":sha256_file(feature_file),"semantic_sha256":semantic_sha256("canonical_feature_inputs",rows),"record_count":len(rows)},{"logical_name":"feature_qa","path":str((output/"feature_qa.json").relative_to(root)),"sha256":sha256_file(temp/"feature_qa.json"),"semantic_sha256":sha256_file(temp/"feature_qa.json"),"record_count":1}]}
         (temp/"synthetic_feature_input_manifest_v1.json").write_bytes(canonical_json_bytes(manifest)); os.replace(temp,output)
     except Exception:
         shutil.rmtree(temp,ignore_errors=True); raise

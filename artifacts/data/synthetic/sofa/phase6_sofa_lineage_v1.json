@@ -1,6 +1,6 @@
 {
   "lineage_version": "synthetic_sofa_lineage_v1",
-  "artifact_status": "ENGINE_IMPLEMENTED_FINAL_PRODUCTION_BLOCKED",
+  "artifact_status": "FINAL_PRODUCTION_EXECUTED_PHASE9_SYNTHETIC",
   "project_scope": {
     "path": "docs/governance/project_scope_v2.md",
     "version": "PROJECT_SCOPE_V2",
@@ -33,8 +33,8 @@
   "sofa_spec": {
     "path": "configs/synthetic/sofa_spec_v1.json",
     "version": "synthetic_standard_sofa_v1",
-    "sha256": "900504be9b2d1186c15b5893fcd1ea5e4aa3d3c54c60b44d7b4b0079c79e4c13",
-    "status": "DRAFT_REVIEW_REQUIRED_NOT_AUTHORIZED_FOR_FINAL_PRODUCTION"
+    "sha256": "1c170bc24ebf6c0c34d203b56822d98a5e2d19ce095a991d99e9c4f662096b71",
+    "status": "FROZEN_SYNTHETIC_AUTHORIZED"
   },
   "implementation": {
     "path": "src/data/synthetic/sofa.py",
@@ -45,13 +45,13 @@
   "current_sofa_provider": {
     "path": "src/data/synthetic/sofa_provider.py",
     "version": "SyntheticCurrentSOFAProvider",
-    "sha256": "6a88187de153b6d83903d4acf1a7a9f1a8b9f196134c2e2ab87369853212d5e6",
+    "sha256": "213f0494d03e594010bd4718a4df189febb344d636e5d5e71d5c8c2c94876b8f",
     "pulkit_receiver": "src/serving/recovery.py::CurrentSOFAProvider"
   },
   "support_contract": {
-    "path": "configs/event_dict_v1.yaml",
-    "sha256": "717f6183ad8014602b3cc32eeaa3a810eab8a26a19937bda8e214200bb2f9620",
-    "production_status": "BLOCKED_PHASE9_SYNTHETIC_SUPPORT_VOCABULARY_RATE_AND_INTERVAL_CONTRACT_REQUIRED"
+    "path": "configs/event_dict_v2.yaml",
+    "sha256": "162b4a4ae9b893ce62a871f3fc9917c959a84245fabea76f30b3613e7e307aac",
+    "production_status": "FROZEN_SYNTHETIC_AUTHORIZED"
   },
   "fixture_qa": {
     "path": "artifacts/data/synthetic/sofa/fixture/phase6_fixture_v1/sofa_fixture_qa.json",
@@ -59,9 +59,11 @@
     "status": "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC"
   },
   "final_production_sofa": {
-    "status": "BLOCKED_PHASE9_SUPPORT_DEPENDENCY_AND_TEAM_REVIEW_REQUIRED",
-    "authorized_final_timeline_available": false,
-    "availability_qa_generated": false
+    "status": "GENERATED_IN_PHASE9_PRE_SPLIT_PACKAGE",
+    "authorized_final_timeline_available": true,
+    "availability_qa_generated": true,
+    "manifest_path": "artifacts/data/synthetic/pre_split/final/phase9_final_v1/phase9_pre_split_manifest_v1.json",
+    "manifest_sha256": "b000ce8a230eea7ba66c8b2bf5cdaf57c682a2f2cf13932de06ec2d90c3e1990"
   },
-  "not_created": ["recovery_deltas", "remaining_stay_labels", "feature_grid", "split", "preprocessor", "model"]
+  "not_created": ["split", "preprocessor", "model"]
 }

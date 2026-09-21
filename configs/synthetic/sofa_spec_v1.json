@@ -1,6 +1,9 @@
 {
   "specification_version": "synthetic_standard_sofa_v1",
-  "status": "DRAFT_REVIEW_REQUIRED_NOT_AUTHORIZED_FOR_FINAL_PRODUCTION",
+  "status": "FROZEN_SYNTHETIC_AUTHORIZED",
+  "source_type": "PROJECT_SYNTHETIC_DESIGN",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "clinical_validation_status": "NOT_CLINICALLY_VALIDATED",
   "scientific_reference": {
     "title": "The SOFA (Sepsis-related Organ Failure Assessment) score to describe organ dysfunction/failure",
     "authors": "Vincent JL, Moreno R, Takala J, et al.",
@@ -18,7 +21,7 @@
     "interval": "(T-24h,T]",
     "left_inclusive": false,
     "right_inclusive": true,
-    "freeze_status": "REVIEW_REQUIRED_SOFA_ROLLING_WINDOW_BOUNDARY"
+    "freeze_status": "FROZEN_SYNTHETIC_AUTHORIZED"
   },
   "missing_component_convention": {
     "score": 0,
@@ -30,7 +33,7 @@
   "respiratory": {
     "concepts": {"pao2": {"unit": "mmHg", "valid_domain": [20.0, 600.0]}, "fio2": {"unit": "fraction", "valid_domain": [0.21, 1.0]}},
     "pairing_rule": "EXACT_SAME_EVENT_TIME",
-    "pairing_rule_status": "REVIEW_REQUIRED_BEFORE_FINAL_PRODUCTION",
+    "pairing_rule_status": "FROZEN_SYNTHETIC_AUTHORIZED",
     "ratio_unit": "mmHg",
     "scores": [
       {"score": 4, "ratio_less_than": 100.0, "invasive_respiratory_support_required": true},
@@ -91,7 +94,7 @@
     "unknown_or_unavailable_policy": "BLOCKED_REQUIRED_SOFA_DEPENDENCY_UNAVAILABLE",
     "respiratory_semantics": "invasive ventilation state must be known at each scored PaO2/FiO2 pair time",
     "cardiovascular_semantics": "versioned dose/rate exposure segments overlapping the scoring window",
-    "production_contract_status": "DEFERRED_TO_PHASE_9"
+    "production_contract_status": "FROZEN_PHASE9_SYNTHETIC_SUPPORT_CONTRACT"
   },
   "prohibited_shortcuts": ["sofa_score_source_column", "future_sofa", "component_point_source_columns", "proxy_score", "imputation", "forward_fill", "learned_estimate"],
   "provenance_policy": "outputs bind computed spec SHA-256, Phase-5 processed schema/concept/provenance hashes, timeline source hash, and support-contract identity"

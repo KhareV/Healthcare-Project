@@ -20,5 +20,15 @@ data/physionet*/
 *.tmp
 .cache/
 
+# Reproducible Phase-9 production outputs are local build products. The raw
+# and canonical JSONL files exceed GitHub's per-file limit; commit their
+# versioned builders/contracts, not regenerated bulk data.
+artifacts/data/synthetic/final/
+artifacts/data/synthetic/cohorts/final/
+artifacts/data/synthetic/timelines/final/
+artifacts/data/synthetic/features/final/
+artifacts/data/synthetic/pre_split/final/
+artifacts/test-results/
+
 # Read-only historical/reference repository; never vendor as an embedded Git repo.
 Heart-Failure-Recovery-and-Deterioration-Trajectory-Prediction/

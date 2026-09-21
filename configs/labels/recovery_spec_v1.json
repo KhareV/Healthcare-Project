@@ -13,6 +13,6 @@
   "temporal_availability_source": "Phase-4 structural index flags from timestamp_spec_v1",
   "ineligible_target": null,
   "missing_component_convention": "INHERIT_SYNTHETIC_STANDARD_SOFA_V1_ZERO_POINTS_OBSERVED_FALSE",
-  "sofa_spec": {"path": "configs/synthetic/sofa_spec_v1.json", "version": "synthetic_standard_sofa_v1", "sha256": "900504be9b2d1186c15b5893fcd1ea5e4aa3d3c54c60b44d7b4b0079c79e4c13"},
+  "sofa_spec": {"path": "configs/synthetic/sofa_spec_v1.json", "version": "synthetic_standard_sofa_v1", "sha256": "1c170bc24ebf6c0c34d203b56822d98a5e2d19ce095a991d99e9c4f662096b71"},
   "prohibited": ["horizon_chaining", "categorical_trajectory", "sign_reversal", "target_clipping", "target_standardization", "complete_component_filter", "fifty_percent_filter", "future_score_as_model_input"]
 }

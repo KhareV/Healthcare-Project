@@ -144,11 +144,9 @@ class PulkitStateSOFASupportProvider(SOFASupportProvider):
         self, *, stay_id: object, window_start: datetime, cutoff: datetime,
         respiratory_times: Tuple[datetime, ...],
     ) -> SupportWindowEvidence:
-        for interval in self.ventilation_intervals:
-            if interval.stay_id == stay_id and interval.interval_start <= cutoff < interval.interval_end:
-                raise SOFADependencyUnavailable(
-                    "BLOCKED — CUTOFF-TRUNCATED PHASE-9 VENTILATION EVIDENCE REQUIRED"
-                )
+        # Full generated cessation bounds are used internally only to answer
+        # state-as-of queries; the bound itself is never returned to features
+        # or serving before it becomes observable.
         ventilation = []
         for when in respiratory_times:
             result = query_invasive_ventilation_state(
@@ -162,9 +160,14 @@ class PulkitStateSOFASupportProvider(SOFASupportProvider):
                 source_ref=("+".join(result.supporting_invasive_interval_refs) if result.supporting_invasive_interval_refs else "PULKIT_KNOWN_INACTIVE@" + when.isoformat()),
             ))
         vasoactive = tuple(
-            item for item in self.vasoactive_exposures
+            VasoactiveExposure(
+                stay_id=item.stay_id, agent=item.agent, rate=item.rate, unit=item.unit,
+                interval_start=item.interval_start, interval_end=min(item.interval_end, cutoff),
+                source_ref=item.source_ref,
+            )
+            for item in self.vasoactive_exposures
             if item.stay_id == stay_id and item.interval_end > window_start
-            and item.interval_start <= cutoff
+            and item.interval_start < cutoff
         )
         return SupportWindowEvidence(
             stay_id=stay_id, window_start=window_start, cutoff=cutoff,

@@ -13,9 +13,12 @@ from data.schema import (
     validate_canonical_feature_input,
 )
 from data.synthetic.provenance import sha256_file
+from labels.synthetic_profile import load_synthetic_event_dictionary
+from labels.support_state import ExecutionMode, NormalizedActiveInterval, query_vasopressor_state
+from labels.ventilation_state import NormalizedVentilationInterval, query_invasive_ventilation_state
 
 
-BUILDER_VERSION = "synthetic_feature_builder_v1"
+BUILDER_VERSION = "synthetic_feature_builder_v2"
 
 
 class FeatureBuilderError(ValueError):
@@ -33,6 +36,7 @@ class FeatureBuildContext:
     prediction_time_text: str
     grid_index: int
     icu_elapsed_hours: int
+    support_intervals: Tuple[Mapping[str, object], ...] = ()
 
 
 def _dt(value: object) -> datetime:
@@ -50,12 +54,17 @@ def _dt(value: object) -> datetime:
 def load_feature_schema(path: Path, root: Path) -> Tuple[Mapping[str, Any], FeatureSchemaReference]:
     path = path if path.is_absolute() else root / path
     payload = json.loads(path.read_text())
-    if payload.get("schema_version") != "synthetic_feature_schema_v1":
+    if payload.get("schema_version") not in {"synthetic_feature_schema_v1","synthetic_feature_schema_v2"}:
         raise FeatureBuilderError("feature schema version mismatch")
     for section in ("processed_schema", "concept_map", "timestamp_spec", "tensor_contract"):
         ref = payload[section]
         if sha256_file(root / ref["path"]) != ref["sha256"]:
             raise FeatureBuilderError(section + " hash mismatch")
+    if payload.get("schema_version")=="synthetic_feature_schema_v2":
+        support=payload.get("support_features",{})
+        for path_field,hash_field in (("support_process_path","support_process_sha256"),("event_dictionary_path","event_dictionary_sha256")):
+            if sha256_file(root / support[path_field]) != support[hash_field]:
+                raise FeatureBuilderError("support feature dependency hash mismatch: "+path_field)
     channels = payload.get("temporal_channels", [])
     if payload["shape"] != {
         "sequence_length": 8, "feature_dimension": len(channels),
@@ -67,7 +76,7 @@ def load_feature_schema(path: Path, root: Path) -> Tuple[Mapping[str, Any], Feat
     names = tuple(item["name"] for item in channels)
     if len(names) != len(set(names)) or not names:
         raise FeatureBuilderError("temporal feature names must be nonempty and unique")
-    allowed = {"LATEST", "SUM_AVAILABLE_INTERVAL_VOLUMES"}
+    allowed = {"LATEST", "SUM_AVAILABLE_INTERVAL_VOLUMES", "STATE_AT_BIN_END"}
     if any(item["aggregation"] not in allowed or item["carry_forward"] != "NONE" for item in channels):
         raise FeatureBuilderError("unsupported aggregation/carry-forward policy")
     static_names = tuple(payload["static_contract"]["ordered_names"])
@@ -93,14 +102,17 @@ class SyntheticCanonicalFeatureBuilder:
         self.schema_path = schema_path
         self.spec, self.feature_schema = load_feature_schema(schema_path, root)
         self.schema = self.feature_schema
-        self.version = BUILDER_VERSION
+        self.version = str(self.spec["builder_version"])
         self.feature_schema_sha256 = self.feature_schema.schema_sha256
         self._statics = dict(statics_by_stay)
+        self.event_dictionary = load_synthetic_event_dictionary(root / "configs/event_dict_v2.yaml") if self.spec["schema_version"]=="synthetic_feature_schema_v2" else None
         if set(self.spec["prohibited_fields"]) & set(self.feature_schema.static_feature_names or ()):
             raise FeatureBuilderError("static model schema contains prohibited future/outcome field")
         concept_map = json.loads((root / self.spec["concept_map"]["path"]).read_text())
         mappings = concept_map["mappings"]
         for channel in self.spec["temporal_channels"]:
+            if channel["aggregation"] == "STATE_AT_BIN_END":
+                continue
             mapping = mappings.get(channel["source_concept"])
             if mapping is None or mapping["canonical_unit"] != channel["unit"] or mapping["provenance_id"] != channel["provenance_id"]:
                 raise FeatureBuilderError("feature schema/concept-map mismatch")
@@ -113,6 +125,7 @@ class SyntheticCanonicalFeatureBuilder:
             subject_id=getattr(history, "subject_id"), stay_id=getattr(history, "stay_id"),
             intime=_dt(getattr(history, "intime")), outtime=_dt(getattr(history, "outtime")),
             events=tuple(getattr(history, "events")),
+            support_intervals=tuple(getattr(history, "support_intervals", ())),
             prediction_time=_dt(prediction_row.prediction_time),
             prediction_time_text=prediction_row.prediction_time.isoformat(),
             grid_index=prediction_row.grid_index,
@@ -130,7 +143,8 @@ class SyntheticCanonicalFeatureBuilder:
             raise FeatureBuilderError("prediction cutoff does not match episode-relative grid identity")
         start = t - timedelta(hours=48)
         channels = tuple(self.spec["temporal_channels"])
-        by_concept: Dict[str, list] = {item["source_concept"]: [] for item in channels}
+        raw_channels=tuple(item for item in channels if item["aggregation"]!="STATE_AT_BIN_END")
+        by_concept: Dict[str, list] = {item["source_concept"]: [] for item in raw_channels}
         seen_ids = set()
         for row in context.events:
             if row.get("stay_id") != context.stay_id or row.get("subject_id") != context.subject_id:
@@ -145,7 +159,7 @@ class SyntheticCanonicalFeatureBuilder:
             if not isinstance(event_id, str) or not event_id or event_id in seen_ids:
                 raise FeatureBuilderError("event identity is missing or duplicated")
             seen_ids.add(event_id)
-            channel = next(item for item in channels if item["source_concept"] == concept)
+            channel = next(item for item in raw_channels if item["source_concept"] == concept)
             if row.get("unit") != channel["unit"] or row.get("provenance_id") != channel["provenance_id"]:
                 raise FeatureBuilderError("canonical unit/provenance mismatch")
             value = row.get("value_numeric")
@@ -164,6 +178,11 @@ class SyntheticCanonicalFeatureBuilder:
             padding.append(padded)
             row_values, row_masks, row_tslo = [], [], []
             for channel in channels:
+                if channel["aggregation"] == "STATE_AT_BIN_END":
+                    if padded:
+                        row_values.append(None); row_masks.append(False); row_tslo.append(sentinel); continue
+                    value=self._support_value(context.support_intervals,context.stay_id,end,channel["name"])
+                    row_values.append(value); row_masks.append(True); row_tslo.append(0.0); continue
                 events = by_concept[channel["source_concept"]]
                 candidates = [item for item in events if left < item[0] <= end]
                 if padded:
@@ -207,3 +226,19 @@ class SyntheticCanonicalFeatureBuilder:
         )
         validate_canonical_feature_input(result, self.feature_schema)
         return result
+
+    def _support_value(self, rows, stay_id, cutoff, name):
+        if self.event_dictionary is None:
+            raise FeatureBuilderError("support channel requested without frozen dictionary")
+        vaso_rows=[r for r in rows if r.get("support_type")=="VASOPRESSOR"]
+        vent_rows=[r for r in rows if r.get("support_type")=="RESPIRATORY"]
+        vaso=[NormalizedActiveInterval.from_mapping({"stay_id":r["stay_id"],"agent_key":r["agent_key"],"interval_start":r["interval_start"],"interval_end":r["interval_end"],"source_event_ref":r["support_event_id"],"normalization_provenance_version":self.event_dictionary.synthetic_mapping_provenance_version}) for r in vaso_rows]
+        vent=[NormalizedVentilationInterval.from_mapping({"stay_id":r["stay_id"],"category":r["respiratory_category"],"interval_start":r["interval_start"],"interval_end":r["interval_end"],"source_state_ref":r["support_event_id"],"concept_version":self.event_dictionary.ventilation.synthetic_concept_version,"adapter_version":self.event_dictionary.ventilation.synthetic_adapter_version,"normalization_provenance_ref":r["normalization_provenance_ref"]}) for r in vent_rows]
+        if name=="vasopressor_on":
+            return float(query_vasopressor_state(vaso,stay_id=stay_id,cutoff=cutoff,event_dictionary=self.event_dictionary,execution_mode=ExecutionMode.SYNTHETIC).support_state.value=="ON")
+        if name=="invasive_ventilation_on":
+            return float(query_invasive_ventilation_state(vent,stay_id=stay_id,cutoff=cutoff,event_dictionary=self.event_dictionary,execution_mode=ExecutionMode.SYNTHETIC).invasive_on)
+        agent=name.removesuffix("_rate")
+        active=[r for r in vaso_rows if r["agent_key"]==agent and _dt(r["interval_start"])<=cutoff<_dt(r["interval_end"])]
+        if len(active)>1: raise FeatureBuilderError("conflicting same-agent active rate segments")
+        return 0.0 if not active else float(active[0]["rate_value"])

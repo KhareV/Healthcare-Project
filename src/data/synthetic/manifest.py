@@ -20,8 +20,9 @@ def validate_manifest(path: Path, repo_root: Path, config: RuntimeConfig | None 
     except (OSError, json.JSONDecodeError) as error: raise SyntheticValidationError(f"manifest unreadable: {error}") from error
     if manifest.get("manifest_version") != "synthetic_dataset_manifest_v1": raise SyntheticValidationError("manifest version mismatch")
     if manifest.get("generator_version") != GENERATOR_VERSION: raise SyntheticValidationError("generator version mismatch")
-    if manifest.get("manifest_status") not in {"FIXTURE", "SMOKE"}: raise SyntheticValidationError("Phase 3 manifest falsely claims final or unknown status")
-    if manifest.get("scientific_support_generation_status") != "DEFERRED_TO_PHASE_9": raise SyntheticValidationError("support status inconsistent")
+    if manifest.get("manifest_status") not in {"FIXTURE", "SMOKE", "AUTHORIZED_FINAL_SYNTHETIC_DATA"}: raise SyntheticValidationError("unknown synthetic manifest status")
+    expected_support = "GENERATED_FROZEN_PHASE9" if manifest.get("manifest_status")=="AUTHORIZED_FINAL_SYNTHETIC_DATA" else "DEFERRED_TO_PHASE_9"
+    if manifest.get("scientific_support_generation_status") != expected_support: raise SyntheticValidationError("support status inconsistent")
     if config and manifest.get("generator_config_sha256") != config.sha256: raise SyntheticValidationError("generator config hash mismatch")
     if schema_path and manifest.get("raw_schema_sha256") != sha256_file(schema_path): raise SyntheticValidationError("raw schema hash mismatch")
     records = {}
@@ -40,5 +41,5 @@ def validate_manifest(path: Path, repo_root: Path, config: RuntimeConfig | None 
         import yaml
         schema = json.loads(schema_path.read_text())
         spec = yaml.safe_load((repo_root / "configs/synthetic/synthetic_generator_v1.yaml").read_text())
-        validate_dataset(records["subjects"],records["episodes"],records["raw_events"],records["support_intervals"],schema,spec["raw_variable_inventory"])
+        validate_dataset(records["subjects"],records["episodes"],records["raw_events"],records["support_intervals"],schema,spec["raw_variable_inventory"],allow_support=manifest.get("manifest_status")=="AUTHORIZED_FINAL_SYNTHETIC_DATA")
     return manifest
