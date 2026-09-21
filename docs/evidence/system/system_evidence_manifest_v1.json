@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "9963fe6299c2536d31f87a360fc32c2e6d2aa43a785d2763ddb96ad57e1b4c42",
+      "output_sha256": "54b7ff7f395f25f8ec4bcf81d303d8d139ad9c9a02ef575c45b227e623a6bb0c",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -731,6 +731,10 @@
         {
           "path": "src/data/dataset.py",
           "sha256": "596365771e0c12683ccdb94471560bb87d582a623eb910e2fa6175a83e41bd0b"
+        },
+        {
+          "path": "src/data/gru_canonical.py",
+          "sha256": "91adbf829ae0e15c650a62968bace4c3a984c3734232db46f6dafb25663d1c23"
         },
         {
           "path": "src/data/real_adapter.py",
@@ -989,6 +993,10 @@
           "sha256": "187a9741a055bde848bb7a93282fcf2e78c696078484db2fdc98d3d13a27b12b"
         },
         {
+          "path": "src/experiments/gru_final.py",
+          "sha256": "7abea603db6556eb0e8d06f788eab8fbbe1bcace18b5f24d40d8479ca5d28eaf"
+        },
+        {
           "path": "src/experiments/lineage.py",
           "sha256": "060fee679619702ae801a72ec16291f1a09e63ffa8eba445220c6f94fafc9df1"
         },
@@ -1006,7 +1014,7 @@
         },
         {
           "path": "src/experiments/search_registry.py",
-          "sha256": "7ed8fb4e4dc5bee1f18e413c30612098ec03312ad77b7d13eedd983af5b40320"
+          "sha256": "0915986bcf673e75122a46cbb176b6f147d8498b4d3447cc00658fb8bd77c001"
         },
         {
           "path": "src/experiments/validation_suite.py",
@@ -1218,7 +1226,7 @@
         },
         {
           "path": "src/training/checkpoint.py",
-          "sha256": "48c79ef6f1547ce25e44a5e864a8f618fb6c1a65e944f38dc451fc1b135e60f7"
+          "sha256": "20ce6aa26aefa1aca7bdc371b1c373b44faeab5ef7fbf41ac6f23e39abb86b20"
         },
         {
           "path": "src/training/class_weights.py",
@@ -1729,6 +1737,10 @@
           "sha256": "36b157eb2de5f0278b084849db2edaeb60e69143b0c182b4652acc6454f54263"
         },
         {
+          "path": "tests/test_final_gru_search.py",
+          "sha256": "f5d5129dec35283d1e7d3afa539cd65077116fe1b1753cdf823eec3b66cf3636"
+        },
+        {
           "path": "tests/test_final_test_bootstrap.py",
           "sha256": "c5b6911b270747e112b360c60007061b3b79bb4369b08e3137d5425d5e39c7db"
         },
@@ -1906,7 +1918,7 @@
         },
         {
           "path": "tests/test_phase0_infrastructure.py",
-          "sha256": "59a15811817967d8e77da7697f057d3bff78e2ea71f7655260b47918e874d1d3"
+          "sha256": "cea585454e0caf5221d33ee9d7d7853e0562164cbae82c43b68a99b577c4330c"
         },
         {
           "path": "tests/test_phase11_xgb_canonical.py",
@@ -1922,7 +1934,7 @@
         },
         {
           "path": "tests/test_phase14_handoff.py",
-          "sha256": "db6d9fff23f37ca77cc4f30d142da125dd5eb1dee4735e96af9a7e867b926e55"
+          "sha256": "4e53d284a366ceaa2dfef5ebe8d854ec2b324c7767bde76a3a7c000dced9f38c"
         },
         {
           "path": "tests/test_phase8_icu_time_labels.py",
@@ -2457,6 +2469,10 @@
           "sha256": "ebe0fb51577e52946d66cb0980ffe4feed57e6d46f2bae0c4ac84b3fb0334822"
         },
         {
+          "path": "configs/search_space_gru_final_v1.json",
+          "sha256": "32f4655f0baed7af3722980b8b5cde05e654aacc46b2b60532dfbfd169459c41"
+        },
+        {
           "path": "configs/search_space_gru_v1.json",
           "sha256": "da97e2f15688d65a1251246466cff5c1ae87525e224fb971bf3369b9615522ed"
         },
@@ -2614,7 +2630,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "bb8f97f34d3c83081a0111615a1d1ced631a9e9c9dc9dd9de982bae4a03f1c63",
+      "output_sha256": "1a5b5dc249a36f0a91f74d976e2701d5c7f15f0ab25083d889c49ed0a5e66326",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2652,16 +2668,16 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "2bd3e65f4ded0b61bb1b5214e1623c1a1ececdcca41fe8cd0c246d255e68ad6c",
+      "output_sha256": "8eafb9c8242c9c15e847ed866331e30d2fb52c5fda79af438e90f51aeb25dc9f",
       "scope": "repository",
       "source_artifacts": [
         {
           "path": "experiments/registry.csv",
-          "sha256": "7f528d028d3962a0bcc62e99a87b10a4b742a2ce66db94cad54466c43f9a0ba1"
+          "sha256": "2a6e355494f7dbff00da1e81d7eaa34c63007ee058c4a2c71d2e9eb9db8455e0"
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "d67d410f3583d1c181ed5b2468a15f12509c0d1681a8bf28c4f1ab8fc5102ff5"
+          "sha256": "0bd65912c59e71e00b769e516949835fb01f88f3f11c5bd3524e5e111b75f9ce"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2673,7 +2689,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "077d92cbcb597f882db93437753a6feafe8935031339e4822d8c6fed69026a99",
+      "output_sha256": "7980a880c542a3e78cb66ef20de3d87f9a1f068f0e8a880e3cf8d78a00071526",
       "scope": "repository",
       "source_artifacts": [
         {

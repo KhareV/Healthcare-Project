@@ -1,0 +1,25 @@
+{
+  "artifact_version": "vedant_final_gru_stage1_verification_v1",
+  "status": "PASS",
+  "authoritative_search_version": "vedant_final_gru_validation_search_v2",
+  "implementation_commit": "6ee72f8bee55baed82ab8705fbd4f939f86a0182",
+  "terminal_candidate_counts": {
+    "recovery": {"complete": 30, "failed": 0},
+    "icu_time": {"complete": 30, "failed": 0},
+    "organ_support": {"complete": 30, "failed": 0}
+  },
+  "focused_stage1_tests": {"passed": 53, "failed": 0},
+  "final_repository_regression": {"passed": 1283, "skipped": 2, "failed": 0},
+  "post_metadata_focused_tests": {"passed": 34, "failed": 0},
+  "winner_reproducibility": "PASS_EXACT_PREDICTIONS_ZERO_METRIC_DIFFERENCE",
+  "registry_audit": "PASS_ZERO_REFERENCE_OR_HASH_MISMATCHES_ZERO_SCIENTIFIC_ORPHANS",
+  "artifact_lineage_audit": "PASS",
+  "phase12_xgb_audit": "PASS_UNCHANGED",
+  "phase14_handoff_audit": "PASS_UNCHANGED",
+  "system_evidence_audit": "PASS_17_INDEXED_ZERO_ORPHANS",
+  "selected_models_manifest_created": false,
+  "g3_created": false,
+  "support_calibrated": false,
+  "support_threshold": null,
+  "test_accessed": false
+}

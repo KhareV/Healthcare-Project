@@ -132,3 +132,39 @@ def test_search_space_mutation_fails_closed():
     changed = copy.deepcopy(SPACE); changed["fixed"]["max_epochs"] = 61
     with pytest.raises(GRUSearchError):
         validate_search_space(changed)
+
+
+def test_completed_v2_search_has_exact_terminal_budget_and_no_downstream_actions():
+    master = json.loads((ROOT / "artifacts/search/gru/final_v2/manifests/search_manifest_v1.json").read_text())
+    assert master["status"] == "COMPLETE"
+    assert master["terminal_candidate_counts"] == {
+        task: {"complete": 30, "failed": 0} for task in TASKS
+    }
+    assert master["test_accessed"] is False
+    assert master["g3_created"] is False
+    assert master["family_selection_performed"] is False
+    assert master["support_calibrated"] is False
+    assert master["support_threshold"] is None
+
+
+def test_completed_best_gru_manifest_is_within_family_only():
+    best = json.loads((ROOT / "artifacts/search/gru/final_v2/best_gru_candidates_v1.json").read_text())
+    assert best["status"] == "GRU_WITHIN_FAMILY_VALIDATION_WINNER"
+    assert best["selection_status"] == "NOT_FINAL_SERVING_SELECTION"
+    assert best["test_status"] == "TEST_NOT_ACCESSED"
+    assert best["support_status"] == "SUPPORT_UNCALIBRATED"
+    assert best["support_threshold"] is None
+    assert set(best["tasks"]) == set(TASKS)
+
+
+def test_winner_reproduction_is_prediction_exact():
+    audit = json.loads((ROOT / "artifacts/search/gru/final_v2/winner_reproducibility_audit_v1.json").read_text())
+    assert audit["status"] == "PASS"
+    assert audit["search_slots_consumed"] == 0
+    assert all(row["prediction_exact"] and row["status"] == "PASS" for row in audit["tasks"].values())
+
+
+def test_stage1_did_not_create_selected_models_g3_or_test_outputs():
+    assert not (ROOT / "artifacts/models/selected_models_v1.json").exists()
+    assert not (ROOT / "artifacts/governance/g3_freeze.json").exists()
+    assert not (ROOT / "artifacts/data/synthetic/phase10/final/synthetic_phase10_v1/test.jsonl").exists()

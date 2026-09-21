@@ -43,8 +43,8 @@ class RegistryTests(unittest.TestCase):
             writer.writeheader()
             writer.writerows(records)
 
-    def test_repository_registry_preserves_smoke_baseline_and_authorized_phase12_search(self):
-        self.assertEqual(validate_registry(REGISTRY_PATH), 97)
+    def test_repository_registry_preserves_baseline_xgb_and_final_gru_searches(self):
+        self.assertEqual(validate_registry(REGISTRY_PATH), 188)
         with REGISTRY_PATH.open("r", encoding="utf-8", newline="") as handle:
             rows = list(csv.DictReader(handle))
         by_run = {row["run_id"]: row for row in rows}
@@ -57,12 +57,23 @@ class RegistryTests(unittest.TestCase):
                 "phase8_synthetic_icu_time_lstm_smoke_v1",
                 "phase8_synthetic_support_lstm_smoke_v1",
             }
-        self.assertEqual(smoke_ids, set(by_run) - {run_id for run_id in by_run if run_id.startswith("phase12-xgb-")})
+        scientific_ids = {
+            run_id for run_id in by_run
+            if run_id.startswith("phase12-xgb-") or run_id.startswith("final-")
+        }
+        self.assertEqual(smoke_ids, set(by_run) - scientific_ids)
         phase12 = [row for row in rows if row["run_id"].startswith("phase12-xgb-")]
         self.assertEqual(len(phase12), 90)
         self.assertTrue(all(row["run_type"] == "scientific" for row in phase12))
         self.assertTrue(all(row["search_version"] == "synthetic_xgb_phase12_validation_search_v1" for row in phase12))
         self.assertTrue(all(row["status"] == "completed" for row in phase12))
+        final_v2 = [row for row in rows if row["run_id"].startswith("final-v2-gru-")]
+        self.assertEqual(len(final_v2), 90)
+        self.assertTrue(all(row["run_type"] == "scientific" for row in final_v2))
+        self.assertTrue(all(row["search_version"] == "vedant_final_gru_validation_search_v2" for row in final_v2))
+        self.assertTrue(all(row["status"] == "completed" for row in final_v2))
+        failed_version = by_run["final-gru-recovery-001-attempt-1"]
+        self.assertEqual(failed_version["search_version"], "vedant_final_gru_validation_search_v1")
         self.assertEqual(by_run["phase4_synthetic_smoke_v1"]["model_family"], "smoke_test")
         self.assertIn("SYNTHETIC SMOKE TEST ONLY", by_run["phase4_synthetic_smoke_v1"]["notes"])
         recovery = by_run["phase5_synthetic_recovery_gru_smoke_v1"]

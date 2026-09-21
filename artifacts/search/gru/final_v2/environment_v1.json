@@ -1,0 +1,1 @@
+{"device_policy":"cpu_deterministic","environment_version":"vedant_final_gru_environment_v2","implementation_commit":"6ee72f8bee55baed82ab8705fbd4f939f86a0182","numpy":"2.0.2","platform":"macOS-27.0-arm64-arm-64bit","python":"3.9.6","status":"FROZEN_FOR_FINAL_GRU_VALIDATION_SEARCH","test_accessed":false,"torch":"2.8.0"}

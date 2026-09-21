@@ -62,6 +62,20 @@ def _write_json(path, value):
     temporary = path.with_name(path.name + ".tmp"); temporary.write_bytes(canonical_json_bytes(value)); temporary.replace(path)
 
 
+def _write_candidate_config(path, value):
+    """Write the exact canonical bytes used by ``canonical_sha256``."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    raw = json.dumps(value, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+    if sha256_file_bytes(raw) != canonical_sha256(value):
+        raise RuntimeError("candidate config byte/hash canonicalization mismatch")
+    temporary = path.with_name(path.name + ".tmp"); temporary.write_bytes(raw); temporary.replace(path)
+
+
+def sha256_file_bytes(raw):
+    import hashlib
+    return hashlib.sha256(raw).hexdigest()
+
+
 def _write_jsonl(path, rows):
     path.parent.mkdir(parents=True, exist_ok=True)
     temporary = path.with_name(path.name + ".tmp")
@@ -253,7 +267,7 @@ def _register(task, manifest, candidate, attempt, run_id, result, metrics_path, 
     record_search_attempt(REGISTRY_PATH,manifest=registry_manifest,candidates=manifest["candidates"],candidate_id=candidate["candidate_id"],run_id=run_id,
         attempt_number=attempt,attempt_status_detail="COMPLETE",timestamp_utc=_utc(),seed=candidate["model_seed"],retry_of_run_id=retry_of,
         artifact_ref=str(result["checkpoint"].relative_to(ROOT)),artifact_hash=result["checkpoint_sha256"],metrics_ref=str(metrics_path.relative_to(ROOT)),metrics_hash=sha256_file(metrics_path),
-        config_ref=master["search_space_path"],run_type="scientific",preprocessor_ref="artifacts/preprocessors/synthetic_feature_preprocessor_v1.json",
+        config_ref=str((result["checkpoint"].parent/"candidate_config.json").relative_to(ROOT)),run_type="scientific",preprocessor_ref="artifacts/preprocessors/synthetic_feature_preprocessor_v1.json",
         preprocessor_sha256=master["preprocessor_sha256"],derived_feature_hash=master["feature_schema_sha256"],environment_ref=master["environment_path"],environment_sha256=master["environment_sha256"],
         notes=json.dumps({"search_role":"GRU_WITHIN_FAMILY_VALIDATION_CANDIDATE","best_epoch":result["best_epoch"],"g1_sha256":master["g1_sha256"],"phase14_handoff_sha256":master["phase14_handoff_sha256"],"test_accessed":False},sort_keys=True,separators=(",",":")))
     common=dict(producing_run_id=run_id,task=TASK_REGISTRY[task],model_family="gru",split_hash=master["split_sha256"],feature_version=master["feature_schema_version"],
@@ -269,7 +283,7 @@ def _register(task, manifest, candidate, attempt, run_id, result, metrics_path, 
 
 def _run_candidate(task,manifest,candidate,attempt,master,train,validation,retry_of=""):
     run_id=f"final-v2-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
-    directory.mkdir(parents=True,exist_ok=False); _write_json(directory/"candidate_config.json",candidate["config"])
+    directory.mkdir(parents=True,exist_ok=False); _write_candidate_config(directory/"candidate_config.json",candidate["config"])
     result=_train(task,candidate,master,train,validation,directory,run_id)
     payload={"metrics_version":"final_gru_validation_metrics_v1","search_version":SEARCH_VERSION,"candidate_id":candidate["candidate_id"],"run_id":run_id,"task":task,"status":"COMPLETE",
         "partition":"validation","metrics":result["metrics"],"best_epoch":result["best_epoch"],"epochs_completed":result["epochs_completed"],"checkpoint_path":str(result["checkpoint"].relative_to(ROOT)),
@@ -286,7 +300,7 @@ def _failure(task,manifest,candidate,attempt,master,error,retry_of):
     run_id=f"final-v2-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
     if not directory.exists(): directory.mkdir(parents=True)
     config_path=directory/"candidate_config.json"
-    if not config_path.exists(): _write_json(config_path,candidate["config"])
+    if not config_path.exists(): _write_candidate_config(config_path,candidate["config"])
     failure=directory/"failure.json"; _write_json(failure,{"run_id":run_id,"candidate_id":candidate["candidate_id"],"attempt":attempt,"status":"FAILED_SOFTWARE" if attempt<MAX_ATTEMPTS else "FAILED_SCIENTIFIC","reason_type":type(error).__name__,"reason":str(error),"test_accessed":False})
     reg={**manifest,"task":TASK_REGISTRY[task],"code_commit":master["execution_commit"],"search_space_ref":master["search_space_path"],"search_space_hash":master["search_space_sha256"],"split_hash":master["split_sha256"],"feature_version":master["feature_schema_version"],"label_version":"synthetic_phase9_final_target_contract_v1","validation_objective":master["validation_objectives"][task]}
     record_search_attempt(REGISTRY_PATH,manifest=reg,candidates=manifest["candidates"],candidate_id=candidate["candidate_id"],run_id=run_id,attempt_number=attempt,attempt_status_detail="FAILED_SOFTWARE" if attempt<MAX_ATTEMPTS else "FAILED_SCIENTIFIC",timestamp_utc=_utc(),seed=candidate["model_seed"],retry_of_run_id=retry_of,config_ref=str(config_path.relative_to(ROOT)),run_type="scientific",preprocessor_ref="artifacts/preprocessors/synthetic_feature_preprocessor_v1.json",preprocessor_sha256=master["preprocessor_sha256"],derived_feature_hash=master["feature_schema_sha256"],environment_ref=master["environment_path"],environment_sha256=master["environment_sha256"],notes=json.dumps({"failure_ref":str(failure.relative_to(ROOT)),"test_accessed":False}))
