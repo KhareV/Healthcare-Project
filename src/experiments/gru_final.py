@@ -13,7 +13,7 @@ from training.checkpoint import metadata_sidecar_path
 from vedant_infra.hashing import sha256_file
 
 
-SEARCH_VERSION = "vedant_final_gru_validation_search_v1"
+SEARCH_VERSION = "vedant_final_gru_validation_search_v2"
 SAMPLER_VERSION = "deterministic_latin_hypercube_v1"
 MASTER_SEED = 20260921
 BUDGET = 30

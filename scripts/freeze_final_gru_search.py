@@ -20,7 +20,7 @@ from experiments.gru_final import (
     candidate_manifest, canonical_sha256, derived_seed, validate_search_space,
 )
 
-SEARCH_ROOT = ROOT / "artifacts/search/gru/final"
+SEARCH_ROOT = ROOT / "artifacts/search/gru/final_v2"
 MANIFEST_ROOT = SEARCH_ROOT / "manifests"
 
 
@@ -56,7 +56,7 @@ def main():
     space = _load(space_path); validate_search_space(space)
     train, validation = Phase10GRUDataset(ROOT, "train"), Phase10GRUDataset(ROOT, "validation")
     environment = {
-        "environment_version": "vedant_final_gru_environment_v1",
+        "environment_version": "vedant_final_gru_environment_v2",
         "status": "FROZEN_FOR_FINAL_GRU_VALIDATION_SEARCH", "implementation_commit": commit,
         "python": platform.python_version(), "torch": importlib.metadata.version("torch"),
         "numpy": importlib.metadata.version("numpy"), "platform": platform.platform(),
@@ -88,6 +88,10 @@ def main():
         "tensor_contract_version": train.tensor_contract_version,
         "dimensions": {"T": 8, "F": len(train.feature_names), "S_model": len(train.static_feature_names)},
         "row_counts": {"train": len(train), "validation": len(validation)},
+        "validation_row_keys_sha256": canonical_sha256([
+            [row["subject_id"], row["stay_id"], row["prediction_time"], row["grid_index"]]
+            for row in validation.rows
+        ]),
         "validation_objectives": {
             "recovery": "MIN_STAY_BALANCED_MAE24_ORIGINAL_DELTA_SOFA_UNITS",
             "icu_time": "MIN_STAY_BALANCED_WEIGHTED_MEDIAN_ABSOLUTE_ERROR_HOURS",

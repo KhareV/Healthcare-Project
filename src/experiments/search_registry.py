@@ -77,7 +77,14 @@ def record_search_attempt(
     existing = _rows(registry_path)
     if any(row.get("run_id") == run_id for row in existing):
         raise GovernanceError("run_id already exists")
-    same_candidate = [row for row in existing if row.get("candidate_id") == candidate_id]
+    # Candidate identifiers may intentionally recur after a transparently
+    # versioned full-search restart. Retry sequencing is scoped to the exact
+    # frozen search version, never across scientific implementations.
+    same_candidate = [
+        row for row in existing
+        if row.get("candidate_id") == candidate_id
+        and row.get("search_version") == manifest["search_version"]
+    ]
     if attempt_number != len(same_candidate) + 1:
         raise GovernanceError("attempt_number must be sequential for one candidate")
     if attempt_number > 1:

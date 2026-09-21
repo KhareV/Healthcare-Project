@@ -13,7 +13,7 @@ from experiments.gru_final import SEARCH_VERSION, TASKS, choose_best, validate_c
 from experiments.lineage import read_artifact_index, read_run_registry, validate_artifact_lineage
 from vedant_infra.registry import validate_registry
 
-SEARCH=ROOT/"artifacts/search/gru/final"
+SEARCH=ROOT/"artifacts/search/gru/final_v2"
 
 
 def load(path): return json.loads(path.read_text(encoding="utf-8"))

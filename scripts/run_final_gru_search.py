@@ -46,7 +46,7 @@ from training.tasks.organ_support import OrganSupportTaskAdapter
 from training.tasks.recovery import RecoveryTaskAdapter
 
 
-SEARCH_ROOT = ROOT / "artifacts/search/gru/final"
+SEARCH_ROOT = ROOT / "artifacts/search/gru/final_v2"
 MASTER_PATH = SEARCH_ROOT / "manifests/search_manifest_v1.json"
 REGISTRY_PATH = ROOT / "experiments/registry.csv"
 ARTIFACT_INDEX_PATH = ROOT / "experiments/artifacts.csv"
@@ -261,14 +261,14 @@ def _register(task, manifest, candidate, attempt, run_id, result, metrics_path, 
         creation_date_utc=_utc(),preprocessor_sha256=master["preprocessor_sha256"],environment_sha256=master["environment_sha256"],run_type="scientific",status="registered")
     model_id=run_id+":model"; pred_id=run_id+":predictions"
     records=[ArtifactRecord(artifact_id=model_id,artifact_path=str(result["checkpoint"].relative_to(ROOT)),artifact_type="model_checkpoint",artifact_version="final_gru_checkpoint_v1",artifact_sha256=result["checkpoint_sha256"],model_sha256=result["checkpoint_sha256"],metadata_ref=str((result["checkpoint"].with_name("model.pt.metadata.json")).relative_to(ROOT)),**common),
-        ArtifactRecord(artifact_id=pred_id,artifact_path=str(result["predictions_path"].relative_to(ROOT)),artifact_type="prediction",artifact_version="final_gru_validation_prediction_v1",artifact_sha256=sha256_file(result["predictions_path"]),parent_artifact_ids=model_id,model_sha256=result["checkpoint_sha256"],partition="validation",probability_type="raw_uncalibrated" if task=="organ_support" else "",**common),
+        ArtifactRecord(artifact_id=pred_id,artifact_path=str(result["predictions_path"].relative_to(ROOT)),artifact_type="prediction",artifact_version="final_gru_validation_prediction_v1",artifact_sha256=sha256_file(result["predictions_path"]),parent_artifact_ids=model_id,model_sha256=result["checkpoint_sha256"],partition="validation",probability_type="raw_uncalibrated" if task=="organ_support" else "",prediction_population_hash=master["validation_row_keys_sha256"],**common),
         ArtifactRecord(artifact_id=run_id+":metrics",artifact_path=str(metrics_path.relative_to(ROOT)),artifact_type="metric_table",artifact_version="final_gru_validation_metrics_v1",artifact_sha256=sha256_file(metrics_path),parent_artifact_ids=pred_id,partition="validation",probability_type="raw_uncalibrated" if task=="organ_support" else "",evaluator_version="stay_balanced_metrics_v1",metric_implementation_version="stay_balanced_metrics_v1",**common)]
     combined=list(read_artifact_index(ARTIFACT_INDEX_PATH))+records
     validate_artifact_lineage(combined,read_run_registry(REGISTRY_PATH),repository_root=ROOT); write_artifact_index(ARTIFACT_INDEX_PATH,combined)
 
 
 def _run_candidate(task,manifest,candidate,attempt,master,train,validation,retry_of=""):
-    run_id=f"final-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
+    run_id=f"final-v2-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
     directory.mkdir(parents=True,exist_ok=False); _write_json(directory/"candidate_config.json",candidate["config"])
     result=_train(task,candidate,master,train,validation,directory,run_id)
     payload={"metrics_version":"final_gru_validation_metrics_v1","search_version":SEARCH_VERSION,"candidate_id":candidate["candidate_id"],"run_id":run_id,"task":task,"status":"COMPLETE",
@@ -283,7 +283,7 @@ def _run_candidate(task,manifest,candidate,attempt,master,train,validation,retry
 
 
 def _failure(task,manifest,candidate,attempt,master,error,retry_of):
-    run_id=f"final-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
+    run_id=f"final-v2-{candidate['candidate_id']}-attempt-{attempt}"; directory=SEARCH_ROOT/task/candidate["candidate_id"]/f"attempt-{attempt}"
     if not directory.exists(): directory.mkdir(parents=True)
     config_path=directory/"candidate_config.json"
     if not config_path.exists(): _write_json(config_path,candidate["config"])

@@ -1,0 +1,1 @@
+{"attempt":1,"candidate_id":"gru-recovery-001","reason":"prediction missing required metadata: prediction_population_hash","reason_type":"LineageValidationError","run_id":"final-gru-recovery-001-attempt-1","status":"FAILED_SOFTWARE","test_accessed":false}
