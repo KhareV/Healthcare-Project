@@ -1,0 +1,34 @@
+{
+  "artifact_version": "phase14_verification_v1",
+  "status": "PASS",
+  "baseline_regression": {
+    "passed": 1245,
+    "skipped": 2
+  },
+  "focused_phase14_and_receiver_regression": {
+    "passed": 38,
+    "skipped": 0
+  },
+  "pre_evidence_regression": {
+    "junit_path": "artifacts/test-results/phase14_pre_evidence_full.xml",
+    "passed": 1258,
+    "skipped": 2
+  },
+  "final_regression": {
+    "junit_path": "artifacts/test-results/phase14_final_full.xml",
+    "passed": 1264,
+    "skipped": 2
+  },
+  "new_phase14_tests": 19,
+  "compilation": "PASS",
+  "phase12_artifact_audit": "PASS_90_OF_90_COMPLETE_NO_TEST_ACCESS",
+  "registry_audit": "PASS_NO_SCIENTIFIC_ORPHANS_NO_HASH_MISMATCHES",
+  "system_evidence_audit": "PASS_17_INDEXED_0_ORPHANS",
+  "phase14_handoff_audit": "PASS",
+  "active_stale_artifact_count": 0,
+  "phase14_artifact_absolute_path_count": 0,
+  "selected_models_manifest_present": false,
+  "g3_marker_present": false,
+  "test_accessed": false,
+  "scientific_training_performed": false
+}

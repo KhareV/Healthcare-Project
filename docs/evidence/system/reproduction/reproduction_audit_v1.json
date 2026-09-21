@@ -16,12 +16,12 @@
     "counts": {
       "errors": 0,
       "failures": 0,
-      "passed": 1245,
+      "passed": 1258,
       "skipped": 2,
-      "tests": 1247
+      "tests": 1260
     },
     "evidence_version": "phase16_test_report_v1",
-    "junit_sha256": "414562241f409ea43ac351655e23007b96e911293ee848206bb3d45279e84b0a",
+    "junit_sha256": "0cea0d41831ee75316439633dce1b7465b3cdffb3ad5d4a16c31a64688523218",
     "python": "3.9.6",
     "scope": "repository",
     "status": "PASS"
