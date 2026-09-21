@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "946085c1b73151995c2fa96ed35b35c88d8ee2f88ac3e30d6a59155829b8b08a",
+      "output_sha256": "29ad5bafad327fbac85e31e16773f548018c58c5447051fa8704d82dfbf8c72b",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1894,11 +1894,11 @@
         },
         {
           "path": "tests/test_phase0_infrastructure.py",
-          "sha256": "b0005bdbcf190e127388ad950b2303c3487345da0530ca4c74ba9384b626cd5c"
+          "sha256": "59a15811817967d8e77da7697f057d3bff78e2ea71f7655260b47918e874d1d3"
         },
         {
           "path": "tests/test_phase11_xgb_canonical.py",
-          "sha256": "0c6d3cf4bed5f606dfe5d13212175395c1f4062cdccd4de7f324594f7f42d054"
+          "sha256": "9f4ff5df0bd10e7573414d38f2110d74b3040e7a82e530abd335c23f094bcfae"
         },
         {
           "path": "tests/test_phase12_xgb_search_governance.py",
@@ -2594,7 +2594,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "d8ffd95d54222288f4c1817e94223904da00e5f95d6febaf3fb438e04494c5ed",
+      "output_sha256": "84a385c1959c585869d3cf3c1428d77f647149e48b36fab905b19f8639164a7f",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2632,16 +2632,16 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "2ee8318627bf4a1e8800d5cc64e9195629e993266f4c6b0b2cab60e673761835",
+      "output_sha256": "3703695add14e35553fc4364101b0abd0f4d542b297eba03363c1637c384dc78",
       "scope": "repository",
       "source_artifacts": [
         {
           "path": "experiments/registry.csv",
-          "sha256": "62d7d9e7707f80f2ea8fe1f0552fa21d4d36c24aa784adb0fadf25a2e0587ff5"
+          "sha256": "7f528d028d3962a0bcc62e99a87b10a4b742a2ce66db94cad54466c43f9a0ba1"
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "0dbbde611e9aaa7310e611ced7bcadad8b6bbd83863440de2faa273870650de5"
+          "sha256": "d67d410f3583d1c181ed5b2468a15f12509c0d1681a8bf28c4f1ab8fc5102ff5"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2653,7 +2653,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "b708f2a4f82362612dee1fbe0494fbe1902722dd2e0a9069bacdaf128e7c833c",
+      "output_sha256": "ad7966ceb3ff565e2908c435b90e33f9121111813f402e0b2e28e53de257a444",
       "scope": "repository",
       "source_artifacts": [
         {

@@ -262,11 +262,13 @@ def test_wrong_scaler_and_class_weight_artifact_bytes_are_rejected(smoke_bundles
         load_xgb_bundle(root / "support", expected_task="organ_support", expected_lineage=lineage, expected_feature_names=names, support_class_weight=weight, support_class_weight_path=wrong_weight)
 
 
-def test_registry_has_zero_scientific_xgb_candidates_and_no_selected_manifest_change():
+def test_phase11_consumed_zero_scientific_slots_and_later_rows_are_phase12_only():
     rows = list(csv.DictReader((ROOT / "experiments/registry.csv").open()))
-    assert not [row for row in rows if row["model_family"] == "xgboost" and row["run_type"] == "scientific"]
+    scientific_xgb = [row for row in rows if row["model_family"] == "xgboost" and row["run_type"] == "scientific"]
+    assert all(row["search_version"] == "synthetic_xgb_phase12_validation_search_v1" for row in scientific_xgb)
     assert not (ROOT / "artifacts/search/real").exists()
     phase11 = json.loads(MANIFEST.read_text())
+    assert phase11["scientific_xgb_candidates_registered"] == 0
     assert phase11["search_executed"] is False
     assert phase11["model_selection_performed"] is False
     assert phase11["calibration_performed"] is False

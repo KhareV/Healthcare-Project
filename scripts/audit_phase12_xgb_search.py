@@ -12,7 +12,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from data.synthetic.provenance import sha256_file
 from experiments.audit import audit_registry_lineage, audit_search, read_registry_rows
 from experiments.lineage import read_artifact_index, read_run_registry, validate_artifact_lineage
-from experiments.xgb_phase12 import RankedCandidate, choose_best, validate_candidate_manifest, validate_master_manifest, validate_search_space
+from experiments.xgb_phase12 import RankedCandidate, canonical_sha256, choose_best, validate_candidate_manifest, validate_master_manifest, validate_search_space
 
 
 SEARCH_ROOT = ROOT / "artifacts/search/xgb/phase12"
@@ -43,7 +43,18 @@ def main() -> None:
     for task, item in master["candidate_manifests"].items():
         manifest = _load(ROOT / item["path"])
         candidates = validate_candidate_manifest(manifest, space)
-        summary = audit_search(manifest, candidates, registry)
+        summary = audit_search(
+            {**manifest, "validation_objective": master["validation_objectives"][task]},
+            candidates,
+            registry,
+        )
+        # Phase 12 hashes the exact canonical serialized candidate payload,
+        # including NumPy-generated float precision, with the synthetic-data
+        # canonical serializer. Historical dry-run audit uses its older JSON
+        # helper; keep both contracts intact and report the Phase-12 verifier.
+        summary["candidate_list_hash_verified"] = (
+            canonical_sha256(candidates) == manifest["candidate_list_hash"]
+        )
         if not (
             summary["planned_candidates"] == 30
             and summary["unique_candidate_configs"] == 30
