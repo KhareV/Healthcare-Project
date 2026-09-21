@@ -363,6 +363,7 @@ def write_evidence(root: Path, gate: Gate, qa: Mapping[str, Any], golden: Sequen
         "feature_dictionary": evidence_dir / "final_feature_dictionary_v1.md",
         "target_dictionary": evidence_dir / "final_target_dictionary_v1.md",
         "dataset_card": evidence_dir / "synthetic_dataset_card_v1.md",
+        "phase13_review": root / "docs/sanskruti/PHASE13_G1_ACCEPTANCE_REVIEW.md",
     }
     reports["data_qa_report"].write_text("# Phase 13 Synthetic Data QA\n\n" + limitations + "\n\n" + _markdown_table(("Measure", "Value"), ((k, json.dumps(v, sort_keys=True)) for k,v in qa.items() if k != "hash_inventory")) + "\n\n## Critical invariants\n\n" + _markdown_table(("ID","Category","Status","Evidence"), ((c.invariant_id,c.category,c.status,c.evidence) for c in gate.checks)) + "\n", encoding="utf-8")
     reports["leakage_audit"].write_text("# Phase 13 Structural Leakage Audit\n\nAll acceptance decisions use structural invariants, provenance, adversarial perturbation tests, and exact reconstruction. They do not use correlations, performance magnitude, prevalence targets, arbitrary missingness thresholds, or CI-width ratios.\n\n" + _markdown_table(("ID","Status","Evidence"), ((c.invariant_id,c.status,c.evidence) for c in gate.checks if c.category in {"leakage","features","missingness","timestamps","support_labels","adversarial_tests"})) + "\n\nThe model input contract excludes targets, eligibility, split, IDs, outtime, future values, latent state, hazards, and future support duration. Future events may change labels but must not change cutoff-time features; the focused hostile suite is the executable evidence.\n", encoding="utf-8")
@@ -373,6 +374,7 @@ def write_evidence(root: Path, gate: Gate, qa: Mapping[str, Any], golden: Sequen
     reports["feature_dictionary"].write_text("# Final Feature Dictionary\n\nAll fields below are model-eligible dynamic channels; identities, labels, eligibility, split, and provenance metadata are non-predictive.\n\n" + _markdown_table(("Name","Unit","Source","Aggregation","Mask/TSLO","Leakage role"), ((x["name"],x["unit"],x["source_concept"],x["aggregation"],"genuine evidence; frozen TSLO" if x["aggregation"] != "STATE_AT_BIN_END" else "known state; mask=true/TSLO=0 in active bins","MODEL_ELIGIBLE_DYNAMIC") for x in schema["temporal_channels"])) + "\n\nStatics: age, sex category, cardiac condition group; train-fitted encoding only. Expected hard ranges and provenance are governed by the frozen raw/processed schemas and the listed provenance IDs.\n", encoding="utf-8")
     reports["target_dictionary"].write_text("# Final Target Dictionary\n\n| Target | Formula | Eligibility | Input role |\n|---|---|---|---|\n| DeltaSOFA24 | `SOFA(t+24)-SOFA(t)` | independent 24h follow-up | LABEL_ONLY / prohibited from X |\n| DeltaSOFA48 | `SOFA(t+48)-SOFA(t)` | independent 48h follow-up | LABEL_ONLY / prohibited from X |\n| ICU time | `log1p((outtime-t) hours)` | legal structural cutoff | LABEL_ONLY / outtime prohibited from X |\n| Organ support | qualifying vasopressor or invasive-ventilation OFF-to-ON in `(t,t+24h]` | at-risk and event/full follow-up rules | LABEL_ONLY / eligibility and future onset prohibited from X |\n", encoding="utf-8")
     reports["dataset_card"].write_text("# Final Synthetic Cardiac Dataset Card\n\nPurpose: retrospective sequential forecasting methodology on 2,000 adult synthetic cardiac subjects, one ICU-like episode each. The canonical grid starts at +24h, advances every 6h, has at most 12 cutoffs, and uses `(t-48h,t]` in eight 6h bins. Features include 15 physiology channels plus six cutoff-safe support state/rate channels; missingness, observation masks, TSLO, and pre-ICU padding are distinct. Targets are independent 24h/48h SOFA deltas, remaining ICU-episode time, and 24h eligible OFF-to-ON support initiation. Split is deterministic 70/15/15 by subject; all learned preprocessing uses train only.\n\n" + limitations + " Intended use is reproducible ML systems and temporal-method evaluation. Prohibited interpretations include prevalence estimation, clinical treatment effects, real-world calibration, causal inference, or clinical decision support.\n", encoding="utf-8")
+    reports["phase13_review"].write_text("# Phase 13 — Synthetic G1 Data/Label Acceptance Review\n\n## Result\n\n**ACCEPTED_SYNTHETIC_DATA_LABEL_FREEZE.** All critical structural, temporal, leakage, provenance, parity, and reproducibility invariants passed. The full 2,000-subject pipeline reproduced exact scientific bytes after unrelated global RNG perturbation. Phase-12 parents were not changed, so its governed XGBoost results remain valid.\n\n## Governance boundaries\n\n- Final-test state remains `NEVER_OPENED`; no test model input, prediction, metric, prevalence, or error analysis was produced.\n- Model performance was not an acceptance criterion.\n- No model training, GRU search, family selection, calibration, threshold selection, G2, G3, or Phase 14 work was performed.\n- G1 accepts methodology and data/label consistency for a synthetic cardiac benchmark; it is not clinical validation or deployment authorization.\n\n## Evidence\n\nThe authoritative evidence is under `docs/evidence/data/`, with machine-readable invariants and the authorizing marker under `artifacts/acceptance/`. The dataset card records intended and prohibited uses. The golden-case report contains the ten required deterministic cases. The circularity report confirms physiology/support-first generation and derived labels.\n", encoding="utf-8")
     return {name: {"path": str(path.relative_to(root)), "sha256": sha256_file(path)} for name,path in reports.items()}
 
 
@@ -393,7 +395,22 @@ def finalize(root: Path, focused_junit: Path, replay_root: Path) -> Path:
             _write_json(failure, {"status":"NOT_ACCEPTED","version":PHASE13_VERSION,"failed_invariants":[asdict(c) for c in gate.checks if c.critical and c.status != "PASS"],"phase12_invalidated": item.owner_on_failure != "PHASE_13"})
             raise RuntimeError(f"G1 NOT ACCEPTED: {item.invariant_id}: {item.evidence}")
     summary_path = root / "artifacts/acceptance/phase13_invariant_summary_v1.json"
-    _write_json(summary_path, {"version":PHASE13_VERSION,"status":"PASS","invariants":[asdict(c) for c in gate.checks]})
+    category_report = {
+        "generator": "reproducibility_report", "identity": "data_qa_report", "scope": "dataset_card",
+        "cohort": "data_qa_report", "timestamps": "leakage_audit", "features": "leakage_audit",
+        "missingness": "leakage_audit", "sofa": "data_qa_report", "recovery": "target_dictionary",
+        "icu_time": "target_dictionary", "support_labels": "target_dictionary", "leakage": "leakage_audit",
+        "split": "data_qa_report", "preprocessing": "data_qa_report", "information_parity": "data_qa_report",
+        "lineage": "data_qa_report", "test_governance": "phase13_review",
+        "adversarial_tests": "leakage_audit", "reproducibility": "reproducibility_report",
+    }
+    invariant_rows = []
+    for check in gate.checks:
+        row = asdict(check)
+        report = evidence[category_report[check.category]]
+        row.update(evidence_path=report["path"], evidence_sha256=report["sha256"])
+        invariant_rows.append(row)
+    _write_json(summary_path, {"version":PHASE13_VERSION,"status":"PASS","invariants":invariant_rows})
     evidence = dict(evidence)
     evidence["invariant_summary"] = {"path": str(summary_path.relative_to(root)), "sha256": sha256_file(summary_path)}
     inventory = _hash_inventory(root)
