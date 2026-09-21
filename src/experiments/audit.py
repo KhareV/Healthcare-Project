@@ -24,10 +24,13 @@ def read_registry_rows(path):
 
 def audit_search(manifest, candidates, registry_rows=()):
     candidate_ids = {candidate["candidate_id"] for candidate in candidates}
+    manifest_task = "icu_stay_time" if manifest["task"] == "icu_time" else manifest["task"]
     rows = [
         row
         for row in registry_rows
         if row.get("search_version") == manifest["search_version"]
+        and row.get("task") == manifest_task
+        and row.get("model_family") == manifest["family"]
     ]
     attempted_candidates = {row.get("candidate_id") for row in rows}
     completed = {

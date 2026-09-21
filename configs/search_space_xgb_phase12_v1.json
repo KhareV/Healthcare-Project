@@ -1,0 +1,42 @@
+{
+  "search_space_version": "xgb_phase12_search_space_v1",
+  "status": "FROZEN_BEFORE_SCIENTIFIC_CANDIDATE_1",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "family": "xgboost",
+  "budget_per_task": 30,
+  "parameters": {
+    "max_depth": {"type": "integer", "minimum": 3, "maximum": 8, "distribution": "uniform"},
+    "learning_rate": {"type": "continuous", "minimum": 0.01, "maximum": 0.20, "distribution": "log_uniform"},
+    "subsample": {"type": "continuous", "minimum": 0.60, "maximum": 1.00, "distribution": "uniform"},
+    "colsample_bytree": {"type": "continuous", "minimum": 0.60, "maximum": 1.00, "distribution": "uniform"},
+    "min_child_weight": {"type": "integer", "minimum": 1, "maximum": 10, "distribution": "uniform"},
+    "reg_alpha": {"type": "continuous", "minimum": 0.0, "maximum": 1.0, "distribution": "uniform"},
+    "reg_lambda": {"type": "continuous", "minimum": 0.1, "maximum": 10.0, "distribution": "log_uniform"}
+  },
+  "fixed_execution": {
+    "n_estimators": 1000,
+    "tree_method": "hist",
+    "device": "cpu",
+    "n_jobs": 1,
+    "early_stopping_rounds": 50,
+    "serialization": "native_json",
+    "numeric_dtype": "float32"
+  },
+  "internal_early_stopping_monitors": {
+    "recovery24": "rmse_standardized_row_weighted",
+    "recovery48": "rmse_standardized_row_weighted",
+    "icu_time": "rmse_log1p_row_weighted",
+    "organ_support": "logloss_raw_probability_row_weighted"
+  },
+  "authoritative_external_ranking": {
+    "recovery": "min_stay_balanced_validation_mae24_original_units",
+    "icu_time": "min_stay_balanced_validation_weighted_median_absolute_error_hours",
+    "organ_support": "max_stay_balanced_validation_auprc_raw_uncalibrated"
+  },
+  "training_weights": {
+    "recovery": "none",
+    "icu_time": "none",
+    "organ_support": "phase10_scale_pos_weight_only",
+    "stay_balanced_weights": "evaluation_only"
+  }
+}

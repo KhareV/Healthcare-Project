@@ -120,6 +120,9 @@
       "artifacts/splits/synthetic_split_v2.metadata.json",
       "artifacts/test-results/phase11_full_regression.xml",
       "artifacts/test-results/phase11_pre_evidence_regression.xml",
+      "artifacts/test-results/phase12_baseline_full.xml",
+      "artifacts/test-results/phase12_implementation_full.xml",
+      "artifacts/test-results/phase12_implementation_pre_evidence.xml",
       "artifacts/test-results/phase9_full_regression.xml",
       "artifacts/test-results/phase9_pre_evidence_regression.xml",
       "artifacts/validation/phase19_preflight_v1.json"

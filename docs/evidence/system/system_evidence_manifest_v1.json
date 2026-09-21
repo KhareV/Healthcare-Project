@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "8095a9b67dd1982c84c3458309bb440bfe9dfaebaff6fc584e9ba04db09cdc17",
+      "output_sha256": "946085c1b73151995c2fa96ed35b35c88d8ee2f88ac3e30d6a59155829b8b08a",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -962,7 +962,7 @@
         },
         {
           "path": "src/experiments/audit.py",
-          "sha256": "4a6e52174ffe392a4b13c2fe0d197b58245646fa72170823c50b12a1a2a44a7a"
+          "sha256": "03c5c9f2feed0b15db55b3d1db781c221e76a52385a2557ffcf3baf82901f4f4"
         },
         {
           "path": "src/experiments/dry_run.py",
@@ -998,7 +998,7 @@
         },
         {
           "path": "src/experiments/search_registry.py",
-          "sha256": "954b31df18238aed9741972d7fc0db5e8d41fcb39c0a9c8b58a4b576d6ddb3f1"
+          "sha256": "7ed8fb4e4dc5bee1f18e413c30612098ec03312ad77b7d13eedd983af5b40320"
         },
         {
           "path": "src/experiments/validation_suite.py",
@@ -1007,6 +1007,10 @@
         {
           "path": "src/experiments/validation_suite_cli.py",
           "sha256": "00970f16941255452c5c834a954b51ee019ce56974745ad9e0b1ae167469771d"
+        },
+        {
+          "path": "src/experiments/xgb_phase12.py",
+          "sha256": "869b19fa9ed3061efa4dc3cccb319975f80f8d49400dc22b5f4e161b0000b306"
         },
         {
           "path": "src/explainability/__init__.py",
@@ -1897,6 +1901,10 @@
           "sha256": "0c6d3cf4bed5f606dfe5d13212175395c1f4062cdccd4de7f324594f7f42d054"
         },
         {
+          "path": "tests/test_phase12_xgb_search_governance.py",
+          "sha256": "9181417e2f08d3b96816cc9e0cf7b7af764a1fec103f35fb2663e6677900ec45"
+        },
+        {
           "path": "tests/test_phase8_icu_time_labels.py",
           "sha256": "13ab63793d39ccd36991faa2c28d5323c0c74a9e0d88b04069d0c4be9d06b8f1"
         },
@@ -2433,6 +2441,10 @@
           "sha256": "da97e2f15688d65a1251246466cff5c1ae87525e224fb971bf3369b9615522ed"
         },
         {
+          "path": "configs/search_space_xgb_phase12_v1.json",
+          "sha256": "8a81629d7aaad163c55b027cf54d0e65d32a148ace9aaf20bb48d4484f7250da"
+        },
+        {
           "path": "configs/search_space_xgb_v1.json",
           "sha256": "c2f2148757630341ba09fc5d3d117611d9b6062bce16d001beb88bebe3de70c1"
         },
@@ -2582,7 +2594,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "1a4dd5591d788553bb77afa000bbc344c45a01947f9bce40d0268b692696c328",
+      "output_sha256": "d8ffd95d54222288f4c1817e94223904da00e5f95d6febaf3fb438e04494c5ed",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2620,7 +2632,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "604db18c1e0750cb75afd94f66fe05d023619c4a04737b3ef3600815b96c6e99",
+      "output_sha256": "2ee8318627bf4a1e8800d5cc64e9195629e993266f4c6b0b2cab60e673761835",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2641,7 +2653,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "92787e9beebcf813927677aac965e3e9b85f9cc45fd8f41a5174ac53b2258dfc",
+      "output_sha256": "b708f2a4f82362612dee1fbe0494fbe1902722dd2e0a9069bacdaf128e7c833c",
       "scope": "repository",
       "source_artifacts": [
         {
