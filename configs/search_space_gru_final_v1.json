@@ -1,0 +1,27 @@
+{
+  "search_space_version": "vedant_final_gru_search_space_v1",
+  "family": "gru",
+  "budget_per_task": 30,
+  "master_seed": 20260921,
+  "sampler": "deterministic_latin_hypercube_v1",
+  "parameters": {
+    "hidden_dim": {"type": "categorical", "values": [64, 128, 192]},
+    "num_layers": {"type": "categorical", "values": [1, 2]},
+    "dropout": {"type": "continuous", "minimum": 0.1, "maximum": 0.4, "distribution": "uniform"},
+    "learning_rate": {"type": "continuous", "minimum": 0.0001, "maximum": 0.003, "distribution": "log_uniform"},
+    "batch_size": {"type": "categorical", "values": [64, 128]},
+    "weight_decay": {"type": "continuous", "minimum": 0.000001, "maximum": 0.001, "distribution": "log_uniform"}
+  },
+  "fixed": {
+    "optimizer": "adamw",
+    "max_epochs": 60,
+    "early_stopping_patience": 8,
+    "huber_delta": 1.0,
+    "unidirectional": true,
+    "recurrent_dropout": 0.0,
+    "include_observation_mask": true,
+    "include_tslo": true,
+    "restore_best_epoch": true
+  },
+  "test_accessed": false
+}
