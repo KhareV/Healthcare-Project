@@ -16,9 +16,7 @@ COMPARISONS = tuple(sorted((ROOT / "configs/comparisons").glob("lstm_*_synthetic
 
 
 class LSTMSensitivityGovernanceTests(unittest.TestCase):
-    def test_scientific_execution_is_blocked_without_selected_gru_or_g3(self):
-        self.assertFalse((ROOT / "artifacts/governance/g3_freeze.json").exists())
-        self.assertFalse((ROOT / "artifacts/models/selected_models_v1.json").exists())
+    def test_original_smoke_configs_remain_non_scientific_after_stage3(self):
         for path in COMPARISONS:
             config = json.loads(path.read_text(encoding="utf-8"))
             self.assertIsNone(config["source_selected_gru_run_id"])
@@ -27,13 +25,16 @@ class LSTMSensitivityGovernanceTests(unittest.TestCase):
             self.assertFalse(config["test_examples_allowed"])
             self.assertFalse(config["participates_in_serving_selection"])
 
-    def test_no_lstm_search_or_serving_artifact_exists(self):
+    def test_no_lstm_search_implementation_exists_and_lstm_is_not_selected(self):
         prohibited = (
             ROOT / "src/training/lstm_search.py",
             ROOT / "configs/search/lstm",
-            ROOT / "artifacts/models/selected_models_v1.json",
         )
         self.assertEqual([path for path in prohibited if path.exists()], [])
+        selected = json.loads(
+            (ROOT / "artifacts/models/selected_models_v1.json").read_text(encoding="utf-8")
+        )
+        self.assertNotIn("lstm", {item["family"] for item in selected["tasks"].values()})
 
     def test_split_subjects_and_tensor_preprocessing_are_shared(self):
         for comparison_path in COMPARISONS:

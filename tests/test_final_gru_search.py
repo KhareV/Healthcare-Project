@@ -164,7 +164,12 @@ def test_winner_reproduction_is_prediction_exact():
     assert all(row["prediction_exact"] and row["status"] == "PASS" for row in audit["tasks"].values())
 
 
-def test_stage1_did_not_create_selected_models_g3_or_test_outputs():
-    assert not (ROOT / "artifacts/models/selected_models_v1.json").exists()
-    assert not (ROOT / "artifacts/governance/g3_freeze.json").exists()
+def test_stage1_record_preserves_preselection_state_and_no_test_outputs():
+    master = json.loads(
+        (ROOT / "artifacts/search/gru/final_v2/manifests/search_manifest_v1.json").read_text()
+    )
+    assert master["g3_created"] is False
+    assert master["family_selection_performed"] is False
+    assert master["support_calibrated"] is False
+    assert master["support_threshold"] is None
     assert not (ROOT / "artifacts/data/synthetic/phase10/final/synthetic_phase10_v1/test.jsonl").exists()

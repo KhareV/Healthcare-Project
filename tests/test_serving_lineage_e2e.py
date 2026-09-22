@@ -12,7 +12,7 @@ from experiments.lineage import (
     write_artifact_index,
 )
 from registry_helpers import chain, run, write_runs
-from vedant_infra.g3 import audit_g3
+from vedant_infra.g3 import validate_g3_marker
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -57,10 +57,9 @@ def test_restricted_row_identity_cannot_be_registered(tmp_path):
         write_artifact_index(tmp_path / "experiments/artifacts.csv", (hostile,))
 
 
-def test_real_g3_audit_is_non_authorizing_and_final_test_remains_unopened():
+def test_real_g3_marker_is_active_and_final_test_remains_unopened():
     marker = ROOT / "artifacts/governance/g3_freeze.json"
-    before = marker.exists()
-    report = audit_g3(ROOT, scope="real")
-    assert report.overall == "BLOCKED"
-    assert report.test_data_accessed is False
-    assert marker.exists() is before is False
+    payload = validate_g3_marker(marker, ROOT, expected_scope="real")
+    assert payload["status"] == "G3_ACTIVE"
+    assert payload["test_accessed"] is False
+    assert not (ROOT / "artifacts/data/synthetic/phase10/final/synthetic_phase10_v1/test.jsonl").exists()

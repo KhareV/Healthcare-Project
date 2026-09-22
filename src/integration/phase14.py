@@ -193,8 +193,10 @@ def validate_handoff(root: Path, path: Path | None = None) -> Mapping[str, Any]:
     active_text = json.dumps(payload["parents"], sort_keys=True)
     if any(value in active_text for value in forbidden_active):
         raise HandoffError("stale scientific parent is active")
-    if (root / "artifacts/models/selected_models_v1.json").exists():
-        raise HandoffError("selected models must remain absent in Phase 14")
+    # This validates the immutable Phase-14 handoff, including its declaration
+    # that Phase 14 itself did not perform downstream model selection.  A later
+    # authorized Vedant stage may create the selected-model manifest without
+    # retroactively invalidating this historical handoff.
     return payload
 
 

@@ -2,47 +2,40 @@
   "audit_version": "g3_prerequisite_audit_v1",
   "authorization": false,
   "blockers": [
-    "split: split metadata is unreadable",
-    "selected_models_manifest: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/models/selected_models_v1.json",
-    "validation_searches: recovery xgboost search lacks exact-30 completed candidates",
-    "lstm_sensitivity: selected manifest prerequisite failed",
-    "support_calibrator: selected manifest prerequisite failed",
-    "support_threshold: selected manifest prerequisite failed",
-    "explanation_adapters: BLOCKED \u2014 PULKIT EXPLANATION ADAPTER G3 DEPENDENCY",
-    "review_signoffs: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_review_signoffs.json"
+    "test_nonuse: test was already authorized or consumed"
   ],
-  "created_at_utc": "2026-09-18T19:44:52.448728Z",
+  "created_at_utc": "2026-09-22T11:14:51.570212Z",
   "freeze_scope": "real",
   "items": [
     {
-      "detail": "split metadata is unreadable",
+      "detail": "3d6af5298f219f4608e5318ca09856642a1918a1154563ed0e8aec1785563cf6",
       "name": "split",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/models/selected_models_v1.json",
+      "detail": "3d4fb0b1e0341b0ebe29a54e9581bc47d3b80c536d3ee22f830276b4631fbb0b",
       "name": "selected_models_manifest",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "recovery xgboost search lacks exact-30 completed candidates",
+      "detail": "{'recovery:xgboost': {'search_version': 'synthetic_xgb_phase12_validation_search_v1', 'search_space_hash': '2c66be21b25afbc851f6c19a631c9eabb672963dad7f9825d77cd1df9b8dce10', 'candidate_list_hash': '812ef083b8827b1f3b5345bf0f095307ebbc97001b26b60df20dae607f28c2d0', 'scientific_candidate_count': 30}, 'recovery:gru': {'search_version': 'vedant_final_gru_validation_search_v2', 'search_space_hash': 'db96262afc7873b3ebdddbddd5fe1967049b416f663c8ea75b51c3ee7aaae0c8', 'candidate_list_hash': '0fc234474733868519c1d8ea096db905bddcb1e5c578e2ddccaf8f5cf52cdfe0', 'scientific_candidate_count': 30}, 'icu_stay_time:xgboost': {'search_version': 'synthetic_xgb_phase12_validation_search_v1', 'search_space_hash': '2c66be21b25afbc851f6c19a631c9eabb672963dad7f9825d77cd1df9b8dce10', 'candidate_list_hash': '735834d88d9e94442b22d7a7b4bca22801ddbe98cb3e278b59a13609d1b9f727', 'scientific_candidate_count': 30}, 'icu_stay_time:gru': {'search_version': 'vedant_final_gru_validation_search_v2', 'search_space_hash': 'db96262afc7873b3ebdddbddd5fe1967049b416f663c8ea75b51c3ee7aaae0c8', 'candidate_list_hash': 'a76f8c57ce37bca5715b195795ecd22fd6bb9039de86dda667b80d68e20fd3fe', 'scientific_candidate_count': 30}, 'organ_support:xgboost': {'search_version': 'synthetic_xgb_phase12_validation_search_v1', 'search_space_hash': '2c66be21b25afbc851f6c19a631c9eabb672963dad7f9825d77cd1df9b8dce10', 'candidate_list_hash': '52f563e9aadbd5064346f773532325b835666ebd33f2f6ca9f6b00e09ba810b0', 'scientific_candidate_count': 30}, 'organ_support:gru': {'search_version': 'vedant_final_gru_validation_search_v2', 'search_space_hash': 'db96262afc7873b3ebdddbddd5fe1967049b416f663c8ea75b51c3ee7aaae0c8', 'candidate_list_hash': '7fce104018653e94e7ea0619c3ea8bf529c2f36e9d043aaf777ea89ebe588d1b', 'scientific_candidate_count': 30}}",
       "name": "validation_searches",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "selected manifest prerequisite failed",
+      "detail": "{'recovery': {'run_id': 'stage2-lstm-recovery-001', 'parent_selected_gru_run_id': 'final-v2-gru-recovery-024-attempt-1', 'model_ref': 'artifacts/models/lstm_sensitivity_v1/recovery/model.pt', 'model_sha256': '3ae246f59a2fd9f35662db10bc19c8630487289c6ae31ddaa9167f556f4caa2e', 'code_commit': '495ae7e3a4c1e595b4191a300f54865483084ee0'}, 'icu_stay_time': {'run_id': 'stage2-lstm-icu-time-001', 'parent_selected_gru_run_id': 'final-v2-gru-icu-time-026-attempt-1', 'model_ref': 'artifacts/models/lstm_sensitivity_v1/icu_time/model.pt', 'model_sha256': '47cb1f9457716dd7f43f039619386b28f4444f704473589274173a70f3324ce2', 'code_commit': '495ae7e3a4c1e595b4191a300f54865483084ee0'}, 'organ_support': {'run_id': 'stage2-lstm-support-001', 'parent_selected_gru_run_id': 'final-v2-gru-support-001-attempt-1', 'model_ref': 'artifacts/models/lstm_sensitivity_v1/organ_support/model.pt', 'model_sha256': 'c4f6b33cf60e74cef081992cc6b0be6e673b1686a8d8c123dc3cae56082a2a28', 'code_commit': '495ae7e3a4c1e595b4191a300f54865483084ee0'}}",
       "name": "lstm_sensitivity",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "selected manifest prerequisite failed",
+      "detail": "{'ref': 'artifacts/calibration/isotonic_support_v1.json', 'sha256': '9fe6d0e7c22d15d3683d11182e6a33a4692fd145fb8bd6a572f5af3a5ad8065f'}",
       "name": "support_calibrator",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "selected manifest prerequisite failed",
+      "detail": "{'ref': 'artifacts/thresholds/support_threshold_v1.json', 'sha256': '4453d5eccc8bc0ec1be74a391dc4ac203bd4a01d5bb30019763707e7b88494ad', 'criterion': 'validation_f1'}",
       "name": "support_threshold",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
       "detail": "critical lineage clean; development-history issues are noncritical",
@@ -50,19 +43,19 @@
       "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 PULKIT EXPLANATION ADAPTER G3 DEPENDENCY",
+      "detail": "validated",
       "name": "explanation_adapters",
-      "status": "BLOCKED"
-    },
-    {
-      "detail": "unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_review_signoffs.json",
-      "name": "review_signoffs",
-      "status": "BLOCKED"
-    },
-    {
-      "detail": "state never opened; manifest/search/calibration inputs are train/validation only",
-      "name": "test_nonuse",
       "status": "PASS"
+    },
+    {
+      "detail": "validated",
+      "name": "review_signoffs",
+      "status": "PASS"
+    },
+    {
+      "detail": "test was already authorized or consumed",
+      "name": "test_nonuse",
+      "status": "BLOCKED"
     }
   ],
   "overall": "BLOCKED",

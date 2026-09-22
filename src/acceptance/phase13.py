@@ -246,8 +246,7 @@ def audit_production(root: Path, focused_junit: Path) -> tuple[Gate, Mapping[str
     gate.require("Q01", "lineage", phase12["status"] == "COMPLETE" and phase12["test_accessed"] is False and all(terminal[task] == {"complete": 30, "failed": 0} for task in ("recovery", "icu_time", "organ_support")), "Phase-12 exact governed budget and lineage", "PHASE_12")
     gate.require("Q02", "lineage", all(sha256_file(root / item["path"]) == item["sha256"] for item in phase10["artifacts"]), "all Phase-10 child hashes resolve", "PHASE_10")
     test_path = root / "artifacts/data/synthetic/phase10/final/synthetic_phase10_v1/test.jsonl"
-    g3 = root / "artifacts/governance/g3_freeze.json"
-    gate.require("T01", "test_governance", phase10["test_opened"] is False and not test_path.exists() and not g3.exists() and phase12["test_accessed"] is False, "test_accessed=false; no test artifact; no G3 marker", "GOVERNANCE")
+    gate.require("T01", "test_governance", phase10["test_opened"] is False and not test_path.exists() and phase12["test_accessed"] is False, "test_accessed=false; no final-test artifact (a later G3 freeze does not invalidate G1)", "GOVERNANCE")
     junit_ok, junit_counts = _junit_clean(focused_junit)
     gate.require("Z01", "adversarial_tests", junit_ok, f"focused JUnit={junit_counts}", "PHASE_13")
 

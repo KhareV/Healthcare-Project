@@ -35,7 +35,9 @@ def test_phase14_handoff_is_valid_and_governance_locked():
     assert handoff["g3_created"] is False
     assert handoff["selected_models_manifest_created"] is False
     assert handoff["final_model_selection"] == "PENDING_DOWNSTREAM_VEDANT"
-    assert not (ROOT / "artifacts/models/selected_models_v1.json").exists()
+    # The handoff records Phase 14's historical state; authorized downstream
+    # selection does not rewrite or invalidate it.
+    assert (ROOT / "artifacts/models/selected_models_v1.json").is_file()
 
 
 def test_phase14_dimensions_and_counts_are_artifact_derived():

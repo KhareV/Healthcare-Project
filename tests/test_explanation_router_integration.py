@@ -85,8 +85,21 @@ def test_mutated_model_is_rejected_before_router_or_adapter(tmp_path):
     assert runtime.explanations.calls == []
 
 
-def test_real_selected_manifest_is_still_absent():
+def test_real_selected_manifest_has_frozen_family_specific_explanations():
+    import json
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[1]
-    assert not (root / "artifacts/models/selected_models_v1.json").exists()
+    selected = json.loads(
+        (root / "artifacts/models/selected_models_v1.json").read_text(encoding="utf-8")
+    )
+    assert selected["status"] == "SELECTED_MODELS_FROZEN_PRE_TEST"
+    assert selected["test_accessed"] is False
+    assert {
+        task: (item["family"], item["explanation_method"])
+        for task, item in selected["tasks"].items()
+    } == {
+        "recovery": ("xgboost", "tree_shap"),
+        "icu_stay_time": ("gru", "integrated_gradients"),
+        "organ_support": ("xgboost", "tree_shap"),
+    }

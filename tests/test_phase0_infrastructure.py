@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 
 import vedant_infra
+from vedant_infra.g3 import validate_g3_marker
 from vedant_infra.governance import G3FreezeError, assert_g3_freeze
 from vedant_infra.hashing import is_sha256, sha256_bytes, sha256_file
 from vedant_infra.registry import (
@@ -157,9 +158,10 @@ class RegistryTests(unittest.TestCase):
 
 
 class GovernanceTests(unittest.TestCase):
-    def test_no_g3_freeze_marker_exists(self):
-        self.assertFalse(G3_MARKER_PATH.exists())
-        self.assertFalse(vedant_infra.is_g3_freeze_valid(G3_MARKER_PATH))
+    def test_active_g3_freeze_marker_is_valid(self):
+        marker = validate_g3_marker(G3_MARKER_PATH, REPOSITORY_ROOT, expected_scope="real")
+        self.assertEqual(marker["status"], "G3_ACTIVE")
+        self.assertFalse(marker["test_accessed"])
 
     def test_absent_g3_marker_is_refused(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -180,12 +182,10 @@ class ScopeTests(unittest.TestCase):
         self.assertTrue(callable(vedant_infra.sha256_file))
         self.assertTrue(callable(vedant_infra.validate_registry))
 
-    def test_no_fabricated_later_phase_artifacts_exist(self):
+    def test_no_fabricated_legacy_artifacts_exist(self):
         prohibited = (
             REPOSITORY_ROOT / "artifacts" / "splits" / "split_v1.csv",
-            REPOSITORY_ROOT / "artifacts" / "models" / "selected_models_v1.json",
             REPOSITORY_ROOT / "configs" / "vedant" / "timestamp_spec_v1.yaml",
-            G3_MARKER_PATH,
         )
         self.assertEqual([path for path in prohibited if path.exists()], [])
 
