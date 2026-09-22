@@ -1,5 +1,6 @@
 """Fail-closed G3 audit, freeze marker, and access-state governance."""
 
+import csv
 import json
 import shutil
 from dataclasses import asdict, dataclass
@@ -511,6 +512,32 @@ def audit_g3(
 
     def split_check():
         if scope == "real":
+            if split_path.name == "synthetic_split_v2.csv":
+                metadata = _load_json(split_metadata)
+                if (metadata.get("artifact_version") != "synthetic_subject_split_v2"
+                        or metadata.get("status") != "FROZEN_SYNTHETIC_AUTHORIZED"
+                        or metadata.get("split_path") != "artifacts/splits/synthetic_split_v2.csv"
+                        or metadata.get("split_sha256") != sha256_file(split_path)
+                        or metadata.get("labels_or_performance_used") is not False):
+                    raise G3FreezeError("accepted synthetic split metadata is invalid")
+                with split_path.open(encoding="utf-8", newline="") as handle:
+                    reader = csv.DictReader(handle)
+                    if tuple(reader.fieldnames or ()) != ("subject_id", "split", "clone_fingerprint_sha256"):
+                        raise G3FreezeError("accepted synthetic split schema mismatch")
+                    rows = list(reader)
+                if (not rows or len({row["subject_id"] for row in rows}) != len(rows)
+                        or any(row["split"] not in ("train", "validation", "test") for row in rows)):
+                    raise G3FreezeError("accepted synthetic split subject isolation failed")
+                declared = metadata.get("subject_counts", {})
+                actual = {name: sum(row["split"] == name for row in rows) for name in ("train", "validation", "test")}
+                if declared != actual or metadata.get("total_subjects") != len(rows):
+                    raise G3FreezeError("accepted synthetic split count mismatch")
+                fingerprint_splits = {}
+                for row in rows:
+                    fingerprint_splits.setdefault(row["clone_fingerprint_sha256"], set()).add(row["split"])
+                if any(len(values) != 1 for values in fingerprint_splits.values()):
+                    raise G3FreezeError("accepted synthetic split clone isolation failed")
+                return metadata["split_sha256"]
             metadata = verify_split_artifacts(
                 split_path, split_metadata
             )
