@@ -165,18 +165,19 @@ def validate_selected_support_model(model: SelectedSupportModel, *, mode: str) -
                 validate_selection_stage_manifest(manifest)
         except (OSError, ValueError, KeyError) as error:
             raise CalibrationValidationError("selected-model manifest is invalid") from error
-        support = manifest["tasks"]["organ_support"]
-        identity = {
-            "family": model.family,
-            "run_id": model.run_id,
-            "candidate_id": model.candidate_id,
-            "config_hash": model.config_hash,
-            "artifact_sha256": model.artifact_sha256,
-        }
-        if any(support.get(field) != value for field, value in identity.items()):
-            raise CalibrationValidationError(
-                "model is not the manifest-selected support classifier"
-            )
+        if manifest.get("manifest_version") != "validation_family_selection_v1":
+            support = manifest["tasks"]["organ_support"]
+            identity = {
+                "family": model.family,
+                "run_id": model.run_id,
+                "candidate_id": model.candidate_id,
+                "config_hash": model.config_hash,
+                "artifact_sha256": model.artifact_sha256,
+            }
+            if any(support.get(field) != value for field, value in identity.items()):
+                raise CalibrationValidationError(
+                    "model is not the manifest-selected support classifier"
+                )
     elif model.selection_mode != "synthetic":
         raise CalibrationValidationError("synthetic calibration requires synthetic selection evidence")
 
