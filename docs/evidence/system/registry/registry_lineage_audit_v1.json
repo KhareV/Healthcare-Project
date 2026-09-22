@@ -1,6 +1,6 @@
 {
   "audit": {
-    "artifact_count": 749,
+    "artifact_count": 768,
     "broken_artifact_parents": [],
     "broken_parent_runs": [],
     "duplicate_run_ids": 0,
@@ -417,6 +417,7 @@
       "artifacts/search/gru/final_v2/recovery_validation_summary.csv",
       "artifacts/search/gru/final_v2/recovery_validation_summary.json",
       "artifacts/search/gru/final_v2/retry_failure_ledger_v1.json",
+      "artifacts/search/gru/final_v2/stage1_verification_v1.json",
       "artifacts/search/gru/final_v2/winner_reproducibility_audit_v1.json",
       "artifacts/search/xgb/phase12/best_xgb_candidates_v1.json",
       "artifacts/search/xgb/phase12/icu_time/xgb-icu-time-001/attempt-1/candidate_config.json",
@@ -521,6 +522,7 @@
       "artifacts/search/xgb/phase12/recovery_validation_summary.csv",
       "artifacts/search/xgb/phase12/recovery_validation_summary.json",
       "artifacts/search/xgb/phase12/winner_reproducibility_audit_v1.json",
+      "artifacts/selection/validation_family_selection_v1.json",
       "artifacts/smoke/phase4_synthetic_smoke_v1/smoke_test_model.pt.metadata.json",
       "artifacts/smoke/phase4_synthetic_smoke_v1/training_log.jsonl",
       "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_gru_smoke.pt.metadata.json",
@@ -552,27 +554,29 @@
       "artifacts/test-results/phase9_full_regression.xml",
       "artifacts/test-results/phase9_pre_evidence_regression.xml",
       "artifacts/test-results/vedant_stage1_final_full.xml",
+      "artifacts/test-results/vedant_stage2_final_full.xml",
       "artifacts/validation/phase19_preflight_v1.json"
     ],
-    "run_count": 188,
+    "run_count": 191,
     "run_reference_mismatches": [],
     "runs_by_family": {
       "gru": 94,
-      "lstm": 3,
+      "lstm": 6,
       "smoke_test": 1,
       "xgboost": 90
     },
     "runs_by_status": {
-      "completed": 188
+      "completed": 191
     },
     "runs_by_task": {
-      "icu_stay_time": 62,
-      "organ_support": 62,
-      "recovery": 63,
+      "icu_stay_time": 63,
+      "organ_support": 63,
+      "recovery": 64,
       "synthetic_recovery24_smoke": 1
     },
     "runs_by_type": {
       "scientific": 181,
+      "scientific_sensitivity": 3,
       "sensitivity_smoke": 3,
       "synthetic": 4
     },

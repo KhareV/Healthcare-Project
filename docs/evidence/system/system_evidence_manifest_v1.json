@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "54b7ff7f395f25f8ec4bcf81d303d8d139ad9c9a02ef575c45b227e623a6bb0c",
+      "output_sha256": "95ee4577c3de2b0a400c5e3c6edea36ff41e253fb3c47606840f2dc6162bdc8d",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -998,7 +998,7 @@
         },
         {
           "path": "src/experiments/lineage.py",
-          "sha256": "060fee679619702ae801a72ec16291f1a09e63ffa8eba445220c6f94fafc9df1"
+          "sha256": "6535c528dcfc0032ccca449c7a8a94d915939b94b4cba46fdb80050d937258a9"
         },
         {
           "path": "src/experiments/real_data_acceptance_cli.py",
@@ -1015,6 +1015,10 @@
         {
           "path": "src/experiments/search_registry.py",
           "sha256": "0915986bcf673e75122a46cbb176b6f147d8498b4d3447cc00658fb8bd77c001"
+        },
+        {
+          "path": "src/experiments/stage2_finalization.py",
+          "sha256": "d069e627867b99aa6d8d429fb09a6c1d5928813bd4bf102dbc87a8522b33731b"
         },
         {
           "path": "src/experiments/validation_suite.py",
@@ -1226,7 +1230,7 @@
         },
         {
           "path": "src/training/checkpoint.py",
-          "sha256": "20ce6aa26aefa1aca7bdc371b1c373b44faeab5ef7fbf41ac6f23e39abb86b20"
+          "sha256": "9da1e454cd1301700928103abcf88778a9e8112e07c6ac4641b4167e311c014f"
         },
         {
           "path": "src/training/class_weights.py",
@@ -1306,7 +1310,7 @@
         },
         {
           "path": "src/vedant_infra/registry.py",
-          "sha256": "85fbd9e77f3d6caf594da95df7c8b17c1d9c9a33d280e3c1f982d31ec9ca9d5e"
+          "sha256": "4dfe8708e926839164b68629c79eb67f112f7dddcaf433ca6f5d383d20094970"
         },
         {
           "path": "api/__init__.py",
@@ -1918,7 +1922,7 @@
         },
         {
           "path": "tests/test_phase0_infrastructure.py",
-          "sha256": "cea585454e0caf5221d33ee9d7d7853e0562164cbae82c43b68a99b577c4330c"
+          "sha256": "816bc187ec86c367e3a838f0fe1802ccd5ee86612d93adc75d12cfea494aef37"
         },
         {
           "path": "tests/test_phase11_xgb_canonical.py",
@@ -2151,6 +2155,10 @@
         {
           "path": "tests/test_split.py",
           "sha256": "7766ce77a66c967c01096ab9efdf181003e83e9dbd5d7861916e238694c5ab8a"
+        },
+        {
+          "path": "tests/test_stage2_finalization.py",
+          "sha256": "9d972a8df82bea5c229c60316df47b21ebc4d6ba73d3250ebd9556ac78a92762"
         },
         {
           "path": "tests/test_stay_weights.py",
@@ -2630,7 +2638,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "1a5b5dc249a36f0a91f74d976e2701d5c7f15f0ab25083d889c49ed0a5e66326",
+      "output_sha256": "31ab62c35c0f7053999ac217468fa83b26021cc04cd740be1b68c68978a57597",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2668,16 +2676,16 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "8eafb9c8242c9c15e847ed866331e30d2fb52c5fda79af438e90f51aeb25dc9f",
+      "output_sha256": "10db8929730706a4bb60cd4d3a8555f091b8b6375ea9daf113b78b5ac45d8cb7",
       "scope": "repository",
       "source_artifacts": [
         {
           "path": "experiments/registry.csv",
-          "sha256": "2a6e355494f7dbff00da1e81d7eaa34c63007ee058c4a2c71d2e9eb9db8455e0"
+          "sha256": "50e415d61b1b4f0619146816f056b85f4008a4e47a9ba3bddb2f88ee35775c6f"
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "0bd65912c59e71e00b769e516949835fb01f88f3f11c5bd3524e5e111b75f9ce"
+          "sha256": "33a36b9a3052f3f435b8cc9b565c18290d1e656f55dee90536f6f6800bea2a91"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2689,7 +2697,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "7980a880c542a3e78cb66ef20de3d87f9a1f068f0e8a880e3cf8d78a00071526",
+      "output_sha256": "793546c3033810f3ab34448d8eccce3e35b78d23a19f54cb25f10dd737606e18",
       "scope": "repository",
       "source_artifacts": [
         {
