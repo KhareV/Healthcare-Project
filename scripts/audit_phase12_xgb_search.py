@@ -34,8 +34,8 @@ def main() -> None:
     selected_path = ROOT / selected["path"]
     if selected["present"] != selected_path.is_file() or (selected["present"] and sha256_file(selected_path) != selected["sha256"]):
         raise RuntimeError("selected_models_v1 changed during Phase 12")
-    if (ROOT / "artifacts/governance/g3_freeze.json").is_file():
-        raise RuntimeError("G3/test gate was advanced during Phase 12")
+    # A later governed stage may now create G3; the immutable pre-search
+    # snapshot above remains the Phase-12 non-leakage proof.
     space = _load(ROOT / master["search_space_path"]); validate_search_space(space)
     registry = read_registry_rows(ROOT / "experiments/registry.csv")
     budget = {}

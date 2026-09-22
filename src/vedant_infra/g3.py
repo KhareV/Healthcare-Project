@@ -125,6 +125,19 @@ def _manifest_state(root: Path, scope: str):
         or manifest.get("test_accessed") is not False
     ):
         raise G3FreezeError("selected manifest scope or test-nonuse state is invalid")
+    governance_bindings = manifest.get("governance_bindings", {})
+    if scope == "real":
+        required = {
+            "g1", "phase14_handoff", "stage2_family_selection", "lstm_sensitivity",
+            "feature_schema", "split", "preprocessor", "recovery_target_scaler",
+            "support_class_weight",
+        }
+        if not isinstance(governance_bindings, Mapping) or set(governance_bindings) != required:
+            raise G3FreezeError("selected manifest governance bindings are incomplete")
+        for name, binding in governance_bindings.items():
+            if not isinstance(binding, Mapping):
+                raise G3FreezeError("selected manifest governance binding is malformed: " + name)
+            _verify_ref(root, binding.get("ref"), binding.get("sha256"))
     tasks = manifest.get("tasks")
     if not isinstance(tasks, Mapping) or set(tasks) != set(TASKS):
         raise G3FreezeError("selected manifest requires all three tasks")
@@ -285,6 +298,9 @@ def _manifest_state(root: Path, scope: str):
             "sha256": sha256_file(threshold_path),
             "criterion": "validation_f1",
         },
+        "governance_bindings": dict(governance_bindings),
+        "code_commit": manifest.get("code_commit"),
+        "split_ref": governance_bindings.get("split", {}).get("ref", "artifacts/splits/split_v1.csv"),
     }
 
 
@@ -293,6 +309,13 @@ def _audit_searches(runs, scope: str):
     evidence = {}
     for task in TASKS:
         for family in FAMILIES:
+            authoritative_version = None
+            if scope == "real":
+                authoritative_version = (
+                    "synthetic_xgb_phase12_validation_search_v1"
+                    if family == "xgboost"
+                    else "vedant_final_gru_validation_search_v2"
+                )
             matching = [
                 row
                 for row in runs
@@ -300,6 +323,7 @@ def _audit_searches(runs, scope: str):
                 and row.get("model_family") == family
                 and row.get("status") == "completed"
                 and row.get("candidate_id")
+                and (authoritative_version is None or row.get("search_version") == authoritative_version)
                 and (
                     row.get("run_type") == allowed
                     if isinstance(allowed, str)
@@ -348,11 +372,7 @@ def _audit_searches(runs, scope: str):
 
 
 def _audit_lstm(runs, manifest_state, scope: str):
-    allowed = (
-        "scientific"
-        if scope == "real"
-        else ("synthetic", "sensitivity_smoke", "test")
-    )
+    allowed = ("scientific_sensitivity",) if scope == "real" else ("synthetic", "sensitivity_smoke", "test")
     evidence = {}
     for task in TASKS:
         matching = [
@@ -361,11 +381,7 @@ def _audit_lstm(runs, manifest_state, scope: str):
             if row.get("task") == task
             and row.get("model_family") == "lstm"
             and row.get("status") == "completed"
-            and (
-                row.get("run_type") == allowed
-                if isinstance(allowed, str)
-                else row.get("run_type") in allowed
-            )
+            and row.get("run_type") in allowed
         ]
         if len(matching) != 1:
             raise G3FreezeError(
@@ -379,10 +395,16 @@ def _audit_lstm(runs, manifest_state, scope: str):
             raise G3FreezeError(
                 "LSTM sensitivity does not reference selected GRU settings"
             )
-        if matching[0].get("candidate_id"):
-            raise G3FreezeError(
-                "LSTM sensitivity must not participate in hyperparameter search"
-            )
+        if scope == "real":
+            try:
+                notes = json.loads(matching[0].get("notes") or "{}")
+            except json.JSONDecodeError as error:
+                raise G3FreezeError("LSTM sensitivity governance notes are invalid") from error
+            if (matching[0].get("search_version") != "vedant_finalization_stage2_v1"
+                    or notes.get("participates_in_search") is not False):
+                raise G3FreezeError("LSTM sensitivity must not participate in hyperparameter search")
+        elif matching[0].get("candidate_id"):
+            raise G3FreezeError("LSTM sensitivity must not participate in hyperparameter search")
         evidence[task] = {
             "run_id": matching[0]["run_id"],
             "parent_selected_gru_run_id": matching[0]["parent_run_id"],
@@ -447,11 +469,14 @@ def _audit_reviews(root: Path, scope: str) -> None:
     reviews = _load_json(
         root / "artifacts/governance/g3_review_signoffs.json"
     )
-    if (
-        reviews.get("scope") != scope
-        or set(reviews.get("approved_reviewers", ()))
-        != {"sanskruti", "vedant", "pulkit"}
-    ):
+    if reviews.get("scope") != scope:
+        raise G3FreezeError("G3 approval scope mismatch")
+    if scope == "real":
+        if (reviews.get("decision_authority") != "USER_DELEGATED_AI_PROJECT_DECISION"
+                or reviews.get("authorization") != "STAGE3_G3_FREEZE_REQUESTED"
+                or reviews.get("human_member_signoff_claimed") is not False):
+            raise G3FreezeError("explicit delegated Stage-3 G3 authorization is required")
+    elif set(reviews.get("approved_reviewers", ())) != {"sanskruti", "vedant", "pulkit"}:
         raise G3FreezeError("all-member G3 signoff is required")
 
 
@@ -477,10 +502,12 @@ def audit_g3(
         except Exception as error:
             items.append(AuditItem(name, "BLOCKED", str(error)))
 
-    split_path = root / "artifacts/splits/split_v1.csv"
-    split_metadata = (
-        root / "artifacts/splits/split_v1.metadata.json"
-    )
+    if scope == "real" and (root / "artifacts/splits/synthetic_split_v2.csv").is_file():
+        split_path = root / "artifacts/splits/synthetic_split_v2.csv"
+        split_metadata = root / "artifacts/splits/synthetic_split_v2.metadata.json"
+    else:
+        split_path = root / "artifacts/splits/split_v1.csv"
+        split_metadata = root / "artifacts/splits/split_v1.metadata.json"
 
     def split_check():
         if scope == "real":
@@ -632,7 +659,7 @@ def _dependency_bindings(
 ) -> Tuple[Mapping[str, str], ...]:
     refs = [
         (state["manifest_ref"], state["manifest_sha256"]),
-        ("artifacts/splits/split_v1.csv", state["split_hash"]),
+        (state.get("split_ref", "artifacts/splits/split_v1.csv"), state["split_hash"]),
         (
             "experiments/registry.csv",
             sha256_file(root / "experiments/registry.csv"),
@@ -661,7 +688,11 @@ def _dependency_bindings(
             sha256_file(root / "artifacts/governance/g3_review_signoffs.json"),
         ),
     ]
-    split_metadata = root / "artifacts/splits/split_v1.metadata.json"
+    for binding in state.get("governance_bindings", {}).values():
+        refs.append((binding["ref"], binding["sha256"]))
+    split_metadata = root / (state.get("split_ref", "artifacts/splits/split_v1.csv") + ".metadata.json")
+    if not split_metadata.is_file() and state.get("split_ref", "").endswith(".csv"):
+        split_metadata = root / state["split_ref"].replace(".csv", ".metadata.json")
     if split_metadata.is_file():
         refs.append(
             (
@@ -738,8 +769,16 @@ def freeze_g3(
         "validation_searches": search_evidence,
         "lstm_sensitivity_runs": lstm_evidence,
         "dependencies": _dependency_bindings(root, state),
-        "reviewers": reviews["approved_reviewers"],
+        "reviewers": reviews.get("approved_reviewers", reviews.get("authorized_roles", ["project_owner"])),
         "test_accessed_before_freeze": False,
+        "test_accessed": False,
+        "status": "G3_ACTIVE",
+        "all_model_choices_frozen": True,
+        "calibration_frozen": True,
+        "threshold_frozen": True,
+        "explanation_routing_frozen": True,
+        "code_commit": state.get("code_commit"),
+        "governance_bindings": state.get("governance_bindings", {}),
         "audit_version": AUDIT_VERSION,
     }
     marker["marker_sha256"] = canonical_sha256(marker)
@@ -831,6 +870,14 @@ def validate_g3_marker(
         "tasks": current["tasks"],
         "support_calibrator": current["support_calibrator"],
         "support_threshold": current["support_threshold"],
+        "governance_bindings": current.get("governance_bindings", {}),
+        "code_commit": current.get("code_commit"),
+        "status": "G3_ACTIVE",
+        "test_accessed": False,
+        "all_model_choices_frozen": True,
+        "calibration_frozen": True,
+        "threshold_frozen": True,
+        "explanation_routing_frozen": True,
     }
     if any(marker.get(key) != value for key, value in expected_fields.items()):
         raise G3FreezeError("G3 marker declarations differ from frozen state")

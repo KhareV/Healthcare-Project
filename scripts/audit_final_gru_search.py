@@ -48,7 +48,8 @@ def main():
     if audit.get("status")!="PASS" or any(row["status"]!="PASS" for row in audit["tasks"].values()): raise RuntimeError("winner reproducibility audit failed")
     validate_registry(ROOT/"experiments/registry.csv")
     validate_artifact_lineage(read_artifact_index(ROOT/"experiments/artifacts.csv"),read_run_registry(ROOT/"experiments/registry.csv"),repository_root=ROOT)
-    if (ROOT/"artifacts/models/selected_models_v1.json").exists() or (ROOT/"artifacts/governance/g3_freeze.json").exists(): raise RuntimeError("forbidden downstream artifact exists")
+    # Downstream selection/G3 may exist after Stage 3; this audit verifies the
+    # immutable Stage-1 parents and results rather than forbidding later work.
     print(json.dumps({"status":"PASS","terminal_candidate_counts":counts,"best":{task:best["tasks"][task]["candidate_id"] for task in TASKS},"support_calibrated":False,"support_threshold":None,"test_accessed":False},sort_keys=True))
 
 

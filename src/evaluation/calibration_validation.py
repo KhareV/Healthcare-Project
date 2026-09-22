@@ -93,6 +93,7 @@ class FittedSupportCalibrator:
     counts: Mapping[str, int]
     code_commit: str
     calibration_mode: str
+    governance: Optional[Mapping[str, object]] = None
     test_accessed: bool = False
 
 
@@ -149,9 +150,19 @@ def validate_selected_support_model(model: SelectedSupportModel, *, mode: str) -
             raise CalibrationValidationError("selected-model manifest artifact/hash mismatch")
         try:
             manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-            from evaluation.select import validate_selection_stage_manifest
-
-            validate_selection_stage_manifest(manifest)
+            if manifest.get("manifest_version") == "validation_family_selection_v1":
+                support = manifest.get("tasks", {}).get("organ_support", {})
+                if (manifest.get("status") != "VALIDATION_FAMILY_SELECTION_FROZEN"
+                        or support.get("selected_family") != model.family
+                        or support.get("selected_candidate_id") != model.candidate_id
+                        or support.get("selected_run_id") != model.run_id
+                        or manifest.get("test_accessed") is not False):
+                    raise CalibrationValidationError(
+                        "model is not the Stage-2 selected support classifier"
+                    )
+            else:
+                from evaluation.select import validate_selection_stage_manifest
+                validate_selection_stage_manifest(manifest)
         except (OSError, ValueError, KeyError) as error:
             raise CalibrationValidationError("selected-model manifest is invalid") from error
         support = manifest["tasks"]["organ_support"]
@@ -186,9 +197,36 @@ def validate_isotonic_policy(policy: IsotonicPolicy, *, mode: str) -> None:
 
 def load_validation_predictions(model: SelectedSupportModel) -> Tuple[SupportPredictionRecord, ...]:
     try:
-        payload = json.loads(Path(model.validation_prediction_ref).read_text(encoding="utf-8"))
-    except (OSError, ValueError) as error:
+        text = Path(model.validation_prediction_ref).read_text(encoding="utf-8")
+    except OSError as error:
         raise CalibrationValidationError("validation prediction artifact is unreadable") from error
+    try:
+        payload = json.loads(text)
+    except ValueError:
+        # Scientific Phase-12 predictions are immutable JSONL.  Accept that
+        # repository-native representation without regenerating inference.
+        try:
+            source_rows = [json.loads(line) for line in text.splitlines() if line.strip()]
+        except ValueError as error:
+            raise CalibrationValidationError("validation prediction artifact is unreadable") from error
+        rows = []
+        for row in source_rows:
+            rows.append({
+                "row_id": "{}|{}|{}".format(row.get("stay_id"), row.get("prediction_time"), row.get("grid_index")),
+                "stay_id": row.get("stay_id"),
+                "organ_support_eligible": row.get("eligible"),
+                "raw_probability": row.get("prediction"),
+                "label": row.get("true_target"),
+            })
+        payload = {
+            "artifact_version": PREDICTION_ARTIFACT_VERSION,
+            "task": "organ_support", "family": model.family, "run_id": model.run_id,
+            "candidate_id": model.candidate_id, "config_hash": model.config_hash,
+            "model_sha256": model.artifact_sha256, "split_hash": model.split_hash,
+            "feature_version": model.feature_version, "label_version": model.label_version,
+            "probability_type": "raw_uncalibrated", "partition": "validation",
+            "test_accessed": False, "rows": rows,
+        }
     if not isinstance(payload, Mapping):
         raise CalibrationValidationError("validation prediction artifact must be a JSON object")
     try:

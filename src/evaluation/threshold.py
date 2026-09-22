@@ -61,6 +61,10 @@ class SupportThresholdResult:
     label_version: str
     code_commit: str
     threshold_mode: str
+    candidate_threshold_count: int = 0
+    calibrated_prediction_ref: str = ""
+    calibrated_prediction_sha256: str = ""
+    governance: Mapping[str, object] = None
     test_accessed: bool = False
 
 
@@ -70,7 +74,7 @@ def validate_threshold_policy(policy: ThresholdSearchPolicy, *, mode: str) -> No
         "unique_calibrated_probabilities_plus_endpoints",
     ):
         raise CalibrationValidationError(THRESHOLD_SEARCH_UNLOCKED)
-    if policy.tie_policy not in ("lowest_threshold", "highest_threshold", "block"):
+    if policy.tie_policy not in ("lowest_threshold", "highest_threshold", "closest_to_half_then_higher", "block"):
         raise CalibrationValidationError(THRESHOLD_TIE_BLOCKER)
     if policy.comparator != "greater_than_or_equal":
         raise CalibrationValidationError("threshold comparator must match Phase-9 >= semantics")
@@ -131,6 +135,8 @@ def choose_support_threshold(
         raise CalibrationValidationError(THRESHOLD_TIE_BLOCKER)
     if policy.tie_policy == "highest_threshold":
         threshold, metrics = max(tied, key=lambda item: item[0])
+    elif policy.tie_policy == "closest_to_half_then_higher":
+        threshold, metrics = min(tied, key=lambda item: (abs(item[0] - 0.5), -item[0]))
     else:
         threshold, metrics = min(tied, key=lambda item: item[0])
     positive_examples = sum(labels)
@@ -167,6 +173,7 @@ def choose_support_threshold(
         label_version=selected_model.label_version,
         code_commit=selected_model.code_commit,
         threshold_mode=mode,
+        candidate_threshold_count=len(scored),
     )
 
 
