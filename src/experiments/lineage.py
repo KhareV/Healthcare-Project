@@ -254,7 +254,7 @@ def _validate_artifact_class(record: ArtifactRecord, by_id: Mapping[str, Artifac
     parents = [by_id[parent] for parent in record.parents if parent in by_id]
     if record.status == "legacy_incomplete":
         return
-    if record.run_type == "scientific":
+    if record.run_type in ("scientific", "scientific_sensitivity"):
         required_by_type = {
             "model_checkpoint": (
                 "task", "model_family", "split_hash", "feature_version",

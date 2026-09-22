@@ -110,6 +110,7 @@ ALLOWED_RUN_TYPES = {
     "development",
     "test",
     "sensitivity_smoke",
+    "scientific_sensitivity",
     "legacy_incomplete",
 }
 FINAL_STATUSES = {"completed", "failed", "aborted"}
@@ -180,7 +181,7 @@ def _validate_record(record: Mapping[str, str], line_number: int) -> None:
         raise RegistryValidationError(
             "line {} has unsupported run_type: {}".format(line_number, run_type)
         )
-    if run_type == "scientific":
+    if run_type in ("scientific", "scientific_sensitivity"):
         required = (
             "timestamp_utc",
             "task",

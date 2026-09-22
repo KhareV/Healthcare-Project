@@ -48,11 +48,14 @@ def _validate_metadata(metadata: Mapping[str, object]) -> None:
     for field in ("config_hash", "split_hash"):
         if not isinstance(metadata[field], str) or not is_sha256(metadata[field]):
             raise CheckpointError("checkpoint {} is not SHA-256".format(field))
-    smoke = metadata.get("synthetic_smoke_test") is True
-    scientific = metadata.get("synthetic_scientific_search") is True
-    if smoke == scientific:
+    roles = (
+        metadata.get("synthetic_smoke_test") is True,
+        metadata.get("synthetic_scientific_search") is True,
+        metadata.get("synthetic_scientific_sensitivity") is True,
+    )
+    if sum(roles) != 1:
         raise CheckpointError(
-            "checkpoint must identify exactly one synthetic smoke or scientific-search role"
+            "checkpoint must identify exactly one synthetic smoke, scientific-search, or scientific-sensitivity role"
         )
     if isinstance(metadata["seed"], bool) or not isinstance(metadata["seed"], int):
         raise CheckpointError("checkpoint seed must be an integer")
