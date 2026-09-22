@@ -83,10 +83,13 @@ def utc():
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
 
-def ensure_execution_state(selection, commit):
-    if git("rev-parse", "HEAD") != commit or selection["implementation_commit"] != commit:
-        raise RuntimeError("Stage-2 implementation commit changed after family freeze")
-    if subprocess.run(("git", "diff", "--quiet", commit, "--", "src", "scripts", "configs", "tests"), cwd=ROOT).returncode:
+def ensure_execution_state(selection, science_commit):
+    head = git("rev-parse", "HEAD")
+    if selection["implementation_commit"] != science_commit:
+        raise RuntimeError("Stage-2 science implementation differs from the family freeze")
+    if subprocess.run(("git", "merge-base", "--is-ancestor", science_commit, head), cwd=ROOT).returncode:
+        raise RuntimeError("Stage-2 science implementation is not an ancestor of HEAD")
+    if subprocess.run(("git", "diff", "--quiet", head, "--", "src", "scripts", "configs", "tests"), cwd=ROOT).returncode:
         raise RuntimeError("science-affecting implementation is dirty")
     if selection.get("status") != "VALIDATION_FAMILY_SELECTION_FROZEN" or selection.get("frozen_before_lstm_interpretation") is not True:
         raise RuntimeError("family selection must be frozen before LSTM execution")
@@ -107,13 +110,13 @@ def model_pair(task, config, master):
     return OrganSupportLSTM(encoder), OrganSupportGRU(encoder)
 
 
-def metadata(task, run_id, seed, config_hash, master, model, primary, parent):
+def metadata(task, run_id, seed, config_hash, master, model, primary, parent, science_commit):
     value = {
         "run_id": run_id, "task": TASK_REGISTRY[task], "model_family": "lstm",
         "model_config": model.model_config, "seed": seed, "epoch": 0, "config_hash": config_hash,
         "tensor_contract_version": master["tensor_contract_version"],
         "feature_schema_version": master["feature_schema_version"], "split_hash": master["split_sha256"],
-        "code_commit": git("rev-parse", "HEAD"), "validation_value": float(primary),
+        "code_commit": science_commit, "validation_value": float(primary),
         "synthetic_smoke_test": False, "synthetic_scientific_search": False,
         "synthetic_scientific_sensitivity": True, "sensitivity_only": True,
         "participates_in_search": False, "parent_best_gru_candidate_id": parent["candidate_id"],
@@ -139,7 +142,7 @@ def metadata(task, run_id, seed, config_hash, master, model, primary, parent):
     return value
 
 
-def train_one(task, parent, master, train, validation, directory):
+def train_one(task, parent, master, train, validation, directory, science_commit):
     source_config = load(ROOT / parent["checkpoint_path"].replace("model.pt", "candidate_config.json"))
     config = derive_lstm_config(source_config); validate_lstm_config(source_config, config)
     config_hash = canonical_sha256(config); config_path = directory / "config.json"; write_exact_config(config_path, config)
@@ -167,7 +170,7 @@ def train_one(task, parent, master, train, validation, directory):
         if improved:
             best_key, best_metrics, best_epoch, bad = key, metrics, epoch, 0
             primary = metrics["mae24"] if task == "recovery" else (metrics["median_absolute_error_hours"] if task == "icu_time" else metrics["auprc"])
-            meta = metadata(task, run_id, seed, config_hash, master, model, primary, parent); meta["epoch"] = epoch
+            meta = metadata(task, run_id, seed, config_hash, master, model, primary, parent, science_commit); meta["epoch"] = epoch
             save_checkpoint(checkpoint, model, optimizer, meta)
         else:
             bad += 1
@@ -202,9 +205,8 @@ def train_one(task, parent, master, train, validation, directory):
     return result
 
 
-def register(result, selection, master, commit):
+def register(result, selection, master, parent, commit):
     run_id, task = result["run_id"], result["task"]
-    parent = master["tasks"][task]
     record = make_registry_record(run_id=run_id, timestamp_utc=utc(), task=TASK_REGISTRY[task], model_family="lstm",
         seed=str(result["seed"]), code_commit=commit, config_ref=result["config_path"], config_hash=result["config_hash"],
         split_hash=master["split_sha256"], feature_version=master["feature_schema_version"],
@@ -245,10 +247,10 @@ def register(result, selection, master, commit):
 
 
 def main():
-    if OUTPUT_PATH.exists() or RUN_ROOT.exists():
+    if OUTPUT_PATH.exists():
         raise RuntimeError("LSTM sensitivity is immutable and cannot be rerun")
     selection, best, master = load(SELECTION_PATH), load(GRU_BEST_PATH), load(GRU_MASTER_PATH)
-    commit = git("rev-parse", "HEAD"); ensure_execution_state(selection, commit)
+    commit = selection["implementation_commit"]; ensure_execution_state(selection, commit)
     for path, expected in ((ROOT / master["g1_path"], master["g1_sha256"]),
                            (ROOT / master["phase14_handoff_path"], master["phase14_handoff_sha256"]),
                            (GRU_BEST_PATH, master["best_gru_manifest_sha256"])):
@@ -257,9 +259,21 @@ def main():
     train, validation = Phase10GRUDataset(ROOT, "train"), Phase10GRUDataset(ROOT, "validation")
     entries = []
     for task in TASKS:
-        directory = RUN_ROOT / task; directory.mkdir(parents=True, exist_ok=False)
-        result = train_one(task, best["tasks"][task], master, train, validation, directory)
-        register(result, selection, master, commit); entries.append(result)
+        directory = RUN_ROOT / task
+        metrics_path = directory / "validation_metrics.json"
+        if directory.exists():
+            if not metrics_path.is_file():
+                raise RuntimeError("partial LSTM task directory cannot be resumed: " + task)
+            result = load(metrics_path)
+            result["metrics_path"] = str(metrics_path.relative_to(ROOT))
+            result["metrics_sha256"] = sha256_file(metrics_path)
+            if (sha256_file(ROOT / result["checkpoint_path"]) != result["checkpoint_sha256"]
+                    or sha256_file(ROOT / result["prediction_path"]) != result["prediction_sha256"]):
+                raise RuntimeError("resumable LSTM artifacts changed: " + task)
+        else:
+            directory.mkdir(parents=True, exist_ok=False)
+            result = train_one(task, best["tasks"][task], master, train, validation, directory, commit)
+        register(result, selection, master, best["tasks"][task], commit); entries.append(result)
         print(json.dumps({"task": task, "status": "SENSITIVITY_ONLY", "best_epoch": result["best_epoch"]}), flush=True)
     validate_exact_run_set(entries)
     comparison = {}
