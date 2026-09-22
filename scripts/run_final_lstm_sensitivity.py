@@ -246,6 +246,43 @@ def register(result, selection, master, parent, commit):
     write_artifact_index(ARTIFACT_INDEX_PATH, combined)
 
 
+def index_supporting_artifacts(entries, commit):
+    """Index immutable configs, sidecars, logs, and the three-run manifest."""
+    existing = list(read_artifact_index(ARTIFACT_INDEX_PATH))
+    known_paths = {row.artifact_path for row in existing}
+    additions = []
+    for result in entries:
+        run_id = result["run_id"]
+        model_id = run_id + ":model"
+        for suffix, reference, artifact_type, version, parents in (
+            ("config", result["config_path"], "configuration", "fixed_lstm_config_v1", ""),
+            ("metadata", result["checkpoint_path"] + ".metadata.json", "model_metadata", "checkpoint_metadata_v1", model_id),
+            ("training-log", str((ROOT / result["checkpoint_path"]).with_name("training_log.jsonl").relative_to(ROOT)),
+             "training_log", "fixed_lstm_training_log_v1", model_id),
+        ):
+            if reference not in known_paths:
+                additions.append(ArtifactRecord(artifact_id=run_id + ":" + suffix, artifact_path=reference,
+                    artifact_type=artifact_type, artifact_version=version, artifact_sha256=sha256_file(ROOT / reference),
+                    producing_run_id=run_id, parent_artifact_ids=parents, task=TASK_REGISTRY[result["task"]],
+                    model_family="lstm", split_hash=load(GRU_MASTER_PATH)["split_sha256"],
+                    feature_version=load(GRU_MASTER_PATH)["feature_schema_version"],
+                    label_version="synthetic_phase9_final_target_contract_v1", config_hash=result["config_hash"],
+                    creation_commit=commit, generating_script="scripts/run_final_lstm_sensitivity.py",
+                    creation_date_utc=utc(), run_type="scientific_sensitivity", status="registered"))
+                known_paths.add(reference)
+    manifest_ref = str(OUTPUT_PATH.relative_to(ROOT))
+    if manifest_ref not in known_paths:
+        additions.append(ArtifactRecord(artifact_id="stage2-lstm-sensitivity-manifest-v1", artifact_path=manifest_ref,
+            artifact_type="sensitivity_manifest", artifact_version="lstm_sensitivity_v1",
+            artifact_sha256=sha256_file(OUTPUT_PATH), producing_run_id="",
+            parent_artifact_ids=";".join(result["run_id"] + ":model" for result in entries),
+            creation_commit=commit, generating_script="scripts/run_final_lstm_sensitivity.py",
+            creation_date_utc=utc(), run_type="scientific_sensitivity", status="registered"))
+    combined = existing + additions
+    validate_artifact_lineage(combined, read_run_registry(REGISTRY_PATH), repository_root=ROOT)
+    write_artifact_index(ARTIFACT_INDEX_PATH, combined)
+
+
 def main():
     if OUTPUT_PATH.exists():
         raise RuntimeError("LSTM sensitivity is immutable and cannot be rerun")
@@ -294,9 +331,16 @@ def main():
         "preprocessor_sha256": master["preprocessor_sha256"], "support_calibrated": False,
         "support_threshold": None, "selected_models_v1_created": False, "g3_created": False, "test_accessed": False}
     write(OUTPUT_PATH, manifest)
+    index_supporting_artifacts(entries, commit)
     print(json.dumps({"status": "COMPLETE", "run_count": 3, "manifest_sha256": sha256_file(OUTPUT_PATH),
                       "test_accessed": False}, sort_keys=True))
 
 
 if __name__ == "__main__":
-    main()
+    if "--index-existing" in sys.argv:
+        existing = load(OUTPUT_PATH)
+        validate_exact_run_set(existing["runs"])
+        index_supporting_artifacts(existing["runs"], existing["implementation_commit"])
+        print(json.dumps({"status": "INDEXED", "run_count": 3, "test_accessed": False}, sort_keys=True))
+    else:
+        main()
