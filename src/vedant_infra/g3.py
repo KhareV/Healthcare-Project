@@ -723,7 +723,7 @@ def _dependency_bindings(
     if split_metadata.is_file():
         refs.append(
             (
-                "artifacts/splits/split_v1.metadata.json",
+                str(split_metadata.relative_to(root)),
                 sha256_file(split_metadata),
             )
         )
