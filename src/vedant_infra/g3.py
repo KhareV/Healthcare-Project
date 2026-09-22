@@ -1008,6 +1008,54 @@ def invalidate_for_reset(
     return destination
 
 
+def invalidate_invalid_pretest_marker(
+    root: Path,
+    *,
+    reason: str,
+    marker_path: Optional[Path] = None,
+    expected_scope: str = "real",
+) -> Path:
+    """Archive only an invalid marker before final-test access is consumed."""
+    if not reason.strip():
+        raise G3FreezeError("pre-test marker correction requires a reason")
+    root = root.resolve()
+    marker = marker_path or (root / REAL_MARKER_RELATIVE_PATH)
+    if not marker.is_file():
+        raise G3FreezeError("pre-test marker correction requires the prior marker")
+    state_path = root / ACCESS_STATE_RELATIVE_PATH
+    state = dict(load_access_state(state_path))
+    if state["state"] != "AUTHORIZED_NOT_RUN" or any(
+        row.get("event") == "FINAL_TEST_ACCESS_CONSUMED" for row in state["history"]
+    ):
+        raise G3FreezeError("pre-test correction is forbidden after final-test access")
+    try:
+        validate_g3_marker(marker, root, expected_scope=expected_scope)
+    except G3FreezeError as validation_error:
+        failure = str(validation_error)
+    else:
+        raise G3FreezeError("valid active G3 cannot use pre-test correction")
+    archive = root / "artifacts/governance/history"
+    archive.mkdir(parents=True, exist_ok=True)
+    destination = archive / ("invalid_pretest_" + sha256_file(marker)[:16] + ".json")
+    shutil.copy2(marker, destination)
+    marker.unlink()
+    history = list(state["history"])
+    history.append({
+        "event": "INVALID_PRETEST_G3_CORRECTED",
+        "at_utc": utc_now(),
+        "reason": reason,
+        "validation_failure": failure,
+        "archived_marker_ref": str(destination.relative_to(root)),
+        "test_accessed": False,
+    })
+    _write_json_atomic(state_path, {
+        "state_version": ACCESS_STATE_VERSION,
+        "state": "INVALIDATED_BY_RESET",
+        "history": history,
+    })
+    return destination
+
+
 def require_development_change_allowed(
     root: Path, change_type: str
 ) -> None:

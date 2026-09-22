@@ -6,9 +6,26 @@ from vedant_infra.g3 import (
     freeze_g3,
     guarded_test_access,
     invalidate_for_reset,
+    invalidate_invalid_pretest_marker,
     load_access_state,
     require_development_change_allowed,
 )
+
+
+def test_invalid_pretest_marker_can_be_archived_without_consuming_test(tmp_path):
+    build_complete_g3_fixture(tmp_path)
+    marker = freeze_g3(tmp_path, marker_path=tmp_path / "synthetic-marker.json", scope="synthetic_test")
+    with pytest.raises(G3FreezeError, match="valid active G3"):
+        invalidate_invalid_pretest_marker(tmp_path, reason="not actually invalid", marker_path=marker,
+                                          expected_scope="synthetic_test")
+    payload = marker.read_text(encoding="utf-8").replace('"freeze_status": "ACTIVE"', '"freeze_status": "BROKEN"')
+    marker.write_text(payload, encoding="utf-8")
+    archived = invalidate_invalid_pretest_marker(tmp_path, reason="synthetic marker defect", marker_path=marker,
+                                                  expected_scope="synthetic_test")
+    assert archived.is_file() and not marker.exists()
+    state = load_access_state(tmp_path / "artifacts/governance/test_access_state.json")
+    assert state["state"] == "INVALIDATED_BY_RESET"
+    assert not any(row["event"] == "FINAL_TEST_ACCESS_CONSUMED" for row in state["history"])
 
 
 def test_reset_preserves_history_and_requires_new_freeze(tmp_path):
