@@ -98,10 +98,14 @@ def selected_support(selection, runs):
     source = selection["tasks"]["organ_support"]["sources"]["xgboost"]
     run = runs[source["run_id"]]
     raw_ref = source["metrics_path"].replace("validation_metrics.json", "validation_predictions.jsonl")
-    model_ref = run["model_artifact_ref"]
+    bundle_ref = source["bundle_path"]
+    model_ref = str(Path(bundle_ref).with_name("organ_support.json"))
+    model_hash = source["model_hashes"]["organ_support"]
+    if sha256_file(ROOT / model_ref) != model_hash:
+        raise RuntimeError("selected support model file/hash mismatch")
     return SelectedSupportModel(task="organ_support", family="xgboost", run_id=run["run_id"],
         candidate_id=run["candidate_id"], config_hash=run["config_hash"], artifact_ref=model_ref,
-        artifact_sha256=run["model_sha256"], split_hash=run["split_hash"], feature_version=run["feature_version"],
+        artifact_sha256=model_hash, split_hash=run["split_hash"], feature_version=run["feature_version"],
         label_version=run["label_version"], preprocessing_hash=run["preprocessor_sha256"], code_commit=run["code_commit"],
         selection_metric="validation_auprc", probability_type="raw_uncalibrated",
         validation_prediction_ref=raw_ref, validation_prediction_sha256=sha256_file(ROOT / raw_ref),
@@ -188,7 +192,8 @@ def build_manifest(selection, lstm, runs, support, cal_artifact, threshold, thre
                          icu_postprocess_version=sidecar["postprocess_version"])
         else:
             bundle = load(run["model_artifact_ref"])
-            entry.update(selection_metric="validation_auprc", model_artifacts=bundle["models"],
+            entry.update(artifact_ref=support.artifact_ref, artifact_sha256=support.artifact_sha256,
+                artifact_metadata_ref=run["model_artifact_ref"], selection_metric="validation_auprc", model_artifacts=bundle["models"],
                 flat_feature_map_ref=flat_ref, flat_feature_map_sha256=flat_hash,
                 support_class_weight_ref=REFS["support_weight"], support_class_weight_sha256=sha256_file(ROOT / REFS["support_weight"]),
                 probability_type="raw_uncalibrated", validation_prediction_ref=support.validation_prediction_ref,
