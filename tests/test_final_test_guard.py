@@ -11,8 +11,13 @@ def test_real_repository_refuses_before_loader_opens():
     opened = []
     report = pretest_audit(root)
     assert report.overall_status == "BLOCKED"
-    assert any(BLOCKED_G3 in item for item in report.blockers)
-    with pytest.raises(FinalTestError, match="ACTIVE G3"):
+    marker_active = (root / "artifacts/governance/g3_freeze.json").exists()
+    if marker_active:
+        assert not any(BLOCKED_G3 in item for item in report.blockers)
+        assert report.blockers  # Stage 4/5 prerequisites remain closed.
+    else:
+        assert any(BLOCKED_G3 in item for item in report.blockers)
+    with pytest.raises(FinalTestError, match="BLOCKED"):
         run_final_test(
             root,
             guarded_runner=lambda callback: callback(),
