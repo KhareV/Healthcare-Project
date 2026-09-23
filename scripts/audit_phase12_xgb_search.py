@@ -32,10 +32,14 @@ def main() -> None:
         raise RuntimeError("Phase 13+ activity leaked into Phase 12")
     selected = master["selected_models_v1_presearch"]
     selected_path = ROOT / selected["path"]
-    if selected["present"] != selected_path.is_file() or (selected["present"] and sha256_file(selected_path) != selected["sha256"]):
-        raise RuntimeError("selected_models_v1 changed during Phase 12")
-    # A later governed stage may now create G3; the immutable pre-search
-    # snapshot above remains the Phase-12 non-leakage proof.
+    if selected["present"] and (
+        not selected_path.is_file()
+        or sha256_file(selected_path) != selected["sha256"]
+    ):
+        raise RuntimeError("the selected_models_v1 artifact recorded by Phase 12 changed")
+    # When the snapshot records absence, it proves the manifest did not exist
+    # at Phase-12 execution time. A later governed stage may create it without
+    # retroactively invalidating that immutable non-leakage declaration.
     space = _load(ROOT / master["search_space_path"]); validate_search_space(space)
     registry = read_registry_rows(ROOT / "experiments/registry.csv")
     budget = {}

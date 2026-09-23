@@ -1,6 +1,6 @@
 {
   "audit": {
-    "artifact_count": 768,
+    "artifact_count": 772,
     "broken_artifact_parents": [],
     "broken_parent_runs": [],
     "duplicate_run_ids": 0,
@@ -13,6 +13,7 @@
     "orphan_artifacts": [
       "artifacts/acceptance/g1_synthetic_data_freeze_v1.json",
       "artifacts/acceptance/phase13_invariant_summary_v1.json",
+      "artifacts/calibration/isotonic_support_v1.json.metadata.json",
       "artifacts/data/synthetic/cohorts/final/phase9_final_v1/cohort_summary.json",
       "artifacts/data/synthetic/cohorts/final/phase9_final_v1/exclusion_summary.json",
       "artifacts/data/synthetic/cohorts/final/phase9_final_v1/retained_cohort.jsonl",
@@ -90,8 +91,13 @@
       "artifacts/error_analysis/synthetic/error_analysis_table.csv",
       "artifacts/features/synthetic_xgb_flat_feature_map_v1.json",
       "artifacts/governance/README.md",
+      "artifacts/governance/explanation_adapters_review.json",
       "artifacts/governance/g3_audit_report.json",
+      "artifacts/governance/g3_freeze.json",
+      "artifacts/governance/g3_review_signoffs.json",
+      "artifacts/governance/history/invalid_pretest_2ca3a9cbe6616785.json",
       "artifacts/governance/phase20_pretest_audit_v1.json",
+      "artifacts/governance/test_access_state.json",
       "artifacts/handoffs/downstream_next_steps_v1.json",
       "artifacts/handoffs/phase14_verification_v1.json",
       "artifacts/handoffs/pulkit_receiver_acceptance_v1.json",
@@ -555,6 +561,8 @@
       "artifacts/test-results/phase9_pre_evidence_regression.xml",
       "artifacts/test-results/vedant_stage1_final_full.xml",
       "artifacts/test-results/vedant_stage2_final_full.xml",
+      "artifacts/test-results/vedant_stage3_full.xml",
+      "artifacts/thresholds/support_threshold_v1.json.metadata.json",
       "artifacts/validation/phase19_preflight_v1.json"
     ],
     "run_count": 191,

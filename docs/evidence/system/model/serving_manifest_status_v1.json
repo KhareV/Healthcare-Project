@@ -1,7 +1,7 @@
 {
   "evidence_version": "serving_manifest_status_v1",
   "real": {
-    "present": false,
+    "present": true,
     "required_path": "artifacts/models/selected_models_v1.json",
     "status": "BLOCKED"
   },

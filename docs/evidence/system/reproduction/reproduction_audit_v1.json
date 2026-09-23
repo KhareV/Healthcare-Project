@@ -1,7 +1,7 @@
 {
   "artifacts": {
     "failures": {},
-    "registered_artifact_count": 765,
+    "registered_artifact_count": 769,
     "status": "PASS"
   },
   "environment": {
@@ -16,12 +16,12 @@
     "counts": {
       "errors": 0,
       "failures": 0,
-      "passed": 1289,
+      "passed": 1295,
       "skipped": 2,
-      "tests": 1291
+      "tests": 1297
     },
     "evidence_version": "phase16_test_report_v1",
-    "junit_sha256": "1ef4ddfde2c585a2eba53e527dbe1a2129eda47339536a04cafa4ecf913ddcc4",
+    "junit_sha256": "80883002285ade7afebeaa85543fd0245b5712eff5fc260d89d9cd7b24679197",
     "python": "3.9.6",
     "scope": "repository",
     "status": "PASS"

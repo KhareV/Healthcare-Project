@@ -595,7 +595,7 @@
       "evidence_id": "serving_manifest",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/model/serving_manifest_status_v1.json",
-      "output_sha256": "ae272d1580520325c4d9b10a0f0c06ef1f3d6f447f596b5f2e35b4d9b5c0cfd3",
+      "output_sha256": "55597cf640302c324819a0363a667c072cbf981f41da1508c24095b3b929c2a1",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "95ee4577c3de2b0a400c5e3c6edea36ff41e253fb3c47606840f2dc6162bdc8d",
+      "output_sha256": "7e68d41ffea6126d94d21fc53e44e579d9522e9d8f1f8a62ab752aadb5fe2cb8",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -714,7 +714,7 @@
         },
         {
           "path": "src/acceptance/phase13.py",
-          "sha256": "4d7ec9576b99c52d2889e24bff6a26db06c5b96e4f67ebfd8135f7af376f1d83"
+          "sha256": "bcb4b71c5962059b3b93661967ae218caa4bfc2a335a8e651e5bd6749bfa53f6"
         },
         {
           "path": "src/data/__init__.py",
@@ -886,7 +886,7 @@
         },
         {
           "path": "src/evaluation/calibration_validation.py",
-          "sha256": "3be4a0bb416ba02c4a48802171abad6dd5f1d879121f8d2c9b23d898adb1e7b0"
+          "sha256": "50fe3619a905df5b038bff013b42fb1672073ddfaf35469ce5119eddfb8a61dd"
         },
         {
           "path": "src/evaluation/error_analysis.py",
@@ -930,7 +930,7 @@
         },
         {
           "path": "src/evaluation/threshold.py",
-          "sha256": "68e261cf09132291087026557ce2b1eb7a262187e69c7b89d83e2888143d5eed"
+          "sha256": "6e391f70509fa3aeb26f120146f50df82333dd6b6adde0377f44de3f08eba16f"
         },
         {
           "path": "src/evaluation/weighted_stats.py",
@@ -1062,7 +1062,7 @@
         },
         {
           "path": "src/integration/phase14.py",
-          "sha256": "cf980e0bbd951ca4bea045d57c0d5f0ffaed3440c73f87902035912b3dd50efe"
+          "sha256": "df1f7eb793474dbb253f468bcbd25ef91a45635bd78ea30cf8ac4acdd451cdb5"
         },
         {
           "path": "src/labels/__init__.py",
@@ -1298,7 +1298,7 @@
         },
         {
           "path": "src/vedant_infra/g3.py",
-          "sha256": "61298e62940429948defc4e82216ad230e3e3131f329f8e71c258edcd465055c"
+          "sha256": "2fb94f653cbf15df583235327fd568d8cd096321b712f94e11b34fb797cc022c"
         },
         {
           "path": "src/vedant_infra/governance.py",
@@ -1738,11 +1738,11 @@
         },
         {
           "path": "tests/test_explanation_router_integration.py",
-          "sha256": "36b157eb2de5f0278b084849db2edaeb60e69143b0c182b4652acc6454f54263"
+          "sha256": "6b39d863b3260bbe077d660eed1e3e808d8c77bccd4961d1d438b61f39d86707"
         },
         {
           "path": "tests/test_final_gru_search.py",
-          "sha256": "f5d5129dec35283d1e7d3afa539cd65077116fe1b1753cdf823eec3b66cf3636"
+          "sha256": "17231d099f6c06e98d6fa25639d5452b2cfac3a3a846170e56275f170e173cd3"
         },
         {
           "path": "tests/test_final_test_bootstrap.py",
@@ -1754,7 +1754,7 @@
         },
         {
           "path": "tests/test_final_test_guard.py",
-          "sha256": "f3103b9fc34670a437a2c84063e2bdca0341c31d06eea0026c5c6db203507e14"
+          "sha256": "352c32673c9c9ee47d1d8864e0ae233b6e9fe8bf7767e66ab5ab2191a1249165"
         },
         {
           "path": "tests/test_final_test_metrics.py",
@@ -1786,7 +1786,7 @@
         },
         {
           "path": "tests/test_g3_audit.py",
-          "sha256": "abe210616a7ffd4be650566859d93916cf3bf7481d9a4b7f703d22b3e2430208"
+          "sha256": "2335bc5ed5ee8547bd220233d3995d6d7b237d36ea181e2a5319b001ef28c986"
         },
         {
           "path": "tests/test_g3_freeze.py",
@@ -1802,7 +1802,7 @@
         },
         {
           "path": "tests/test_g3_reset.py",
-          "sha256": "cf403e550f660841e80af233d9df18815e85eb80b7639c0ef7c3e6ceb334b62b"
+          "sha256": "fdd700802e0a513f530c72a8651fe81b37e867a37bb463af8aefc81ed3747410"
         },
         {
           "path": "tests/test_grouped_bootstrap.py",
@@ -1894,7 +1894,7 @@
         },
         {
           "path": "tests/test_lstm_sensitivity_governance.py",
-          "sha256": "c7309dba8daa2a9c8b1b3f8ea76107f9813a24769b55e6abdbf2a1704050c7f1"
+          "sha256": "eaa2e7a83ba4e25896241a0fe8ead745800574b6543f2bd822e3fe156077d967"
         },
         {
           "path": "tests/test_lstm_support.py",
@@ -1922,7 +1922,7 @@
         },
         {
           "path": "tests/test_phase0_infrastructure.py",
-          "sha256": "816bc187ec86c367e3a838f0fe1802ccd5ee86612d93adc75d12cfea494aef37"
+          "sha256": "ece129e7581b38cdffff01507467e86f897cc7069f269f712f78d053de6bd3b2"
         },
         {
           "path": "tests/test_phase11_xgb_canonical.py",
@@ -1938,7 +1938,7 @@
         },
         {
           "path": "tests/test_phase14_handoff.py",
-          "sha256": "4e53d284a366ceaa2dfef5ebe8d854ec2b324c7767bde76a3a7c000dced9f38c"
+          "sha256": "c2d72797f3fa4bb734b617b2e1c0b5262d2e53b1acbd19cb1b86741a9a27dfa8"
         },
         {
           "path": "tests/test_phase8_icu_time_labels.py",
@@ -2146,7 +2146,7 @@
         },
         {
           "path": "tests/test_serving_lineage_e2e.py",
-          "sha256": "f4be56e4e3b656b5adb981b943a2dc961b90ecbc72d6fd2a71af797e9b009447"
+          "sha256": "af37d36ee5741d62a3089379d7f0464a9cdaeb8323bc904c101f7e002db778a7"
         },
         {
           "path": "tests/test_sofa_complete_component_sensitivity.py",
@@ -2159,6 +2159,10 @@
         {
           "path": "tests/test_stage2_finalization.py",
           "sha256": "9d972a8df82bea5c229c60316df47b21ebc4d6ba73d3250ebd9556ac78a92762"
+        },
+        {
+          "path": "tests/test_stage3_finalization.py",
+          "sha256": "82b5297b8a79cfe2a18f7796d621c4d1ee7ef2d7c0893e8eaaedd381b27a6beb"
         },
         {
           "path": "tests/test_stay_weights.py",
@@ -2350,7 +2354,7 @@
         },
         {
           "path": "tests/test_validation_g3_readiness.py",
-          "sha256": "b16e71fcf1580ee4b30962701603073017e7dd6ad0b89ed9a042d83ea2096222"
+          "sha256": "2b03058038a1d5527eff5726147c8c1290418ee567d7a07d440079c30e8cab91"
         },
         {
           "path": "tests/test_validation_lstm_integration.py",
@@ -2638,7 +2642,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "31ab62c35c0f7053999ac217468fa83b26021cc04cd740be1b68c68978a57597",
+      "output_sha256": "c53e10bc03fae4a255ae1bfaddc5ede12f65b18d0e779f47860d484f8463b7f6",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2676,7 +2680,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "10db8929730706a4bb60cd4d3a8555f091b8b6375ea9daf113b78b5ac45d8cb7",
+      "output_sha256": "eddda653c21b16b873b803d4c01a6ff848d408ec4a6d6dd947b3691b628122dc",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2685,7 +2689,7 @@
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "33a36b9a3052f3f435b8cc9b565c18290d1e656f55dee90536f6f6800bea2a91"
+          "sha256": "634c462b4e0390b41caacb9a05c044f1c97fc8b47fac63c337ed0e8bff3498ae"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2697,7 +2701,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "793546c3033810f3ab34448d8eccce3e35b78d23a19f54cb25f10dd737606e18",
+      "output_sha256": "69f91a4149a7e780b3506e76e99f6a87ce28ec4f620c7cee4baadb615c7197a4",
       "scope": "repository",
       "source_artifacts": [
         {
