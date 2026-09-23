@@ -27,9 +27,9 @@ def test_scalar_task_cannot_select_a_nonzero_output():
 
 
 @pytest.mark.parametrize("task,name", (("icu_stay_time", "remaining_icu_log1p_hours"), ("organ_support", "support_raw_margin")))
-def test_scalar_synthetic_targets_are_explicit_and_real_domains_remain_blocked(task, name):
+def test_scalar_synthetic_targets_are_explicit_and_cannot_authorize_real_explanation(task, name):
     model = SyntheticXGBContract(task, (name,))
     chosen = target(task, name, 0)
     chosen.validate(model, synthetic=True)
-    with pytest.raises(TreeShapTargetError, match="real TreeSHAP output domains"):
+    with pytest.raises(TreeShapTargetError, match="explicitly frozen non-synthetic domain"):
         chosen.validate(model, synthetic=False)

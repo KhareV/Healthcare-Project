@@ -38,6 +38,6 @@ def test_synthetic_scalar_icu_and_support_target_descriptors():
         descriptor.validate(SyntheticScalarGRU(task_name), True)
 
 
-def test_real_output_domains_remain_blocked():
-    with pytest.raises(IGTargetError, match="real IG output domains"):
+def test_synthetic_target_cannot_authorize_real_explanation():
+    with pytest.raises(IGTargetError, match="real target must use the frozen Stage-4 scope"):
         target().validate(SyntheticTwoOutputGRU(), False)

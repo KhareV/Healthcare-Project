@@ -187,5 +187,5 @@ def test_missing_shap_dependency_is_explicit_and_has_no_fallback():
 
 
 def test_real_scope_cannot_use_synthetic_configuration():
-    with pytest.raises(Exception, match="REAL XGBOOST CONTRACT"):
+    with pytest.raises(Exception, match="scope does not match"):
         TreeShapAdapter(config=config(), targets={"icu_stay_time": target()}, synthetic=False)

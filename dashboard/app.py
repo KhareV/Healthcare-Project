@@ -66,6 +66,26 @@ def create_dashboard_app(
     return application
 
 
+def create_real_dashboard_app(
+    api_base_url: str,
+    *,
+    catalog,
+    timeout_seconds: float = 5.0,
+) -> FastAPI:
+    """Real Stage-4 replay dashboard: calls the live API for every cutoff,
+    same as the synthetic composition — no precomputed predictions."""
+
+    def factory() -> ReplayController:
+        return ReplayController(
+            catalog,
+            HTTPDashboardAPIClient(
+                api_base_url, synthetic=False, timeout_seconds=timeout_seconds
+            ),
+        )
+
+    return create_dashboard_app(factory, synthetic=False)
+
+
 def create_synthetic_dashboard_app(
     api_base_url: str,
     *,

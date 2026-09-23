@@ -5,6 +5,7 @@ reviewed and frozen.  This module never implements a fallback attribution
 algorithm: if Captum is unavailable, execution fails explicitly.
 """
 
+import math
 from dataclasses import asdict, dataclass, replace
 from typing import Mapping, Optional, Protocol, Sequence, Tuple
 
@@ -35,6 +36,13 @@ class IGInputError(IntegratedGradientsError):
     pass
 
 
+REAL_SCOPE = "real_frozen_stage4_serving_v1"
+REAL_OUTPUT_DOMAINS = (
+    "log1p_remaining_current_icu_hours",
+    "remaining_icu_hours_postprocessed_v1",
+)
+
+
 @dataclass(frozen=True)
 class AttributionTarget:
     task: str
@@ -54,9 +62,10 @@ class AttributionTarget:
             if not self.output_domain_version.startswith("SYNTHETIC_"):
                 raise IGTargetError("synthetic target domain must be unmistakably synthetic")
         else:
-            raise IGTargetError(
-                "real IG output domains are unresolved and require review"
-            )
+            if self.scientific_scope != REAL_SCOPE:
+                raise IGTargetError("real target must use the frozen Stage-4 scope")
+            if self.output_domain_version not in REAL_OUTPUT_DOMAINS:
+                raise IGTargetError("real target output domain is not an approved frozen domain")
         if self.task == "recovery":
             order = getattr(model, "horizon_order", None)
             if not isinstance(order, tuple) or self.output_index >= len(order):
@@ -77,10 +86,14 @@ class IGConfig:
     scientific_scope: str
 
     def validate(self) -> None:
-        if self.scientific_scope != "synthetic_development_only":
-            raise IntegratedGradientsError("real IG integration settings are not frozen")
-        if not self.version.startswith("SYNTHETIC_") or self.n_steps < 2:
-            raise IntegratedGradientsError("invalid synthetic IG configuration")
+        if self.scientific_scope not in ("synthetic_development_only", REAL_SCOPE):
+            raise IntegratedGradientsError("unrecognized IG configuration scope")
+        if self.scientific_scope == "synthetic_development_only":
+            if not self.version.startswith("SYNTHETIC_") or self.n_steps < 2:
+                raise IntegratedGradientsError("invalid synthetic IG configuration")
+        else:
+            if self.version.startswith("SYNTHETIC_") or self.n_steps < 2:
+                raise IntegratedGradientsError("invalid real IG configuration")
         if self.method not in (
             "gausslegendre",
             "riemann_left",
@@ -140,6 +153,58 @@ class SyntheticZeroBaselineProvider:
         return tuple(torch.zeros_like(value) for value in attributable_inputs(batch))
 
 
+class RealICUBaselineProvider:
+    """Neutral model-space baseline for the frozen ICU-time GRU (real scope).
+
+    Every channel is referenced against the frozen Phase-10 preprocessing
+    contract rather than an arbitrary zero:
+
+    - ``value``: zero in the trained mean/scale-normalized space, i.e. the
+      training-partition mean for each feature — the standard neutral
+      reference for a zero-centered channel, matching the value already used
+      structurally for padded bins.
+    - ``observation_mask``: zero, i.e. "not observed" — its own natural
+      absence value.
+    - ``tslo``: the frozen ``no_observation_sentinel`` from
+      ``configs/synthetic/feature_schema_v2.json`` (54.0 hours), the exact
+      value the frozen contract itself uses to represent "never observed
+      within the 48h window" — not zero, which would instead mean "observed
+      just now".
+    - ``static``: zero across the encoded (age-normalized plus one-hot)
+      representation — the trained mean age and "no category selected".
+
+    Padding stays a fixed, non-attributed forward argument, as in the
+    synthetic provider.
+    """
+
+    def __init__(self, *, feature_schema_version: str, tslo_no_observation_value: float) -> None:
+        if not math.isfinite(tslo_no_observation_value):
+            raise IGBaselineError("TSLO no-observation sentinel must be finite")
+        config = {
+            "policy": "value_and_static_mean_zero_tslo_frozen_no_observation_sentinel",
+            "padding": "fixed_additional_forward_argument",
+            "scope": REAL_SCOPE,
+            "feature_schema_version": feature_schema_version,
+            "tslo_no_observation_value": tslo_no_observation_value,
+        }
+        self.identity = BaselineIdentity(
+            policy_name="REAL_NEUTRAL_VALUE_STATIC_ZERO_TSLO_FROZEN_SENTINEL",
+            version="REAL_IG_BASELINE_STAGE4_V1",
+            config_sha256=canonical_sha256(config),
+            feature_schema_version=feature_schema_version,
+            scientific_scope=REAL_SCOPE,
+        )
+        self._tslo_value = tslo_no_observation_value
+
+    def baselines(self, batch: CanonicalBatch) -> Tuple[torch.Tensor, ...]:
+        values = [torch.zeros_like(batch.sequence), torch.zeros_like(batch.observation_mask.to(batch.sequence.dtype))]
+        if batch.tslo is not None:
+            values.append(torch.full_like(batch.tslo, self._tslo_value))
+        if batch.static_features is not None:
+            values.append(torch.zeros_like(batch.static_features))
+        return tuple(values)
+
+
 def attributable_inputs(batch: CanonicalBatch) -> Tuple[torch.Tensor, ...]:
     values = [batch.sequence, batch.observation_mask.to(batch.sequence.dtype)]
     if batch.tslo is not None:
@@ -188,13 +253,38 @@ class GRUForwardWrapper(torch.nn.Module):
             index += 1
         if self.template.static_features is not None:
             static = inputs[index]
+        padding_mask = self.template.padding_mask
+        batch_size = sequence.shape[0]
+        if padding_mask.shape[0] != batch_size:
+            # Captum evaluates every interpolation step in one batched
+            # forward call (batch dimension = n_steps), but padding_mask is
+            # not an attributable input, so it is still the original
+            # batch-of-one template tensor; expand it read-only to match.
+            padding_mask = padding_mask.expand(batch_size, *padding_mask.shape[1:])
         return replace(
             self.template,
             sequence=sequence,
             observation_mask=observation,
             tslo=tslo,
             static_features=static,
+            padding_mask=padding_mask,
         )
+
+
+class PostprocessedICUForwardWrapper(GRUForwardWrapper):
+    """Attribute on the exact public ICU-time prediction (postprocessed hours).
+
+    Applies the same frozen, differentiable transform
+    (``models.icu_time_postprocess.remaining_icu_hours_from_log_prediction``)
+    the pipeline itself uses, so the attributed quantity is provably the
+    reported prediction rather than a second, divergent function.
+    """
+
+    def forward(self, *inputs: torch.Tensor) -> torch.Tensor:
+        raw = super().forward(*inputs)
+        from models.icu_time_postprocess import remaining_icu_hours_from_log_prediction
+
+        return remaining_icu_hours_from_log_prediction(raw)
 
 
 def aggregate_absolute_attribution(
@@ -279,12 +369,11 @@ class IntegratedGradientsAdapter:
         self.config = config
         self.targets = dict(targets)
         self.synthetic = synthetic
-        if not synthetic:
-            raise IGBaselineError(
-                "BLOCKED — REAL IG BASELINE AND OUTPUT DOMAINS MUST BE FROZEN"
-            )
-        if baseline_provider.identity.scientific_scope != "synthetic_development_only":
-            raise IGBaselineError("synthetic adapter requires synthetic baseline scope")
+        expected_scope = "synthetic_development_only" if synthetic else REAL_SCOPE
+        if baseline_provider.identity.scientific_scope != expected_scope:
+            raise IGBaselineError("adapter scope and baseline scope must match")
+        if config.scientific_scope != expected_scope:
+            raise IGBaselineError("adapter scope and IG config scope must match")
 
     def explain(self, context: ExplanationContext) -> AdapterExplanation:
         if context.family != "gru" or getattr(context.model, "family", None) != "gru":
@@ -293,8 +382,8 @@ class IntegratedGradientsAdapter:
             raise IGInputError("model hash mismatch")
         if context.prediction_time != context.input_prediction_time:
             raise IGInputError("prediction and input cutoff mismatch")
-        if not context.synthetic or not self.synthetic:
-            raise IGBaselineError("synthetic IG policy cannot authorize real explanation")
+        if context.synthetic != self.synthetic:
+            raise IGBaselineError("explanation scope and adapter scope must match")
         if not isinstance(context.model, torch.nn.Module):
             raise IGInputError("IG model must be a differentiable torch module")
         if not isinstance(context.prepared_input, CanonicalBatch):
@@ -328,7 +417,12 @@ class IntegratedGradientsAdapter:
         model = context.model
         state_before = {name: value.detach().clone() for name, value in model.state_dict().items()}
         was_training = model.training
-        wrapper = GRUForwardWrapper(model, batch, target)
+        wrapper_class = (
+            PostprocessedICUForwardWrapper
+            if target.output_domain_version == "remaining_icu_hours_postprocessed_v1"
+            else GRUForwardWrapper
+        )
+        wrapper = wrapper_class(model, batch, target)
         IntegratedGradients = _captum_integrated_gradients_class()
         try:
             model.eval()
@@ -373,7 +467,7 @@ class IntegratedGradientsAdapter:
             for row in aggregate
         )
         details = {
-            "scientific_scope": "synthetic_non_scientific",
+            "scientific_scope": "synthetic_non_scientific" if context.synthetic else REAL_SCOPE,
             "baseline": asdict(identity),
             "ig_config": {**asdict(self.config), "sha256": self.config.sha256},
             "target": asdict(target),
@@ -391,7 +485,7 @@ class IntegratedGradientsAdapter:
             manifest_version=context.manifest_version,
             manifest_sha256=context.manifest_sha256,
             feature_schema_version=context.feature_schema_version,
-            synthetic=True,
+            synthetic=context.synthetic,
             items=items,
             details=details,
         )

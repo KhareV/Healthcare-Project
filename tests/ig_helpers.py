@@ -24,7 +24,11 @@ class SyntheticTwoOutputGRU(torch.nn.Module):
 
     def forward(self, batch):
         valid = (~batch.padding_mask).unsqueeze(-1).to(batch.sequence.dtype)
-        values = batch.sequence * valid
+        # A zero-weighted term keeps observation_mask a genuine autograd graph
+        # dependency (Captum requires every attributable input to appear in
+        # the graph) without perturbing the linear sanity check below, which
+        # depends only on batch.sequence.
+        values = batch.sequence * valid + 0.0 * batch.observation_mask.to(batch.sequence.dtype)
         return torch.stack(
             (
                 values[:, :, 0].sum(1) * self.output_weights[0],

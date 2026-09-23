@@ -44,4 +44,9 @@ def test_observed_snapshot_matches_runtime_but_is_explicitly_nonfinal():
 
 def test_real_stack_missing_dependencies_are_not_hidden():
     snapshot = json.loads((ROOT / "observed_environment_phase15.json").read_text())
-    assert set(snapshot["missing_required_real_stack_packages"]) == {"captum", "shap"}
+    # Stage 4 installed the previously-missing real-stack dependencies (captum
+    # for Integrated Gradients, shap for TreeSHAP) into this development
+    # environment; the observed snapshot now truthfully records both present.
+    assert set(snapshot["missing_required_real_stack_packages"]) == set()
+    for distribution in ("captum", "shap"):
+        assert snapshot["packages"][distribution] is not None

@@ -27,7 +27,7 @@ def test_synthetic_baseline_has_version_hash_scope_and_exact_shapes():
 
 
 def test_synthetic_baseline_cannot_authorize_real_adapter():
-    with pytest.raises(IGBaselineError, match="REAL IG BASELINE"):
+    with pytest.raises(IGBaselineError, match="scope and baseline scope must match"):
         IntegratedGradientsAdapter(
             baseline_provider=SyntheticZeroBaselineProvider(FEATURE_VERSION),
             config=config(), targets={"recovery": target()}, synthetic=False
@@ -35,7 +35,7 @@ def test_synthetic_baseline_cannot_authorize_real_adapter():
 
 
 def test_invalid_unfrozen_integration_config_is_rejected():
-    with pytest.raises(Exception, match="real IG integration settings"):
+    with pytest.raises(Exception, match="unrecognized IG configuration scope"):
         replace(config(), scientific_scope="real_unfrozen").validate()
 
 

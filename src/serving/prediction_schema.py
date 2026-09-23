@@ -238,12 +238,23 @@ def _validate_metadata(value: object, *, synthetic: bool) -> None:
     )
     _validate_version_map(metadata["feature_version"], "feature_version", synthetic=synthetic)
     _validate_version_map(metadata["label_version"], "label_version", synthetic=synthetic)
-    for field in ("split_version", "manifest_version"):
-        version = _nonempty(metadata[field], "model_metadata." + field)
-        if synthetic and "synthetic" not in version.lower():
-            raise PredictionSchemaError(field + " fixture value must be synthetic")
-        if not synthetic and "synthetic" in version.lower():
-            raise PredictionSchemaError(field + " synthetic value cannot authorize real serving")
+    version = _nonempty(metadata["manifest_version"], "model_metadata.manifest_version")
+    if synthetic and "synthetic" not in version.lower():
+        raise PredictionSchemaError("manifest_version fixture value must be synthetic")
+    if not synthetic and "synthetic" in version.lower():
+        raise PredictionSchemaError("manifest_version synthetic value cannot authorize real serving")
+    split_version = _nonempty(metadata["split_version"], "model_metadata.split_version")
+    # split_version cannot use the same lowercase-substring check: the
+    # accepted scientific project scope is itself a synthetic cardiac
+    # benchmark, so the real, G3-frozen split version legitimately contains
+    # the lowercase word "synthetic" (e.g. "synthetic_split_v2") without
+    # being a Phase-6 mock placeholder. Use the same unmistakable-placeholder
+    # convention as _validate_version_map instead (an uppercase "SYNTHETIC_"
+    # prefix), which the Phase-6 fixture's split version already follows.
+    if synthetic and not split_version.startswith("SYNTHETIC_"):
+        raise PredictionSchemaError("split_version fixture value must be synthetic")
+    if not synthetic and split_version.startswith("SYNTHETIC_"):
+        raise PredictionSchemaError("split_version synthetic value cannot authorize real serving")
 
 
 def validate_response(payload: object, *, synthetic: bool = False) -> Mapping[str, object]:

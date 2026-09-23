@@ -55,6 +55,8 @@ class ReplayStay:
     events: Tuple[TimelineEvent, ...]
     current_sofa_by_cutoff: Mapping[str, float]
     sofa_version: str
+    current_sofa_source_version: str = "SYNTHETIC_DASHBOARD_CURRENT_SOFA_PHASE13_V1"
+    current_sofa_source_sha256: str = "6" * 64
 
     def elapsed_hours(self, cutoff: str) -> float:
         if cutoff not in self.legal_cutoffs:
@@ -64,13 +66,18 @@ class ReplayStay:
 
 class DashboardCatalog:
     def __init__(self, stays: Sequence[ReplayStay], *, scope: str) -> None:
-        if scope != "synthetic":
+        if scope not in ("synthetic", "real"):
             raise DashboardCatalogError(
-                "real dashboard catalog requires an approved production handoff"
+                "dashboard catalog scope must be synthetic or real"
             )
         indexed = {}
         for stay in stays:
-            if not stay.stay_id.startswith("SYNTHETIC_"):
+            # The Phase-6 mock fixture uses "SYNTHETIC_"-prefixed placeholder
+            # identifiers; Stage 4's real catalog uses the accepted cohort's
+            # own stay identifiers ("SYN-E-..."), which are legitimately
+            # train/validation-only demo-safe subjects (never the sealed
+            # final-test partition), not a Phase-6 placeholder claim.
+            if scope == "synthetic" and not stay.stay_id.startswith("SYNTHETIC_"):
                 raise DashboardCatalogError("synthetic catalog requires demo-safe identifiers")
             if stay.stay_id in indexed:
                 raise DashboardCatalogError("duplicate replay stay")
@@ -110,8 +117,8 @@ class DashboardCatalog:
             prediction_time=cutoff,
             value=stay.current_sofa_by_cutoff[cutoff],
             sofa_version=stay.sofa_version,
-            source_version="SYNTHETIC_DASHBOARD_CURRENT_SOFA_PHASE13_V1",
-            source_sha256="6" * 64,
+            source_version=stay.current_sofa_source_version,
+            source_sha256=stay.current_sofa_source_sha256,
             component_observed=None,
         )
 

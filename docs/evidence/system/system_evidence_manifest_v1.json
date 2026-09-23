@@ -78,7 +78,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -171,7 +171,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -264,7 +264,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -357,7 +357,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -377,7 +377,7 @@
         },
         {
           "path": "dashboard/app.py",
-          "sha256": "2fe0432e1e1ee18d1a0bcf77528d937645da78461d1b9700d2de3d937f99358b"
+          "sha256": "df9583ba9afe8e75605edf5d202614bd6b7bc1d319ef11abe552fb87f8bbe957"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -454,7 +454,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -474,7 +474,7 @@
         },
         {
           "path": "dashboard/app.py",
-          "sha256": "2fe0432e1e1ee18d1a0bcf77528d937645da78461d1b9700d2de3d937f99358b"
+          "sha256": "df9583ba9afe8e75605edf5d202614bd6b7bc1d319ef11abe552fb87f8bbe957"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -551,7 +551,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -571,11 +571,11 @@
         },
         {
           "path": "src/explainability/ig.py",
-          "sha256": "304e409665a8fbb8379b6bef7f0940d655b1e56b634762cb027736c2c7c41d36"
+          "sha256": "e4e0a2c07260ff141f17a6d20c7ce2e358fc570014418804387eb83e4d44b1c3"
         },
         {
           "path": "src/explainability/tree_shap.py",
-          "sha256": "158d2151585fa76980d51db69c5387e95c4a7a3be2fedaae6c779f7327aca95c"
+          "sha256": "5b2a0db7710d9659fdd1f1ce973c0136dbf80ba94b44feb8eddfff6608b87546"
         },
         {
           "path": "configs/explainability/ig_synthetic_development_v1.json",
@@ -677,7 +677,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "api/main.py",
@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "7e68d41ffea6126d94d21fc53e44e579d9522e9d8f1f8a62ab752aadb5fe2cb8",
+      "output_sha256": "8cc1b30892c647c4a79f927d94c09e80828369c44910dbea573d47f17bd1cf1a",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1038,7 +1038,7 @@
         },
         {
           "path": "src/explainability/ig.py",
-          "sha256": "304e409665a8fbb8379b6bef7f0940d655b1e56b634762cb027736c2c7c41d36"
+          "sha256": "e4e0a2c07260ff141f17a6d20c7ce2e358fc570014418804387eb83e4d44b1c3"
         },
         {
           "path": "src/explainability/router.py",
@@ -1046,7 +1046,7 @@
         },
         {
           "path": "src/explainability/tree_shap.py",
-          "sha256": "158d2151585fa76980d51db69c5387e95c4a7a3be2fedaae6c779f7327aca95c"
+          "sha256": "5b2a0db7710d9659fdd1f1ce973c0136dbf80ba94b44feb8eddfff6608b87546"
         },
         {
           "path": "src/features/__init__.py",
@@ -1202,7 +1202,7 @@
         },
         {
           "path": "src/serving/pipeline.py",
-          "sha256": "e42fe527f9ff098d865853e74fe64fb9d8b1be86ba4a29bc76d1e20110469663"
+          "sha256": "fcf83f892bf52d32edb53c0568fa76b9db4f30d067341e3582d7a9422a695314"
         },
         {
           "path": "src/serving/postprocessing.py",
@@ -1210,11 +1210,31 @@
         },
         {
           "path": "src/serving/prediction_schema.py",
-          "sha256": "0e235a3b7ff0a7cfeaae92fae0e615e47b07943e0ee3b6237017693b39179388"
+          "sha256": "748496e84e13e08ceaea6682e08e9cce5b863eba056bf6bd8715e78740391125"
         },
         {
           "path": "src/serving/preprocessing.py",
           "sha256": "204a67d95637f48aae1cef1cd8a135015f9b0c9c9243ed11260112c299a42e61"
+        },
+        {
+          "path": "src/serving/real/__init__.py",
+          "sha256": "b700019acedebf44f55c3d6fa14428c54f3df0a279cb7de8e389627f697fc7ee"
+        },
+        {
+          "path": "src/serving/real/bundle.py",
+          "sha256": "ea3eb48d484613ef187f1ecdebdf64a5824dc9fdfb08ed823d2d893fb6995b6f"
+        },
+        {
+          "path": "src/serving/real/explanations.py",
+          "sha256": "6a1fc8f46d7ce622d87a3829792c71ed5c1722aa269c61f2ec941c496e66923c"
+        },
+        {
+          "path": "src/serving/real/history.py",
+          "sha256": "8127d4a341725042e72bcc4df376eae23a25ad4393f3e96cb7fd40da1d258e3a"
+        },
+        {
+          "path": "src/serving/real/predictors.py",
+          "sha256": "5b93a522c032fb462cc3e93bb830ed9aa4345cf2245b5f0b96a622ef5352c943"
         },
         {
           "path": "src/serving/recovery.py",
@@ -1321,6 +1341,10 @@
           "sha256": "6bcc5b943f4535701c2de4d45a0022ec385a046cd77383238ba5714ef03ae635"
         },
         {
+          "path": "api/real_app.py",
+          "sha256": "84d0bef3e03afd0d3aedd65d19ce4f1a05976cfda2f2a4b1f78b8881eb73ab95"
+        },
+        {
           "path": "api/schemas.py",
           "sha256": "31a357679c7d91a91b6ea4dc60bc5718672b5cfc498942bcb08738c901d45438"
         },
@@ -1334,15 +1358,19 @@
         },
         {
           "path": "dashboard/app.py",
-          "sha256": "2fe0432e1e1ee18d1a0bcf77528d937645da78461d1b9700d2de3d937f99358b"
+          "sha256": "df9583ba9afe8e75605edf5d202614bd6b7bc1d319ef11abe552fb87f8bbe957"
         },
         {
           "path": "dashboard/catalog.py",
-          "sha256": "512ded7f64a03a67d9f766c2b64c658bd8e0eee68b1de7ba6188bdebef57d60a"
+          "sha256": "9d13e30f2ce8e1344f46bc58e5cb11162cb9bc79b1e6fd9444b6b9ca67622433"
         },
         {
           "path": "dashboard/fixtures/synthetic_dashboard_phase13_v1.json",
           "sha256": "0b7d060956d2cf62d2e522aa3ac3fe15d9bca9f36ce8e068a6459de738479783"
+        },
+        {
+          "path": "dashboard/real_catalog.py",
+          "sha256": "05bcbb10d463373b06a0744d60c90d0154a2a91430c3022073fbc3ebd33f1f71"
         },
         {
           "path": "dashboard/render.py",
@@ -1482,7 +1510,7 @@
         },
         {
           "path": "tests/ig_helpers.py",
-          "sha256": "773f70c83dde23d218a62c9929c0c213ea8d34cba326b4ce462394a195cdce52"
+          "sha256": "1c29cec65cb380f04e51b1978a8b16d5e63c291a3472040b64d5fbcc0c1ceec0"
         },
         {
           "path": "tests/integration_helpers.py",
@@ -1519,6 +1547,10 @@
         {
           "path": "tests/serving_helpers.py",
           "sha256": "2fdb8b70c7b83894168ab5dbcffa50ca00049cf2592672f98b3c3d6de8045457"
+        },
+        {
+          "path": "tests/stage4_helpers.py",
+          "sha256": "fe977f010839c406d7433af9a44a78f2ea72af88b0b2370e48521294b5691a9f"
         },
         {
           "path": "tests/synthetic_cohort_helpers.py",
@@ -1670,7 +1702,7 @@
         },
         {
           "path": "tests/test_environment_lock.py",
-          "sha256": "d689b8f09a9b535edc4acddce67fa2dab8d58334e400a6566ada5cb7972dae1d"
+          "sha256": "d23f5e88fae5f3a86a7620297d0b70bd81955a3c8262f5edecb3a52b62bfd926"
         },
         {
           "path": "tests/test_error_analysis_counts.py",
@@ -1858,7 +1890,7 @@
         },
         {
           "path": "tests/test_integrated_gradients_baseline.py",
-          "sha256": "dd69b90159396f67cdf1fdaacc3063087dd65e63675072f8a8d862d0d090ade5"
+          "sha256": "5cf3e7d4ee4a9a0c30662ff4916b774d18f7bd65ddac2ba88ac440445e96a29f"
         },
         {
           "path": "tests/test_integrated_gradients_integration.py",
@@ -1866,7 +1898,7 @@
         },
         {
           "path": "tests/test_integrated_gradients_targets.py",
-          "sha256": "e6cda483fcb14f4c71a6445e6772503e9b89cf61f2a4d8ef90f9fe0e71883110"
+          "sha256": "f9d6fe50b978b729d8238a7f130a084acc2931cf1bcea993b650f41f4853cb62"
         },
         {
           "path": "tests/test_integration.py",
@@ -2165,6 +2197,14 @@
           "sha256": "82b5297b8a79cfe2a18f7796d621c4d1ee7ef2d7c0893e8eaaedd381b27a6beb"
         },
         {
+          "path": "tests/test_stage4_dashboard.py",
+          "sha256": "384c689ba773960b908f14fa8bc27aca0f8d78d52fe36b74169fbecf18f46738"
+        },
+        {
+          "path": "tests/test_stage4_real_serving.py",
+          "sha256": "85e9c70a7af1d0022bf16ef01d191715604ac9564306dd0ba72106fd37692b4d"
+        },
+        {
           "path": "tests/test_stay_weights.py",
           "sha256": "4b8d9eec4b30be933d641f13406e138494c19da91ec9652ebb6f39fe9213a7ba"
         },
@@ -2334,7 +2374,7 @@
         },
         {
           "path": "tests/test_tree_shap.py",
-          "sha256": "53085bbf3f7b2340e29024b70b4c86b2ad54c04e16dd0c26465bfd15d1f30d6e"
+          "sha256": "a5e2e177482585ef1ccef934b049409b8a29f5cac8646cba4a66ff6cbe174875"
         },
         {
           "path": "tests/test_tree_shap_feature_mapping.py",
@@ -2346,7 +2386,7 @@
         },
         {
           "path": "tests/test_tree_shap_targets.py",
-          "sha256": "f49e3d662ec2e5bb07163aec8c6b8af8581c766f72e000a373adfe6789c8be3b"
+          "sha256": "2d84abffa107f0bf39ad2e2f694c96dc989e606c6c2a664c6e0cd37195bdbf9f"
         },
         {
           "path": "tests/test_validation_calibration_integration.py",
@@ -2642,7 +2682,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "c53e10bc03fae4a255ae1bfaddc5ede12f65b18d0e779f47860d484f8463b7f6",
+      "output_sha256": "e9845e9ed608be2a6638ac886001e10b1cf08cb8b165c5ee909089cd969de50c",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2659,7 +2699,7 @@
       "evidence_id": "environment",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/environment/environment_audit_v1.json",
-      "output_sha256": "9aaabf2aff7c90081dc9c2360f00aec149679673fa581278b527feb0dd5cf861",
+      "output_sha256": "b639ee1978460ff34381cbda104632efbb710cc1cf5db38982e5d85d3a345e0e",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2668,7 +2708,7 @@
         },
         {
           "path": "observed_environment_phase15.json",
-          "sha256": "8c962477cc7a47947ac16f328870e44d200b8021a631fda8f2b6c4c82acce9eb"
+          "sha256": "0fb5b4377fa2a87696a6659b09c9df32dbe7213e60442f63ac479ee9a271bd6f"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2680,7 +2720,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "eddda653c21b16b873b803d4c01a6ff848d408ec4a6d6dd947b3691b628122dc",
+      "output_sha256": "179a17c153da4b9c669ab6f66eba160a0e4d0da6ac761a37e3b7af356c37b6f2",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2701,7 +2741,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "69f91a4149a7e780b3506e76e99f6a87ce28ec4f620c7cee4baadb615c7197a4",
+      "output_sha256": "371fb41bb8950aebc280815e69d3ef61d1e8fea84870b0e5c280920041c8c383",
       "scope": "repository",
       "source_artifacts": [
         {

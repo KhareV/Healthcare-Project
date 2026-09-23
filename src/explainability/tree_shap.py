@@ -118,13 +118,18 @@ class TreeShapTarget:
             raise TreeShapTargetError("output index must be nonnegative")
         if self.task != "recovery" and self.output_index != 0:
             raise TreeShapTargetError("scalar task output index must be zero")
-        if not synthetic:
-            raise TreeShapTargetError("real TreeSHAP output domains are unresolved")
-        if (
-            self.scientific_scope != "synthetic_development_only"
-            or not self.model_output_domain.startswith("SYNTHETIC_")
-        ):
-            raise TreeShapTargetError("synthetic target must be development-only")
+        if synthetic:
+            if (
+                self.scientific_scope != "synthetic_development_only"
+                or not self.model_output_domain.startswith("SYNTHETIC_")
+            ):
+                raise TreeShapTargetError("synthetic target must be development-only")
+        else:
+            if (
+                self.scientific_scope != "real_frozen_v1"
+                or self.model_output_domain.startswith("SYNTHETIC_")
+            ):
+                raise TreeShapTargetError("real target must be an explicitly frozen non-synthetic domain")
         outputs = getattr(model, "output_names", None)
         if not isinstance(outputs, tuple) or self.output_index >= len(outputs):
             raise TreeShapTargetError("model output-name contract is absent or incompatible")
@@ -142,14 +147,20 @@ class TreeShapConfig:
     scientific_scope: str
 
     def validate(self) -> None:
-        if self.scientific_scope != "synthetic_development_only":
-            raise TreeShapError("real TreeSHAP configuration is not frozen")
-        if not self.version.startswith("SYNTHETIC_"):
-            raise TreeShapError("synthetic TreeSHAP config must be unmistakably synthetic")
-        if self.background_policy != "none_tree_path_dependent_development_only":
-            raise TreeShapError("unauthorized TreeSHAP background policy")
+        if self.scientific_scope == "synthetic_development_only":
+            if not self.version.startswith("SYNTHETIC_"):
+                raise TreeShapError("synthetic TreeSHAP config must be unmistakably synthetic")
+            if self.background_policy != "none_tree_path_dependent_development_only":
+                raise TreeShapError("unauthorized TreeSHAP background policy")
+        elif self.scientific_scope == "real_frozen_v1":
+            if self.version.startswith("SYNTHETIC_"):
+                raise TreeShapError("real TreeSHAP config must not be labeled synthetic")
+            if self.background_policy != "none_tree_path_dependent_frozen_real_v1":
+                raise TreeShapError("unauthorized real TreeSHAP background policy")
+        else:
+            raise TreeShapError("unsupported TreeSHAP scientific_scope")
         if self.feature_perturbation != "tree_path_dependent" or self.model_output != "raw":
-            raise TreeShapError("unsupported synthetic TreeSHAP configuration")
+            raise TreeShapError("unsupported TreeSHAP configuration")
         if not np.isfinite(self.additivity_tolerance) or self.additivity_tolerance <= 0:
             raise TreeShapError("additivity tolerance must be finite and positive")
 
@@ -272,13 +283,15 @@ class TreeShapAdapter:
         synthetic: bool,
     ) -> None:
         config.validate()
+        expected_scope = "synthetic_development_only" if synthetic else "real_frozen_v1"
+        if config.scientific_scope != expected_scope:
+            raise TreeShapError("TreeSHAP config scope does not match adapter scope")
+        for target in targets.values():
+            if target.scientific_scope != expected_scope:
+                raise TreeShapError("TreeSHAP target scope does not match adapter scope")
         self.config = config
         self.targets = dict(targets)
         self.synthetic = synthetic
-        if not synthetic:
-            raise TreeShapError(
-                "BLOCKED — REAL XGBOOST CONTRACT AND TREESHAP POLICIES REQUIRED"
-            )
 
     def explain(self, context: ExplanationContext) -> AdapterExplanation:
         if context.family != "xgboost" or getattr(context.model, "family", None) != "xgboost":
@@ -289,8 +302,8 @@ class TreeShapAdapter:
             raise TreeShapInputError("model hash mismatch")
         if context.prediction_time != context.input_prediction_time:
             raise TreeShapInputError("prediction and prepared-input cutoff mismatch")
-        if not context.synthetic or not self.synthetic:
-            raise TreeShapError("synthetic TreeSHAP cannot authorize real explanation")
+        if context.synthetic != self.synthetic:
+            raise TreeShapError("TreeSHAP adapter/context scope mismatch")
         if not isinstance(context.prepared_input, PreparedTreeInput):
             raise TreeShapInputError("TreeSHAP requires exact prepared flattened input")
         prepared = context.prepared_input
@@ -374,7 +387,7 @@ class TreeShapAdapter:
             for identity, value in zip(prepared.feature_identities, signed)
         )
         details = {
-            "scientific_scope": "synthetic_non_scientific",
+            "scientific_scope": ("synthetic_non_scientific" if self.synthetic else "real_frozen_v1"),
             "tree_shap_config": {**asdict(self.config), "sha256": self.config.sha256},
             "target": asdict(target),
             "shap_version": shap_version,
@@ -397,7 +410,7 @@ class TreeShapAdapter:
             manifest_version=context.manifest_version,
             manifest_sha256=context.manifest_sha256,
             feature_schema_version=context.feature_schema_version,
-            synthetic=True,
+            synthetic=self.synthetic,
             items=items,
             details=details,
         )

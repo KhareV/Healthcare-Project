@@ -2,6 +2,7 @@
 
 import math
 from pathlib import Path
+from types import MappingProxyType
 from typing import Mapping
 
 from evaluation.selection_validation import TASKS
@@ -31,6 +32,7 @@ class PredictionPipeline:
         input_provider: CanonicalInputProvider,
         postprocessor: ServingPostprocessor,
         explanation_router: ExplanationRouter,
+        explanation_targets: Mapping[str, str] = MappingProxyType({}),
     ) -> None:
         if explanation_router.manifest_version != bundle.manifest_version or explanation_router.manifest_sha256 != bundle.manifest_file_sha256:
             raise PredictionPipelineError("explanation router is bound to a different manifest")
@@ -38,6 +40,10 @@ class PredictionPipeline:
         self._input_provider = input_provider
         self._postprocessor = postprocessor
         self._explanation_router = explanation_router
+        # Absent for every task by default, exactly reproducing the prior
+        # unconditional ``explanation_target=None`` behavior relied on by the
+        # existing synthetic-fixture adapters/tests.
+        self._explanation_targets = dict(explanation_targets)
 
     @classmethod
     def build(
@@ -109,8 +115,11 @@ class PredictionPipeline:
                 model=selected.predictor,
                 prepared_input=model_input,
                 raw_output=raw[task],
-                explanation_target=None,
-                feature_metadata={"feature_schema_version": selected.identity.feature_version},
+                explanation_target=self._explanation_targets.get(task),
+                feature_metadata={
+                    "feature_schema_version": selected.identity.feature_version,
+                    **getattr(selected.preprocessor, "feature_metadata", {}),
+                },
                 synthetic=self._bundle.scope == "synthetic",
                 support_calibrator_sha256=(self._bundle.support_calibrator_sha256 if task == "organ_support" else None),
                 support_threshold_sha256=(self._bundle.support_threshold_sha256 if task == "organ_support" else None),

@@ -15,20 +15,20 @@
     "cuda_available": false
   },
   "packages": {
-    "captum": null,
+    "captum": "0.8.0",
     "fastapi": "0.128.8",
     "httpx": "0.28.1",
     "jinja2": "3.1.6",
-    "numpy": "2.0.2",
+    "numpy": "1.26.4",
     "pandas": "2.3.3",
     "pydantic": "2.13.5",
     "pytest": "8.4.2",
     "scikit-learn": "1.6.1",
-    "shap": null,
+    "shap": "0.49.1",
     "torch": "2.8.0",
     "uvicorn": "0.39.0",
     "xgboost": "2.1.4"
   },
-  "missing_required_real_stack_packages": ["captum", "shap"],
+  "missing_required_real_stack_packages": [],
   "warning": "This is an observation of the Phase-15 development runtime, not an approved lock, install specification, or evidence for earlier scientific runs."
 }

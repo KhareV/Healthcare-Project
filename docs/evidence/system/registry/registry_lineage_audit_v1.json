@@ -13,6 +13,7 @@
     "orphan_artifacts": [
       "artifacts/acceptance/g1_synthetic_data_freeze_v1.json",
       "artifacts/acceptance/phase13_invariant_summary_v1.json",
+      "artifacts/acceptance/stage4_serving_integration_freeze_v1.json",
       "artifacts/calibration/isotonic_support_v1.json.metadata.json",
       "artifacts/data/synthetic/cohorts/final/phase9_final_v1/cohort_summary.json",
       "artifacts/data/synthetic/cohorts/final/phase9_final_v1/exclusion_summary.json",
@@ -529,6 +530,8 @@
       "artifacts/search/xgb/phase12/recovery_validation_summary.json",
       "artifacts/search/xgb/phase12/winner_reproducibility_audit_v1.json",
       "artifacts/selection/validation_family_selection_v1.json",
+      "artifacts/serving/final_serving_bundle_v1.json",
+      "artifacts/serving/stage4_environment_lock_v1.txt",
       "artifacts/smoke/phase4_synthetic_smoke_v1/smoke_test_model.pt.metadata.json",
       "artifacts/smoke/phase4_synthetic_smoke_v1/training_log.jsonl",
       "artifacts/smoke/phase5_synthetic_recovery_gru_v1/recovery_gru_smoke.pt.metadata.json",
