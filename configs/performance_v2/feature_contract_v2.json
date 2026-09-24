@@ -1,0 +1,65 @@
+{
+  "contract_version": "performance_v2_feature_contract_v2",
+  "status": "DEVELOPMENT_VALIDATION_ONLY",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "extends_frozen_v1_schema": "configs/synthetic/feature_schema_v2.json",
+  "modifies_frozen_v1_schema": false,
+  "note": "This contract adds an explicit, versioned V2 cutoff-context vector alongside the unmodified v1 canonical representation. It never replaces or mutates configs/synthetic/feature_schema_v2.json, src/data/xgb_canonical.py's flat feature map, or src/preprocess/synthetic_phase10.py.",
+  "v2_example": {
+    "temporal_history": {
+      "shape": "[8, 21]",
+      "source": "row.history_values (frozen v1 canonical bins, unchanged)"
+    },
+    "observation_mask": {
+      "shape": "[8, 21]",
+      "source": "row.observation_mask (unchanged)"
+    },
+    "tslo": {
+      "shape": "[8, 21]",
+      "source": "row.tslo_hours (unchanged)"
+    },
+    "statics": {
+      "shape": "[8]",
+      "source": "row.static_features, encoded exactly as artifacts/preprocessors/synthetic_feature_preprocessor_v1.json (unchanged)"
+    },
+    "v2_context_vector": {
+      "shape": "variant-dependent (0, 2, 4, or 12 features)",
+      "source": "src/performance_v2/context_v2.py:context_vector(row, variant)",
+      "versioned_as": "performance_v2_context_v1",
+      "normalization": "train-only affine (mean/std), see configs/performance_v2/context_normalization_v1.json",
+      "raw_feature_superset": [
+        "B__elapsed_episode_hours_at_t", "B__cutoff_index", "B__hours_since_first_eligible_cutoff", "B__current_sofa",
+        "F__vasopressor__current_state", "F__vasopressor__duration_in_state_bins", "F__vasopressor__transitions_in_window", "F__vasopressor__bins_since_last_transition",
+        "F__invasive_ventilation__current_state", "F__invasive_ventilation__duration_in_state_bins", "F__invasive_ventilation__transitions_in_window", "F__invasive_ventilation__bins_since_last_transition"
+      ]
+    },
+    "labels_and_eligibility": {
+      "location": "OUTSIDE the model input entirely",
+      "fields": ["delta_sofa_24", "delta_sofa_48", "icu_time_log1p", "organ_support_label", "recovery24_eligible", "recovery48_eligible", "icu_time_eligible", "organ_support_eligible"]
+    }
+  },
+  "current_sofa_semantic_contract": {
+    "field": "B__current_sofa",
+    "source_field": "baseline_sofa (pre-split scientific package)",
+    "verified_definition": "SOFA scored exactly at prediction_time t -- src/labels/recovery.py:build_recovery_label computes `baseline = _checked_score(score_at(prediction_time), prediction_time, stay_id)`.",
+    "verification_method": "read src/labels/recovery.py directly; not assumed",
+    "second_sofa_implementation_introduced": false
+  },
+  "feature_variants": {
+    "V0": {"description": "frozen Benchmark-v1 information only (diagnostic control)", "context_feature_count": 0},
+    "B_MIN": {"description": "elapsed_episode_hours_at_t + current_sofa_at_t only; removes exact linear redundancy among the three elapsed-time representations", "context_feature_count": 2},
+    "B_FULL": {"description": "all four authoritative Group-B features", "context_feature_count": 4},
+    "B_PLUS_F": {"description": "B_FULL plus the exact eight Phase-1 Group-F support-history features; no new F features invented", "context_feature_count": 12}
+  },
+  "complexity_tie_break": {
+    "order": ["B_MIN", "B_FULL", "B_PLUS_F"],
+    "regression_tie_threshold": "relative primary-metric difference < 0.5%",
+    "classification_tie_threshold": "absolute AUPRC difference < 0.003",
+    "rule": "never choose the simpler representation when it materially performs worse"
+  },
+  "gru_architecture_note": {
+    "decision": "The V2 context vector is train-only normalized then concatenated into the existing GRUEncoder's static_features input (static_dim = 8 original statics + variant context_feature_count), reusing GRUEncoder/CanonicalBatch/ICUTimeGRU/RecoveryGRU unchanged. This satisfies 'recurrent temporal representation + transformed static representation + transformed V2 context representation -> concatenate -> existing task head' without adding a new dataclass field to the frozen CanonicalBatch contract or a new encoder module -- the context values are already the 'transformed' (normalized) representation being concatenated.",
+    "modifies_canonical_batch_contract": false,
+    "modifies_gru_encoder_class": false
+  }
+}
