@@ -37,16 +37,40 @@ curl -s -X POST http://127.0.0.1:8010/predict \
 The demo fixture's exact stay IDs and legal cutoffs are listed in
 `configs/performance_v2/v2_demo_manifest_v1.json`.
 
-### 4. Start the V2 dashboard (terminal 2)
+### 4. Start the V2 dashboard — SvelteKit frontend (terminal 2)
+
+The primary dashboard is the SvelteKit app in `frontend/`, reusing its
+existing component library and design system, restyled for this project.
+
+```bash
+cd frontend
+npm install        # first time only
+npm run dev
+```
+
+Open `http://localhost:5173/`. The dev server proxies `/api/*` to
+`http://localhost:8010` (see `frontend/vite.config.ts`); no extra
+configuration is needed as long as the V2 API from step 3 is running.
+
+For a production-style build: `npm run build && npm run preview` (serves
+the static build; `VITE_API_BASE_URL` can be set at build time to point at
+a non-default API origin).
+
+**Alternative — server-rendered Python dashboard (no Node required):**
 
 ```bash
 V2_API_BASE_URL=http://127.0.0.1:8010 \
 PYTHONPATH=src:. python3 -m uvicorn dashboard.v2_app:app --factory --host 127.0.0.1 --port 8511
 ```
 
-Open `http://127.0.0.1:8511/`. Use the sidebar to switch between Patient
-Replay, Forecast Details, Model Performance, Explainability, and Data
-Quality & Provenance, and to select one of the 3+ demo patients.
+Open `http://127.0.0.1:8511/`. This lightweight, dependency-free HTML
+dashboard remains fully functional and covers the same five required views;
+it is kept as a Node-free fallback alongside the SvelteKit frontend above.
+
+Either dashboard exposes: Patient Replay, Forecast Details, Model
+Performance, Explainability (+ an AI-generated research-note synthesis in
+the SvelteKit frontend), and Data Quality & Provenance, plus a patient/stay
+selector across the 3+ demo subjects.
 
 ### 5. Replay steps
 
@@ -56,11 +80,30 @@ Quality & Provenance, and to select one of the 3+ demo patients.
    truncated at that cutoff — never a cached value.
 3. Watch the recovery trajectory chart, the ICU/support trend charts, and
    the "Replay history" table accumulate as you advance.
-4. Visit **Explainability** at any cutoff for TreeSHAP contributors per task.
+4. Visit **AI + SHAP / Explainability** at any cutoff for TreeSHAP
+   contributors per task, and click "Generate summary" for an AI-written
+   research note (Groq-hosted `openai/gpt-oss-120b`, called server-side —
+   see step 6a for configuration).
 5. Visit **Model Performance** for the frozen, one-time fresh-test evaluation
    (no inference is triggered by this page).
 
-### 6. Troubleshooting
+### 6. AI recommendation configuration
+
+The "AI + SHAP" page's research-note synthesis calls Groq's OpenAI-compatible
+chat completions API server-side (the key never reaches the browser). Set:
+
+```bash
+cp .env.example .env
+# edit .env: GROQ_API_KEY=<your key>, GROQ_MODEL=openai/gpt-oss-120b (or another chat-capable model this key can access)
+```
+
+`api/v2_app.py`'s `app()` factory loads `.env` automatically. If the key is
+absent or the request fails for any reason, the endpoint returns a
+structured `{"status": "UNAVAILABLE", ...}` response — the rest of the
+dashboard (predictions, TreeSHAP, model performance) is entirely unaffected,
+since the LLM is called strictly after prediction and never influences it.
+
+### 7. Troubleshooting
 
 - `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
   was detected; the server refuses to serve rather than guess. Re-verify
@@ -75,8 +118,18 @@ Quality & Provenance, and to select one of the 3+ demo patients.
 - First request after startup is slow (~15-20s): the runtime loads and
   hash-verifies the DEV canonical timeline once at process start, not per
   request.
+- SvelteKit dashboard shows a network/CORS error: confirm the V2 API
+  (terminal 1) is running on port 8010 — the dev proxy and the API's CORS
+  middleware both assume that port by default.
+- `npm run dev` fails to start: this frontend targets Node 18+; run
+  `node --version` and update if needed. `npm install` must complete before
+  `npm run dev`/`npm run build`.
+- "AI summary unavailable" on the AI + SHAP page: expected if `.env` has no
+  `GROQ_API_KEY`, the key/model combination is invalid, or the network is
+  unreachable — this is a deliberate graceful-degradation path, not a bug;
+  check the API server's log for the specific reason.
 
-### 7. Stop
+### 8. Stop
 
 `Ctrl-C` in each terminal.
 

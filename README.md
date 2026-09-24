@@ -12,10 +12,10 @@ Performance V2 is complete: four frozen XGBoost models (recovery +24h, recovery 
 
 ```bash
 PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --host 127.0.0.1 --port 8010 --factory
-PYTHONPATH=src:. python3 -m uvicorn dashboard.v2_app:app --host 127.0.0.1 --port 8511 --factory
+cd frontend && npm install && npm run dev   # dashboard at http://localhost:5173
 ```
 
-Open `http://127.0.0.1:8511/`. This is a real, model-backed demo: every prediction is recomputed by `src/serving/v2` from raw history truncated at the selected cutoff, through the exact frozen Phase-3 V2 models — never a lookup table, and never the sealed fresh-V2-test cohort (structurally excluded; see [Test/fresh-cohort protection](#v2-fresh-test-protection) below). See the [V2 section of RUNBOOK.md](RUNBOOK.md#v2-final-release-demo-application) for exact commands, health checks, and troubleshooting.
+This is a real, model-backed demo: every prediction is recomputed by `src/serving/v2` from raw history truncated at the selected cutoff, through the exact frozen Phase-3 V2 models — never a lookup table, and never the sealed fresh-V2-test cohort (structurally excluded; see [Test/fresh-cohort protection](#v2-fresh-test-protection) below). The dashboard (`frontend/`) is a SvelteKit app reusing its existing component library, restyled for this project, with an AI-generated (Groq) research-note synthesis on the Explainability page. A dependency-free, server-rendered Python dashboard (`dashboard/v2_app.py`, port 8511) remains available as a Node-free fallback covering the same five views. See the [V2 section of RUNBOOK.md](RUNBOOK.md#v2-final-release-demo-application) for exact commands, health checks, AI-key configuration, and troubleshooting.
 
 The sections below describe the earlier Benchmark-v1 baseline this project builds on; they remain historically accurate for that baseline and are unaffected by the V2 work above.
 

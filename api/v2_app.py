@@ -3,16 +3,19 @@ for the four frozen Performance-V2 XGBoost tasks."""
 
 from __future__ import annotations
 
+import json
 import logging
 from pathlib import Path
 from typing import Optional
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
+from serving.v2.ai_recommendation import generate_recommendation
 from serving.v2.explanations import explain
-from serving.v2.guard import UnknownDemoStayError
+from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
 
 logger = logging.getLogger("api.v2")
@@ -35,10 +38,64 @@ def _explanation_payload(runtime: V2ServingRuntime, task: str, matrix, feature_n
     }
 
 
+def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, prediction_time: str) -> dict:
+    prediction = runtime.predict(stay_id, prediction_time)
+    explanations = {
+        task: _explanation_payload(runtime, task, prediction.matrices[task], prediction.feature_names[task])
+        for task in ("recovery24", "recovery48", "icu_stay_time", "organ_support")
+    }
+    data_quality = _data_quality(prediction.feature_row)
+    return {
+        "schema_version": "v2_prediction_response_v1",
+        "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
+        "stay_id": prediction.stay_id,
+        "prediction_time": prediction.prediction_time,
+        "grid_index": prediction.grid_index,
+        "elapsed_icu_hours": prediction.icu_elapsed_hours,
+        "current_sofa": prediction.current_sofa,
+        "recovery": {
+            "delta_24h": prediction.recovery24_delta,
+            "delta_48h": prediction.recovery48_delta,
+            "sofa_hat_24h": prediction.recovery24_sofa,
+            "sofa_hat_48h": prediction.recovery48_sofa,
+            "model_metadata": {"family": "xgboost", "feature_variant": "B_MIN", "artifact_sha256_24h": prediction.model_hashes["recovery24"], "artifact_sha256_48h": prediction.model_hashes["recovery48"]},
+        },
+        "icu_stay_time": {
+            "remaining_hours": prediction.icu_remaining_hours,
+            "raw_log_prediction": prediction.icu_raw_log_prediction,
+            "model_metadata": {"family": "xgboost", "feature_variant": "B_PLUS_F", "artifact_sha256": prediction.model_hashes["icu_stay_time"]},
+        },
+        "organ_support": {
+            "raw_probability": prediction.support_raw_probability,
+            "probability_24h": prediction.support_calibrated_probability,
+            "threshold": prediction.support_threshold,
+            "alert": prediction.support_alert,
+            "model_metadata": {"family": "xgboost", "feature_variant": "B_FULL", "artifact_sha256": prediction.model_hashes["organ_support"]},
+        },
+        "explanations": explanations,
+        "data_quality": data_quality,
+        "temporal_window": {
+            "channel_names": list(prediction.feature_row["temporal_feature_names"]),
+            "observation_mask": [list(bin_row) for bin_row in prediction.feature_row["observation_mask"]],
+            "padding_mask": list(prediction.feature_row.get("padding_mask", [False] * len(prediction.feature_row["observation_mask"]))),
+        },
+        "versions": {
+            "selected_models_v2_sha256": "6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8",
+            "v2_model_freeze_sha256": "f5feb29cab2e25d6e8bff860af52ac505f40951578aa73547ec420ba8fcda570",
+        },
+    }
+
+
 def build_v2_app(root: Path) -> FastAPI:
     root = Path(root).resolve()
     runtime = V2ServingRuntime(root)
     app = FastAPI(title="Performance-V2 Retrospective Replay API")
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     @app.get("/health")
     def health():
@@ -67,51 +124,71 @@ def build_v2_app(root: Path) -> FastAPI:
 
     @app.post("/predict")
     def predict(request: PredictRequest):
-        prediction = runtime.predict(request.stay_id, request.prediction_time)
-        explanations = {
-            task: _explanation_payload(runtime, task, prediction.matrices[task], prediction.feature_names[task])
-            for task in ("recovery24", "recovery48", "icu_stay_time", "organ_support")
-        }
-        data_quality = _data_quality(prediction.feature_row)
+        return _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+
+    @app.get("/demo-subjects")
+    def demo_subjects():
+        manifest = load_demo_manifest(root)
         return {
-            "schema_version": "v2_prediction_response_v1",
-            "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
-            "stay_id": prediction.stay_id,
-            "prediction_time": prediction.prediction_time,
-            "grid_index": prediction.grid_index,
-            "elapsed_icu_hours": prediction.icu_elapsed_hours,
-            "current_sofa": prediction.current_sofa,
-            "recovery": {
-                "delta_24h": prediction.recovery24_delta,
-                "delta_48h": prediction.recovery48_delta,
-                "sofa_hat_24h": prediction.recovery24_sofa,
-                "sofa_hat_48h": prediction.recovery48_sofa,
-                "model_metadata": {"family": "xgboost", "feature_variant": "B_MIN", "artifact_sha256_24h": prediction.model_hashes["recovery24"], "artifact_sha256_48h": prediction.model_hashes["recovery48"]},
-            },
-            "icu_stay_time": {
-                "remaining_hours": prediction.icu_remaining_hours,
-                "raw_log_prediction": prediction.icu_raw_log_prediction,
-                "model_metadata": {"family": "xgboost", "feature_variant": "B_PLUS_F", "artifact_sha256": prediction.model_hashes["icu_stay_time"]},
-            },
-            "organ_support": {
-                "raw_probability": prediction.support_raw_probability,
-                "probability_24h": prediction.support_calibrated_probability,
-                "threshold": prediction.support_threshold,
-                "alert": prediction.support_alert,
-                "model_metadata": {"family": "xgboost", "feature_variant": "B_FULL", "artifact_sha256": prediction.model_hashes["organ_support"]},
-            },
-            "explanations": explanations,
-            "data_quality": data_quality,
-            "temporal_window": {
-                "channel_names": list(prediction.feature_row["temporal_feature_names"]),
-                "observation_mask": [list(bin_row) for bin_row in prediction.feature_row["observation_mask"]],
-                "padding_mask": list(prediction.feature_row.get("padding_mask", [False] * len(prediction.feature_row["observation_mask"]))),
-            },
-            "versions": {
-                "selected_models_v2_sha256": "6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8",
-                "v2_model_freeze_sha256": "f5feb29cab2e25d6e8bff860af52ac505f40951578aa73547ec420ba8fcda570",
-            },
+            "status": manifest["status"],
+            "selection_criteria": manifest["selection_criteria"],
+            "demo_subjects": manifest["demo_subjects"],
         }
+
+    @app.get("/performance")
+    def performance():
+        """Reads the frozen, one-time Phase-4 fresh-test evaluation artifacts
+        directly. Triggers no inference of any kind."""
+
+        def _read(relative: str):
+            return json.loads((root / relative).read_text(encoding="utf-8"))
+
+        return {
+            "final_metrics": _read("artifacts/performance_v2/phase4/metrics/final_metrics_v2.json"),
+            "bootstrap": _read("artifacts/performance_v2/phase4/bootstrap/final_bootstrap_v2.json"),
+            "naive_comparison": _read("artifacts/performance_v2/phase4/metrics/naive_comparison_v2.json"),
+            "calibration_evidence": _read("artifacts/performance_v2/phase4/metrics/calibration_evidence_v2.json"),
+            "generalization_comparison": _read("artifacts/performance_v2/phase4/metrics/generalization_comparison_v2.json"),
+            "v1_historical_test": {
+                "recovery24_mae": 1.121102021240419,
+                "recovery48_mae": 1.5423799902108615,
+                "icu_median_ae_hours": 9.479719411307386,
+                "support_calibrated_auprc": 0.633735668141501,
+            },
+            "note": "v1 and v2 used different independent final-test cohorts; this is a historical comparison, not paired statistical testing.",
+        }
+
+    @app.get("/history")
+    def history(stay_id: str, prediction_time: str):
+        """Raw canonical events with event_time <= prediction_time, for the
+        historical-timeline panel. Reuses the same guard/legal-cutoff checks
+        as /predict; returns no future data."""
+
+        from datetime import datetime, timezone
+
+        def _parse(value: str) -> datetime:
+            return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
+
+        cutoffs = runtime.legal_cutoffs(stay_id)  # raises UnknownDemoStayError for anything but a demo stay
+        if prediction_time not in cutoffs:
+            raise IllegalCutoffError(f"prediction_time {prediction_time!r} is not a legal cutoff for {stay_id}")
+        cutoff_dt = _parse(prediction_time)
+        events = runtime._events_by_stay.get(stay_id, ())
+        visible = sorted(
+            (
+                {"event_time": row["event_time"], "canonical_concept": row["canonical_concept"], "value_numeric": row["value_numeric"], "unit": row.get("unit", "")}
+                for row in events
+                if _parse(row["event_time"]) <= cutoff_dt
+            ),
+            key=lambda row: row["event_time"],
+        )
+        return {"stay_id": stay_id, "prediction_time": prediction_time, "events": visible, "count": len(visible)}
+
+    @app.post("/ai/recommendation")
+    def ai_recommendation(request: PredictRequest):
+        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+        result = generate_recommendation(prediction=prediction)
+        return result.as_dict()
 
     @app.exception_handler(UnknownDemoStayError)
     def _unknown_stay(_request, _exc):
@@ -138,7 +215,11 @@ def build_v2_app(root: Path) -> FastAPI:
 def app() -> FastAPI:
     """uvicorn --factory entrypoint: `uvicorn api.v2_app:app --factory`."""
 
-    return build_v2_app(Path(__file__).resolve().parents[1])
+    from dotenv import load_dotenv
+
+    root = Path(__file__).resolve().parents[1]
+    load_dotenv(root / ".env")
+    return build_v2_app(root)
 
 
 def _data_quality(row) -> dict:

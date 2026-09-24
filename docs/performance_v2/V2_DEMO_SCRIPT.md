@@ -1,13 +1,13 @@
 # Performance V2 — Demo Script (3–5 minutes)
 
-Prerequisites: both V2 servers running per [RUNBOOK.md](../../RUNBOOK.md#v2-final-release-demo-application):
+Prerequisites: the V2 API and the SvelteKit dashboard running per [RUNBOOK.md](../../RUNBOOK.md#v2-final-release-demo-application):
 
 ```bash
 PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --factory --host 127.0.0.1 --port 8010
-V2_API_BASE_URL=http://127.0.0.1:8010 PYTHONPATH=src:. python3 -m uvicorn dashboard.v2_app:app --factory --host 127.0.0.1 --port 8511
+cd frontend && npm install && npm run dev
 ```
 
-Open `http://127.0.0.1:8511/`.
+Open `http://localhost:5173/patients` (or start from `http://localhost:5173/` for the project landing page, then "Open Dashboard"). The dependency-free Python dashboard at `http://127.0.0.1:8511/` (`dashboard/v2_app.py`) covers the same five views and can be substituted throughout this script if Node is unavailable.
 
 ## 1. Introduce the disclaimer (10s)
 
@@ -37,9 +37,9 @@ Point at the "Remaining ICU stay time" card and panel — exact hours, plus a da
 
 Point at the "New Organ-Support Initiation Risk" panel: calibrated 24h probability, the frozen threshold, and the BELOW/ABOVE THRESHOLD pill. Note the monitored support types (qualifying vasopressor, invasive mechanical ventilation) and that continuation of already-active support is never counted as a new initiation.
 
-## 8. Show TreeSHAP factors (30s)
+## 8. Show TreeSHAP factors and the AI research note (45s)
 
-Switch to **Explainability**. For one task (e.g. recovery24), point at top positive/negative contributors with readable labels (e.g. "Current SOFA", "heart rate — most recent 6h"), and the additivity-check confirmation. Note the non-causal wording ("contributed to", never "caused").
+Switch to **AI + SHAP**. For one task (e.g. recovery24), point at top positive/negative contributors with readable labels (e.g. "Current SOFA", "heart rate — most recent 6h"), and the additivity-check confirmation. Note the non-causal wording ("contributed to", never "caused"). Then click "Generate summary": a Groq-hosted language model synthesizes the same numbers and SHAP drivers into a short research note, generated strictly after prediction and never feeding back into it. Point out the model tag and the explicit "not clinical advice" disclaimer under the note.
 
 ## 9. Advance through 3–5 cutoffs (40s)
 
