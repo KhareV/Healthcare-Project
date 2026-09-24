@@ -1,0 +1,43 @@
+{
+  "manifest_version": "stage5_final_test_access_incident_v1",
+  "status": "FAILED_CLOSED_NO_SCIENCE_RESULT",
+  "summary": "The one authorized final-test access event was consumed by vedant_infra.g3.guarded_test_access, but the guarded loader crashed with an engineering defect before reading any test-partition row, before any model inference, and before any metric/bootstrap/sensitivity/error-analysis computation. Per the retry policy frozen pre-access in configs/final_test_v1.json (stage5_final_test_retry_policy_v1), no exact-resume mechanism exists in this codebase capable of proving identical run continuation, so the run fails closed. No repair-and-rerun, reset, or second access event was attempted.",
+  "access_event": {
+    "event": "FINAL_TEST_ACCESS_CONSUMED",
+    "at_utc": "2026-09-24T06:55:44.714151Z",
+    "marker_sha256": "d94d49b0a438027842dbbf1c6130404297230f59b18bc863320ac753db770564",
+    "scope": "real",
+    "resulting_access_state": "FINAL_RUN_COMPLETED"
+  },
+  "pretest_audit_immediately_before_run": {
+    "overall_status": "PASS",
+    "blockers": [],
+    "ref": "artifacts/governance/phase20_pretest_audit_v1.json"
+  },
+  "root_cause": {
+    "component": "src/experiments/stage5_final_test.py:load_frozen_models",
+    "defect": "load_frozen_models() re-invoked vedant_infra.g3.validate_g3_marker(expected_scope='real') from inside the guarded loader callback. vedant_infra.g3.guarded_test_access() already performs that exact validation immediately before it marks FINAL_TEST_ACCESS_CONSUMED and flips test_access_state to FINAL_RUN_COMPLETED, then invokes the loader. Because validate_g3_marker's internal audit_g3(..., allow_authorized_state=True) only tolerates test_access_state in {NEVER_OPENED, INVALIDATED_BY_RESET, AUTHORIZED_NOT_RUN}, the loader's redundant second call always fails once access has legitimately transitioned to FINAL_RUN_COMPLETED a moment earlier in the very same guarded invocation.",
+    "exception": "vedant_infra.g3.G3FreezeError: G3 dependencies no longer satisfy prerequisite audit (nonuse_check: 'test was already authorized or consumed')",
+    "science_affecting": false,
+    "test_partition_rows_read": 0,
+    "model_inference_performed": false,
+    "metrics_or_bootstrap_computed": false
+  },
+  "evidence_preserved": {
+    "test_access_state_ref": "artifacts/governance/test_access_state.json",
+    "pretest_audit_ref": "artifacts/governance/phase20_pretest_audit_v1.json",
+    "g3_freeze_ref": "artifacts/governance/g3_freeze.json",
+    "g3_marker_sha256_unchanged": "d94d49b0a438027842dbbf1c6130404297230f59b18bc863320ac753db770564",
+    "final_test_prediction_artifacts_created": [],
+    "g4_artifact_created": false
+  },
+  "retry_policy_applied": {
+    "ref": "configs/final_test_v1.json#retry_policy",
+    "policy_version": "stage5_final_test_retry_policy_v1",
+    "decision": "FAIL_CLOSED",
+    "reason": "No same-run exact-resume mechanism exists in the codebase to prove identical run identity/configuration/artifacts/access-history continuation. An ordinary second guarded_test_access invocation would be indistinguishable from a forbidden second scientific exposure, since vedant_infra.g3.guarded_test_access unconditionally rejects any access_state other than AUTHORIZED_NOT_RUN.",
+    "human_authorization_required_for": "Any formal reset (vedant_infra.g3.invalidate_for_reset) and re-freeze of G3 to obtain a fresh, single authorized final-test exposure is an extraordinary governance action outside the scope delegated for Stage 5 implementation-parameter decisions, and is not performed by this record."
+  },
+  "code_commit_at_crash": "eb83e655c44349fa88b91a8349d2372ac90218f1",
+  "recorded_at_utc": "2026-09-24T06:56:00Z"
+}

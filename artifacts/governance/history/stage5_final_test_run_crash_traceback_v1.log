@@ -1,0 +1,88 @@
+Traceback (most recent call last):
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 197, in _run_module_as_main
+    return _run_code(code, main_globals, None,
+  File "/Library/Developer/CommandLineTools/Library/Frameworks/Python3.framework/Versions/3.9/lib/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/final_test_cli.py", line 66, in <module>
+    main()
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/final_test_cli.py", line 54, in main
+    result = run_final_test(
+  File "/Users/Home/Downloads/HealthCareProject/src/evaluation/final_test.py", line 569, in run_final_test
+    return guarded_runner(lambda: evaluator(test_loader()))
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/final_test_cli.py", line 56, in <lambda>
+    guarded_runner=lambda callback: run_guarded_final_test(root, callback),
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/final_test_entrypoint.py", line 14, in run_guarded_final_test
+    return guarded_test_access(
+  File "/Users/Home/Downloads/HealthCareProject/src/vedant_infra/g3.py", line 959, in guarded_test_access
+    return loader()
+  File "/Users/Home/Downloads/HealthCareProject/src/evaluation/final_test.py", line 569, in <lambda>
+    return guarded_runner(lambda: evaluator(test_loader()))
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/stage5_final_test.py", line 1258, in stage5_test_loader
+    return load_and_infer(ROOT, partition="test")
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/stage5_final_test.py", line 291, in load_and_infer
+    models = load_frozen_models(root)
+  File "/Users/Home/Downloads/HealthCareProject/src/experiments/stage5_final_test.py", line 167, in load_frozen_models
+    marker = validate_g3_marker(marker_path, root, expected_scope="real")
+  File "/Users/Home/Downloads/HealthCareProject/src/vedant_infra/g3.py", line 889, in validate_g3_marker
+    raise G3FreezeError(
+vedant_infra.g3.G3FreezeError: G3 dependencies no longer satisfy prerequisite audit
+{
+  "blockers": [],
+  "items": [
+    {
+      "detail": "final_test_evaluation_v1",
+      "name": "phase20_config",
+      "status": "PASS"
+    },
+    {
+      "detail": "23cc913d7a56ffee13555cdfa777c3153eef445b4263b74522c05ff5336277c6",
+      "name": "active_g3",
+      "status": "PASS"
+    },
+    {
+      "detail": "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148",
+      "name": "bootstrap",
+      "status": "PASS"
+    },
+    {
+      "detail": "stage5_final_test_retry_policy_v1",
+      "name": "retry_policy",
+      "status": "PASS"
+    },
+    {
+      "detail": "selected/nonselected exposure fixed",
+      "name": "final_evaluation_plan",
+      "status": "PASS"
+    },
+    {
+      "detail": "prespecified_error_analysis_slice_spec_v1",
+      "name": "error_analysis_slices",
+      "status": "PASS"
+    },
+    {
+      "detail": "loader and evaluator entrypoints frozen",
+      "name": "execution_entrypoints",
+      "status": "PASS"
+    },
+    {
+      "detail": "g4_test_evaluation_freeze_v1",
+      "name": "g4_schema",
+      "status": "PASS"
+    },
+    {
+      "detail": "critical lineage clean",
+      "name": "registry_lineage",
+      "status": "PASS"
+    },
+    {
+      "detail": "AUTHORIZED_NOT_RUN",
+      "name": "test_access_state",
+      "status": "PASS"
+    }
+  ],
+  "overall_status": "PASS",
+  "report_version": "phase20_pretest_audit_v1",
+  "test_data_accessed": false,
+  "test_loader_calls": 0
+}
+pretest_audit=/Users/Home/Downloads/HealthCareProject/artifacts/governance/phase20_pretest_audit_v1.json

@@ -1,14 +1,5 @@
 {
-  "blockers": [
-    "active_g3: BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_freeze.json",
-    "bootstrap: BLOCKED \u2014 BOOTSTRAP REPLICATE COUNT REQUIRED",
-    "retry_policy: BLOCKED \u2014 FINAL TEST RETRY POLICY REQUIRED",
-    "final_evaluation_plan: BLOCKED \u2014 FROZEN FINAL EVALUATION PLAN REQUIRED",
-    "error_analysis_slices: BLOCKED \u2014 FROZEN FINAL ERROR-ANALYSIS SLICES REQUIRED",
-    "execution_entrypoints: BLOCKED \u2014 REAL FINAL-TEST LOADER/EVALUATOR ENTRYPOINTS REQUIRED",
-    "g4_schema: UNLOCKED ENGINEERING PARAMETER \u2014 G4 EVALUATION FREEZE SCHEMA",
-    "test_access_state: final-test access is not authorized for exactly one run"
-  ],
+  "blockers": [],
   "items": [
     {
       "detail": "final_test_evaluation_v1",
@@ -16,39 +7,39 @@
       "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: unreadable JSON artifact: /Users/Home/Downloads/HealthCareProject/artifacts/governance/g3_freeze.json",
+      "detail": "23cc913d7a56ffee13555cdfa777c3153eef445b4263b74522c05ff5336277c6",
       "name": "active_g3",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 BOOTSTRAP REPLICATE COUNT REQUIRED",
+      "detail": "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148",
       "name": "bootstrap",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 FINAL TEST RETRY POLICY REQUIRED",
+      "detail": "stage5_final_test_retry_policy_v1",
       "name": "retry_policy",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 FROZEN FINAL EVALUATION PLAN REQUIRED",
+      "detail": "selected/nonselected exposure fixed",
       "name": "final_evaluation_plan",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 FROZEN FINAL ERROR-ANALYSIS SLICES REQUIRED",
+      "detail": "prespecified_error_analysis_slice_spec_v1",
       "name": "error_analysis_slices",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 REAL FINAL-TEST LOADER/EVALUATOR ENTRYPOINTS REQUIRED",
+      "detail": "loader and evaluator entrypoints frozen",
       "name": "execution_entrypoints",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
-      "detail": "UNLOCKED ENGINEERING PARAMETER \u2014 G4 EVALUATION FREEZE SCHEMA",
+      "detail": "g4_test_evaluation_freeze_v1",
       "name": "g4_schema",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
       "detail": "critical lineage clean",
@@ -56,13 +47,13 @@
       "status": "PASS"
     },
     {
-      "detail": "final-test access is not authorized for exactly one run",
+      "detail": "AUTHORIZED_NOT_RUN",
       "name": "test_access_state",
-      "status": "BLOCKED"
+      "status": "PASS"
     }
   ],
-  "overall_status": "BLOCKED",
-  "report_sha256": "95268054bb833024602fd7beef9f2912cf057e78e4684e7447f829461de63e9d",
+  "overall_status": "PASS",
+  "report_sha256": "a5e3f6f0f235f7ccc015c53b5a2d20a7c9be02e61eda592eecb65981e519b2d5",
   "report_version": "phase20_pretest_audit_v1",
   "test_data_accessed": false,
   "test_loader_calls": 0
