@@ -21,6 +21,7 @@ authorized and consumed, never merely because the cohort exists on disk.
 from __future__ import annotations
 
 import json
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Mapping, Tuple
 
@@ -59,22 +60,37 @@ def current_state(root: Path) -> str:
     return str(_read_state(root)["status"])
 
 
-def _write_state(root: Path, status: str, extra: Mapping[str, object]) -> None:
-    from data.synthetic.config import canonical_json_bytes  # local import: avoid import cost for read-only callers
+def access_history(root: Path) -> Tuple[Mapping[str, object], ...]:
+    """The permanent, append-only record of every state transition."""
 
-    payload = dict(_read_state(root))
-    payload["status"] = status
-    payload.update(extra)
-    (root / STATE_PATH).write_bytes(canonical_json_bytes(payload))
+    return tuple(_read_state(root).get("history", ()))
+
+
+def has_ever_consumed_access(root: Path) -> bool:
+    """True if FINAL_V2_TEST_ACCESS_CONSUMED was ever reached (this run or a prior one)."""
+
+    return any(entry.get("to") == FINAL_V2_TEST_ACCESS_CONSUMED for entry in access_history(root))
 
 
 def _transition(root: Path, expected_current: str, target: str, extra: Mapping[str, object]) -> None:
+    from data.synthetic.config import canonical_json_bytes  # local import: avoid import cost for read-only callers
+
     state = current_state(root)
     if state != expected_current:
         raise FreshTestAccessError(f"cannot transition to {target!r}: current state is {state!r}, expected {expected_current!r}")
     if _ALLOWED_TRANSITIONS.get(expected_current) != target:
         raise FreshTestAccessError(f"illegal transition {expected_current!r} -> {target!r}")
-    _write_state(root, target, extra)
+    history = list(access_history(root))
+    history.append({
+        "from": expected_current,
+        "to": target,
+        "timestamp_utc": datetime.now(timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),
+        **{k: v for k, v in extra.items()},
+    })
+    payload = dict(_read_state(root))
+    payload["status"] = target
+    payload["history"] = history
+    (root / STATE_PATH).write_bytes(canonical_json_bytes(payload))
 
 
 def authorize_one_final_run(root: Path, *, authorized_by: str, reason: str) -> None:
@@ -106,6 +122,36 @@ def load_jsonl(path: Path):
                 yield json.loads(line)
 
 
+def _utc(value: str):
+    return datetime.fromisoformat(str(value).replace("Z", "+00:00")).astimezone(timezone.utc)
+
+
+def _enrich(rows, statics: Mapping[str, Mapping[str, object]]) -> Tuple[Mapping[str, object], ...]:
+    """Add the same lawful, cutoff-derivable structural fields
+    ``performance_v2.data_loading.load_dev_rows`` adds for DEV rows, so the
+    frozen V2 feature builders (which require them) work identically on
+    fresh-test rows. Every field here is derivable from the row's own
+    ``prediction_time``/``grid_index`` and the stay's ``intime`` -- nothing
+    about the future, nothing outcome-derived."""
+
+    enriched = []
+    for row in rows:
+        static = statics[row["stay_id"]]
+        intime = _utc(static["intime"])
+        prediction_time = _utc(row["prediction_time"])
+        elapsed_hours = (prediction_time - intime).total_seconds() / 3600.0
+        item = dict(row)
+        item["elapsed_episode_hours_at_t"] = elapsed_hours
+        item["cutoff_index"] = int(row["grid_index"])
+        item["hours_since_first_eligible_cutoff"] = elapsed_hours - 24.0
+        item["age_years"] = static["age_years"]
+        item["sex_category"] = static["sex_category"]
+        item["cardiac_condition_group"] = static["cardiac_condition_group"]
+        item["intime"] = static["intime"]
+        enriched.append(item)
+    return tuple(enriched)
+
+
 def load_fresh_test_rows(root: Path) -> Tuple[Mapping[str, object], ...]:
     """The only function in this repository that may return fresh v2 test rows.
 
@@ -120,4 +166,6 @@ def load_fresh_test_rows(root: Path) -> Tuple[Mapping[str, object], ...]:
             f"fresh v2 test access is not authorized: current state is {state!r}; "
             f"reading is only permitted in {sorted(_READ_ALLOWED_STATES)!r}"
         )
-    return tuple(load_jsonl(root / PRE_SPLIT_PATH))
+    statics = {row["stay_id"]: row for row in load_jsonl(root / STATICS_PATH)}
+    raw_rows = tuple(load_jsonl(root / PRE_SPLIT_PATH))
+    return _enrich(raw_rows, statics)
