@@ -377,20 +377,49 @@ def test_v2_fresh_test_freeze_binds_required_parents():
     assert freeze["fresh_test_access_state"] == "SEALED_NOT_ACCESSED"
 
 
-def test_fresh_test_access_state_sealed_not_accessed():
+def test_fresh_test_access_state_history_originates_sealed_not_accessed():
+    """Phase 3 left the access state SEALED_NOT_ACCESSED (its own frozen
+    v2_fresh_test_freeze_v1.json records this permanently, checked above).
+    Phase 4 later legitimately consumed the one authorized access event, so
+    the LIVE state has since progressed by design; what remains permanently
+    true and checked here is that the append-only history -- if any
+    transitions have occurred -- starts from SEALED_NOT_ACCESSED, never from
+    anything else."""
+
     state = _load("artifacts/performance_v2/governance/v2_fresh_test_access_state.json")
-    assert state["status"] == "SEALED_NOT_ACCESSED"
+    history = state.get("history") or []
+    if history:
+        assert history[0]["from"] == "SEALED_NOT_ACCESSED"
+    else:
+        assert state["status"] == "SEALED_NOT_ACCESSED"
 
 
-def test_fresh_test_accessor_blocked_before_authorization():
+def test_fresh_test_accessor_blocks_reads_while_sealed_design():
+    """Structural test of the accessor's blocking behavior using an isolated
+    simulated state file (not the live global one, which Phase 4 has since
+    legitimately advanced past SEALED_NOT_ACCESSED for good)."""
+
+    import json
     import sys
 
     sys.path.insert(0, str(ROOT / "src"))
-    from performance_v2.fresh_test_access import FreshTestAccessError, current_state, load_fresh_test_rows
+    from performance_v2.fresh_test_access import FreshTestAccessError, load_fresh_test_rows
 
-    assert current_state(ROOT) == "SEALED_NOT_ACCESSED"
-    with pytest.raises(FreshTestAccessError):
-        load_fresh_test_rows(ROOT)
+    def _isolated_root(tmp_path):
+        state_dir = tmp_path / "artifacts/performance_v2/governance"
+        state_dir.mkdir(parents=True)
+        (state_dir / "v2_fresh_test_access_state.json").write_text(
+            json.dumps({"status": "SEALED_NOT_ACCESSED", "history": []})
+        )
+        return tmp_path
+
+    import tempfile
+    from pathlib import Path
+
+    with tempfile.TemporaryDirectory() as tmp:
+        isolated_root = _isolated_root(Path(tmp))
+        with pytest.raises(FreshTestAccessError):
+            load_fresh_test_rows(isolated_root)
 
 
 def test_no_final_v2_predictions_or_metrics_exist_yet():

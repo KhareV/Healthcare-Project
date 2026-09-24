@@ -120,18 +120,23 @@ def test_fresh_cohort_bulk_files_hash_match_pipeline_manifests():
 
 # --- Access state -------------------------------------------------------------
 
-def test_access_state_sealed_not_accessed_and_never_consumed():
-    from performance_v2.fresh_test_access import SEALED_NOT_ACCESSED, current_state, has_ever_consumed_access
+def test_access_state_sealed_not_accessed_and_never_consumed_at_preflight_time():
+    """This pre-access suite documents the state AS OF the Phase-4A
+    pre-access commit. The live access state has since legitimately (and
+    permanently) progressed past SEALED_NOT_ACCESSED via the one governed
+    Phase-4 run -- so this checks the frozen, immutable preflight report's
+    recorded result for that moment, not the live mutable state."""
 
-    assert current_state(ROOT) == SEALED_NOT_ACCESSED
-    assert has_ever_consumed_access(ROOT) is False
+    report = _load("artifacts/performance_v2/phase4/preflight_report_v1.json")
+    items = {item["name"]: item for item in report["items"]}
+    assert items["access_state_sealed_not_accessed"]["status"] == "PASS"
 
 
-def test_no_prior_final_outputs_exist():
-    for sub in ("predictions", "metrics", "bootstrap"):
-        d = PHASE4_DIR / sub
-        assert not (d.exists() and any(d.iterdir()))
-    assert not (GOV_DIR / "v2_final_evaluation_freeze_v1.json").exists()
+def test_no_prior_final_outputs_exist_at_preflight_time():
+    report = _load("artifacts/performance_v2/phase4/preflight_report_v1.json")
+    items = {item["name"]: item for item in report["items"]}
+    assert items["no_prior_final_v2_prediction_artifact"]["status"] == "PASS"
+    assert items["no_prior_final_v2_metric_artifact"]["status"] == "PASS"
 
 
 # --- Evaluator / bootstrap initialization ------------------------------------
