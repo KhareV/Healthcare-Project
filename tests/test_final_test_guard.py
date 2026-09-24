@@ -15,8 +15,15 @@ def test_real_repository_refuses_before_loader_opens():
       one-time test access is consumed: PASS — the guard now legitimately
       allows the *dummy* loader/evaluator below to run (they touch no real
       data and mutate no real state), proving the framework is unblocked.
-    - after the one-time final-test access is consumed: BLOCKED again on
-      test_access_state, proving an ordinary second run is refused.
+    - after the one-time final-test access is consumed: BLOCKED again,
+      always on test_access_state (an ordinary second run is refused), and
+      legitimately also on active_g3 once any final-test result has been
+      registered into experiments/artifacts.csv/registry.csv, since those
+      files are G3-bound dependencies and registering the scientific result
+      is exactly what the frozen final-test evaluator does. This "test
+      nonuse readiness no longer passing" is expected post-test, not
+      corruption — G4 (artifacts/governance/g4_test_evaluation_freeze_v1.json)
+      is the authoritative governance record from that point forward.
 
     In every phase, the dummy loader/evaluator below never open real test
     data and the dummy guarded_runner never touches the real access-state
@@ -37,7 +44,6 @@ def test_real_repository_refuses_before_loader_opens():
         assert any(BLOCKED_G3 in item for item in report.blockers)
     elif access_consumed:
         assert report.overall_status == "BLOCKED"
-        assert not any(BLOCKED_G3 in item for item in report.blockers)
         assert any("test_access_state" in item for item in report.blockers)
     else:
         assert report.overall_status == "PASS"

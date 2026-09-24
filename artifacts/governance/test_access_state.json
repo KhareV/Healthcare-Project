@@ -40,8 +40,14 @@
       "marker_ref": "artifacts/governance/g3_freeze.json",
       "marker_sha256": "a348489978d21f3e61eee7fda886a4f671f8555a924b8b2cd16cdc2f37c73b5e",
       "scope": "real"
+    },
+    {
+      "at_utc": "2026-09-24T07:08:39.749009Z",
+      "event": "FINAL_TEST_ACCESS_CONSUMED",
+      "marker_sha256": "a348489978d21f3e61eee7fda886a4f671f8555a924b8b2cd16cdc2f37c73b5e",
+      "scope": "real"
     }
   ],
-  "state": "AUTHORIZED_NOT_RUN",
+  "state": "FINAL_RUN_COMPLETED",
   "state_version": "final_test_access_state_v1"
 }

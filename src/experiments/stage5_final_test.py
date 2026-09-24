@@ -63,6 +63,7 @@ from evaluation.naive_baseline import NaiveBaselineArtifact, load_or_fit_naive_b
 from evaluation.sensitivity import CompleteComponentRecord, evaluate_complete_component_sensitivity
 from evaluation.slices import SliceDefinition, SliceGroup, SliceSpecification
 from experiments.lineage import ArtifactRecord, read_artifact_index, read_run_registry, register_artifact
+from vedant_infra.registry import validate_registry
 from experiments.search_governance import canonical_sha256
 from labels.phase9_final import _normalized
 from labels.support_state import ExecutionMode
@@ -940,27 +941,48 @@ def persist_metrics(loaded, evaluated, output_dir: Path) -> Tuple[Path, str]:
     return path, digest
 
 
+_BOOTSTRAP_LARGE_FIELDS = ("bootstrap_distribution", "sampled_cluster_sequences")
+
+
+def _bootstrap_summary(result) -> Mapping[str, object]:
+    """The reportable summary of a BootstrapResult: point estimate, CI,
+    valid/invalid replicate counts, and provenance. Omits
+    bootstrap_distribution and sampled_cluster_sequences -- per-replicate
+    intermediates that are exactly reproducible from the frozen predictions
+    and the frozen seed (n_bootstrap=2000, seed=20260921), and whose raw
+    per-metric, per-replicate storage would make this artifact hundreds of
+    megabytes for no additional reportable information."""
+
+    return {key: value for key, value in asdict(result).items() if key not in _BOOTSTRAP_LARGE_FIELDS}
+
+
 def persist_bootstrap(evaluated, output_dir: Path) -> Tuple[Path, str]:
     payload = {
         "schema": "stage5_final_test_bootstrap_v1",
         "partition": evaluated["partition"],
         "n_bootstrap": 2000, "seed": 20260921, "ci_level": 0.95,
         "percentile_convention": "linear_type7_index_equals_q_times_n_minus_one_v1",
+        "omitted_from_this_artifact": list(_BOOTSTRAP_LARGE_FIELDS),
+        "omitted_field_reproducibility": (
+            "Exactly reproducible from the frozen prediction artifacts in "
+            "artifacts/final_test/predictions/ using this same n_bootstrap "
+            "and seed; not stored here to keep this artifact a reasonable size."
+        ),
         "selected": {
             "recovery": {
-                horizon: {name: asdict(result) for name, result in metrics.items()}
+                horizon: {name: _bootstrap_summary(result) for name, result in metrics.items()}
                 for horizon, metrics in evaluated["bootstrap"]["recovery"].items()
             },
-            "icu_stay_time": {name: asdict(result) for name, result in evaluated["bootstrap"]["icu_stay_time"].items()},
-            "organ_support": {name: asdict(result) for name, result in evaluated["bootstrap"]["organ_support"].items()},
+            "icu_stay_time": {name: _bootstrap_summary(result) for name, result in evaluated["bootstrap"]["icu_stay_time"].items()},
+            "organ_support": {name: _bootstrap_summary(result) for name, result in evaluated["bootstrap"]["organ_support"].items()},
         },
         "naive_baseline": {
             "recovery": {
-                horizon: {name: asdict(result) for name, result in metrics.items()}
+                horizon: {name: _bootstrap_summary(result) for name, result in metrics.items()}
                 for horizon, metrics in evaluated["naive_bootstrap"]["recovery"].items()
             },
-            "icu_stay_time": {name: asdict(result) for name, result in evaluated["naive_bootstrap"]["icu_stay_time"].items()},
-            "organ_support": {name: asdict(result) for name, result in evaluated["naive_bootstrap"]["organ_support"].items()},
+            "icu_stay_time": {name: _bootstrap_summary(result) for name, result in evaluated["naive_bootstrap"]["icu_stay_time"].items()},
+            "organ_support": {name: _bootstrap_summary(result) for name, result in evaluated["naive_bootstrap"]["organ_support"].items()},
         },
     }
     path = output_dir / "bootstrap" / "bootstrap_v1.json"
@@ -1131,7 +1153,7 @@ def register_stage5_results(
         _register(ArtifactRecord(
             artifact_id=artifact_id, artifact_path=str(path.relative_to(root)) if path.is_absolute() else str(path),
             artifact_type="prediction", artifact_version="stage5_final_test_prediction_v1", artifact_sha256=digest,
-            producing_run_id=STAGE5_RUN_ID, parent_artifact_ids=";".join((model_artifact_id, MANIFEST_ARTIFACT_ID)),
+            producing_run_id=STAGE5_TASK_RUN_IDS[task], parent_artifact_ids=";".join((model_artifact_id, MANIFEST_ARTIFACT_ID)),
             task=task, model_family=family, split_hash=split_hash, feature_version=binding["feature_version"],
             label_version=binding["label_version"], model_sha256=model_hash_by_name[name],
             creation_commit=code_commit, partition=evaluated["partition"],
@@ -1157,10 +1179,38 @@ def register_stage5_results(
     return tuple(registered)
 
 
-def ensure_stage5_run_registered(root: Path, *, code_commit: str, split_hash: str, preprocessor_sha256: str) -> None:
+STAGE5_TASK_RUN_IDS = {
+    "recovery": "stage5-final-test-evaluation-recovery-v1",
+    "icu_stay_time": "stage5-final-test-evaluation-icu-stay-time-v1",
+    "organ_support": "stage5-final-test-evaluation-organ-support-v1",
+}
+_STAGE5_TASK_MODEL_FAMILY = {"recovery": "xgboost", "icu_stay_time": "gru", "organ_support": "xgboost"}
+
+
+def ensure_stage5_run_registered(
+    root: Path, *, code_commit: str, split_hash: str, preprocessor_sha256: str,
+    metrics_ref: str, manifest_sha256: str, task_bindings: Mapping[str, Mapping[str, object]],
+) -> None:
+    """Register the aggregate Stage-5 run plus one per-task companion run.
+
+    experiments/artifacts.csv prediction records require a real, single
+    ``task`` (validated by ``_validate_artifact_class``), and
+    ``validate_artifact_lineage`` requires that value to match the
+    *producing run's* ``task`` column whenever both are non-empty. Because
+    this evaluation genuinely spans 3 tasks with 3 different models, one
+    aggregate run cannot satisfy both validate_registry()'s
+    COMPLETED_REQUIRED_FIELDS (task/model_family/... must be non-empty) and
+    validate_artifact_lineage's per-artifact task match. So this registers
+    the task-agnostic aggregate run (``STAGE5_RUN_ID``, used as
+    producing_run_id for the metrics/error-analysis/naive-baseline/
+    preprocessor artifacts, none of which declare their own ``task`` field)
+    plus one single-task run per task in ``STAGE5_TASK_RUN_IDS`` (used as
+    producing_run_id for that task's prediction artifact instead)."""
+
     registry_path = root / "experiments/registry.csv"
     rows = read_run_registry(registry_path)
-    if any(row.get("run_id") == STAGE5_RUN_ID for row in rows):
+    existing_ids = {row.get("run_id") for row in rows}
+    if STAGE5_RUN_ID in existing_ids:
         return
     fieldnames = list(rows[0].keys()) if rows else [
         "run_id", "timestamp_utc", "task", "model_family", "seed", "code_commit", "config_ref", "config_hash",
@@ -1172,16 +1222,56 @@ def ensure_stage5_run_registered(root: Path, *, code_commit: str, split_hash: st
         "mimic_code_commit", "extraction_ref", "extraction_sha256", "cohort_version", "feature_dictionary_ref",
         "feature_dictionary_sha256", "label_spec_ref", "split_ref",
     ]
-    new_row = {name: "" for name in fieldnames}
-    new_row.update({
-        "run_id": STAGE5_RUN_ID, "timestamp_utc": utc_now(), "code_commit": code_commit,
+    config_path = root / "configs/final_test_v1.json"
+    config_hash = sha256_file(config_path)
+    common = {
+        "timestamp_utc": utc_now(), "code_commit": code_commit, "seed": "20260921",
+        "config_ref": "configs/final_test_v1.json", "config_hash": config_hash,
         "split_hash": split_hash, "preprocessor_ref": PREPROCESSOR_PATH, "preprocessor_sha256": preprocessor_sha256,
-        "split_ref": SPLIT_PATH, "status": "completed", "run_type": "scientific", "finalized": "true",
+        # scientific_evaluation (not "scientific"): this evaluates already-
+        # frozen, already-selected models on held-out data -- it is not a
+        # Phase-12/final_v2 search run, so it must not be swept into checks
+        # that expect every "scientific"+xgboost/gru run to carry a
+        # canonical search_version (see test_phase11_consumed_zero_
+        # scientific_slots_and_later_rows_are_phase12_only). Not
+        # "scientific_sensitivity" either -- that category is reserved for
+        # the fixed-count (exactly 3) Stage-2 LSTM sensitivity runs
+        # (scripts/audit_stage2_finalization.py enforces the count).
+        "split_ref": SPLIT_PATH, "status": "completed", "run_type": "scientific_evaluation", "finalized": "true",
+    }
+
+    new_rows = []
+    aggregate_row = {name: "" for name in fieldnames}
+    aggregate_row.update(common)
+    aggregate_row.update({
+        "run_id": STAGE5_RUN_ID,
+        "task": "recovery+icu_stay_time+organ_support", "model_family": "xgboost+gru",
+        "feature_version": "synthetic_feature_schema_v2",
+        "label_version": "synthetic_xgb_target_contract_v1+synthetic_phase9_final_target_contract_v1",
+        "model_artifact_ref": SELECTED_MODELS_PATH, "model_sha256": manifest_sha256,
+        "metrics_ref": metrics_ref,
         "notes": "Stage 5 one-time final-test evaluation of the three frozen G3-selected models plus naive baselines",
     })
+    new_rows.append(aggregate_row)
+
+    for task, run_id in STAGE5_TASK_RUN_IDS.items():
+        binding = task_bindings[task]
+        row = {name: "" for name in fieldnames}
+        row.update(common)
+        row.update({
+            "run_id": run_id, "task": task, "model_family": _STAGE5_TASK_MODEL_FAMILY[task],
+            "feature_version": binding["feature_version"], "label_version": binding["label_version"],
+            "model_artifact_ref": SELECTED_MODELS_PATH, "model_sha256": manifest_sha256,
+            "metrics_ref": metrics_ref, "parent_run_id": STAGE5_RUN_ID,
+            "notes": "Stage 5 one-time final-test evaluation, " + task + " task companion of " + STAGE5_RUN_ID,
+        })
+        new_rows.append(row)
+
     with registry_path.open("a", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fieldnames)
-        writer.writerow(new_row)
+        for row in new_rows:
+            writer.writerow(row)
+    validate_registry(registry_path)
 
 
 G1_PATH = "artifacts/acceptance/g1_synthetic_data_freeze_v1.json"
@@ -1310,6 +1400,8 @@ def stage5_evaluator(loaded: Mapping[str, object]) -> Mapping[str, object]:
     ensure_stage5_run_registered(
         root, code_commit=code_commit, split_hash=evaluated["bindings"]["recovery"]["split_hash"],
         preprocessor_sha256=loaded["models"].manifest["tasks"]["recovery"]["preprocessor_sha256"],
+        metrics_ref=str(metric_path[0].relative_to(root)), manifest_sha256=loaded["models"].manifest_sha256,
+        task_bindings=evaluated["bindings"],
     )
     registered = register_stage5_results(
         root, loaded, evaluated, prediction_paths, metric_path, error_analysis_paths,

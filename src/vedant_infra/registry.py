@@ -111,6 +111,12 @@ ALLOWED_RUN_TYPES = {
     "test",
     "sensitivity_smoke",
     "scientific_sensitivity",
+    # A real, non-search, non-smoke evaluation of already-frozen, already-
+    # selected models on held-out data (e.g. Stage 5's one-time final-test
+    # evaluation). Distinct from "scientific" (a search/training run bound
+    # to a canonical search_version) and from "scientific_sensitivity"
+    # (reserved for the fixed-count Stage-2 LSTM sensitivity runs).
+    "scientific_evaluation",
     "legacy_incomplete",
 }
 FINAL_STATUSES = {"completed", "failed", "aborted"}
@@ -181,7 +187,7 @@ def _validate_record(record: Mapping[str, str], line_number: int) -> None:
         raise RegistryValidationError(
             "line {} has unsupported run_type: {}".format(line_number, run_type)
         )
-    if run_type in ("scientific", "scientific_sensitivity"):
+    if run_type in ("scientific", "scientific_sensitivity", "scientific_evaluation"):
         required = (
             "timestamp_utc",
             "task",

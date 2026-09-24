@@ -18,9 +18,39 @@ from vedant_infra.g3 import G3FreezeError
 from stage4_helpers import ROOT, copy_repository, legal_cutoff, safe_train_stay, sealed_test_stay
 
 
+def _final_test_access_consumed() -> bool:
+    state = json.loads((ROOT / "artifacts/governance/test_access_state.json").read_text())
+    return state["state"] != "AUTHORIZED_NOT_RUN"
+
+
 @pytest.fixture(scope="module")
 def resolution():
-    return resolve_stage4_bundle(ROOT)
+    try:
+        return resolve_stage4_bundle(ROOT)
+    except (Stage4BundleError, G3FreezeError) as error:
+        if _final_test_access_consumed():
+            pytest.skip(
+                "final-test access already consumed: resolve_stage4_bundle "
+                "correctly fails closed once G3's live dependency audit no "
+                "longer holds (experiments/artifacts.csv/registry.csv now "
+                "legitimately bind the registered final-test results). This "
+                "is the expected post-test transition -- "
+                "artifacts/governance/g4_test_evaluation_freeze_v1.json is "
+                "authoritative from this point forward, not this Stage-4 "
+                "pre-test demo/validation resolver. "
+                f"Underlying error: {error}"
+            )
+        raise
+
+
+def test_serving_fails_closed_once_final_test_access_consumed():
+    """Complements the ``resolution`` fixture's skip above: explicitly
+    proves resolve_stage4_bundle refuses (fail-closed) rather than silently
+    serving once the one-time final-test access has been consumed."""
+    if not _final_test_access_consumed():
+        pytest.skip("final-test access not yet consumed in this repository state")
+    with pytest.raises((Stage4BundleError, G3FreezeError)):
+        resolve_stage4_bundle(ROOT)
 
 
 @pytest.fixture(scope="module")

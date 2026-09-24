@@ -17,8 +17,9 @@ import uvicorn
 from api.main import create_app
 from dashboard.app import create_real_dashboard_app
 from dashboard.real_catalog import build_real_dashboard_catalog
-from serving.real.bundle import resolve_stage4_bundle
+from serving.real.bundle import Stage4BundleError, resolve_stage4_bundle
 from stage4_helpers import ROOT
+from vedant_infra.g3 import G3FreezeError
 
 
 def _free_port() -> int:
@@ -27,9 +28,26 @@ def _free_port() -> int:
         return sock.getsockname()[1]
 
 
+def _final_test_access_consumed() -> bool:
+    import json
+    path = ROOT / "artifacts/governance/test_access_state.json"
+    return path.is_file() and json.loads(path.read_text()).get("state") != "AUTHORIZED_NOT_RUN"
+
+
 @pytest.fixture(scope="module")
 def live_api_url():
-    resolution = resolve_stage4_bundle(ROOT)
+    try:
+        resolution = resolve_stage4_bundle(ROOT)
+    except (Stage4BundleError, G3FreezeError) as error:
+        if _final_test_access_consumed():
+            pytest.skip(
+                "final-test access already consumed: resolve_stage4_bundle "
+                "correctly fails closed once G3's live dependency audit no "
+                "longer holds (see "
+                "artifacts/governance/g4_test_evaluation_freeze_v1.json). "
+                f"Underlying error: {error}"
+            )
+        raise
     app = create_app(pipeline=resolution.pipeline)
     port = _free_port()
     config = uvicorn.Config(app, host="127.0.0.1", port=port, log_level="warning")

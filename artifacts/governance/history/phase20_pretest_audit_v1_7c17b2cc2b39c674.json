@@ -1,8 +1,5 @@
 {
-  "blockers": [
-    "active_g3: BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: governance dependency missing or hash mismatch: experiments/artifacts.csv",
-    "test_access_state: final-test access is not authorized for exactly one run"
-  ],
+  "blockers": [],
   "items": [
     {
       "detail": "final_test_evaluation_v1",
@@ -10,9 +7,9 @@
       "status": "PASS"
     },
     {
-      "detail": "BLOCKED \u2014 ACTIVE G3 FREEZE REQUIRED: governance dependency missing or hash mismatch: experiments/artifacts.csv",
+      "detail": "75b3e41b5d24c787a5cc3e384df0f2363134a0e5585639f120651ac0ef09254e",
       "name": "active_g3",
-      "status": "BLOCKED"
+      "status": "PASS"
     },
     {
       "detail": "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148",
@@ -50,13 +47,13 @@
       "status": "PASS"
     },
     {
-      "detail": "final-test access is not authorized for exactly one run",
+      "detail": "AUTHORIZED_NOT_RUN",
       "name": "test_access_state",
-      "status": "BLOCKED"
+      "status": "PASS"
     }
   ],
-  "overall_status": "BLOCKED",
-  "report_sha256": "d071a9dab444fa7b9be499cb256190bc90989311c0f57a02e0480aed30b1288b",
+  "overall_status": "PASS",
+  "report_sha256": "640097bc0bf756c06571e328bba6e3c81cad25614927127a4d45ebdd8c0fe352",
   "report_version": "phase20_pretest_audit_v1",
   "test_data_accessed": false,
   "test_loader_calls": 0
