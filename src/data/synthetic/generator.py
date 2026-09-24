@@ -44,9 +44,10 @@ def generate(config: RuntimeConfig, repo_root: Path):
         log_hours=float(d["intercept"]+np.dot(d["latent_coefficients"],z0)+d["support_propensity_coefficient"]*support_propensity+erng.normal(0,d["noise_scale"]))
         duration=round(max(d["minimum_hours"],min(d["maximum_hours"],math.exp(log_hours))),6)
         if config.mode=="final" and duration<float(config.values["minimum_accepted_episode_hours"]): continue
-        subject=Subject(f"SYN-S-{ordinal:08d}",age,sex,p["condition_groups"][gi])
+        ns=config.subject_id_namespace
+        subject=Subject(f"{ns}-S-{ordinal:08d}",age,sex,p["condition_groups"][gi])
         offset=int(erng.integers(0,config.values["calendar"]["maximum_intime_offset_days"]*86400+1)); intime=epoch+timedelta(seconds=offset); outtime=intime+timedelta(hours=duration)
-        episode=Episode(subject.subject_id,f"SYN-E-{ordinal:08d}",_iso(intime),_iso(outtime),1,stream_id(config.seed,candidate_ordinal))
+        episode=Episode(subject.subject_id,f"{ns}-E-{ordinal:08d}",_iso(intime),_iso(outtime),1,stream_id(config.seed,candidate_ordinal))
         if support_contract is None:
             states=simulate(config,candidate_ordinal,z0,equilibrium,int(math.ceil(duration))); subject_supports=[]
         else:

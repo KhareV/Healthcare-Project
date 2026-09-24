@@ -31,5 +31,12 @@ artifacts/data/synthetic/pre_split/final/
 artifacts/data/synthetic/phase10/final/
 artifacts/test-results/
 
+# Same rationale for the Performance-V2 Phase-3 fresh test cohort's raw/
+# cohort/timeline/features/pre_split pipeline outputs: large, deterministic
+# rebuilds. The small spec/audit/split/freeze artifacts that hash-bind them
+# (artifacts/performance_v2/phase3/fresh_test_cohort_*.json, fresh_test_split_*,
+# artifacts/performance_v2/governance/v2_fresh_test_*.json) remain tracked.
+artifacts/performance_v2/phase3/fresh_test_cohort/
+
 # Read-only historical/reference repository; never vendor as an embedded Git repo.
 Heart-Failure-Recovery-and-Deterioration-Trajectory-Prediction/

@@ -275,3 +275,128 @@ def test_v2_model_freeze_binds_all_required_parents():
         assert freeze["parents"][key]["sha256"]
     assert freeze["fresh_test_generated"] is False
     assert freeze["fresh_test_accessed"] is False
+
+
+# --- Fresh v2 test cohort: generator equivalence, non-overlap, sealing ------
+
+FRESH_DIR = PHASE3_DIR / "fresh_test_cohort"
+
+
+def test_fresh_cohort_seed_derivation_matches_spec():
+    selected_models_path = PHASE3_DIR / "selected_models_v2.json"
+    selected_models_sha256 = hashlib.sha256(selected_models_path.read_bytes()).hexdigest()
+    spec = _load("artifacts/performance_v2/phase3/fresh_test_cohort_spec_v1.json")
+    derivation = spec["seed_derivation"]
+    assert derivation["source_artifact_sha256"] == selected_models_sha256
+    seed_material = "performance_v2_fresh_test_v1|" + selected_models_sha256 + "|1000"
+    assert derivation["seed_material"] == seed_material
+    seed_material_hash = hashlib.sha256(seed_material.encode("utf-8")).hexdigest()
+    assert derivation["seed_material_sha256"] == seed_material_hash
+    assert derivation["fresh_test_seed"] == int(seed_material_hash[:8], 16) == 402995653
+
+
+def test_generator_equivalence_audit_pass_and_scientific_keys_identical():
+    import sys
+
+    sys.path.insert(0, str(ROOT / "src"))
+    from data.synthetic.config import load_runtime_config
+
+    audit = _load("artifacts/performance_v2/governance/generator_equivalence_audit_v1.json")
+    assert audit["status"] == "GENERATOR_EQUIVALENCE_AUDIT_PASS"
+    assert audit["scientific_config_diffs"] == {}
+    v1_config = load_runtime_config(ROOT / "configs/synthetic/final_benchmark_v1.json", ROOT).values
+    v2_config = load_runtime_config(ROOT / "configs/performance_v2/fresh_test_cohort_v1.json", ROOT).values
+    for key in ("population", "calendar", "duration", "latent", "observation", "variables",
+                "latent_process_path", "support_process_path", "event_dictionary_path"):
+        assert v1_config[key] == v2_config[key], key
+
+
+def test_fresh_cohort_v1_subject_id_non_overlap():
+    with (ROOT / "artifacts/splits/synthetic_split_v2.csv").open(newline="", encoding="utf-8") as handle:
+        v1_subject_ids = {row["subject_id"] for row in csv.DictReader(handle)}
+    with (PHASE3_DIR / "fresh_test_split_v1.csv").open(newline="", encoding="utf-8") as handle:
+        v2_subject_ids = {row["subject_id"] for row in csv.DictReader(handle)}
+    assert len(v2_subject_ids) == 1000
+    assert not (v1_subject_ids & v2_subject_ids)
+    assert all(sid.startswith("SYN-V2-S-") for sid in v2_subject_ids)
+
+
+def test_fresh_cohort_clone_fingerprint_non_overlap():
+    audit = _load("artifacts/performance_v2/phase3/fresh_test_cohort_structural_audit_v1.json")
+    assert audit["status"] == "FRESH_V2_COHORT_STRUCTURAL_AUDIT_PASS"
+    assert audit["v1_v2_subject_id_overlap_count"] == 0
+    assert audit["v1_v2_clone_fingerprint_overlap_count"] == 0
+    assert audit["no_outcome_values_inspected"] is True
+
+
+def test_fresh_cohort_namespace_and_generation_manifest_status():
+    generator_manifest = _load("artifacts/performance_v2/phase3/fresh_test_cohort/raw/synthetic_dataset_manifest_v1.json")
+    assert generator_manifest["manifest_status"] == "AUTHORIZED_FINAL_SYNTHETIC_DATA"
+    assert generator_manifest["generated_subject_count"] == 1000
+    assert generator_manifest["primary_seed_identity"]["value"] == 402995653
+
+
+def test_fresh_test_split_contract_evaluation_only():
+    split_manifest = _load("artifacts/performance_v2/phase3/fresh_test_split_manifest_v1.json")
+    assert split_manifest["status"] == "FROZEN_V2_EVALUATION_ONLY_COHORT"
+    assert split_manifest["no_train_validation_subsets_created"] is True
+    with (PHASE3_DIR / "fresh_test_split_v1.csv").open(newline="", encoding="utf-8") as handle:
+        rows = list(csv.DictReader(handle))
+    assert len(rows) == 1000
+    assert all(row["split"] == "test" for row in rows)
+
+
+def test_v1_configs_unchanged_by_namespace_extension():
+    """The v1 generator config's own hash must be exactly what Phase-2/3A
+    already recorded -- the config.py/generator.py extensions must be fully
+    backward compatible."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "src"))
+    from data.synthetic.config import load_runtime_config
+
+    config = load_runtime_config(ROOT / "configs/synthetic/final_benchmark_v1.json", ROOT)
+    assert config.subject_id_namespace == "SYN"
+    assert config.sha256 == "5d7138ed93f3062c8b9fcd1913db28f243dcf4727a4a094d5860757761d8c4eb"
+
+
+# --- Sealing / access state ---------------------------------------------------
+
+def test_v2_fresh_test_freeze_binds_required_parents():
+    freeze = _load("artifacts/performance_v2/governance/v2_fresh_test_freeze_v1.json")
+    assert freeze["status"] == "V2_FRESH_TEST_FROZEN"
+    required = (
+        "cohort_config", "cohort_spec", "generator_scientific_parent_v1_config", "generator_equivalence_audit",
+        "raw_generator_manifest", "cohort_manifest", "timeline_manifest", "feature_manifest",
+        "pre_split_scientific_package_manifest", "structural_audit", "split_csv", "split_manifest",
+        "selected_models_v2", "v2_model_freeze",
+    )
+    for key in required:
+        assert key in freeze["parents"], key
+    assert freeze["parents"]["pre_generation_freeze_commit"] == "393414f987161a8f2f4cb9728329b2b21021badd"
+    assert freeze["fresh_test_access_state"] == "SEALED_NOT_ACCESSED"
+
+
+def test_fresh_test_access_state_sealed_not_accessed():
+    state = _load("artifacts/performance_v2/governance/v2_fresh_test_access_state.json")
+    assert state["status"] == "SEALED_NOT_ACCESSED"
+
+
+def test_fresh_test_accessor_blocked_before_authorization():
+    import sys
+
+    sys.path.insert(0, str(ROOT / "src"))
+    from performance_v2.fresh_test_access import FreshTestAccessError, current_state, load_fresh_test_rows
+
+    assert current_state(ROOT) == "SEALED_NOT_ACCESSED"
+    with pytest.raises(FreshTestAccessError):
+        load_fresh_test_rows(ROOT)
+
+
+def test_no_final_v2_predictions_or_metrics_exist_yet():
+    manifest = _load("artifacts/performance_v2/phase3/phase3_pretest_freeze_manifest_v1.json")
+    assert manifest["fresh_test_accessed"] is False
+    assert manifest["final_v2_predictions_exist"] is False
+    assert manifest["final_v2_metrics_exist"] is False
+    assert manifest["phase4_readiness"] == "PHASE4_READY"
+    assert set(manifest["status"]) == {"PERFORMANCE_V2_PHASE3_COMPLETE", "V2_PRETEST_FROZEN", "FRESH_V2_TEST_SEALED"}

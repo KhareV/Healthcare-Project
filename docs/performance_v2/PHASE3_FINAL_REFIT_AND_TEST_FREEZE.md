@@ -130,13 +130,66 @@ evaluation data existed.
 
 ## 10. Fresh v2 test cohort (generated after the freeze commit)
 
-See the freeze-then-generate governance artifacts under
-`artifacts/performance_v2/governance/` for the cohort spec, seed
-derivation, generator-equivalence audit, and sealing. No target/outcome
-distribution from the fresh cohort is reported anywhere in this phase's
-artifacts or documentation — only structural integrity (subject counts,
-hashes, schema, non-overlap with v1/DEV) was inspected, per the explicit
-prohibition on outcome inspection before Phase 4.
+**Seed derivation** (fixed before any generation; never retried):
+`seed_material = "performance_v2_fresh_test_v1|" + SHA256(selected_models_v2.json) + "|1000"`
+→ `fresh_test_seed = int(SHA256(seed_material).hexdigest()[:8], 16)` = **402995653**.
+Recorded in `configs/performance_v2/fresh_test_cohort_v1.json` and
+`artifacts/performance_v2/phase3/fresh_test_cohort_spec_v1.json`.
+
+**Cohort**: 1000 subjects, evaluation-only (`fresh_v2_test`), no
+train/validation subset. Distinct namespace `SYN-V2-S-*` / `SYN-V2-E-*`, so
+subject/stay IDs cannot string-collide with v1's `SYN-S-*`/`SYN-E-*`.
+
+**Frozen generator code, minimally extended, not shortcut**: the generator's
+`config.py` originally hardcoded a single authorized final-mode identity
+(seed 20260921, 2000 subjects). It now holds an explicit two-entry frozen
+allow-list — v1's pair unchanged, plus one new pair for this cohort — each
+bound 1:1 to a required `subject_id_namespace`. `generator.py`'s subject/
+episode ID prefix is now read from that namespace (default `"SYN"`, so v1 is
+byte-identical). No latent-process, SOFA, support-process, observation, or
+label-building code was touched (see `generator_equivalence_audit_v1.json`
+for the full unchanged-file hash list and the exact narrow diff). Re-running
+the unmodified `final_benchmark_v1.json` config through the current code
+reproduced `subjects.jsonl`/`episodes.jsonl`/`support_intervals.jsonl`
+byte-for-byte; `raw_events.jsonl` matched 670298/670303 lines exactly, with
+the remaining 5 differing only in the final microsecond digit of
+`event_time` (environment float-rounding, verified deterministic across two
+independent re-runs — not a scientific or code-logic change).
+
+**Build pipeline**: the same accepted multi-stage pipeline as v1 —
+`generate_synthetic_dataset.py` → `build_synthetic_cohort.py` →
+`build_synthetic_timeline.py` → `build_synthetic_features.py` →
+`build_phase9_final_package.py` — run mode-for-mode identical (`final`),
+against the new additive `configs/performance_v2/fresh_test_cohort_v1.json`
+(inherits the same scientific parameter file as v1; only seed, n_subjects,
+namespace, and provenance metadata differ — see the generator-equivalence
+audit for the full permitted-diff list).
+
+**Structural sealing only**: `fresh_test_cohort_structural_audit_v1.json`
+confirms 1000 unique namespaced subjects/stays, zero v1 subject-ID overlap,
+zero clone-fingerprint overlap (via the same identity-free raw-trajectory
+fingerprint used for v1's own split), unique canonical row keys, and
+required eligibility fields present. No recovery/ICU/support target value,
+distribution, or count from the fresh cohort was read, printed, or
+inspected anywhere in Phase 3.
+
+**Split contract**: `fresh_test_split_v1.csv` (`subject_id,split`, every row
+`split=test`), `fresh_test_split_manifest_v1.json` status
+`FROZEN_V2_EVALUATION_ONLY_COHORT`. No train/validation subset was created.
+
+**Sealing**: `artifacts/performance_v2/governance/v2_fresh_test_access_state.json`
+= `SEALED_NOT_ACCESSED`; `v2_fresh_test_freeze_v1.json` status
+`V2_FRESH_TEST_FROZEN`, binding the cohort config, seed, generator-equivalence
+audit, every pipeline-stage manifest, the structural audit, the split
+contract, `selected_models_v2.json`, `v2_model_freeze_v1.json`, and the
+pre-generation freeze commit `393414f987161a8f2f4cb9728329b2b21021badd`.
+
+**Access choke point**: `src/performance_v2/fresh_test_access.py` is the
+only function in the repository permitted to return fresh-test rows; it
+refuses while the access state is `SEALED_NOT_ACCESSED` (verified by test).
+Only a guarded, not-yet-implemented Phase-4 command may advance
+`SEALED_NOT_ACCESSED → AUTHORIZED_FOR_ONE_FINAL_RUN → FINAL_V2_TEST_ACCESS_CONSUMED
+→ FINAL_V2_RUN_COMPLETED`. Phase 3 never calls any transition function.
 
 ## No v1 TEST access, no fresh-test inference
 

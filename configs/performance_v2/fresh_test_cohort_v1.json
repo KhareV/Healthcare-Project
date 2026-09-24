@@ -1,0 +1,28 @@
+{
+  "inherits": "configs/synthetic/fixtures/phase3_fixture_v1.json",
+  "runtime_config_version": "performance_v2_fresh_test_cohort_v1",
+  "scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA",
+  "mode": "final",
+  "primary_seed": 402995653,
+  "n_subjects": 1000,
+  "subject_id_namespace": "SYN-V2",
+  "accepted_subject_policy": "DETERMINISTIC_REPLACEMENT_UNTIL_1000_WITH_AT_LEAST_ONE_LEGAL_CUTOFF",
+  "minimum_accepted_episode_hours": 30.0,
+  "latent_process_path": "configs/synthetic/latent_process_v1.yaml",
+  "support_process_path": "configs/synthetic/support_process_v1.yaml",
+  "event_dictionary_path": "configs/event_dict_v2.yaml",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "purpose": "PERFORMANCE_V2_PHASE3_FRESH_EVALUATION_ONLY_TEST_COHORT",
+  "not_a_new_development_split": true,
+  "seed_derivation": {
+    "method": "performance_v2_phase3_part14_fresh_test_seed_v1",
+    "seed_material": "performance_v2_fresh_test_v1|6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8|1000",
+    "seed_material_sha256": "180539c559e5a272e824cfc04b3ac19551e92fa5ee90351e69d0823bfeb1897d",
+    "seed_material_source": "performance_v2_fresh_test_v1|SHA256(artifacts/performance_v2/phase3/selected_models_v2.json)|1000",
+    "source_artifact": "artifacts/performance_v2/phase3/selected_models_v2.json",
+    "source_artifact_sha256": "6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8",
+    "fresh_test_seed": 402995653,
+    "derivation_rule": "fresh_test_seed = int(SHA256(seed_material).hexdigest()[:8], 16)"
+  },
+  "scientific_equivalence_note": "All population/calendar/duration/latent/observation/variables parameters, and latent_process_path/support_process_path/event_dictionary_path, are byte-identical to configs/synthetic/final_benchmark_v1.json. Only primary_seed, n_subjects, subject_id_namespace, runtime_config_version, and this provenance metadata differ, per Performance-V2 Phase-3 Part 14/15."
+}

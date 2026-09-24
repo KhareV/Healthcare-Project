@@ -16,6 +16,17 @@ GENERATOR_VERSION = "synthetic_generator_v1"
 RUNTIME_SCOPE = "ENGINEERING_SYNTHETIC_FIXTURE_NON_SCIENTIFIC_NOT_FINAL_DATASET"
 FINAL_SCOPE = "AUTHORIZED_FINAL_SYNTHETIC_DATA"
 
+# Frozen, explicitly pre-registered (primary_seed, n_subjects) identities that
+# may use mode="final". Each entry is bound one-to-one to a required
+# subject_id_namespace so no config can claim an authorized final identity
+# under the wrong namespace. Adding a new entry here is the ONLY way to
+# authorize another final-scope generation; it never relaxes the check for an
+# already-registered identity, and the original v1 pair is unchanged.
+FINAL_IDENTITIES = {
+    (20260921, 2000): "SYN",
+    (402995653, 1000): "SYN-V2",
+}
+
 
 class SyntheticConfigError(ValueError):
     """Raised for incomplete, unreviewed, or inconsistent generator parameters."""
@@ -38,6 +49,10 @@ class RuntimeConfig:
     @property
     def n_subjects(self) -> int:
         return int(self.values["n_subjects"])
+
+    @property
+    def subject_id_namespace(self) -> str:
+        return str(self.values.get("subject_id_namespace", "SYN"))
 
 
 def canonical_json_bytes(value: object) -> bytes:
@@ -70,9 +85,20 @@ def load_runtime_config(path: Path, repo_root: Path) -> RuntimeConfig:
     if mode == "final":
         if values.get("scope") != FINAL_SCOPE:
             raise SyntheticConfigError("FINAL mode refused: final scope must be AUTHORIZED_FINAL_SYNTHETIC_DATA")
-        if values.get("primary_seed") != 20260921 or values.get("n_subjects") != 2000:
-            raise SyntheticConfigError("final generation identity must be seed 20260921 and 2000 subjects")
-        if values.get("accepted_subject_policy") != "DETERMINISTIC_REPLACEMENT_UNTIL_2000_WITH_AT_LEAST_ONE_LEGAL_CUTOFF" or values.get("minimum_accepted_episode_hours") != 30.0:
+        identity_key = (values.get("primary_seed"), values.get("n_subjects"))
+        if identity_key not in FINAL_IDENTITIES:
+            raise SyntheticConfigError(
+                "final generation identity must be one of the frozen authorized (seed, n_subjects) pairs: "
+                + repr(sorted(FINAL_IDENTITIES))
+            )
+        required_namespace = FINAL_IDENTITIES[identity_key]
+        if str(values.get("subject_id_namespace", "SYN")) != required_namespace:
+            raise SyntheticConfigError(
+                f"final identity {identity_key} is registered to subject_id_namespace {required_namespace!r}; "
+                f"observed {values.get('subject_id_namespace', 'SYN')!r}"
+            )
+        expected_policy = f"DETERMINISTIC_REPLACEMENT_UNTIL_{values.get('n_subjects')}_WITH_AT_LEAST_ONE_LEGAL_CUTOFF"
+        if values.get("accepted_subject_policy") != expected_policy or values.get("minimum_accepted_episode_hours") != 30.0:
             raise SyntheticConfigError("final accepted-cohort replacement policy is not frozen")
         for field in ("latent_process_path", "support_process_path", "event_dictionary_path"):
             target = repo_root / str(values.get(field, ""))

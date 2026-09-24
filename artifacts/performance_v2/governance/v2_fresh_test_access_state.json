@@ -1,0 +1,1 @@
+{"allowed_transitions":["SEALED_NOT_ACCESSED -> AUTHORIZED_FOR_ONE_FINAL_RUN","AUTHORIZED_FOR_ONE_FINAL_RUN -> FINAL_V2_TEST_ACCESS_CONSUMED","FINAL_V2_TEST_ACCESS_CONSUMED -> FINAL_V2_RUN_COMPLETED"],"artifact_version":"v2_fresh_test_access_state_v1","note":"Phase 3 stops here. Only the guarded Phase-4 command may advance this state.","status":"SEALED_NOT_ACCESSED"}
