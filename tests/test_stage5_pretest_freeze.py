@@ -92,9 +92,23 @@ def test_final_test_plan_artifact_frozen_pre_access():
 
 
 def test_final_test_access_state_untouched():
+    """The *current* authorized exposure must be untouched: state is
+    AUTHORIZED_NOT_RUN and no consumption event has happened since the most
+    recent G3_FREEZE_CREATED. History may legitimately retain an earlier
+    consumption event from a prior, formally-reset freeze cycle (see
+    artifacts/governance/stage5_final_test_access_incident_v1.json) — that
+    permanent audit trail is the point of preserving evidence, not a defect.
+    """
     state = json.loads((ROOT / "artifacts/governance/test_access_state.json").read_text())
     assert state["state"] == "AUTHORIZED_NOT_RUN"
-    assert not any(event.get("event") == "FINAL_TEST_ACCESS_CONSUMED" for event in state["history"])
+    history = state["history"]
+    freeze_indices = [i for i, event in enumerate(history) if event.get("event") == "G3_FREEZE_CREATED"]
+    assert freeze_indices, "no G3_FREEZE_CREATED event in history"
+    current_freeze_index = freeze_indices[-1]
+    assert not any(
+        event.get("event") == "FINAL_TEST_ACCESS_CONSUMED"
+        for event in history[current_freeze_index + 1:]
+    )
 
 
 def test_loader_and_evaluator_pipeline_works_on_validation_never_test():

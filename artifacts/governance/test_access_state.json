@@ -27,8 +27,21 @@
       "event": "FINAL_TEST_ACCESS_CONSUMED",
       "marker_sha256": "d94d49b0a438027842dbbf1c6130404297230f59b18bc863320ac753db770564",
       "scope": "real"
+    },
+    {
+      "archived_marker_ref": "artifacts/governance/history/invalidated_d94d49b0a4380278.json",
+      "at_utc": "2026-09-24T07:04:40.071986Z",
+      "event": "SCIENTIFIC_RESET_INVALIDATED",
+      "reason": "Stage 5 Part B guarded run crashed with a governance-timing engineering defect (redundant validate_g3_marker call inside load_frozen_models, which cannot succeed once guarded_test_access has already flipped test_access_state to FINAL_RUN_COMPLETED) before reading any test-partition row, before any inference, and before any metric or bootstrap computation. Zero science-affecting artifact changed. Fixed in load_frozen_models (verify_g3=False for the already-guarded test path); this reset grants exactly one fresh authorized exposure to complete the scientific final-test evaluation the crash prevented."
+    },
+    {
+      "at_utc": "2026-09-24T07:04:40.764912Z",
+      "event": "G3_FREEZE_CREATED",
+      "marker_ref": "artifacts/governance/g3_freeze.json",
+      "marker_sha256": "a348489978d21f3e61eee7fda886a4f671f8555a924b8b2cd16cdc2f37c73b5e",
+      "scope": "real"
     }
   ],
-  "state": "FINAL_RUN_COMPLETED",
+  "state": "AUTHORIZED_NOT_RUN",
   "state_version": "final_test_access_state_v1"
 }

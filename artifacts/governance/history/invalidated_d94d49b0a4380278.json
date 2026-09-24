@@ -3,7 +3,7 @@
   "audit_version": "g3_prerequisite_audit_v1",
   "calibration_frozen": true,
   "code_commit": "20635f404f53d29b7396157f8a997739f46fb3b2",
-  "created_at_utc": "2026-09-24T07:04:40.764912Z",
+  "created_at_utc": "2026-09-22T11:16:22.949122Z",
   "dependencies": [
     {
       "ref": "artifacts/acceptance/g1_synthetic_data_freeze_v1.json",
@@ -151,7 +151,7 @@
       "run_id": "stage2-lstm-recovery-001"
     }
   },
-  "marker_sha256": "75b3e41b5d24c787a5cc3e384df0f2363134a0e5585639f120651ac0ef09254e",
+  "marker_sha256": "23cc913d7a56ffee13555cdfa777c3153eef445b4263b74522c05ff5336277c6",
   "marker_version": "g3_freeze_marker_v1",
   "reviewers": [
     "project_owner"
