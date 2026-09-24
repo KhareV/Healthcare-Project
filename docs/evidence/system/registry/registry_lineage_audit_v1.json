@@ -1,6 +1,6 @@
 {
   "audit": {
-    "artifact_count": 772,
+    "artifact_count": 782,
     "broken_artifact_parents": [],
     "broken_parent_runs": [],
     "duplicate_run_ids": 0,
@@ -91,13 +91,22 @@
       "artifacts/data_acceptance/real_data_acceptance_v1.json",
       "artifacts/error_analysis/synthetic/error_analysis_table.csv",
       "artifacts/features/synthetic_xgb_flat_feature_map_v1.json",
+      "artifacts/final_test/bootstrap/bootstrap_v1.json",
+      "artifacts/final_test/comparison/comparison_table_v1.json",
+      "artifacts/final_test/error_analysis/error_analysis_v1.json",
+      "artifacts/final_test/sensitivity/complete_component_v1.json",
       "artifacts/governance/README.md",
       "artifacts/governance/explanation_adapters_review.json",
       "artifacts/governance/g3_audit_report.json",
       "artifacts/governance/g3_freeze.json",
       "artifacts/governance/g3_review_signoffs.json",
+      "artifacts/governance/g4_test_evaluation_freeze_v1.json",
       "artifacts/governance/history/invalid_pretest_2ca3a9cbe6616785.json",
+      "artifacts/governance/history/invalidated_d94d49b0a4380278.json",
+      "artifacts/governance/history/stage5_final_test_run_crash_traceback_v1.log",
       "artifacts/governance/phase20_pretest_audit_v1.json",
+      "artifacts/governance/stage5_final_test_access_incident_v1.json",
+      "artifacts/governance/stage5_final_test_plan_v1.json",
       "artifacts/governance/test_access_state.json",
       "artifacts/handoffs/downstream_next_steps_v1.json",
       "artifacts/handoffs/phase14_verification_v1.json",
@@ -112,7 +121,6 @@
       "artifacts/manifests/synthetic_phase11_xgb_input_manifest_v1.json",
       "artifacts/preprocessors/recovery_target_scaler_synthetic_v1.json",
       "artifacts/preprocessors/support_class_weight_synthetic_v1.json",
-      "artifacts/preprocessors/synthetic_feature_preprocessor_v1.json",
       "artifacts/preprocessors/synthetic_train_fit_subjects_v1.txt",
       "artifacts/search/dry_run/gru_icu_stay_time_v1.json",
       "artifacts/search/dry_run/gru_organ_support_v1.json",
@@ -568,25 +576,28 @@
       "artifacts/thresholds/support_threshold_v1.json.metadata.json",
       "artifacts/validation/phase19_preflight_v1.json"
     ],
-    "run_count": 191,
+    "run_count": 195,
     "run_reference_mismatches": [],
     "runs_by_family": {
-      "gru": 94,
+      "gru": 95,
       "lstm": 6,
       "smoke_test": 1,
-      "xgboost": 90
+      "xgboost": 92,
+      "xgboost+gru": 1
     },
     "runs_by_status": {
-      "completed": 191
+      "completed": 195
     },
     "runs_by_task": {
-      "icu_stay_time": 63,
-      "organ_support": 63,
-      "recovery": 64,
+      "icu_stay_time": 64,
+      "organ_support": 64,
+      "recovery": 65,
+      "recovery+icu_stay_time+organ_support": 1,
       "synthetic_recovery24_smoke": 1
     },
     "runs_by_type": {
       "scientific": 181,
+      "scientific_evaluation": 4,
       "scientific_sensitivity": 3,
       "sensitivity_smoke": 3,
       "synthetic": 4

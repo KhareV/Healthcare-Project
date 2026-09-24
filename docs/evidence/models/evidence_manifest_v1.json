@@ -15,7 +15,7 @@
       "model_family": null,
       "notes": "phase22 outputs excluded to prevent self-referential evidence hashes",
       "output_path": "docs/evidence/models/manifests/artifacts_input_snapshot.csv",
-      "output_sha256": "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af",
+      "output_sha256": "4428ec2bbdcc2456407abfd117b01a3906f8916a501ce5f921688791d775e009",
       "run_ids": [],
       "split": null,
       "status": "FINAL",
@@ -134,7 +134,7 @@
       ],
       "input_hashes": [
         "ab286f656ff177c999e82e020f54376742b53b6c595b39420bdb1d9beb765bf3",
-        "1b8694b37f82c2c97f0bea043d1468661665a229b1d43f063a2680f7ed8bd930"
+        "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148"
       ],
       "model_family": null,
       "notes": "",
@@ -373,7 +373,7 @@
         "artifacts/reproducibility/reproduction_report_v1.json"
       ],
       "input_hashes": [
-        "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af",
+        "4428ec2bbdcc2456407abfd117b01a3906f8916a501ce5f921688791d775e009",
         "714d84bce5abdd29c3132bddad5731f9a410f6e0cd9e4f75e398f0fcbb5d1110"
       ],
       "model_family": null,
@@ -396,12 +396,12 @@
         "docs/evidence/models/manifests/artifacts_input_snapshot.csv"
       ],
       "input_hashes": [
-        "fcf9d2b1d1110e32b46810a18c9c08e21bf1ea439c19f4ebb2bf5345948285af"
+        "4428ec2bbdcc2456407abfd117b01a3906f8916a501ce5f921688791d775e009"
       ],
       "model_family": null,
       "notes": "",
       "output_path": "docs/evidence/models/manifests/artifact_hashes.csv",
-      "output_sha256": "fbbdff97c377f7af09625ddd72dce69187ca8bf65e1265f2823285d5f70b4905",
+      "output_sha256": "757e0c8dc4146df204f0453ca4b7961001055c40ddea064bde3ffdffa2b4f119",
       "run_ids": [],
       "split": null,
       "status": "FINAL",
@@ -435,7 +435,7 @@
         "7766ce77a66c967c01096ab9efdf181003e83e9dbd5d7861916e238694c5ab8a",
         "55e7ffa36128d1f16e8f45379de911ea45d64504a96421ae0dbe49fb533c518d",
         "4b8d9eec4b30be933d641f13406e138494c19da91ec9652ebb6f39fe9213a7ba",
-        "89cc1446bb0d9955e192bd83df974e0f96ee860405f75445027bc93e65e84cdb",
+        "e0c2cd0916edb85ea747578d8edd96f27f3af2859bbb6d315d491730a609dc53",
         "3f61f4f397963e9e47220382c6be22b370e9d3cb332c09e5cf83ffa4a324b147",
         "ab605248375fc5271a37df471998f6fe02ccdca0d318da6f523cbcbb1b25c8b8",
         "aac25d078e81343517282606e5599643766bd953a917d1ddf4cf4e93aec35908"

@@ -700,12 +700,12 @@
       "status": "PASS"
     },
     {
-      "blocker": null,
+      "blocker": "passing JUnit execution required",
       "description": "Machine-parsed pytest JUnit result",
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "8cc1b30892c647c4a79f927d94c09e80828369c44910dbea573d47f17bd1cf1a",
+      "output_sha256": "bff19b12fa22fdfaf3994c490de059970825b16ac537d6a5ab90690f1ff22684",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -909,6 +909,10 @@
           "sha256": "257abe348ae0ef1498ecf27aa9d8c28c6174e00dbd659698c6d8796b2f2d9f31"
         },
         {
+          "path": "src/evaluation/naive_baseline.py",
+          "sha256": "21cd3a8f2fbb55ff0338f6a8b3ef7991b44b07cc949cf122d68868ce8774db7e"
+        },
+        {
           "path": "src/evaluation/select.py",
           "sha256": "806742b24c7a84da431b7dae2bd055f6761d278f10846e7fba948e1101b1de92"
         },
@@ -982,7 +986,7 @@
         },
         {
           "path": "src/experiments/final_test_cli.py",
-          "sha256": "09eccee9ae362b6f1ca272f80e7a6252c9f8ad54f137925b58cef24d570adaa8"
+          "sha256": "a3930b5dcdffa319a9c650f74f94587c1158d6fc35f07207fa1c2bdbdc3ebe45"
         },
         {
           "path": "src/experiments/final_test_entrypoint.py",
@@ -1019,6 +1023,10 @@
         {
           "path": "src/experiments/stage2_finalization.py",
           "sha256": "d069e627867b99aa6d8d429fb09a6c1d5928813bd4bf102dbc87a8522b33731b"
+        },
+        {
+          "path": "src/experiments/stage5_final_test.py",
+          "sha256": "562529d2dcceacb4e0046f7044f83df7372e571613dbc8be40f3539dcb4143c5"
         },
         {
           "path": "src/experiments/validation_suite.py",
@@ -1330,7 +1338,7 @@
         },
         {
           "path": "src/vedant_infra/registry.py",
-          "sha256": "4dfe8708e926839164b68629c79eb67f112f7dddcaf433ca6f5d383d20094970"
+          "sha256": "0483dde45bdab8dd8716325b74c7502d159213a0f991c92184a98d79166af7ee"
         },
         {
           "path": "api/__init__.py",
@@ -1786,7 +1794,7 @@
         },
         {
           "path": "tests/test_final_test_guard.py",
-          "sha256": "352c32673c9c9ee47d1d8864e0ae233b6e9fe8bf7767e66ab5ab2191a1249165"
+          "sha256": "d69e8e5f4e986b9f3c726988dd9015246ee472abe975b3076727df8b1f7f00b1"
         },
         {
           "path": "tests/test_final_test_metrics.py",
@@ -1818,7 +1826,7 @@
         },
         {
           "path": "tests/test_g3_audit.py",
-          "sha256": "2335bc5ed5ee8547bd220233d3995d6d7b237d36ea181e2a5319b001ef28c986"
+          "sha256": "95b3c01747cc092c0c54d8fd9d235bba185da3cd6a17e53938cf10fb5f0cf757"
         },
         {
           "path": "tests/test_g3_freeze.py",
@@ -1838,7 +1846,7 @@
         },
         {
           "path": "tests/test_grouped_bootstrap.py",
-          "sha256": "89cc1446bb0d9955e192bd83df974e0f96ee860405f75445027bc93e65e84cdb"
+          "sha256": "e0c2cd0916edb85ea747578d8edd96f27f3af2859bbb6d315d491730a609dc53"
         },
         {
           "path": "tests/test_gru_base.py",
@@ -1954,7 +1962,7 @@
         },
         {
           "path": "tests/test_phase0_infrastructure.py",
-          "sha256": "ece129e7581b38cdffff01507467e86f897cc7069f269f712f78d053de6bd3b2"
+          "sha256": "510447ba9e217bacabdb231fc4d3714ba34bcce2fa5b9eea3235bdc3fc9c72d2"
         },
         {
           "path": "tests/test_phase11_xgb_canonical.py",
@@ -2178,7 +2186,7 @@
         },
         {
           "path": "tests/test_serving_lineage_e2e.py",
-          "sha256": "af37d36ee5741d62a3089379d7f0464a9cdaeb8323bc904c101f7e002db778a7"
+          "sha256": "029085893e2cc5fbf7aebc19e6d30c7584342b2e8408a3485df7e83cc252b729"
         },
         {
           "path": "tests/test_sofa_complete_component_sensitivity.py",
@@ -2198,11 +2206,15 @@
         },
         {
           "path": "tests/test_stage4_dashboard.py",
-          "sha256": "384c689ba773960b908f14fa8bc27aca0f8d78d52fe36b74169fbecf18f46738"
+          "sha256": "e989c62ce825b8b57f52bed6d048d651e2d72286cddf8eaed7b8d3d5773bff27"
         },
         {
           "path": "tests/test_stage4_real_serving.py",
-          "sha256": "85e9c70a7af1d0022bf16ef01d191715604ac9564306dd0ba72106fd37692b4d"
+          "sha256": "a30a6fda29ccfe97eb324dfcb1f473b4b72f7eb68dc55849ec6bdd0f00f968c9"
+        },
+        {
+          "path": "tests/test_stage5_pretest_freeze.py",
+          "sha256": "6e0657a1ea69f7abc14121b20848d60b936253b3f418831169e4d7f02655e608"
         },
         {
           "path": "tests/test_stay_weights.py",
@@ -2394,7 +2406,7 @@
         },
         {
           "path": "tests/test_validation_g3_readiness.py",
-          "sha256": "2b03058038a1d5527eff5726147c8c1290418ee567d7a07d440079c30e8cab91"
+          "sha256": "04d0d9d1ef62e97b37bb08b53321f6a768a1468a3e9c160244a149254705f89d"
         },
         {
           "path": "tests/test_validation_lstm_integration.py",
@@ -2458,11 +2470,11 @@
         },
         {
           "path": "configs/error_analysis/error_analysis_v1.json",
-          "sha256": "6d3fd2742bce88f9bf81b582418eb41b45f3cb0d803cacc1a3cfa03d373630fe"
+          "sha256": "e233c1be6cc6157b2f0ca7299bfbf3a6387239337427449875dc5c472a415cdd"
         },
         {
           "path": "configs/evaluation/bootstrap_v1.json",
-          "sha256": "1b8694b37f82c2c97f0bea043d1468661665a229b1d43f063a2680f7ed8bd930"
+          "sha256": "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148"
         },
         {
           "path": "configs/event_dict_v1.yaml",
@@ -2490,7 +2502,7 @@
         },
         {
           "path": "configs/final_test_v1.json",
-          "sha256": "924abdea97744d8aa36015328ed11cb4c36309dc9be389c1da74b90f5639db41"
+          "sha256": "8333b98ded03dc699d563cacb50eac274bd230a2673babe30a481e9a52fd0b7d"
         },
         {
           "path": "configs/governance/project_scope_v2.json",
@@ -2674,7 +2686,7 @@
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "blocker": null,
@@ -2682,7 +2694,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "e9845e9ed608be2a6638ac886001e10b1cf08cb8b165c5ee909089cd969de50c",
+      "output_sha256": "1dec65def17fe9fdfa9525981d487accee445cfa5f64e945c4c7809f1b24c8b1",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2691,7 +2703,7 @@
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "blocker": "BLOCKED \u2014 EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM",
@@ -2720,16 +2732,16 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "179a17c153da4b9c669ab6f66eba160a0e4d0da6ac761a37e3b7af356c37b6f2",
+      "output_sha256": "20c8b82cca80134735ab008310872c6c72d5ffb76a086e603b40c0b7dd5a434b",
       "scope": "repository",
       "source_artifacts": [
         {
           "path": "experiments/registry.csv",
-          "sha256": "50e415d61b1b4f0619146816f056b85f4008a4e47a9ba3bddb2f88ee35775c6f"
+          "sha256": "886c8d49cb118b14e2c7402a0e49f108648fad2923f251da1e178ea57f342ccd"
         },
         {
           "path": "experiments/artifacts.csv",
-          "sha256": "634c462b4e0390b41caacb9a05c044f1c97fc8b47fac63c337ed0e8bff3498ae"
+          "sha256": "b97ef165584a7d001fe0b68f002a6087937e03dcc60d1b33b7b79127b15127c1"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
@@ -2741,7 +2753,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "371fb41bb8950aebc280815e69d3ef61d1e8fea84870b0e5c280920041c8c383",
+      "output_sha256": "3793e1060448b00d6d758c77d0988d3de6e3ca1c28a771b7b781e46fa8ed8a28",
       "scope": "repository",
       "source_artifacts": [
         {

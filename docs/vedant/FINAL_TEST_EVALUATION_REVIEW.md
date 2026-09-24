@@ -8,20 +8,26 @@ science-affecting parameter was changed after Part A's pre-test freeze.
 
 ## 1. Access history (full, including a crashed-then-formally-reset first attempt)
 
-The one-time final-test authorization was consumed **twice** in this
-project's full history, but only **one** produced a scientific result:
+**Total historical `FINAL_TEST_ACCESS_CONSUMED` events: 2. Successful
+scientific final-test evaluations: 1.** The first event is a genuine, honest
+technical incident that read zero test rows; the second is the one
+scientific evaluation this review reports. Neither event is hidden,
+deleted, or reinterpreted as the other — both remain permanently in
+`artifacts/governance/test_access_state.json`'s history and in
+`artifacts/governance/stage5_final_test_access_incident_v1.json`.
 
-| Event | Time (UTC) | Outcome |
-|---|---|---|
-| `FINAL_TEST_ACCESS_CONSUMED` | 2026-09-24T06:55:44Z | **Crashed before reading any test row.** `load_frozen_models()` redundantly re-ran the full G3 nonuse audit inside the already-guarded loader, which cannot succeed once `guarded_test_access` has legitimately flipped `test_access_state` to `FINAL_RUN_COMPLETED` a moment earlier. Zero inference, zero metrics, zero artifacts. Full incident record: `artifacts/governance/stage5_final_test_access_incident_v1.json`; traceback: `artifacts/governance/history/stage5_final_test_run_crash_traceback_v1.log`. |
-| `SCIENTIFIC_RESET_INVALIDATED` | 2026-09-24T07:04:40Z | Formal, reasoned reset (`vedant_infra.g3.invalidate_for_reset`) after fixing the loader defect. Old marker archived to `artifacts/governance/history/invalidated_d94d49b0a4380278.json`. |
-| `G3_FREEZE_CREATED` | 2026-09-24T07:04:40Z | Re-freeze (`vedant_infra.g3.freeze_g3`) from live repository state. Dependency hashes confirmed **byte-identical** to the original freeze — nothing scientific changed between the two freezes. |
-| `FINAL_TEST_ACCESS_CONSUMED` | 2026-09-24T07:08:39Z | **The single scientific final-test exposure.** Full pipeline completed: predictions → metrics → bootstrap → sensitivity → error analysis → comparison table → registration → G4. |
+| Event | Time (UTC) | G3 marker in effect | Outcome |
+|---|---|---|---|
+| `FINAL_TEST_ACCESS_CONSUMED` (1st) | 2026-09-24T06:55:44Z | **Original G3** — file sha256 `d94d49b0a438027842dbbf1c6130404297230f59b18bc863320ac753db770564`, internal `marker_sha256` `23cc913d7a56ffee13555cdfa777c3153eef445b4263b74522c05ff5336277c6` | **Zero-row technical incident, not a scientific evaluation.** `guarded_test_access()` correctly consumed the one-time authorization, then `load_frozen_models()` redundantly re-ran the full G3 nonuse audit inside the already-guarded loader — a check that cannot succeed once access has legitimately flipped to `FINAL_RUN_COMPLETED` a moment earlier — and the process crashed. Zero test-partition rows were read, zero inference was performed, zero metrics/predictions/bootstrap were generated, zero scientific test information was exposed. Full incident record: `artifacts/governance/stage5_final_test_access_incident_v1.json`; traceback: `artifacts/governance/history/stage5_final_test_run_crash_traceback_v1.log`. |
+| `SCIENTIFIC_RESET_INVALIDATED` | 2026-09-24T07:04:40Z | (transition) | The project owner explicitly authorized: *"Fix bug, formally reset, re-run once."* The loader defect was fixed first (`load_frozen_models(verify_g3=False)` for the already-guarded test-partition path only). Only then was the original G3 marker formally invalidated (`vedant_infra.g3.invalidate_for_reset`, reason logged in the access-state history) and archived to `artifacts/governance/history/invalidated_d94d49b0a4380278.json` — it was never deleted. |
+| `G3_FREEZE_CREATED` | 2026-09-24T07:04:40Z | **Replacement G3** — file sha256 `a348489978d21f3e61eee7fda886a4f671f8555a924b8b2cd16cdc2f37c73b5e`, internal `marker_sha256` `75b3e41b5d24c787a5cc3e384df0f2363134a0e5585639f120651ac0ef09254e` | Re-freeze (`vedant_infra.g3.freeze_g3`) computed fresh from live repository state. Its dependency bindings (every model/split/calibrator/threshold/preprocessor hash) were verified **byte-identical** to the original freeze's — this is a new freeze *cycle* (new marker file, new timestamp, new marker hash), not a resumption of the old one, but it governs the identical, unchanged science. |
+| `FINAL_TEST_ACCESS_CONSUMED` (2nd) | 2026-09-24T07:08:39Z | **Replacement G3** (above) | **The one successful scientific final-test evaluation.** Full pipeline completed exactly once: test-partition materialization → inference → predictions → metrics → bootstrap → sensitivity → error analysis → comparison table → registration → G4. The replacement G3 marker remained unchanged (same file, same hash) through this entire run. |
 
 An ordinary second `run` attempt after this was verified **BLOCKED**
 (`test_access_state`, and separately `active_g3` since the registered
 results legitimately changed `experiments/artifacts.csv`/`registry.csv`)
-before any loader access — no second scientific result exists.
+before any loader access — no third access event and no second scientific
+result exist.
 
 Pre-test commit (Part A, zero test-result artifacts): `eb83e655c44349fa88b91a8349d2372ac90218f1`.
 
@@ -176,20 +182,26 @@ frozen exposure plan (`artifacts/governance/stage5_final_test_plan_v1.json`).
 | Predictions (icu) | `artifacts/final_test/predictions/icu_v1.json` | `0b409f6154bb42cc20884a338c73a53f96dcdc02f78e7e5d50658b242bb3fa3f` |
 | Predictions (support) | `artifacts/final_test/predictions/support_v1.json` | `1d6611d17891917ce121e5523d81ea492cfab452804c430bd99eee9242a87c92` |
 | Metrics | `artifacts/final_test/metrics/metrics_v1.json` | `14ea825a0547d285cc573bd670254657af001b4a4c88a8d278dbd6878b822978` |
-| Bootstrap | `artifacts/final_test/bootstrap/bootstrap_v1.json` | `4d352160c1f4bddbbd49bdf09c0e0a06df20c93f32e286021d7d17d0170bcaba` |
+| Bootstrap | `artifacts/final_test/bootstrap/bootstrap_v1.json` | `a6d97861e755bfad77830cb9e62402a9907012368ff2de27ac5f30be30f3b2f4` (post-trim; see §8b) |
 | Sensitivity | `artifacts/final_test/sensitivity/complete_component_v1.json` | `b9196696dc48b8a5eacc3daad148da4b80785686a3e88236226b458b8d261506` |
 | Error analysis (csv/json) | `artifacts/final_test/error_analysis/error_analysis_v1.{csv,json}` | `83866c99…5165f7` / `3f00e398…e57a64a` |
 | Comparison table | `artifacts/final_test/comparison/comparison_table_v1.json` | `8c7c3e32cf27dc2f62a01e5b6f24c9e127796448ada03dc5e0ad26f95ad75fe4` |
 | Access incident record | `artifacts/governance/stage5_final_test_access_incident_v1.json` | — |
-| **G4 (final test evaluation freeze)** | `artifacts/governance/g4_test_evaluation_freeze_v1.json` | `69965137dda5736fe08064aa6db3f1c2fdf95b0668a4485987e407474d57706d` |
+| **G4 (final test evaluation freeze)** | `artifacts/governance/g4_test_evaluation_freeze_v1.json` | `65c85cae57353eb4bc177d743f36b7e86201879ff4a7061d8be8ec109099a71c` |
 
 G4 status: `FINAL_TEST_EVALUATION_FROZEN`, `test_accessed=true`,
-`no_post_test_tuning=true`. G3 (`artifacts/governance/g3_freeze.json`) is
-**unchanged** since its re-freeze at 2026-09-24T07:04:40Z — its own file
-content, and thus its dependency-hash bindings, are byte-identical to that
-moment; it is no longer used for live serving/readiness decisions from this
-point forward, which is the expected transition to G4 authority, not
-corruption.
+`no_post_test_tuning=true`, `total_historical_consumption_events=2`,
+`successful_scientific_evaluation_count=1`. **Precise G3 wording** (avoid
+the ambiguous phrase "G3 unchanged" on its own): *the original G3 freeze
+was formally invalidated after the documented zero-row technical incident;
+a replacement G3 was created with identical scientific/model/calibration
+dependencies before the successful final evaluation; that replacement
+marker remained unchanged (same file, same hash,
+`a348489978d21f3e61eee7fda886a4f671f8555a924b8b2cd16cdc2f37c73b5e`) through
+the successful scientific run and remains unchanged today.* Neither marker
+is used for live serving/readiness decisions from this point forward —
+that is the expected, documented transition to G4 authority, not
+corruption of either marker.
 
 ## 8a. Post-test registry bookkeeping corrections (no science impact)
 
@@ -198,12 +210,37 @@ aggregate/per-task Stage-5 rows were missing several required schema
 columns and used a `run_type` value that collided with an unrelated
 fixed-count governance check
 (`scripts/audit_stage2_finalization.py`'s exact-3 LSTM-sensitivity-run
-invariant). Both were pure registry-metadata completeness fixes — no
+invariant). Separately, `docs/evidence/models/` and `docs/evidence/system/`
+(auto-generated, non-frozen documentation indexes — not scientific
+artifacts, not G3-bound in themselves) had gone stale relative to current
+source files after Stage 5's own code changes and were regenerated. All of
+these were pure registry/documentation-metadata completeness fixes — no
 prediction, metric, bootstrap, sensitivity, or error-analysis value was
-touched, and no model/split/calibration/threshold changed. G4's recorded
-`registry_sha256`/`artifacts_sha256` were refreshed to match the corrected
-files (all four corrections are in `scripts/stage5_fix_*.py`, each with a
-docstring explaining exactly what it changed and why).
+touched, and no model/split/calibration/threshold changed (verified by
+direct hash comparison before and after every correction; see
+`scripts/stage5_fix_*.py` and `scripts/stage5_closure_g4_clarity_update.py`,
+each with a docstring explaining exactly what it changed and why). G4's
+recorded `registry_sha256`/`artifacts_sha256` were refreshed to match the
+corrected files.
+
+## 8b. Bootstrap artifact trimming (serialization/storage only, no numerical change)
+
+`artifacts/final_test/bootstrap/bootstrap_v1.json` was reduced from
+~176 MB to ~25 KB solely because GitHub rejects files over 100 MB. The
+omitted fields, `bootstrap_distribution` (the 2000 per-replicate values)
+and `sampled_cluster_sequences` (the 2000 per-replicate resampled stay-id
+sequences), are exactly reproducible from the frozen prediction artifacts
+in `artifacts/final_test/predictions/` together with the frozen
+`n_bootstrap=2000`/`seed=20260921` — they were never used to compute any
+reported point estimate, CI, or valid/invalid-replicate count. Every
+retained field (`point_estimate`, `ci_lower`, `ci_upper`, `n_requested_replicates`,
+`n_valid_replicates`, `n_invalid_replicates`, `bootstrap_seed`, and the
+percentile convention) is numerically identical before and after the trim —
+verified directly against the values recorded in this review's Section 3
+and against the values printed at generation time
+(`scripts/stage5_trim_bootstrap_artifact.py`'s own before/after log). No
+bootstrap was recomputed or rerun; the trim only removed already-computed,
+regenerable intermediates from the persisted file.
 
 ## 9. No post-test tuning
 
