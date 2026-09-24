@@ -17,7 +17,9 @@
 	import { Globe } from '$lib/components/magic/globe';
 	import BlurFade from '$lib/components/magic/blur-fade/blur-fade.svelte';
 	import NumberTicker from '$lib/components/magic/number-ticker/number-ticker.svelte';
-	
+	import { SmoothCursor } from '$lib/components/magic/smooth-cursor';
+	import Meteors from '$lib/components/magic/meteors/meteors.svelte';
+
 	// Import the Signature component you provided
 	import { Signature } from "$lib/components/spell/signature";
 
@@ -31,30 +33,31 @@
 
 	let ready = false;
 	let preloaderMounted = true;
+	let fineCursor = false;
 
 	let beamContainer: HTMLDivElement | null = null;
 	let beamFrom: HTMLDivElement | null = null;
 	let beamTo: HTMLDivElement | null = null;
 
 	const setupLines = [
-		'SENSOR ARRAY / READY',
-		'ECG STREAM / CONNECTED',
-		'PPG STREAM / CONNECTED',
-		'EDGE PROCESSING / READY',
-		'PRIVACY LAYER / READY'
+		'HISTORICAL DATA / LOADED',
+		'XGBOOST MODELS / FROZEN',
+		'TREESHAP ENGINE / READY',
+		'GROQ AI LINK / READY',
+		'ACCESS GUARD / SEALED'
 	];
 
 	const signalItems = [
-		{ id: 'ecg', label: 'ECG', value: 'Electrical cardiac signal', meta: 'AD8232' },
-		{ id: 'ppg', label: 'PPG', value: 'Optical pulse waveform', meta: 'MAX30102' },
-		{ id: 'spo2', label: 'SpO₂', value: 'Blood oxygen estimation', meta: 'MAX30102' },
-		{ id: 'edge', label: 'EDGE', value: 'Local feature processing', meta: 'ESP32' }
+		{ id: 'recovery24', label: 'REC+24', value: 'ΔSOFA at +24h', meta: 'XGBoost' },
+		{ id: 'recovery48', label: 'REC+48', value: 'ΔSOFA at +48h', meta: 'XGBoost' },
+		{ id: 'icu', label: 'ICU', value: 'Remaining ICU stay time', meta: 'XGBoost' },
+		{ id: 'support', label: 'SUPPORT', value: 'New organ-support risk', meta: 'XGBoost' }
 	];
 
 	const timelineData = [
-		{ time: '01', steps: [{ icon: 'S', content: 'Wearable physiological sensing' }, { icon: 'I', content: 'Connected IoMT monitoring' }] },
-		{ time: '02', steps: [{ icon: 'A', content: 'AI / machine learning on health signals' }, { icon: 'F', content: 'Federated learning for collaborative training' }] },
-		{ time: '03', steps: [{ icon: 'P', content: 'Scientific integrity through frozen artifacts' }, { icon: 'V', content: 'PRT V2: retrospective replay, real models' }] }
+		{ time: '01', steps: [{ icon: 'S', content: 'Synthetic ICU cohort generation & frozen SOFA labeling' }, { icon: 'E', content: 'Temporal feature engineering across 6h / 48h windows' }] },
+		{ time: '02', steps: [{ icon: 'A', content: 'Gradient-boosted forecasting across four frozen models' }, { icon: 'X', content: 'TreeSHAP attribution for every prediction' }] },
+		{ time: '03', steps: [{ icon: 'G', content: 'Fail-closed governance: one-time fresh-test evaluation' }, { icon: 'V', content: 'PRT V2: retrospective replay, real models' }] }
 	];
 
 	const federationMarkers = [
@@ -67,6 +70,7 @@
 
 	onMount(() => {
 		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		fineCursor = !reducedMotion && window.matchMedia('(pointer: fine)').matches;
 		const seen = sessionStorage.getItem('nhm-preloader-seen');
 
 		if (seen === '1' || reducedMotion) {
@@ -154,6 +158,14 @@
 	</div>
 {/if}
 
+{#if fineCursor}
+	<SmoothCursor>
+		{#snippet cursor()}
+			<span class="prt-cursor"><span class="prt-cursor__ring"></span><span class="prt-cursor__dot"></span></span>
+		{/snippet}
+	</SmoothCursor>
+{/if}
+
 <div class="site-shell">
 
 	<!-- =========================================================
@@ -234,9 +246,9 @@
 					<div class="complex-wave__scanline"></div>
 				</div>
 				<div class="hero__signal-meta">
-					<span>ECG SIGNAL</span>
-					<span>LOCAL / LIVE</span>
-					<span>QUALITY / EXCELLENT</span>
+					<span>REPLAY STREAM</span>
+					<span>CUTOFF / LIVE</span>
+					<span>MODEL / FROZEN</span>
 				</div>
 			</div>
 		</section>
@@ -246,13 +258,13 @@
 		====================================================== -->
 		<section class="problem section-light">
 			<div class="container relative z-10">
-				<div class="section-kicker">02 / THE SAMPLING DILEMMA</div>
+				<div class="section-kicker">02 / THE STATIC SNAPSHOT PROBLEM</div>
 				<div class="problem__heading">
 					<div class="problem__title-wrap">
 						<BlurFade inView={true} direction="up" offset={24} blur="8px" duration={0.8}>
-							<h2>Healthcare often sees<br /><span>snapshots.</span> <em class="text-slate-400">Disease lives in the gaps.</em></h2>
+							<h2>Most models predict<br /><span>once.</span> <em class="text-slate-400">Recovery keeps moving.</em></h2>
 						</BlurFade>
-						
+
 						<!-- Signature component integrated cleanly here -->
 						<div class="mt-6 hidden md:block">
 							<Signature once={false} inView text="Context is everything." fontSize={26} color="#64748b" />
@@ -261,7 +273,7 @@
 
 					<div class="problem__intro-copy">
 						<BlurFade inView={true} direction="up" offset={18} delay={0.12} blur="6px" duration={0.7}>
-							<p>Standard episodic clinical visits capture isolated 15-minute readings months apart, leaving 99.8% of cardiac and respiratory variations completely unobserved. NHM bridges this discontinuous void with an on-device neural knowledge graph that correlates multi-modal biopotentials continuously in real time.</p>
+							<p>A single retrospective prediction, made once and never revisited, treats a ten-day ICU stay as one flat snapshot — discarding every hour of history that arrives afterward. PRT · V2 instead replays each stay cutoff by cutoff, recomputing four independent forecasts from only the history truncated at that exact moment, from the same four frozen gradient-boosted models every time.</p>
 						</BlurFade>
 					</div>
 				</div>
@@ -281,10 +293,10 @@
 				<div class="section-kicker">03 / RESEARCH EVOLUTION</div>
 				<div class="research__heading">
 					<BlurFade inView={true} direction="up" offset={18} blur="8px">
-						<h2>From sensing to<br /><span>privacy-preserving intelligence.</span></h2>
+						<h2>From point prediction to<br /><span>governed sequential replay.</span></h2>
 					</BlurFade>
 					<BlurFade inView={true} direction="up" offset={18} delay={0.12} blur="6px">
-						<p>NHM brings together the progression identified in the project literature review rather than treating each technique as an isolated feature.</p>
+						<p>Each phase of this project builds on the last — synthetic cohort generation, frozen SOFA labeling, gradient-boosted forecasting, TreeSHAP attribution, and a fail-closed one-time fresh-test evaluation — rather than treating any single stage as the whole system.</p>
 					</BlurFade>
 				</div>
 				<div class="research__timeline">
@@ -303,12 +315,12 @@
 			</div>
 
 			<div class="container relative z-10">
-				<div class="section-kicker section-kicker--dark">04 / THE WEARABLE HARDWARE LAB</div>
+				<div class="section-kicker section-kicker--dark">04 / THE FORECASTING PIPELINE</div>
 				<div class="hardware__heading">
 					<div class="hardware__title">
-						<DiaTextReveal text="The body becomes the signal." textColor="#eef7f6" colors={['#2bb8b0', '#89d7d0', '#d5f0ed']} duration={1.65} triggerOnView={true} once={true} />
+						<DiaTextReveal text="History becomes the forecast." textColor="#eef7f6" colors={['#2bb8b0', '#89d7d0', '#d5f0ed']} duration={1.65} triggerOnView={true} once={true} />
 					</div>
-					<p>An integrated hardware suite uniting biopotential ECG acquisition, dual-wavelength optical PPG, and dual-core edge machine learning within a titanium unibody enclosure.</p>
+					<p>Four frozen gradient-boosted models, one TreeSHAP explainer, and a governed one-time evaluation — the full path from raw historical time series to a calibrated, explained forecast.</p>
 				</div>
 
 				<!-- State-of-the-art Interactive Hardware Studio Component -->
@@ -320,7 +332,7 @@
 			<div class="technical-marquee">
 				<Marquee repeat={4} pauseOnHover={true}>
 					<div class="marquee-item">
-						<span>MAX30102 PPG</span><i>•</i><span>AD8232 ECG</span><i>•</i><span>ESP32-S3 EDGE</span><i>•</i><span>BLE 5.0 MESH</span><i>•</i><span>LOCAL 24-BIT ADC</span><i>•</i><span>360Hz SAMPLING</span><i>•</i><span>AES-256 ENCRYPTED</span>
+						<span>XGBOOST GRADIENT TREES</span><i>•</i><span>TREESHAP ATTRIBUTION</span><i>•</i><span>48H LOOKBACK WINDOW</span><i>•</i><span>8×6H TEMPORAL BINS</span><i>•</i><span>FROZEN SOFA SCORING</span><i>•</i><span>GROQ gpt-oss-120b</span><i>•</i><span>FAIL-CLOSED GUARD</span>
 					</div>
 				</Marquee>
 				<ProgressiveBlur position="both" height="100%" class="marquee-blur" />
@@ -332,16 +344,16 @@
 		====================================================== -->
 		<section id="signals" class="signals section-light">
 			<div class="container">
-				<div class="section-kicker">05 / MULTIMODAL SENSING</div>
+				<div class="section-kicker">05 / FOUR INDEPENDENT FORECASTS</div>
 
 				<div class="signals__heading">
 					<BlurFade inView={true} direction="up" offset={20} blur="8px">
-						<h2>One device.<br /><span>Synchronized signals.</span></h2>
+						<h2>One cutoff.<br /><span>Four independent forecasts.</span></h2>
 					</BlurFade>
-					
+
 					<div class="signals__morph-container">
 						<div class="signals__morph">
-							<MorphingText texts={['SENSE', 'SYNCHRONIZE', 'UNDERSTAND']} />
+							<MorphingText texts={['OBSERVE', 'FORECAST', 'EXPLAIN']} />
 						</div>
 					</div>
 				</div>
@@ -363,27 +375,27 @@
 			
 			<div class="edge__grid"></div>
 			<div class="container relative z-10">
-				<div class="section-kicker section-kicker--dark">06 / EDGE INTELLIGENCE</div>
+				<div class="section-kicker section-kicker--dark">06 / SERVER-SIDE INFERENCE</div>
 				<div class="edge__heading">
-					<h2>The intelligence<br /><span>stays close.</span></h2>
-					<p>Signals move from sensing to local processing before any collaborative learning step. The architecture keeps the first layer of interpretation close to the device.</p>
+					<h2>The forecast<br /><span>stays reproducible.</span></h2>
+					<p>Every prediction is a fresh call recomputed from history truncated at the cutoff, served by the same frozen model weights every time — never a cached lookup, never a chained forecast.</p>
 				</div>
 
 				<div class="edge__flow" bind:this={beamContainer}>
 					<div class="flow-node glass-panel" bind:this={beamFrom}>
 						<span class="flow-node__index">01</span>
-						<strong>SENSORS</strong>
-						<span>ECG · PPG · SpO₂</span>
+						<strong>HISTORY</strong>
+						<span>VITALS · LABS · SUPPORT FLAGS</span>
 					</div>
 					<div class="flow-node glass-panel flow-node--active">
 						<span class="flow-node__index">02</span>
-						<strong>ESP32</strong>
-						<span>EDGE PROCESSING</span>
+						<strong>XGBOOST</strong>
+						<span>FROZEN GRADIENT TREES</span>
 					</div>
 					<div class="flow-node glass-panel" bind:this={beamTo}>
 						<span class="flow-node__index">03</span>
-						<strong>LOCAL MODEL</strong>
-						<span>FEATURES · INFERENCE</span>
+						<strong>TREESHAP</strong>
+						<span>ATTRIBUTION · AI NOTE</span>
 					</div>
 
 					{#if beamContainer && beamFrom && beamTo}
@@ -393,7 +405,7 @@
 
 				<div class="edge__quote">
 					<div class="edge__line-shadow">
-						<LineShadowText content="PROCESS LOCALLY" shadowColor="#2bb8b0" as="div" />
+						<LineShadowText content="RECOMPUTE, NEVER CACHE" shadowColor="#2bb8b0" as="div" />
 					</div>
 				</div>
 			</div>
@@ -409,38 +421,38 @@
 			</div>
 
 			<div class="container relative z-10">
-				<div class="section-kicker section-kicker--dark">07 / PRIVACY-PRESERVING LEARNING</div>
+				<div class="section-kicker section-kicker--dark">07 / GOVERNED, FAIL-CLOSED ACCESS</div>
 				<div class="federation__heading">
-					<h2>Learn together.<br /><em>Share less.</em></h2>
-					<p>Federated learning lets participating clients contribute model updates while keeping raw physiological recordings at the local side of the architecture.</p>
+					<h2>Evaluate once.<br /><em>Never retune.</em></h2>
+					<p>The fresh V2 test cohort is sealed behind a one-time access guard: authorized once, consumed once, and never queried again — a fail-closed state machine that makes post-test tuning structurally impossible, not just discouraged.</p>
 				</div>
 
 				<div class="federation__stage">
 					<div class="federation__map">
 						<DottedMap width={150} height={75} mapSamples={4200} markers={federationMarkers} dotColor="#64748b" markerColor="#2dd4bf" dotRadius={0.35} />
 					</div>
-					
+
 					<div class="federation__path">
 						<div class="federation-node federation-node--left">
-							<span>LOCAL CLIENTS</span>
-							<strong>MODEL UPDATES</strong>
+							<span>SEALED TEST COHORT</span>
+							<strong>ONE-TIME ACCESS</strong>
 						</div>
 						<div class="federation-path-line"><span></span><span></span><span></span></div>
 						<div class="federation-node federation-node--right">
-							<span>FEDERATED SERVER</span>
-							<strong>AGGREGATION</strong>
+							<span>FROZEN EVALUATION</span>
+							<strong>IMMUTABLE ARTIFACTS</strong>
 						</div>
 					</div>
 
 					<div class="federation__rule glass-panel">
 						<div class="federation__rule-col">
-							<span class="rule-bad">RAW DATA</span>
-							<strong>STAYS LOCAL</strong>
+							<span class="rule-bad">TEST ACCESS</span>
+							<strong>CONSUMED ONCE</strong>
 						</div>
 						<div class="federation__rule-divider"></div>
 						<div class="federation__rule-col">
-							<span class="rule-good">LEARNING</span>
-							<strong>HAPPENS COLLABORATIVELY</strong>
+							<span class="rule-good">METRICS</span>
+							<strong>FROZEN AND HASH-PINNED</strong>
 						</div>
 					</div>
 				</div>
@@ -454,8 +466,8 @@
 			<div class="container relative z-10">
 				<div class="section-kicker section-kicker--dark">08 / SYSTEM ARCHITECTURE</div>
 				<div class="system__intro">
-					<h2>Under the interface is<br /><span>a layered system.</span></h2>
-					<p>From analog microvolt transduction and on-device SIMD feature extraction to differential privacy accounting and global federated consensus.</p>
+					<h2>Under the dashboard is<br /><span>a governed pipeline.</span></h2>
+					<p>From synthetic historical replay and temporal windowing to gradient-boosted forecasting, TreeSHAP attribution, calibration, and a fail-closed evaluation guard.</p>
 				</div>
 
 				<div class="system__matrix-wrap">
@@ -472,7 +484,7 @@
 				<div class="section-kicker">09 / THE PRODUCT</div>
 				<div class="product__heading">
 					<h2>See the system<br /><span>in action.</span></h2>
-					<p>An interactive preview of the continuous health telemetry environment: live multilead signals, arrhythmia detection, and privacy-preserving insights.</p>
+					<p>An interactive preview of the replay dashboard: recovery trajectories, ICU-stay forecasts, organ-support risk, TreeSHAP attribution, and an AI-generated research note — all recomputed from a live API, never scripted.</p>
 				</div>
 
 				<div class="product__workstation-wrap">
@@ -491,6 +503,7 @@
 				<div class="section-bg__overlay section-bg__overlay--heavy"></div>
 			</div>
 
+			<Meteors number={26} minDelay={0.15} maxDelay={2.2} minDuration={3} maxDuration={9} angle={215} />
 			<div class="final__grid"></div>
 			<div class="container relative z-10 text-center flex flex-col items-center">
 				<div class="eyebrow eyebrow--teal glow-text mb-6">PRT · V2 / 10</div>
@@ -503,7 +516,7 @@
 				
 				<p class="final__p">Frozen models. Retrospective replay. Scientific transparency.</p>
 				<a href="/demo" class="button button--light button--glow">
-					<span>Present the interactive simulation</span><span>↗</span>
+					<span>Open the guided demo</span><span>↗</span>
 				</a>
 			</div>
 
@@ -527,15 +540,15 @@
 			<p>Personalized Patient Recovery Trajectory</p>
 		</div>
 		<div class="footer__links">
-			<a href="#technology">Technology</a>
-			<a href="#privacy">Privacy</a>
+			<a href="#technology">Method</a>
+			<a href="#privacy">Governance</a>
 			<a href="#research">Research</a>
 			<a href="/demo">Guided Demo</a>
 			<a href="/patients">Patient Replay</a>
 		</div>
 		<div class="footer__meta">
-			<span>B.TECH FINAL YEAR PROJECT</span>
-			<span>VIT CHENNAI</span>
+			<span>SYNTHETIC RESEARCH BENCHMARK</span>
+			<span>NOT A CLINICAL TOOL</span>
 		</div>
 	</footer>
 </div>

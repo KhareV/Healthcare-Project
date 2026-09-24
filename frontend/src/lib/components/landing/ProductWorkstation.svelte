@@ -8,7 +8,7 @@
 	let bpm = $state(72);
 	let spo2 = $state(98);
 	let respRate = $state(14);
-	let statusText = $state('NORMAL SINUS RHYTHM');
+	let statusText = $state('STABLE RECOVERY TRAJECTORY');
 	let statusColor = $state('#0d9488');
 
 	function setMode(mode: SimMode) {
@@ -17,25 +17,25 @@
 			bpm = 72;
 			spo2 = 98;
 			respRate = 14;
-			statusText = 'NORMAL SINUS RHYTHM // OPTIMAL';
+			statusText = 'STABLE RECOVERY // LOW ACUITY';
 			statusColor = '#0d9488';
 		} else if (mode === 'brady') {
 			bpm = 48;
 			spo2 = 97;
 			respRate = 10;
-			statusText = 'NOCTURNAL BRADYCARDIA // STABLE';
+			statusText = 'RESPIRATORY SUPPORT RISK // WATCH';
 			statusColor = '#6366f1';
 		} else if (mode === 'tachy') {
 			bpm = 118;
 			spo2 = 97;
 			respRate = 22;
-			statusText = 'EXERTIONAL TACHYCARDIA // ELEVATED';
+			statusText = 'CARDIOVASCULAR DETERIORATION // ELEVATED';
 			statusColor = '#0284c7';
 		} else if (mode === 'pvc') {
 			bpm = 84;
 			spo2 = 95;
 			respRate = 16;
-			statusText = 'ECTOPIC PVC BEAT DETECTED';
+			statusText = 'HIGH-VARIABILITY EPISODE FLAGGED';
 			statusColor = '#e11d48';
 		}
 	}
@@ -57,11 +57,11 @@
 			<div class="chrome-traffic-lights">
 				<span></span><span></span><span></span>
 			</div>
-			<span class="chrome-session">SESSION // #NHM-84920-LIVE</span>
+			<span class="chrome-session">SESSION // #PRT-V2-DEMO-LIVE</span>
 		</div>
 
 		<div class="chrome-center">
-			<span class="chrome-title">NHM CLINICAL MONITORING ENVIRONMENT</span>
+			<span class="chrome-title">PRT · V2 REPLAY ENVIRONMENT</span>
 		</div>
 
 		<div class="chrome-right">
@@ -76,29 +76,29 @@
 	<div class="workstation-body">
 		<!-- Top Row: Interactive State Controller -->
 		<div class="workstation-toolbar">
-			<span class="toolbar-label">TELEMETRY SCENARIO SIMULATOR:</span>
+			<span class="toolbar-label">SYNTHETIC TRAJECTORY SIMULATOR:</span>
 			<div class="toolbar-btns">
 				<button class="t-btn" class:t-btn--active={simMode === 'normal'} onclick={() => setMode('normal')} type="button">
-					Normal Sinus (72 BPM)
+					Stable Recovery (Low SOFA)
 				</button>
 				<button class="t-btn" class:t-btn--active={simMode === 'brady'} onclick={() => setMode('brady')} type="button">
-					Bradycardia (48 BPM)
+					Respiratory Escalation (Low SpO₂)
 				</button>
 				<button class="t-btn" class:t-btn--active={simMode === 'tachy'} onclick={() => setMode('tachy')} type="button">
-					Exertion (118 BPM)
+					Cardiovascular Deterioration (High HR)
 				</button>
 				<button class="t-btn" class:t-btn--active={simMode === 'pvc'} onclick={() => setMode('pvc')} type="button">
-					PVC Arrhythmia
+					High-Variability Episode
 				</button>
 			</div>
 		</div>
 
-		<!-- Middle: Primary Biosignal Waveform Console -->
+		<!-- Middle: Synthetic Vitals Channel Console -->
 		<div class="waveform-console">
 			<div class="waveform-box">
 				<div class="wave-topline">
-					<span>LEAD-I CARDIAC BIOPOTENTIAL (AD8232)</span>
-					<code>360 Hz // GAIN 1100x</code>
+					<span>HEART RATE CHANNEL (SYNTHETIC)</span>
+					<code>6h BINS // SOFA-LINKED</code>
 				</div>
 				<div class="wave-screen">
 					<PhysiologicalWaveform mode="ecg" speed={simMode === 'tachy' ? 0.9 : simMode === 'brady' ? 0.35 : 0.55} amplitude={0.78} />
@@ -107,8 +107,8 @@
 
 			<div class="waveform-box">
 				<div class="wave-topline">
-					<span>PHOTOPLETHYSMOGRAM (MAX30102)</span>
-					<code>660 / 880 nm DUAL-WAVE</code>
+					<span>BLOOD PRESSURE CHANNEL (SYNTHETIC)</span>
+					<code>MAP TREND // VASOPRESSOR-LINKED</code>
 				</div>
 				<div class="wave-screen">
 					<PhysiologicalWaveform mode="ppg" speed={simMode === 'tachy' ? 0.9 : simMode === 'brady' ? 0.35 : 0.55} amplitude={0.65} />
@@ -116,41 +116,41 @@
 			</div>
 		</div>
 
-		<!-- Bottom: Real-Time Vitals Cards -->
+		<!-- Bottom: Replay Vitals Cards -->
 		<div class="vitals-dashboard-row">
 			<div class="vital-tile">
 				<span class="v-label">HEART RATE</span>
 				<strong class="v-val">{bpm} <small>BPM</small></strong>
-				<span class="v-sub">R-R Variance: 54ms</span>
+				<span class="v-sub">Rolling 6h variance: 54ms</span>
 			</div>
 
 			<div class="vital-tile">
 				<span class="v-label">BLOOD OXYGEN (SpO₂)</span>
 				<strong class="v-val">{spo2} <small>%</small></strong>
-				<span class="v-sub">Calibrated Optical R: 0.52</span>
+				<span class="v-sub">Respiratory SOFA-linked channel</span>
 			</div>
 
 			<div class="vital-tile">
 				<span class="v-label">RESPIRATION RATE</span>
 				<strong class="v-val">{respRate} <small>BR/MIN</small></strong>
-				<span class="v-sub">ECG Derived Respiration (EDR)</span>
+				<span class="v-sub">Synthetic vitals channel</span>
 			</div>
 
 			<div class="vital-tile">
-				<span class="v-label">EDGE PRIVACY STATUS</span>
-				<strong class="v-val text-teal">LOCAL ONLY</strong>
-				<span class="v-sub">0 Bytes Uploaded</span>
+				<span class="v-label">GOVERNANCE STATUS</span>
+				<strong class="v-val text-teal">GUARD ENFORCED</strong>
+				<span class="v-sub">Fresh-test cohort walled off</span>
 			</div>
 		</div>
 
 		<!-- Footer CTA bar -->
 		<div class="workstation-cta-bar">
 			<div class="cta-left-copy">
-				<strong>Ready to experience the continuous health telemetry environment?</strong>
-				<p>Explore live historical graphs, signal replay, and privacy-preserving federated training logs.</p>
+				<strong>Ready to replay a full synthetic ICU stay, cutoff by cutoff?</strong>
+				<p>Explore recovery / ICU / support-risk forecasts, TreeSHAP attribution, and the AI research note — all from frozen, one-time fresh-test evaluation artifacts.</p>
 			</div>
-			<a href="/monitor" class="enter-monitor-btn">
-				<span>Launch Full Monitor Environment</span>
+			<a href="/demo" class="enter-monitor-btn">
+				<span>Launch Guided Demo</span>
 				<span>↗</span>
 			</a>
 		</div>

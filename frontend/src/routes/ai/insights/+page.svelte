@@ -6,6 +6,8 @@
 	import Panel from '$lib/components/dashboard/Panel.svelte';
 	import BarContrib from '$lib/components/dashboard/BarContrib.svelte';
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
+	import RadarPlot from '$lib/components/dashboard/RadarPlot.svelte';
+	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type AIRecommendation, type DemoSubject, type PredictionResponse } from '$lib/services/api';
 	import { Sparkles, BrainCircuit } from '@lucide/svelte';
 
@@ -28,6 +30,20 @@
 	function contribFeatures(items: { label: string; attribution: number }[]) {
 		return items.map((i) => ({ name: i.label, value: i.attribution }));
 	}
+
+	const crossTaskRadar = $derived.by(() => {
+		if (!prediction) return { labels: [], values: [] };
+		const entries = Object.entries(prediction.explanations);
+		const topAbs = entries.map(([, exp]) => {
+			const all = [...exp.top_positive_contributors, ...exp.top_negative_contributors];
+			return all.length ? Math.max(...all.map((c) => Math.abs(c.attribution))) : 0;
+		});
+		const maxAbs = Math.max(...topAbs, 1e-6);
+		return {
+			labels: entries.map(([task]) => (TASK_TITLES[task] ?? task).toUpperCase().slice(0, 11)),
+			values: topAbs.map((v) => Math.round((v / maxAbs) * 100))
+		};
+	});
 
 	async function load() {
 		if (!subject) return;
@@ -87,7 +103,7 @@
 
 <svelte:head><title>AI Insight + Explainability | Personalized Patient Recovery Trajectory</title></svelte:head>
 
-<WorkbenchPage eyebrow="04 / AI INSIGHT + EXPLAINABILITY" title="Make the forecast legible, then let a model narrate it." description="TreeSHAP decomposes each frozen XGBoost output feature-by-feature; a separate LLM (Groq / Llama-family inference) turns those numbers into a plain-language research note — generated only after prediction, never influencing it.">
+<WorkbenchPage eyebrow="04 / AI INSIGHT + EXPLAINABILITY" title="Make the forecast legible, then let a model narrate it." description="TreeSHAP decomposes each frozen XGBoost output feature-by-feature; a separate LLM (Groq-hosted openai/gpt-oss-120b) turns those numbers into a plain-language research note — generated only after prediction, never influencing it.">
 	{#if error}<div class="error">{error}</div>{/if}
 	{#if subjects.length}
 		<div class="controls">
@@ -125,6 +141,24 @@
 			<MetricTile label="Additivity checks" value={Object.values(prediction.explanations).every((e) => e.diagnostics.additivity_check_passed) ? 'PASS' : 'FAIL'} detail="ALL 4 TASKS" tone="cyan" />
 		</div>
 
+		<div class="grid two attribution-overview">
+			<Panel eyebrow="CROSS-TASK / MAX |SHAP|" title="Which task leans hardest on its top factor" note="NORMALIZED 0–100">
+				<div class="radar-row">
+					<RadarPlot values={crossTaskRadar.values} labels={crossTaskRadar.labels} color="#2bb8b0" />
+				</div>
+			</Panel>
+			<Panel eyebrow="TEMPORAL WINDOW / QUALITY" title="Observation completeness at this cutoff" note={`${prediction.data_quality.observed_bins}/${prediction.data_quality.total_bins} BINS`}>
+				<div class="dq-gauge-row">
+					<GaugeRing value={Math.round((prediction.data_quality.observed_feature_fraction ?? 0) * 100)} size={92} stroke={9} color="#38bdf8" label="OBSERVED" />
+					<dl>
+						<div><dt>Observed feature values</dt><dd>{prediction.data_quality.observed_feature_values} / {prediction.data_quality.total_feature_values}</dd></div>
+						<div><dt>Missing</dt><dd>{prediction.data_quality.missing_feature_values}</dd></div>
+						<div><dt>Pre-admission padding bins</dt><dd>{prediction.data_quality.padding_bins}</dd></div>
+					</dl>
+				</div>
+			</Panel>
+		</div>
+
 		<div class="grid two">
 			{#each Object.entries(prediction.explanations) as [task, explanation]}
 				<Panel eyebrow={`TREESHAP / ${task.toUpperCase()}`} title={TASK_TITLES[task]} note={explanation.diagnostics.additivity_check_passed ? 'ADDITIVITY OK' : 'ADDITIVITY FAILED'}>
@@ -157,6 +191,13 @@
 	.ai-panel footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 12px; color: #53647b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .04em; }
 	.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
 	.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+	.attribution-overview { margin-bottom: 8px; }
+	.radar-row { display: flex; justify-content: center; padding: 6px 0 2px; }
+	.dq-gauge-row { display: flex; align-items: center; gap: 22px; }
+	.dq-gauge-row dl { flex: 1; display: grid; gap: 10px; margin: 0; }
+	.dq-gauge-row dl div { display: flex; justify-content: space-between; gap: 12px; border-bottom: 1px solid rgba(148,163,184,.1); padding-bottom: 8px; }
+	.dq-gauge-row dt { color: #71829a; font: 9px 'JetBrains Mono', monospace; letter-spacing: .04em; }
+	.dq-gauge-row dd { margin: 0; color: #dce9e8; font: 600 12px 'Space Grotesk', sans-serif; }
 	.shap-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 	.col-label { display: block; margin-bottom: 8px; font: 8px 'JetBrains Mono', monospace; letter-spacing: .1em; }
 	.col-label.pos { color: #60a5fa; }

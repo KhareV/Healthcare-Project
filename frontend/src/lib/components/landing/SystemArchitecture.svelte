@@ -16,76 +16,76 @@
 
 	const layers: ArchitectureLayer[] = [
 		{
-			id: 'sensing',
+			id: 'ingest',
 			index: '01',
-			title: 'Analog Biosensing',
-			role: 'Biopotential & Optical Transduction',
-			protocol: 'Analog Microvolt Differential / I2C',
-			latency: '< 0.2 ms',
-			dataThroughput: '14.4 kbps raw',
-			security: 'Direct Skin Contact Guard',
-			description: 'Captures electrical cardiac potentials via differential electrodes and optical pulsatile absorption at 660nm and 880nm.',
-			details: ['AD8232 Integrated Instrumentation Amp', 'MAX30102 Dual-Wavelength Core', 'Hardware Right-Leg Drive Active Filter']
+			title: 'Historical Replay Ingest',
+			role: 'Cutoff-Bounded History Loader',
+			protocol: 'REST /predict · JSON',
+			latency: '< 5 ms',
+			dataThroughput: 'Full Stay History',
+			security: 'Guard-Enforced Demo Manifest',
+			description: 'Loads the observed history for one synthetic ICU stay, truncated strictly at the selected replay cutoff — never future data.',
+			details: ['Only 3 whitelisted demo stays are ever servable', 'Illegal cutoffs rejected before any computation', 'Fresh-test cohort walled off from live query']
 		},
 		{
-			id: 'embedded',
+			id: 'windowing',
 			index: '02',
-			title: 'Embedded Edge Firmware',
-			role: 'Hardware FIFO & Noise Filtering',
-			protocol: 'FreeRTOS DMA / Ring Buffer',
-			latency: '0.6 ms',
-			dataThroughput: '512 KB Internal SRAM',
-			security: 'Isolated Local Ring Buffer',
-			description: 'Continuous ADC sampling with baseline wander removal, 50Hz notch filter, and circular buffer storage on the ESP32-S3.',
-			details: ['24-Bit Sigma-Delta Conversion', 'Zero-Latency Motion Artifact Suppression', 'Dual-Core Asynchronous Core Affinity']
+			title: 'Temporal Windowing & Masking',
+			role: '48h Lookback / 8×6h Bins',
+			protocol: 'Deterministic Binning',
+			latency: '< 2 ms',
+			dataThroughput: '8×N Observation Grid',
+			security: 'Deterministic, No Randomness',
+			description: 'Splits the 48-hour lookback into eight 6-hour bins per channel, building an observation/padding mask for exactly what was actually recorded.',
+			details: ['Vitals, labs, and organ-support flags binned identically', 'Padding distinguished from true missingness', 'Same windowing logic used at train and test time']
 		},
 		{
-			id: 'features',
+			id: 'forecast',
 			index: '03',
-			title: 'Wavelet Feature Extraction',
-			role: 'Cross-Modal Vector Synthesis',
-			protocol: 'SIMD Vector Floating Point',
-			latency: '1.2 ms',
-			dataThroughput: '128-D Feature Embedding',
-			security: 'Deterministic In-Memory Transform',
-			description: 'Real-time Pan-Tompkins QRS peak detection, R-R interval HRV extraction, and Pulse Transit Time (PTT) fusion.',
-			details: ['Continuous Beat-to-Beat PTT Tracking', 'Autonomic Sympathovagal LF/HF Decomposition', '128-Dimensional Topological Vector Projection']
+			title: 'Gradient-Boosted Forecast',
+			role: 'Four Frozen XGBoost Heads',
+			protocol: 'Frozen Model Registry',
+			latency: '~12 ms / Cutoff',
+			dataThroughput: '4 Independent Predictions',
+			security: '100% Frozen — No Retuning',
+			description: 'Four independently trained XGBoost models forecast ΔSOFA+24h, ΔSOFA+48h, remaining ICU hours, and new organ-support risk.',
+			details: ['Every model trained once and frozen before the fresh test', 'No horizon is ever chained from another', 'Same frozen weights used across the whole replay']
 		},
 		{
-			id: 'inference',
+			id: 'shap',
 			index: '04',
-			title: 'On-Device Edge ML',
-			role: 'Local Arrhythmia Classifier',
-			protocol: 'TensorFlow Lite Micro (INT8)',
-			latency: '1.4 ms / Inference',
-			dataThroughput: '18 KB Model Flash Footprint',
-			security: '100% Zero Raw Data Upload',
-			description: 'Quantized neural network performing real-time classification of arrhythmias, PVCs, and sleep desaturations entirely on the wearable.',
-			details: ['On-Chip Quantized 8-Bit Inference Engine', 'Zero Cloud Dependency for Immediate Alarms', 'Automated Anomaly Confidence Scoring']
+			title: 'TreeSHAP Attribution',
+			role: 'Per-Prediction Explanation',
+			protocol: 'TreeExplainer (Exact)',
+			latency: '~8 ms / Prediction',
+			dataThroughput: 'Full Feature Contribution Vector',
+			security: 'Additivity-Verified',
+			description: 'Decomposes each prediction into signed per-feature contributions, verified to sum exactly to the model output.',
+			details: ['Positive and negative contributors ranked and labeled', 'Additivity check runs on every single prediction', 'Never presented as causal — "contributed to", never "caused"']
 		},
 		{
-			id: 'privacy',
+			id: 'calibration',
 			index: '05',
-			title: 'Differential Privacy Engine',
-			role: 'Gradient Perturbation & Noise Addition',
-			protocol: 'DP-FedAvg (ε = 0.45, δ = 1e-5)',
-			latency: '3.8 ms / Batch',
-			dataThroughput: 'Perturbed Weights Only',
-			security: 'Formal Differential Privacy Proof',
-			description: 'Calculates model parameter weight updates locally and injects Gaussian noise to guarantee zero patient re-identification.',
-			details: ['Rényi Differential Privacy Accounting', 'Gradient Clipping Against Outlier Exploits', 'Zero Raw ECG/PPG Exposure Guarantee']
+			title: 'Calibration & Bootstrap CI',
+			role: 'Frozen One-Time Evaluation',
+			protocol: 'Grouped Bootstrap (Stay-Level)',
+			latency: 'Offline / One-Time',
+			dataThroughput: '1,000 Synthetic ICU Stays',
+			security: 'Access Consumed Exactly Once',
+			description: 'The one-time fresh-test evaluation: metrics, calibration, and 95% bootstrap confidence intervals computed once from saved predictions and then frozen.',
+			details: ['Support-risk probabilities calibrated before threshold comparison', 'Grouped bootstrap resamples by ICU stay, not by row', 'Access guard permits exactly one final run, then locks']
 		},
 		{
-			id: 'federated',
+			id: 'ai_note',
 			index: '06',
-			title: 'Federated Global Consensus',
-			role: 'Collaborative Model Sync',
-			protocol: 'WSS / TLS 1.3 Asymmetric Mesh',
-			latency: '42 ms / Round',
-			dataThroughput: 'Model Delta (~32 KB)',
-			security: 'AES-256 / Secure Aggregation',
-			description: 'Participating client devices securely broadcast encrypted weight vectors to update a shared global clinical intelligence model.',
-			details: ['Secure Multi-Party Aggregation (SecAgg)', 'Byzantine Fault-Tolerant Consensus', 'Worldwide Model Generalization']
+			title: 'AI Research-Note Synthesis',
+			role: 'Groq-Hosted LLM Narration',
+			protocol: 'openai/gpt-oss-120b · HTTPS',
+			latency: '~1 – 3 s / Note',
+			dataThroughput: 'Prediction + SHAP → Short Note',
+			security: 'Server-Side Key, Never Browser-Exposed',
+			description: 'Turns the frozen numbers and SHAP drivers into a short, hedged natural-language research note — generated strictly after prediction, never feeding back into it.',
+			details: ['Non-diagnostic, non-causal system prompt enforced', 'Graceful degradation if the model is unavailable', 'Explicit "not clinical advice" disclaimer on every note']
 		}
 	];
 
@@ -164,10 +164,10 @@
 		<div class="federated-globe-card">
 			<div class="globe-top-bar">
 				<div>
-					<span class="globe-tag">FEDERATED LEARNING MESH</span>
-					<h4>One Global Model · Many Private Devices</h4>
+					<span class="globe-tag">SYNTHETIC MULTI-SITE COHORT</span>
+					<h4>One Frozen Model · Many Synthetic Sites</h4>
 				</div>
-				<span class="globe-status-pill"><span class="globe-dot"></span> LIVE CONSENSUS</span>
+				<span class="globe-status-pill"><span class="globe-dot"></span> REPLAY LIVE</span>
 			</div>
 
 			<!-- 3D Globe Visualizer -->
@@ -177,20 +177,20 @@
 
 			<div class="globe-stats-dock">
 				<div class="g-stat">
-					<span>ACTIVE NODES</span>
-					<strong>9 NODES</strong>
+					<span>SYNTHETIC SITES</span>
+					<strong>9 SITES</strong>
 				</div>
 				<div class="g-stat">
-					<span>ROUND</span>
-					<strong>#142</strong>
+					<span>FRESH-TEST N</span>
+					<strong>1,000 STAYS</strong>
 				</div>
 				<div class="g-stat">
-					<span>ACCURACY</span>
-					<strong class="text-teal">98.6%</strong>
+					<span>SUPPORT AUPRC</span>
+					<strong class="text-teal">0.7042</strong>
 				</div>
 				<div class="g-stat">
-					<span>PRIVACY (ε)</span>
-					<strong class="text-teal">0.45 DP</strong>
+					<span>RECOVERY MAE</span>
+					<strong class="text-teal">1.0744</strong>
 				</div>
 			</div>
 		</div>

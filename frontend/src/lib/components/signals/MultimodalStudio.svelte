@@ -18,47 +18,47 @@
 	const states: StateConfig[] = [
 		{
 			id: 'normal',
-			label: 'Normal Sinus Rhythm',
+			label: 'Stable Recovery Trajectory',
 			bpm: 72,
 			spo2: 98.4,
 			ptt: 218,
 			hrv: 54,
-			status: 'OPTIMAL CARDIAC SYNCHRONY',
+			status: 'STABLE — LOW ACUITY',
 			statusColor: '#0d9488',
-			description: 'Balanced autonomic sympathovagal tone. Crisp QRS complexes followed by regular systolic volume ejection waves.'
+			description: 'Vitals consistent with a low-acuity synthetic stay: steady heart rate, well-oxygenated, minimal organ-support burden.'
 		},
 		{
 			id: 'exertion',
-			label: 'Physical Exertion (Tachycardia)',
+			label: 'Cardiovascular Deterioration',
 			bpm: 116,
 			spo2: 97.2,
 			ptt: 172,
 			hrv: 24,
-			status: 'ELEVATED SYMPATHETIC DRIVE',
+			status: 'RISING CARDIOVASCULAR SOFA',
 			statusColor: '#0284c7',
-			description: 'Shortened R-R intervals with accelerated arterial pulse wave velocity and elevated cardiac output demand.'
+			description: 'Elevated heart rate with narrowing variability — the pattern the recovery-forecast head associates with a rising cardiovascular SOFA sub-score.'
 		},
 		{
 			id: 'nocturnal',
-			label: 'Deep Sleep (Bradycardia)',
+			label: 'Respiratory Support Escalation',
 			bpm: 48,
 			spo2: 96.1,
 			ptt: 264,
 			hrv: 78,
-			status: 'PARASYMPATHETIC DOMINANCE',
+			status: 'DECLINING SpO₂ / FiO₂ RATIO',
 			statusColor: '#6366f1',
-			description: 'Prominent sinus respiratory arrhythmia with extended diastolic intervals and vascular relaxation.'
+			description: 'Falling oxygenation alongside a labored respiratory pattern — consistent with a rising probability on the organ-support risk head.'
 		},
 		{
 			id: 'pvc',
-			label: 'Ectopic PVC Anomaly',
+			label: 'Irregular / Unstable Episode',
 			bpm: 84,
 			spo2: 94.8,
 			ptt: 290,
 			hrv: 92,
-			status: 'ARRHYTHMIA DETECTED BY EDGE',
+			status: 'HIGH VARIABILITY FLAGGED',
 			statusColor: '#e11d48',
-			description: 'Premature ventricular depolarization with compensatory pause, captured and classified locally by on-device ML.'
+			description: 'An irregular episode with wide swings — illustrating why every forecast is paired with a bootstrap confidence interval, never a bare point estimate.'
 		}
 	];
 
@@ -93,9 +93,9 @@
 		// Channel Labels
 		ctx.font = '600 10px JetBrains Mono, monospace';
 		ctx.fillStyle = '#64748b';
-		ctx.fillText('CH 1 // AD8232 ECG (LEAD-I)', 16, 22);
-		ctx.fillText('CH 2 // MAX30102 PPG (OPTICAL)', 16, channelH + 22);
-		ctx.fillText('CH 3 // ARTERIAL SpO2 DELTA', 16, channelH * 2 + 22);
+		ctx.fillText('CH 1 // HEART RATE CHANNEL (SYNTHETIC)', 16, 22);
+		ctx.fillText('CH 2 // BLOOD PRESSURE CHANNEL (SYNTHETIC)', 16, channelH + 22);
+		ctx.fillText('CH 3 // RESPIRATORY SpO2 CHANNEL (SYNTHETIC)', 16, channelH * 2 + 22);
 
 		const speed = (currentState.bpm / 60) * 0.008;
 		const cycleLen = (w / (currentState.bpm / 60)) * 0.45;
@@ -247,7 +247,7 @@
 <div class="multimodal-studio-wrap">
 	<!-- Top Preset Controls -->
 	<div class="state-presets-bar">
-		<span class="presets-label">SIMULATION PRESETS:</span>
+		<span class="presets-label">SYNTHETIC VITALS PRESETS:</span>
 		<div class="presets-buttons">
 			{#each states as st}
 				<button

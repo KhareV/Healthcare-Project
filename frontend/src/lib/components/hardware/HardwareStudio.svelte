@@ -16,79 +16,79 @@
 
 	const subsystems: Subsystem[] = [
 		{
-			id: 'ad8232',
+			id: 'recovery24',
 			index: '01',
-			name: 'AD8232 Biopotential Front-End',
-			tag: 'CARDIAC ELECTRICAL SENSING',
-			summary: 'Integrated analog front-end for ECG signal conditioning. Extracts, amplifies, and filters microvolt cardiac potentials in high-motion environments with active right-leg drive.',
+			name: 'Recovery-24h Forecast Head',
+			tag: 'ΔSOFA AT +24 HOURS',
+			summary: 'A gradient-boosted regression head, trained once and frozen, forecasting the +24h change in Sequential Organ Failure Assessment score from the fully observed history at each replay cutoff.',
 			waveformMode: 'ecg',
 			specs: [
-				{ key: 'CMRR', val: '> 86 dB', note: 'Common-mode noise rejection' },
-				{ key: 'SAMPLING RATE', val: '360 Hz', note: 'Exceeds clinical Holter standard' },
-				{ key: 'ADC RESOLUTION', val: '24-Bit', note: 'Sigma-Delta conversion' },
-				{ key: 'POWER DRAW', val: '170 µA', note: 'Ultra-low battery consumption' }
+				{ key: 'FRESH-TEST MAE', val: '1.0744', note: 'One-time frozen fresh-test evaluation' },
+				{ key: '95% BOOTSTRAP CI', val: '[1.030, 1.120]', note: 'Grouped bootstrap by ICU stay' },
+				{ key: 'TRAINING ROWS', val: '3,515 examples', note: '730 unique synthetic ICU stays' },
+				{ key: 'MODEL FAMILY', val: 'XGBoost', note: 'Gradient-boosted decision trees' }
 			],
 			highlights: [
-				'2-pole adjustable high-pass filter eliminates motion baseline wander',
-				'Integrated Right-Leg Drive (RLD) suppresses 50Hz/60Hz mains hum',
-				'Active leads-off detection with microsecond recovery'
+				'Never chained from the +48h head — each horizon is its own independent forecast',
+				'Frozen immediately after the one-time fresh-test run; no post-test retuning',
+				'TreeSHAP explains every prediction with a verified additivity check'
 			]
 		},
 		{
-			id: 'max30102',
+			id: 'recovery48',
 			index: '02',
-			name: 'MAX30102 Optical Core',
-			tag: 'PULSE OXIMETRY & PPG',
-			summary: 'High-sensitivity optical biosensor combining 660nm Red and 880nm Infrared emitters with photodetectors for continuous blood oxygen saturation and micro-vascular pulsatile flow.',
+			name: 'Recovery-48h Forecast Head',
+			tag: 'ΔSOFA AT +48 HOURS',
+			summary: 'The longer-horizon sibling of the +24h head — a separately trained gradient-boosted model forecasting +48h organ-failure trajectory, never derived by extrapolating the +24h estimate.',
 			waveformMode: 'ppg',
 			specs: [
-				{ key: 'EMITTER SPECTRA', val: '660 / 880 nm', note: 'Dual-wavelength optical array' },
-				{ key: 'SNR RATIO', val: '89.4 dB', note: 'Clean photodiode acquisition' },
-				{ key: 'PULSE WIDTH', val: '69 – 411 µs', note: 'Programmable optical timing' },
-				{ key: 'FIFO DEPTH', val: '32 Samples', note: 'Hardware ring buffer queue' }
+				{ key: 'FRESH-TEST MAE', val: '1.3379', note: 'One-time frozen fresh-test evaluation' },
+				{ key: 'WEIGHTED MEDIAN AE', val: '1.192', note: 'Per-stay weighted absolute error' },
+				{ key: 'TRAINING ROWS', val: '1,331 examples', note: '319 unique synthetic ICU stays' },
+				{ key: 'MODEL FAMILY', val: 'XGBoost', note: 'Gradient-boosted decision trees' }
 			],
 			highlights: [
-				'Robust optical ambient light cancellation up to 100 Hz',
-				'Calibrated AC/DC decomposition for beat-to-beat SpO₂ estimation',
-				'Scratch-resistant medical glass cover lens with optical barrier'
+				'Trained on its own +48h-eligible cohort, independent of the +24h sample',
+				'Reported alongside its 95% grouped-bootstrap confidence interval, never a point estimate alone',
+				'Same TreeSHAP attribution pipeline as every other forecast head'
 			]
 		},
 		{
-			id: 'esp32s3',
+			id: 'icu_stay',
 			index: '03',
-			name: 'ESP32-S3 Edge Processor',
-			tag: 'ON-DEVICE VECTOR ML',
-			summary: 'Dual-core 32-bit Xtensa processor running at 240 MHz with single-cycle SIMD vector instructions for on-device wavelet decomposition and local neural classification without raw data upload.',
+			name: 'ICU-Stay Forecast Head',
+			tag: 'REMAINING HOURS IN ICU',
+			summary: 'Forecasts the hours remaining in the ICU stay from the current cutoff — a right-skewed duration target, evaluated primarily on median absolute error rather than MAE alone.',
 			waveformMode: 'ecg',
 			specs: [
-				{ key: 'CLOCK FREQUENCY', val: '240 MHz', note: 'Dual-core Xtensa LX7' },
-				{ key: 'SRAM MEMORY', val: '512 KB', note: 'Ultra-fast on-chip memory' },
-				{ key: 'INFERENCE TIME', val: '1.4 ms', note: 'Per 500-sample cardiac window' },
-				{ key: 'CRYPTO ENGINE', val: 'AES-256', note: 'Hardware root-of-trust' }
+				{ key: 'MEDIAN ABS. ERROR', val: '5.206h', note: 'One-time frozen fresh-test evaluation' },
+				{ key: 'MAE', val: '7.809h', note: 'Right-skewed duration distribution' },
+				{ key: 'TRAINING ROWS', val: '6,083 examples', note: '1,000 unique synthetic ICU stays' },
+				{ key: 'MODEL FAMILY', val: 'XGBoost', note: 'Gradient-boosted regression' }
 			],
 			highlights: [
-				'Dedicated vector instructions accelerate real-time QRS feature extraction',
-				'Zero raw data egress guarantee — only perturbed model weights leave the device',
-				'Low-power coprocessor mode draws under 15 µA in sleep state'
+				'Recomputed fresh at every replay cutoff — never a single admission-day estimate',
+				'Median absolute error reported alongside MAE to surface tail-case behavior',
+				'Shares the same frozen-model governance as every other forecast head'
 			]
 		},
 		{
-			id: 'power_mesh',
+			id: 'support_risk',
 			index: '04',
-			name: 'Medical LiPo & BLE 5.0 Radio',
-			tag: 'POWER & ENCRYPTED TELEMETRY',
-			summary: 'Medical-grade 350 mAh lithium-polymer battery managed by dynamic frequency scaling and long-range Bluetooth 5.0 mesh radio for secure collaborative model updates.',
+			name: 'Support-Risk Forecast Head',
+			tag: 'NEW SUPPORT INITIATION, 24H',
+			summary: 'A calibrated classifier estimating the 24h probability of a NEW qualifying vasopressor or invasive mechanical-ventilation start — continuation of already-active support is never counted.',
 			waveformMode: 'spo2',
 			specs: [
-				{ key: 'BATTERY LIFE', val: '72 Hours', note: 'Continuous real-time sensing' },
-				{ key: 'CAPACITY', val: '350 mAh', note: 'High-density Li-Polymer' },
-				{ key: 'RADIO PROTOCOL', val: 'BLE 5.0 Mesh', note: 'Long-range encrypted link' },
-				{ key: 'CHARGING', val: '45 Mins', note: 'Fast magnetic dock' }
+				{ key: 'CALIBRATED AUPRC', val: '0.7042', note: 'One-time frozen fresh-test evaluation' },
+				{ key: 'CALIBRATED AUROC', val: '0.7772', note: 'Post-hoc probability calibration' },
+				{ key: 'TRAINING ROWS', val: '3,953 examples', note: '778 unique synthetic ICU stays' },
+				{ key: 'MODEL FAMILY', val: 'XGBoost', note: 'Gradient-boosted classifier' }
 			],
 			highlights: [
-				'Hermetic IP68 water, sweat, and dust resistance for continuous wear',
-				'Asymmetric RSA-4096 handshake for local device pairing',
-				'Intelligent sleep cycling extends battery life during sedentary periods'
+				'Only a genuinely new support initiation counts as positive, never continuation',
+				'Calibrated before the frozen threshold comparison — raw and calibrated AUPRC both reported',
+				'TreeSHAP explains every prediction with a verified additivity check'
 			]
 		}
 	];
@@ -110,8 +110,8 @@
 	<!-- Left: 3D Model Explorer with Tactile Reticle Pins -->
 	<div class="viewport-card">
 		<div class="viewport-badge-row">
-			<span class="pro-tag">NHM-01 INDUSTRIAL SPECIFICATION</span>
-			<span class="pro-meta">42MM UNIBODY · TITANIUM</span>
+			<span class="pro-tag">PRT · V2 FROZEN MODEL SPECIFICATION</span>
+			<span class="pro-meta">4 INDEPENDENT FORECAST HEADS · XGBOOST</span>
 		</div>
 
 		<!-- 3D Interactive Stage -->

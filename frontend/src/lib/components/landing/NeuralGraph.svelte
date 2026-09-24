@@ -7,7 +7,7 @@
 		layer: number;
 		x: number;
 		y: number;
-		category: 'Sensor Input' | 'Waveform Feature' | 'Autonomic / Context' | 'Edge Diagnostic';
+		category: 'History Channel' | 'Engineered Feature' | 'Gradient-Boosted Forecast' | 'Forecast Output';
 		clinicalRole: string;
 		signalSource: string;
 		samplingRate: string;
@@ -30,70 +30,70 @@
 	let animId: number;
 	let animTime = 0;
 
-	// Curated authentic physiological nodes across 4 architectural tiers
+	// The forecasting pipeline, laid out across 4 architectural tiers
 	const nodes: SignalNode[] = [
-		// Tier 0: Biosensors
-		{ id: 'ecg_lead', name: 'ECG Biopotential', layer: 0, x: 0.12, y: 0.22, category: 'Sensor Input', clinicalRole: 'Differential cardiac electrical vector', signalSource: 'AD8232 Front-End', samplingRate: '360 Hz', normalRange: '0.5 – 2.0 mV', currentValue: '1.14 mV (QRS)' },
-		{ id: 'ppg_red', name: 'PPG 660nm (Red)', layer: 0, x: 0.12, y: 0.50, category: 'Sensor Input', clinicalRole: 'Oxygenated pulsatile arterial volume', signalSource: 'MAX30102 Optical', samplingRate: '100 Hz', normalRange: '660 nm Peak', currentValue: '0.84 AC/DC' },
-		{ id: 'ppg_ir', name: 'PPG 880nm (IR)', layer: 0, x: 0.12, y: 0.78, category: 'Sensor Input', clinicalRole: 'Deoxygenated infrared tissue transmission', signalSource: 'MAX30102 Optical', samplingRate: '100 Hz', normalRange: '880 nm Peak', currentValue: '0.92 AC/DC' },
+		// Tier 0: Raw history channels consumed at each replay cutoff
+		{ id: 'sofa_trend', name: 'SOFA Trend', layer: 0, x: 0.12, y: 0.22, category: 'History Channel', clinicalRole: 'Sequential Organ Failure Assessment score across the lookback window', signalSource: '8-Bin Temporal Window', samplingRate: '6h Bins', normalRange: 'SOFA 0 – 24', currentValue: 'SOFA 7 (t₀)' },
+		{ id: 'vitals_channel', name: 'Vitals Channel', layer: 0, x: 0.12, y: 0.50, category: 'History Channel', clinicalRole: 'Heart rate, MAP, respiratory rate history at the cutoff', signalSource: 'Synthetic EHR Time Series', samplingRate: '6h Bins', normalRange: 'Observed / Missing', currentValue: '92% Observed' },
+		{ id: 'labs_support_channel', name: 'Labs & Support Flags', layer: 0, x: 0.12, y: 0.78, category: 'History Channel', clinicalRole: 'Lactate, creatinine, active vasopressor / ventilation flags', signalSource: 'Synthetic EHR Time Series', samplingRate: '6h Bins', normalRange: 'Observed / Missing', currentValue: '78% Observed' },
 
-		// Tier 1: Morphological Features
-		{ id: 'qrs_morph', name: 'QRS Morphology', layer: 1, x: 0.38, y: 0.18, category: 'Waveform Feature', clinicalRole: 'Ventricular depolarization duration & axis', signalSource: 'Pan-Tompkins Filter', samplingRate: 'Real-time', normalRange: '80 – 120 ms', currentValue: '92 ms (Normal)' },
-		{ id: 'hrv_sdnn', name: 'HRV (SDNN)', layer: 1, x: 0.38, y: 0.44, category: 'Waveform Feature', clinicalRole: 'Standard deviation of R-R intervals', signalSource: 'Edge Peak Detector', samplingRate: '5-Min Window', normalRange: '35 – 80 ms', currentValue: '54.2 ms' },
-		{ id: 'ptt_calc', name: 'Pulse Transit Time', layer: 1, x: 0.38, y: 0.70, category: 'Waveform Feature', clinicalRole: 'ECG R-peak to PPG foot interval', signalSource: 'Cross-Modal Sync', samplingRate: 'Beat-to-Beat', normalRange: '180 – 260 ms', currentValue: '218 ms' },
-		{ id: 'spo2_ratio', name: 'Optical Delta (R)', layer: 1, x: 0.38, y: 0.88, category: 'Waveform Feature', clinicalRole: 'Ratio-of-ratios oxygen saturation proxy', signalSource: 'Red/IR AC-DC Demod', samplingRate: 'Continuous', normalRange: '0.4 – 1.0 R', currentValue: '0.52 R (98% SpO₂)' },
+		// Tier 1: Engineered features built from the raw channels
+		{ id: 'temporal_mask', name: 'Observation Mask', layer: 1, x: 0.38, y: 0.18, category: 'Engineered Feature', clinicalRole: 'Encodes which bins/channels were actually observed vs. padded', signalSource: 'Windowing & Masking', samplingRate: 'Per Cutoff', normalRange: '8×N Binary Grid', currentValue: 'Mask Built' },
+		{ id: 'trend_features', name: 'Trend & Delta Features', layer: 1, x: 0.38, y: 0.44, category: 'Engineered Feature', clinicalRole: 'Rate-of-change and rolling statistics across the lookback window', signalSource: 'Feature Engineering', samplingRate: 'Per Cutoff', normalRange: 'z-scored', currentValue: 'Computed' },
+		{ id: 'static_features', name: 'Static Context', layer: 1, x: 0.38, y: 0.70, category: 'Engineered Feature', clinicalRole: 'Age, admission diagnosis, elapsed ICU hours at cutoff', signalSource: 'Cohort Statics Join', samplingRate: 'Per Cutoff', normalRange: 'Joined', currentValue: 'Joined' },
+		{ id: 'support_state', name: 'Active Support State', layer: 1, x: 0.38, y: 0.88, category: 'Engineered Feature', clinicalRole: 'Current vasopressor / ventilation status at the cutoff', signalSource: 'Support Flag Encoder', samplingRate: 'Per Cutoff', normalRange: 'On / Off', currentValue: 'Encoded' },
 
-		// Tier 2: Latent Physiological Space
-		{ id: 'cardiac_state', name: 'Cardiac Embedding', layer: 2, x: 0.65, y: 0.28, category: 'Autonomic / Context', clinicalRole: 'Multi-beat topological vector space', signalSource: '128-D Edge Latent', samplingRate: 'Continuous', normalRange: 'Cosine Sim > 0.92', currentValue: '0.96 (Nominal)' },
-		{ id: 'autonomic_tone', name: 'Autonomic Balance', layer: 2, x: 0.65, y: 0.62, category: 'Autonomic / Context', clinicalRole: 'Sympathovagal circadian balance (LF/HF)', signalSource: 'Spectral Fusion', samplingRate: 'Continuous', normalRange: '0.8 – 2.2 LF/HF', currentValue: '1.24 LF/HF' },
+		// Tier 2: The frozen forecasting core
+		{ id: 'xgb_ensemble', name: 'XGBoost Ensemble', layer: 2, x: 0.65, y: 0.28, category: 'Gradient-Boosted Forecast', clinicalRole: 'Four independently frozen gradient-boosted tree models', signalSource: 'Frozen Model Registry', samplingRate: 'Per Cutoff', normalRange: 'Frozen — no post-test retuning', currentValue: '4 Models Loaded' },
+		{ id: 'shap_attribution', name: 'TreeSHAP Attribution', layer: 2, x: 0.65, y: 0.62, category: 'Gradient-Boosted Forecast', clinicalRole: 'Per-prediction positive / negative contributor decomposition', signalSource: 'TreeExplainer', samplingRate: 'Per Prediction', normalRange: 'Additivity ✓', currentValue: 'Σ SHAP = Output' },
 
-		// Tier 3: Continuous Clinical Output
-		{ id: 'arrhythmia_out', name: 'Sinus Rhythm Guard', layer: 3, x: 0.88, y: 0.24, category: 'Edge Diagnostic', clinicalRole: 'Continuous ectopic beat & flutter detector', signalSource: 'Local TFLite Micro', samplingRate: 'Instantaneous', normalRange: 'Risk < 0.05', currentValue: '0.01 (Normal Sinus)' },
-		{ id: 'vital_stability', name: 'Hemodynamic Stability', layer: 3, x: 0.88, y: 0.52, category: 'Edge Diagnostic', clinicalRole: 'Continuous micro-vascular perfusion index', signalSource: 'Multi-Sensor Fusion', samplingRate: 'Instantaneous', normalRange: 'Score 90 – 100', currentValue: '98 / 100 (Optimal)' },
-		{ id: 'federated_grad', name: 'Federated Gradient', layer: 3, x: 0.88, y: 0.80, category: 'Edge Diagnostic', clinicalRole: 'Differential privacy model update weight', signalSource: 'Privacy Engine', samplingRate: 'Periodic Sync', normalRange: 'DP Epsilon < 1.0', currentValue: 'Ready (ε = 0.45)' }
+		// Tier 3: What the dashboard actually renders
+		{ id: 'recovery_out', name: 'Recovery Forecast', layer: 3, x: 0.88, y: 0.24, category: 'Forecast Output', clinicalRole: 'Independent ΔSOFA forecasts at +24h and +48h', signalSource: 'Recovery Heads', samplingRate: 'Per Cutoff', normalRange: 'MAE 1.07 / 1.34', currentValue: 'Frozen, one-time fresh test' },
+		{ id: 'icu_out', name: 'ICU Stay Forecast', layer: 3, x: 0.88, y: 0.52, category: 'Forecast Output', clinicalRole: 'Remaining hours in ICU from this cutoff', signalSource: 'ICU Duration Head', samplingRate: 'Per Cutoff', normalRange: 'Median AE 5.21h', currentValue: 'Frozen, one-time fresh test' },
+		{ id: 'ai_note_out', name: 'AI Research Note', layer: 3, x: 0.88, y: 0.80, category: 'Forecast Output', clinicalRole: 'Groq-hosted language model synthesizes numbers + SHAP into hedged prose', signalSource: 'openai/gpt-oss-120b', samplingRate: 'On Demand', normalRange: 'Non-diagnostic wording', currentValue: 'Strictly downstream of prediction' }
 	];
 
-	// Synapses connecting the layers
+	// Pipeline edges connecting the layers
 	const links: SynapticLink[] = [
-		{ from: 'ecg_lead', to: 'qrs_morph', weight: 0.95, pulseProgress: 0.1, pulseSpeed: 0.007 },
-		{ from: 'ecg_lead', to: 'hrv_sdnn', weight: 0.90, pulseProgress: 0.5, pulseSpeed: 0.006 },
-		{ from: 'ecg_lead', to: 'ptt_calc', weight: 0.85, pulseProgress: 0.3, pulseSpeed: 0.008 },
-		{ from: 'ppg_red', to: 'ptt_calc', weight: 0.88, pulseProgress: 0.7, pulseSpeed: 0.007 },
-		{ from: 'ppg_red', to: 'spo2_ratio', weight: 0.92, pulseProgress: 0.2, pulseSpeed: 0.009 },
-		{ from: 'ppg_ir', to: 'spo2_ratio', weight: 0.94, pulseProgress: 0.6, pulseSpeed: 0.008 },
-		{ from: 'qrs_morph', to: 'cardiac_state', weight: 0.95, pulseProgress: 0.3, pulseSpeed: 0.009 },
-		{ from: 'hrv_sdnn', to: 'cardiac_state', weight: 0.89, pulseProgress: 0.8, pulseSpeed: 0.006 },
-		{ from: 'hrv_sdnn', to: 'autonomic_tone', weight: 0.92, pulseProgress: 0.2, pulseSpeed: 0.008 },
-		{ from: 'ptt_calc', to: 'autonomic_tone', weight: 0.84, pulseProgress: 0.6, pulseSpeed: 0.007 },
-		{ from: 'spo2_ratio', to: 'vital_stability', weight: 0.93, pulseProgress: 0.4, pulseSpeed: 0.009 },
-		{ from: 'cardiac_state', to: 'arrhythmia_out', weight: 0.96, pulseProgress: 0.1, pulseSpeed: 0.010 },
-		{ from: 'cardiac_state', to: 'federated_grad', weight: 0.88, pulseProgress: 0.5, pulseSpeed: 0.007 },
-		{ from: 'autonomic_tone', to: 'vital_stability', weight: 0.87, pulseProgress: 0.7, pulseSpeed: 0.008 },
-		{ from: 'autonomic_tone', to: 'federated_grad', weight: 0.82, pulseProgress: 0.9, pulseSpeed: 0.006 }
+		{ from: 'sofa_trend', to: 'temporal_mask', weight: 0.95, pulseProgress: 0.1, pulseSpeed: 0.007 },
+		{ from: 'sofa_trend', to: 'trend_features', weight: 0.90, pulseProgress: 0.5, pulseSpeed: 0.006 },
+		{ from: 'sofa_trend', to: 'static_features', weight: 0.85, pulseProgress: 0.3, pulseSpeed: 0.008 },
+		{ from: 'vitals_channel', to: 'static_features', weight: 0.88, pulseProgress: 0.7, pulseSpeed: 0.007 },
+		{ from: 'vitals_channel', to: 'support_state', weight: 0.92, pulseProgress: 0.2, pulseSpeed: 0.009 },
+		{ from: 'labs_support_channel', to: 'support_state', weight: 0.94, pulseProgress: 0.6, pulseSpeed: 0.008 },
+		{ from: 'temporal_mask', to: 'xgb_ensemble', weight: 0.95, pulseProgress: 0.3, pulseSpeed: 0.009 },
+		{ from: 'trend_features', to: 'xgb_ensemble', weight: 0.89, pulseProgress: 0.8, pulseSpeed: 0.006 },
+		{ from: 'trend_features', to: 'shap_attribution', weight: 0.92, pulseProgress: 0.2, pulseSpeed: 0.008 },
+		{ from: 'static_features', to: 'shap_attribution', weight: 0.84, pulseProgress: 0.6, pulseSpeed: 0.007 },
+		{ from: 'support_state', to: 'icu_out', weight: 0.93, pulseProgress: 0.4, pulseSpeed: 0.009 },
+		{ from: 'xgb_ensemble', to: 'recovery_out', weight: 0.96, pulseProgress: 0.1, pulseSpeed: 0.010 },
+		{ from: 'xgb_ensemble', to: 'ai_note_out', weight: 0.88, pulseProgress: 0.5, pulseSpeed: 0.007 },
+		{ from: 'shap_attribution', to: 'icu_out', weight: 0.87, pulseProgress: 0.7, pulseSpeed: 0.008 },
+		{ from: 'shap_attribution', to: 'ai_note_out', weight: 0.82, pulseProgress: 0.9, pulseSpeed: 0.006 }
 	];
 
-	// Real clinical blind spot occurrences
-	const clinicalBlindspots = [
+	// Why sequential cutoff-by-cutoff replay catches what a single static chart review misses
+	const replayAdvantages = [
 		{
-			hour: '03:45 AM',
-			title: 'Nocturnal Bradycardia & Sleep Apnea Desaturation',
-			severity: 'High Clinical Risk',
-			snapshotStatus: 'Undetected (Patient Asleep)',
-			nhmStatus: 'Continuous Flag: SpO₂ dipped to 87% for 22s'
+			hour: 'Cutoff @ 14:00',
+			title: 'Delayed recognition of worsening organ failure',
+			severity: 'High Research Interest',
+			snapshotStatus: 'Missed at a single retrospective chart pull taken at 08:00',
+			replayStatus: 'Sequential replay: rising ΔSOFA+24h forecast flagged at the 14:00 cutoff'
 		},
 		{
-			hour: '11:20 AM',
-			title: 'Transient Ischemic ST-Segment Shift',
-			severity: 'Moderate Clinical Risk',
-			snapshotStatus: 'Undetected (Between Visits)',
-			nhmStatus: 'Continuous Flag: 0.16 mV ST deflection during exertion'
+			hour: 'Cutoff @ 21:00',
+			title: 'Late signal of new organ-support need',
+			severity: 'Moderate Research Interest',
+			snapshotStatus: 'Undetected between shift-change chart reviews',
+			replayStatus: 'Sequential replay: calibrated support-risk probability crossed the threshold at 21:00'
 		},
 		{
-			hour: '18:15 PM',
-			title: 'Post-Work Autonomic Sympathetic Overdrive',
-			severity: 'Sub-Clinical Stress Spike',
-			snapshotStatus: 'Undetected (Normal at clinic)',
-			nhmStatus: 'Continuous Flag: HRV SDNN dropped to 18ms'
+			hour: 'Cutoff @ 03:00',
+			title: 'Slow-to-update ICU-stay estimate',
+			severity: 'Lower-Urgency Research Interest',
+			snapshotStatus: 'Undetected — only a single admission-day estimate on file',
+			replayStatus: 'Sequential replay: remaining-ICU-time forecast recomputed with fresh history at 03:00'
 		}
 	];
 
@@ -118,7 +118,7 @@
 	}
 
 	function drawContinuousNeuralMesh(ctx: CanvasRenderingContext2D, w: number, h: number) {
-		// Draw Synaptic Connectors
+		// Draw pipeline edges
 		for (const link of links) {
 			const src = nodes.find(n => n.id === link.from);
 			const dst = nodes.find(n => n.id === link.to);
@@ -181,9 +181,9 @@
 			// Main node dot
 			ctx.beginPath();
 			ctx.arc(nx, ny, radius, 0, Math.PI * 2);
-			if (node.category === 'Sensor Input') ctx.fillStyle = '#0f766e';
-			else if (node.category === 'Waveform Feature') ctx.fillStyle = '#0369a1';
-			else if (node.category === 'Autonomic / Context') ctx.fillStyle = '#4f46e5';
+			if (node.category === 'History Channel') ctx.fillStyle = '#0f766e';
+			else if (node.category === 'Engineered Feature') ctx.fillStyle = '#0369a1';
+			else if (node.category === 'Gradient-Boosted Forecast') ctx.fillStyle = '#4f46e5';
 			else ctx.fillStyle = '#059669';
 			ctx.fill();
 
@@ -210,11 +210,11 @@
 		ctx.lineWidth = 3;
 		ctx.stroke();
 
-		// 3 Blind Spot Zones
+		// 3 stale-estimate zones between static chart pulls
 		const zones = [
-			{ x1: 0.15, x2: 0.38, hours: '4.5 Hours Unmonitored' },
-			{ x1: 0.38, x2: 0.62, hours: '4.5 Hours Unmonitored' },
-			{ x1: 0.62, x2: 0.85, hours: '4.5 Hours Unmonitored' }
+			{ x1: 0.15, x2: 0.38, hours: 'Forecast Frozen Until Next Cutoff' },
+			{ x1: 0.38, x2: 0.62, hours: 'Forecast Frozen Until Next Cutoff' },
+			{ x1: 0.62, x2: 0.85, hours: 'Forecast Frozen Until Next Cutoff' }
 		];
 
 		for (const z of zones) {
@@ -237,12 +237,12 @@
 			ctx.fillText(`◷ ${z.hours}`, startX + boxW / 2, midY + 75);
 		}
 
-		// Sporadic Checkpoints
+		// Sporadic static chart-review checkpoints
 		const checkpoints = [
-			{ x: 0.15, time: '08:30 AM', label: 'Clinic ECG Test', val: 'Normal 72 BPM' },
-			{ x: 0.38, time: '13:00 PM', label: 'Follow-Up Check', val: 'Normal 76 BPM' },
-			{ x: 0.62, time: '17:30 PM', label: 'Pharmacy Cuff', val: 'Normal 74 BPM' },
-			{ x: 0.85, time: '22:00 PM', label: 'Evening Log', val: 'Normal 70 BPM' }
+			{ x: 0.15, time: 'Cutoff 1', label: 'Admission Assessment', val: 'SOFA 8 (baseline)' },
+			{ x: 0.38, time: 'Cutoff 2', label: 'Morning Chart Pull', val: 'SOFA 6 (recorded)' },
+			{ x: 0.62, time: 'Cutoff 3', label: 'Afternoon Review', val: 'SOFA 5 (recorded)' },
+			{ x: 0.85, time: 'Cutoff 4', label: 'Evening Note', val: 'SOFA 5 (recorded)' }
 		];
 
 		for (const cp of checkpoints) {
@@ -326,8 +326,8 @@
 				type="button"
 			>
 				<span class="pill-dot pill-dot--teal"></span>
-				<span>Continuous Neural Stream</span>
-				<small>99.8% Coverage</small>
+				<span>Sequential Cutoff Replay</span>
+				<small>Recomputed every cutoff</small>
 			</button>
 			<button
 				class="pill-btn"
@@ -336,18 +336,18 @@
 				type="button"
 			>
 				<span class="pill-dot pill-dot--amber"></span>
-				<span>Intermittent Snapshots</span>
-				<small>Legacy Care</small>
+				<span>Isolated Chart Review</span>
+				<small>Static baseline</small>
 			</button>
 		</div>
 
 		<div class="header-caption">
 			{#if activeView === 'continuous'}
-				<span class="caption-tag">LIVE EDGE SYNAPSE GRAPH</span>
-				<p>Hover any node to inspect real-time feature vectors and cross-modal correlation paths.</p>
+				<span class="caption-tag">LIVE FORECASTING PIPELINE GRAPH</span>
+				<p>Hover any node to inspect the pipeline stage, its role, and current status.</p>
 			{:else}
-				<span class="caption-tag caption-tag--warn">EPISODIC SAMPLING GAP</span>
-				<p>Illustrates the 99.8% unmonitored blind intervals between sporadic clinic visits.</p>
+				<span class="caption-tag caption-tag--warn">STATIC REVIEW GAP</span>
+				<p>A forecast frozen at one static chart pull goes stale until the next review — sequential replay recomputes at every cutoff instead.</p>
 			{/if}
 		</div>
 	</div>
@@ -380,29 +380,29 @@
 
 				<div class="profile-meta-row">
 					<div class="meta-item">
-						<span>SAMPLING FREQUENCY</span>
+						<span>UPDATE CADENCE</span>
 						<strong>{activeNode.samplingRate}</strong>
 					</div>
 					<div class="meta-item">
-						<span>CLINICAL REFERENCE</span>
+						<span>REFERENCE RANGE</span>
 						<strong>{activeNode.normalRange}</strong>
 					</div>
 					<div class="meta-item">
-						<span>LIVE VECTOR VALUE</span>
+						<span>CURRENT VALUE</span>
 						<strong class="text-teal">{activeNode.currentValue}</strong>
 					</div>
 				</div>
 			</div>
 		{:else}
 			<div class="blindspot-feed">
-				{#each clinicalBlindspots as bs}
+				{#each replayAdvantages as bs}
 					<div class="blindspot-item">
 						<div class="bs-time">{bs.hour}</div>
 						<div class="bs-body">
 							<strong>{bs.title}</strong>
 							<div class="bs-comparison">
 								<span class="bs-bad">✕ {bs.snapshotStatus}</span>
-								<span class="bs-good">✓ {bs.nhmStatus}</span>
+								<span class="bs-good">✓ {bs.replayStatus}</span>
 							</div>
 						</div>
 					</div>

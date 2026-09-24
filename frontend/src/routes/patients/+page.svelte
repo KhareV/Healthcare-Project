@@ -7,6 +7,7 @@
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
 	import MultiLine from '$lib/components/dashboard/MultiLine.svelte';
 	import TemporalHeatmap from '$lib/components/dashboard/TemporalHeatmap.svelte';
+	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type DemoSubject, type PredictionResponse } from '$lib/services/api';
 	import { ChevronLeft, ChevronRight, RotateCcw } from '@lucide/svelte';
 
@@ -147,16 +148,17 @@
 			<div class="loading">Recomputing from truncated history…</div>
 		{:else if prediction}
 			<div class="metrics">
-				<MetricTile label="Current SOFA" value={prediction.current_sofa.toFixed(1)} detail="Observed at cutoff" />
-				<MetricTile label="Predicted SOFA +24h" value={prediction.recovery.sofa_hat_24h.toFixed(1)} detail={`Δ ${prediction.recovery.delta_24h >= 0 ? '+' : ''}${prediction.recovery.delta_24h.toFixed(2)}`} tone="cyan" />
-				<MetricTile label="Predicted SOFA +48h" value={prediction.recovery.sofa_hat_48h.toFixed(1)} detail={`Δ ${prediction.recovery.delta_48h >= 0 ? '+' : ''}${prediction.recovery.delta_48h.toFixed(2)}`} tone="cyan" />
-				<MetricTile label="Remaining ICU stay time" value={prediction.icu_stay_time.remaining_hours.toFixed(1)} unit="h" detail={`≈ ${Math.floor(prediction.icu_stay_time.remaining_hours / 24)}d ${(prediction.icu_stay_time.remaining_hours % 24).toFixed(0)}h`} />
+				<MetricTile label="Current SOFA" value={prediction.current_sofa.toFixed(1)} detail="Observed at cutoff" values={sofaHistoryValues} />
+				<MetricTile label="Predicted SOFA +24h" value={prediction.recovery.sofa_hat_24h.toFixed(1)} detail={`Δ ${prediction.recovery.delta_24h >= 0 ? '+' : ''}${prediction.recovery.delta_24h.toFixed(2)}`} tone="cyan" values={historyPredictions.map((p) => p.recovery.sofa_hat_24h)} />
+				<MetricTile label="Predicted SOFA +48h" value={prediction.recovery.sofa_hat_48h.toFixed(1)} detail={`Δ ${prediction.recovery.delta_48h >= 0 ? '+' : ''}${prediction.recovery.delta_48h.toFixed(2)}`} tone="cyan" values={historyPredictions.map((p) => p.recovery.sofa_hat_48h)} />
+				<MetricTile label="Remaining ICU stay time" value={prediction.icu_stay_time.remaining_hours.toFixed(1)} unit="h" detail={`≈ ${Math.floor(prediction.icu_stay_time.remaining_hours / 24)}d ${(prediction.icu_stay_time.remaining_hours % 24).toFixed(0)}h`} tone="amber" values={historyPredictions.map((p) => p.icu_stay_time.remaining_hours)} />
 				<MetricTile
 					label="New organ-support risk (24h)"
 					value={(prediction.organ_support.probability_24h * 100).toFixed(1)}
 					unit="%"
 					detail={prediction.organ_support.alert ? 'ABOVE THRESHOLD' : 'BELOW THRESHOLD'}
 					tone={prediction.organ_support.alert ? 'rose' : 'teal'}
+					values={historyPredictions.map((p) => p.organ_support.probability_24h * 100)}
 				/>
 			</div>
 
@@ -194,7 +196,13 @@
 			</div>
 
 			<Panel eyebrow="MODEL INPUT / TEMPORAL WINDOW" title="48-hour lookback — eight 6-hour bins" note={`${prediction.data_quality.observed_bins}/${prediction.data_quality.total_bins} BINS OBSERVED`}>
-				<TemporalHeatmap channelNames={prediction.temporal_window.channel_names} observationMask={prediction.temporal_window.observation_mask} paddingMask={prediction.temporal_window.padding_mask} />
+				<div class="window-layout">
+					<GaugeRing value={Math.round((prediction.data_quality.observed_feature_fraction ?? 0) * 100)} size={84} stroke={8} color="#2bb8b0" label="OBSERVED" />
+					<div class="window-heatmap">
+						<TemporalHeatmap channelNames={prediction.temporal_window.channel_names} observationMask={prediction.temporal_window.observation_mask} paddingMask={prediction.temporal_window.padding_mask} />
+					</div>
+				</div>
+				<p class="note">{prediction.data_quality.observed_feature_values} of {prediction.data_quality.total_feature_values} feature values observed · {prediction.data_quality.missing_feature_values} missing · never a prediction confidence score.</p>
 			</Panel>
 
 			<Panel eyebrow="HISTORICAL TIMELINE" title="Observed variables at or before the selected cutoff" note={`${events.length} EVENTS VISIBLE`}>
@@ -253,6 +261,9 @@
 	.replay-controls button:not(:disabled):hover { border-color: #2bb8b0; color: #2bb8b0; }
 	.cutoff-count { margin-left: auto; color: #64748b; font: 9px 'JetBrains Mono', monospace; letter-spacing: .08em; }
 	.metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
+	.window-layout { display: flex; align-items: center; gap: 24px; }
+	.window-heatmap { flex: 1; min-width: 0; }
+	@media (max-width: 700px) { .window-layout { flex-direction: column; align-items: flex-start; } }
 	.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
 	.note { margin: 10px 0 0; color: #64748b; font-size: 10px; line-height: 1.6; }
 	.timeline-groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
