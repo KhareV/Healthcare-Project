@@ -1,0 +1,1 @@
+{"note":"All Phase-3 selected final models are XGBoost; no neural/torch dependency is part of the v2 evaluation contract.","numpy":"1.26.4","python":"3.9.6 (default, Aug 25 2026, 21:26:21) \n[Clang 21.0.0 (clang-2100.3.34.2)]","scikit_learn":"1.6.1","scipy":"1.13.1","status":"PHASE3_ENVIRONMENT_FROZEN","xgboost":"2.1.4"}
