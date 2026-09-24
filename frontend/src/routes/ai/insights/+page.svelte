@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import WorkbenchPage from '$lib/components/dashboard/WorkbenchPage.svelte';
@@ -9,7 +9,7 @@
 	import RadarPlot from '$lib/components/dashboard/RadarPlot.svelte';
 	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type AIRecommendation, type DemoSubject, type PredictionResponse } from '$lib/services/api';
-	import { Sparkles, BrainCircuit } from '@lucide/svelte';
+	import { Sparkles, BrainCircuit, Volume2, VolumeX, Loader2 } from '@lucide/svelte';
 
 	const TASK_TITLES: Record<string, string> = {
 		recovery24: 'Recovery +24h', recovery48: 'Recovery +48h', icu_stay_time: 'Remaining ICU stay time', organ_support: 'Organ support (raw margin)'
@@ -23,6 +23,50 @@
 	let loadingPrediction = $state(true);
 	let loadingAI = $state(false);
 	let error = $state('');
+
+	let audioEl: HTMLAudioElement | null = $state(null);
+	let narrateLoading = $state(false);
+	let narratePlaying = $state(false);
+	let narrateError = $state('');
+	let narratedFor: string | null = null;
+	let narratedUrl: string | null = null;
+
+	function resetNarration() {
+		if (audioEl) audioEl.pause();
+		narratePlaying = false;
+		narrateError = '';
+		if (narratedUrl) URL.revokeObjectURL(narratedUrl);
+		narratedUrl = null;
+		narratedFor = null;
+	}
+
+	async function toggleNarration() {
+		if (!recommendation || recommendation.status !== 'OK' || !recommendation.summary) return;
+		if (narratePlaying) {
+			audioEl?.pause();
+			narratePlaying = false;
+			return;
+		}
+		narrateError = '';
+		try {
+			if (narratedFor !== recommendation.summary) {
+				narrateLoading = true;
+				const blob = await api.speak(recommendation.summary);
+				if (narratedUrl) URL.revokeObjectURL(narratedUrl);
+				narratedUrl = URL.createObjectURL(blob);
+				narratedFor = recommendation.summary;
+				narrateLoading = false;
+			}
+			if (audioEl && narratedUrl) {
+				if (audioEl.src !== narratedUrl) audioEl.src = narratedUrl;
+				await audioEl.play();
+				narratePlaying = true;
+			}
+		} catch (cause) {
+			narrateLoading = false;
+			narrateError = cause instanceof Error ? cause.message : 'Narration unavailable right now.';
+		}
+	}
 
 	const subject = $derived(subjects.find((s) => s.stay_id === stayId) ?? null);
 	const cutoffs = $derived(subject?.legal_cutoffs ?? []);
@@ -63,6 +107,7 @@
 		if (!subject) return;
 		loadingAI = true;
 		recommendation = null;
+		resetNarration();
 		try {
 			recommendation = await api.aiRecommendation(stayId, cutoffs[cutoffIndex]);
 		} catch (cause) {
@@ -76,12 +121,14 @@
 		stayId = id;
 		cutoffIndex = 0;
 		recommendation = null;
+		resetNarration();
 		goto(`?stay_id=${id}&cutoff=0`, { replaceState: true, noScroll: true });
 		void load();
 	}
 	function setCutoff(index: number) {
 		cutoffIndex = Math.max(0, Math.min(cutoffs.length - 1, index));
 		recommendation = null;
+		resetNarration();
 		goto(`?stay_id=${stayId}&cutoff=${cutoffIndex}`, { replaceState: true, noScroll: true });
 		void load();
 	}
@@ -98,6 +145,10 @@
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Could not load demo subjects';
 		}
+	});
+
+	onDestroy(() => {
+		if (narratedUrl) URL.revokeObjectURL(narratedUrl);
 	});
 </script>
 
@@ -120,12 +171,28 @@
 		<div class="loading">Recomputing prediction and TreeSHAP attributions…</div>
 	{:else if prediction}
 		<section class="ai-panel">
-			<header><Sparkles size={16} /><div><span>AI RESEARCH NOTE</span><h3>Generated interpretive summary</h3></div><button onclick={askAI} disabled={loadingAI}><BrainCircuit size={14} /> {loadingAI ? 'Thinking…' : recommendation ? 'Regenerate' : 'Generate summary'}</button></header>
+			<audio
+				bind:this={audioEl}
+				onended={() => (narratePlaying = false)}
+				onpause={() => (narratePlaying = false)}
+				onplay={() => (narratePlaying = true)}
+			></audio>
+			<header>
+				<Sparkles size={16} /><div><span>AI RESEARCH NOTE</span><h3>Generated interpretive summary</h3></div>
+				<button onclick={askAI} disabled={loadingAI}><BrainCircuit size={14} /> {loadingAI ? 'Thinking…' : recommendation ? 'Regenerate' : 'Generate summary'}</button>
+				{#if recommendation?.status === 'OK' && recommendation.summary}
+					<button class="voice-btn" class:speaking={narratePlaying} onclick={toggleNarration} disabled={narrateLoading}>
+						{#if narrateLoading}<Loader2 size={13} class="spin" /> VOICING…{:else if narratePlaying}<VolumeX size={13} /> STOP{:else}<Volume2 size={13} /> LISTEN (KOKORO){/if}
+					</button>
+				{/if}
+			</header>
 			{#if loadingAI}
 				<p class="ai-loading">Calling the language model with this prediction's numbers…</p>
 			{:else if recommendation}
 				{#if recommendation.status === 'OK'}
 					<p class="ai-text">{recommendation.summary}</p>
+					{#if narratePlaying}<div class="voice-indicator"><span></span><span></span><span></span><span></span> NARRATING VIA KOKORO TTS</div>{/if}
+					{#if narrateError}<p class="ai-unavailable">{narrateError}</p>{/if}
 					<footer><span>MODEL / {recommendation.model}</span><span>{recommendation.disclaimer}</span></footer>
 				{:else}
 					<p class="ai-unavailable">AI summary unavailable right now ({recommendation.error}). The quantitative forecast and TreeSHAP attributions below are unaffected.</p>
@@ -180,11 +247,21 @@
 	.controls { display: flex; gap: 8px; padding: 12px 0; border-block: 1px solid rgba(148,163,184,.14); margin-bottom: 16px; }
 	.controls select { padding: 8px 12px; border: 1px solid rgba(148,163,184,.2); background: #0a1220; color: #cbd5e1; font: 9px 'JetBrains Mono', monospace; }
 	.ai-panel { margin-bottom: 16px; padding: 18px; border: 1px solid rgba(43,184,176,.28); background: linear-gradient(135deg, rgba(43,184,176,.07), #080e1d 60%); }
-	.ai-panel header { display: flex; align-items: center; gap: 12px; color: #2bb8b0; }
+	.ai-panel header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; color: #2bb8b0; }
 	.ai-panel header span { display: block; color: #2bb8b0; font: 7px 'JetBrains Mono', monospace; letter-spacing: .14em; }
 	.ai-panel header h3 { margin: 4px 0 0; color: #eef7f6; font: 500 16px 'Space Grotesk', sans-serif; }
 	.ai-panel header button { margin-left: auto; display: flex; align-items: center; gap: 7px; padding: 9px 14px; border: 1px solid #2bb8b0; background: #2bb8b0; color: #03110f; font: 9px 'JetBrains Mono', monospace; letter-spacing: .08em; cursor: pointer; }
 	.ai-panel header button:disabled { opacity: .6; cursor: default; }
+	.ai-panel header button.voice-btn { margin-left: 0; border-color: rgba(43,184,176,.4); background: rgba(43,184,176,.07); color: #2bb8b0; }
+	.ai-panel header button.voice-btn.speaking { background: #2bb8b0; color: #03110f; }
+	.ai-panel header button :global(.spin) { animation: ai-spin .9s linear infinite; }
+	@keyframes ai-spin { to { transform: rotate(360deg); } }
+	.voice-indicator { display: flex; align-items: center; gap: 8px; margin: 14px 0 0; padding-top: 14px; border-top: 1px solid rgba(148,163,184,.12); color: #2bb8b0; font: 8px 'JetBrains Mono', monospace; letter-spacing: .1em; }
+	.voice-indicator span { display: inline-block; width: 3px; height: 10px; border-radius: 2px; background: #2bb8b0; animation: ai-voicebar .9s ease-in-out infinite; }
+	.voice-indicator span:nth-child(2) { animation-delay: .15s; }
+	.voice-indicator span:nth-child(3) { animation-delay: .3s; }
+	.voice-indicator span:nth-child(4) { animation-delay: .45s; }
+	@keyframes ai-voicebar { 0%, 100% { transform: scaleY(.4); } 50% { transform: scaleY(1); } }
 	.ai-text { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(148,163,184,.12); color: #dce9e8; font-size: 13px; line-height: 1.75; }
 	.ai-prompt, .ai-loading, .ai-unavailable { margin: 16px 0 0; padding-top: 14px; border-top: 1px solid rgba(148,163,184,.12); color: #71829a; font-size: 11px; line-height: 1.6; }
 	.ai-unavailable { color: #fbbf24; }

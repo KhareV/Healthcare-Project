@@ -48,3 +48,11 @@ frontend/.svelte-kit/
 frontend/build/
 frontend/.vercel/
 frontend/.vite/
+
+# Kokoro narration microservice: isolated Python 3.12 venv (kokoro-onnx needs
+# a newer onnxruntime than the project's pinned Python 3.9) and its
+# downloaded model weights. Regenerate with the commands in RUNBOOK.md; never
+# commit a ~340MB binary pair or a second interpreter's site-packages.
+.venv-tts/
+models/kokoro/*.onnx
+models/kokoro/*.bin

@@ -4,6 +4,7 @@
 // cache or lookup table: each replay step recomputes from raw history
 // truncated at the requested cutoff.
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
+const TTS_BASE = import.meta.env.VITE_TTS_BASE_URL || '/tts';
 
 async function request<T>(path: string, options: RequestInit = {}) {
 	const headers = new Headers(options.headers);
@@ -114,6 +115,27 @@ export const api = {
 		),
 	aiRecommendation: (stay_id: string, prediction_time: string) =>
 		request<AIRecommendation>('/ai/recommendation', { method: 'POST', body: JSON.stringify({ stay_id, prediction_time }) }),
+
+	// Kokoro narration microservice — a separate isolated process (see
+	// tts/server.py); returns a playable audio/wav Blob or throws.
+	speak: async (text: string, voice = 'af_heart'): Promise<Blob> => {
+		const response = await fetch(`${TTS_BASE}/speak`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ text, voice })
+		});
+		if (!response.ok) {
+			let detail = `Narration failed with status ${response.status}`;
+			try {
+				const body = await response.json();
+				detail = body?.detail || detail;
+			} catch {
+				/* keep default detail */
+			}
+			throw new Error(detail);
+		}
+		return response.blob();
+	},
 
 	// Legacy namespaces kept only so the inherited placeholder pages (outside
 	// the active V2 navigation) keep compiling/degrading gracefully; the V2

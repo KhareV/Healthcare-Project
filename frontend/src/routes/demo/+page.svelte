@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { Play, Pause, RotateCcw, SkipForward, SkipBack, Maximize2, Minimize2, Activity, BrainCircuit, BellRing, Waypoints, Sparkles, RadioTower } from '@lucide/svelte';
+	import { onMount, onDestroy } from 'svelte';
+	import { Play, Pause, RotateCcw, SkipForward, SkipBack, Maximize2, Minimize2, Activity, BrainCircuit, BellRing, Waypoints, Sparkles, RadioTower, Volume2, VolumeX, Loader2 } from '@lucide/svelte';
 	import { api, type DemoSubject, type PredictionResponse, type AIRecommendation } from '$lib/services/api';
 	import MultiLine from '$lib/components/dashboard/MultiLine.svelte';
 	import RadarPlot from '$lib/components/dashboard/RadarPlot.svelte';
@@ -28,6 +28,61 @@
 	let aiLoading = $state(false);
 	let aiAuto = $state(true);
 	let aiError = $state('');
+
+	let audioEl: HTMLAudioElement | null = $state(null);
+	let narrateLoading = $state(false);
+	let narratePlaying = $state(false);
+	let narrateBlocked = $state(false);
+	let narrateError = $state('');
+	let narratedFor: string | null = null;
+	let narratedUrl: string | null = null;
+
+	function resetNarration() {
+		if (audioEl) audioEl.pause();
+		narratePlaying = false;
+		narrateBlocked = false;
+		narrateError = '';
+		if (narratedUrl) URL.revokeObjectURL(narratedUrl);
+		narratedUrl = null;
+		narratedFor = null;
+	}
+
+	async function playNarration(auto = false) {
+		if (!aiNote || aiNote.status !== 'OK' || !aiNote.summary) return;
+		narrateError = '';
+		narrateBlocked = false;
+		try {
+			if (narratedFor !== aiNote.summary) {
+				narrateLoading = true;
+				const blob = await api.speak(aiNote.summary);
+				if (narratedUrl) URL.revokeObjectURL(narratedUrl);
+				narratedUrl = URL.createObjectURL(blob);
+				narratedFor = aiNote.summary;
+				narrateLoading = false;
+			}
+			if (audioEl && narratedUrl) {
+				if (audioEl.src !== narratedUrl) audioEl.src = narratedUrl;
+				await audioEl.play();
+				narratePlaying = true;
+			}
+		} catch (cause) {
+			narrateLoading = false;
+			if (cause instanceof DOMException && cause.name === 'NotAllowedError') {
+				narrateBlocked = true;
+			} else if (!auto) {
+				narrateError = cause instanceof Error ? cause.message : 'Narration unavailable right now.';
+			}
+		}
+	}
+
+	function toggleNarration() {
+		if (narratePlaying) {
+			audioEl?.pause();
+			narratePlaying = false;
+		} else {
+			void playNarration(false);
+		}
+	}
 
 	const radarData = $derived.by(() => {
 		if (!current) return { labels: ['—', '—', '—', '—', '—'], values: [0, 0, 0, 0, 0] };
@@ -75,9 +130,14 @@
 		if (!subject || !current) return;
 		aiLoading = true;
 		if (!silent) aiError = '';
+		resetNarration();
 		try {
 			aiNote = await api.aiRecommendation(subject.stay_id, cutoffs[cutoffIndex]);
-			if (aiNote.status !== 'OK') aiError = aiNote.error ?? 'AI synthesis unavailable right now.';
+			if (aiNote.status !== 'OK') {
+				aiError = aiNote.error ?? 'AI synthesis unavailable right now.';
+			} else if (aiAuto) {
+				void playNarration(true);
+			}
 		} catch (cause) {
 			if (!silent) aiError = cause instanceof Error ? cause.message : 'AI synthesis unavailable right now.';
 		} finally {
@@ -160,6 +220,10 @@
 			window.removeEventListener('keydown', onKeyDown);
 		};
 	});
+
+	onDestroy(() => {
+		if (narratedUrl) URL.revokeObjectURL(narratedUrl);
+	});
 </script>
 
 <svelte:head><title>Guided Demo | Personalized Patient Recovery Trajectory</title><meta name="description" content="Real, model-backed retrospective replay walkthrough — Personalized Patient Recovery Trajectory V2." /></svelte:head>
@@ -214,64 +278,78 @@
 			<div class:active={current.organ_support.alert}><BellRing size={17} /><span>05 · THRESHOLD</span><b>SUPPORT ALERT</b></div>
 		</section>
 
-		<section class="main-grid">
-			<div class="trend">
-				<div class="signal-grid">
-					<div class="trend-card">
-						<header><span>SOFA / REPLAY SO FAR</span><b>OBSERVED</b></header>
-						<MultiLine series={[{ name: 'Observed SOFA', color: '#2bb8b0', values: historySofa }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={24} height={140} />
-					</div>
-					<div class="trend-card">
-						<header><span>REMAINING ICU HOURS</span><b>FORECAST</b></header>
-						<MultiLine series={[{ name: 'Remaining hours', color: '#fbbf24', values: historyIcu }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={Math.max(24, ...historyIcu, 1)} height={140} />
-					</div>
-					<div class="trend-card">
-						<header><span>SUPPORT PROBABILITY (24H)</span><b>VS THRESHOLD</b></header>
-						<MultiLine
-							series={[
-								{ name: 'Calibrated probability', color: '#fb7185', values: historySupport },
-								{ name: 'Frozen threshold', color: 'rgba(251,191,36,.55)', values: historySupport.map(() => current!.organ_support.threshold * 100) }
-							]}
-							xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={100} height={140}
-						/>
-					</div>
-					<div class="trend-card">
-						<header><span>RECOVERY +24H RECONSTRUCTION</span><b>SOFA_HAT</b></header>
-						<MultiLine series={[{ name: 'SOFA at +24h', color: '#38bdf8', values: historyRec24 }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={24} height={140} />
-					</div>
-				</div>
+		<section class="signal-grid">
+			<div class="trend-card">
+				<header><span>SOFA / REPLAY SO FAR</span><b>OBSERVED</b></header>
+				<MultiLine series={[{ name: 'Observed SOFA', color: '#2bb8b0', values: historySofa }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={24} height={130} />
 			</div>
-			<aside class="reasoning">
-				<div class="decision" class:blocked={current.organ_support.alert}>
-					<span>SUPPORT THRESHOLD STATE</span>
-					<strong>{current.organ_support.alert ? 'ABOVE THRESHOLD' : 'BELOW THRESHOLD'}</strong>
-					<p>Calibrated probability {(current.organ_support.probability_24h * 100).toFixed(1)}% vs. frozen threshold {(current.organ_support.threshold * 100).toFixed(1)}%. Raw model score {(current.organ_support.raw_probability * 100).toFixed(1)}%.</p>
-				</div>
-				<div class="shap-radar-card">
-					<span>RECOVERY+24 SHAP FACTORS</span>
-					<RadarPlot values={radarData.values} labels={radarData.labels} color="#38bdf8" />
-				</div>
+			<div class="trend-card">
+				<header><span>REMAINING ICU HOURS</span><b>FORECAST</b></header>
+				<MultiLine series={[{ name: 'Remaining hours', color: '#fbbf24', values: historyIcu }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={Math.max(24, ...historyIcu, 1)} height={130} />
+			</div>
+			<div class="trend-card">
+				<header><span>SUPPORT PROBABILITY (24H)</span><b>VS THRESHOLD</b></header>
+				<MultiLine
+					series={[
+						{ name: 'Calibrated probability', color: '#fb7185', values: historySupport },
+						{ name: 'Frozen threshold', color: 'rgba(251,191,36,.55)', values: historySupport.map(() => current!.organ_support.threshold * 100) }
+					]}
+					xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={100} height={130}
+				/>
+			</div>
+			<div class="trend-card">
+				<header><span>RECOVERY +24H RECONSTRUCTION</span><b>SOFA_HAT</b></header>
+				<MultiLine series={[{ name: 'SOFA at +24h', color: '#38bdf8', values: historyRec24 }]} xLabels={cutoffs.slice(0, cutoffIndex + 1).map((c) => c.slice(11, 16))} yMin={0} yMax={24} height={130} />
+			</div>
+		</section>
+
+		<section class="insight-grid">
+			<div class="insight-card decision" class:blocked={current.organ_support.alert}>
+				<span>SUPPORT THRESHOLD STATE</span>
+				<strong>{current.organ_support.alert ? 'ABOVE THRESHOLD' : 'BELOW THRESHOLD'}</strong>
+				<p>Calibrated probability {(current.organ_support.probability_24h * 100).toFixed(1)}% vs. frozen threshold {(current.organ_support.threshold * 100).toFixed(1)}%. Raw model score {(current.organ_support.raw_probability * 100).toFixed(1)}%.</p>
 				<div class="dq-row">
-					<GaugeRing value={Math.round((current.data_quality.observed_feature_fraction ?? 0) * 100)} size={64} stroke={6} color="#2bb8b0" label="DATA" />
+					<GaugeRing value={Math.round((current.data_quality.observed_feature_fraction ?? 0) * 100)} size={56} stroke={6} color="#2bb8b0" label="DATA" />
 					<div class="dq-copy"><span>WINDOW COMPLETENESS</span><p>{current.data_quality.observed_bins}/{current.data_quality.total_bins} bins observed · {current.data_quality.padding_bins} pre-admission padding</p></div>
 				</div>
-				<div class="events"><span>REPLAY LOG</span>{#each eventLog as event}<div><i class={event.tone}></i><b>{event.time}</b><small>{event.label}</small></div>{/each}</div>
-			</aside>
+			</div>
+			<div class="insight-card shap-radar-card">
+				<span>RECOVERY+24 SHAP FACTORS</span>
+				<RadarPlot values={radarData.values} labels={radarData.labels} color="#38bdf8" />
+			</div>
+			<div class="insight-card events">
+				<span>REPLAY LOG</span>
+				{#each eventLog as event}<div><i class={event.tone}></i><b>{event.time}</b><small>{event.label}</small></div>{/each}
+			</div>
 		</section>
 
 		<section class="ai-note" class:loading={aiLoading}>
+			<audio
+				bind:this={audioEl}
+				onended={() => (narratePlaying = false)}
+				onpause={() => (narratePlaying = false)}
+				onplay={() => (narratePlaying = true)}
+			></audio>
 			<header>
 				<div class="ai-note-title"><Sparkles size={15} /><span>AI RESEARCH NOTE</span><small>{aiNote?.model ?? 'openai/gpt-oss-120b'} · via Groq</small></div>
 				<label class="ai-toggle"><input type="checkbox" bind:checked={aiAuto} /> AUTO-NARRATE EACH PATIENT</label>
-				<button class="ai-btn" onclick={() => generateAINote(false)} disabled={aiLoading}><RadioTower size={13} /> {aiLoading ? 'SYNTHESIZING…' : 'NARRATE THIS MOMENT'}</button>
+				<button class="ai-btn" onclick={() => generateAINote(false)} disabled={aiLoading}><RadioTower size={13} /> {aiLoading ? 'SYNTHESIZING…' : 'WRITE THIS MOMENT'}</button>
+				{#if aiNote?.status === 'OK' && aiNote.summary}
+					<button class="ai-btn ai-btn--voice" class:speaking={narratePlaying} onclick={toggleNarration} disabled={narrateLoading}>
+						{#if narrateLoading}<Loader2 size={13} class="spin" /> VOICING…{:else if narratePlaying}<VolumeX size={13} /> STOP{:else}<Volume2 size={13} /> LISTEN (KOKORO){/if}
+					</button>
+				{/if}
 			</header>
 			{#if aiLoading && !aiNote}
 				<p class="ai-body ai-pending">Synthesizing the current forecast, SHAP drivers, and data completeness into a short research note…</p>
 			{:else if aiNote?.status === 'OK' && aiNote.summary}
 				<p class="ai-body">{aiNote.summary}</p>
+				{#if narratePlaying}<div class="voice-indicator"><span></span><span></span><span></span><span></span> NARRATING VIA KOKORO TTS</div>{/if}
+				{#if narrateBlocked}<p class="ai-hint">Browser blocked autoplay audio — click "Listen" to hear this note.</p>{/if}
+				{#if narrateError}<p class="ai-hint ai-hint--error">{narrateError}</p>{/if}
 				<footer class="ai-disclaimer">{aiNote.disclaimer}</footer>
 			{:else}
-				<p class="ai-body ai-muted">{aiError || 'No AI note generated yet for this cutoff — click "Narrate this moment."'}</p>
+				<p class="ai-body ai-muted">{aiError || 'No AI note generated yet for this cutoff — click "Write this moment."'}</p>
 			{/if}
 		</section>
 
@@ -290,20 +368,28 @@
 </div>
 
 <style>
-	.demo-shell{--accent:#2bb8b0;--accent-rgb:43,184,176;position:relative;isolation:isolate;max-width:1450px;margin:0 auto;padding:0 24px 28px;color:#dce9e8}.demo-shell.danger{--accent:#fb7185;--accent-rgb:251,113,133}.ambient{position:fixed;z-index:-1;inset:-20%;pointer-events:none;background:radial-gradient(circle at 84% 20%,rgba(var(--accent-rgb),.10),transparent 28%),radial-gradient(circle at 15% 75%,rgba(14,165,233,.065),transparent 25%);transition:background .8s ease}.hero{display:flex;justify-content:space-between;gap:40px;padding:28px 0 42px}.kicker,.hero p,.run-state span,.run-state small,.controls,.shortcuts,.metric-grid span,.metric-grid footer,.reasoning span,.pipeline,.evidence,.disclaimer{font-family:'JetBrains Mono',monospace}.kicker{color:var(--accent);font-size:8px;letter-spacing:.18em}.kicker i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:pulse 1.8s infinite}.demo-shell h1{margin:17px 0 15px;font:500 clamp(32px,4.5vw,60px)/.98 'Space Grotesk',sans-serif;letter-spacing:-.04em}.hero p{max-width:640px;margin:0;color:#71829a;font-size:11px;line-height:1.8}.hero code{color:#8fc6bf}.run-state{align-self:flex-end;min-width:180px;padding:18px;border-left:2px solid var(--accent);background:rgba(var(--accent-rgb),.06)}.run-state span,.run-state small{display:block;color:#64748b;font-size:8px;letter-spacing:.12em}.run-state strong{display:block;margin:9px 0;font:500 22px 'Space Grotesk',sans-serif}
+	.demo-shell{--accent:#2bb8b0;--accent-rgb:43,184,176;position:relative;isolation:isolate;max-width:1450px;margin:0 auto;padding:0 24px 28px;color:#dce9e8}.demo-shell.danger{--accent:#fb7185;--accent-rgb:251,113,133}.ambient{position:fixed;z-index:-1;inset:-20%;pointer-events:none;background:radial-gradient(circle at 84% 20%,rgba(var(--accent-rgb),.10),transparent 28%),radial-gradient(circle at 15% 75%,rgba(14,165,233,.065),transparent 25%);transition:background .8s ease}.hero{display:flex;justify-content:space-between;gap:40px;padding:28px 0 42px}.kicker,.hero p,.run-state span,.run-state small,.controls,.shortcuts,.metric-grid span,.metric-grid footer,.pipeline,.evidence,.disclaimer{font-family:'JetBrains Mono',monospace}.kicker{color:var(--accent);font-size:8px;letter-spacing:.18em}.kicker i{display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 12px var(--accent);animation:pulse 1.8s infinite}.demo-shell h1{margin:17px 0 15px;font:500 clamp(32px,4.5vw,60px)/.98 'Space Grotesk',sans-serif;letter-spacing:-.04em}.hero p{max-width:640px;margin:0;color:#71829a;font-size:11px;line-height:1.8}.hero code{color:#8fc6bf}.run-state{align-self:flex-end;min-width:180px;padding:18px;border-left:2px solid var(--accent);background:rgba(var(--accent-rgb),.06)}.run-state span,.run-state small{display:block;color:#64748b;font-size:8px;letter-spacing:.12em}.run-state strong{display:block;margin:9px 0;font:500 22px 'Space Grotesk',sans-serif}
 	.loading,.notice{padding:20px 0;color:#64748b;font:10px 'JetBrains Mono',monospace}.notice{color:#fecdd3}
 	.controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:11px;border:1px solid rgba(148,163,184,.14);background:#070d18;font-size:8px;letter-spacing:.08em}.controls button{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid #263546;color:#91a8b8;background:#0a1220;font:inherit;cursor:pointer}.controls button:hover,.controls .primary{border-color:var(--accent);color:#03110f;background:var(--accent)}.controls label{display:flex;align-items:center;gap:8px;margin-left:auto;color:#64748b}.controls select{padding:7px;border:1px solid #263546;color:#dce9e8;background:#0a1220;font:inherit}.clock{min-width:100px;color:var(--accent);text-align:right;font-size:9px}.shortcuts{display:flex;justify-content:flex-end;gap:15px;padding:8px 2px;color:#405168;font-size:6px;letter-spacing:.08em}.shortcuts kbd{padding:2px 4px;border:1px solid #263546;color:#71829a;background:#080f1b;font:inherit}
 	.cohort-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}.cohort-row button{display:flex;flex-direction:column;gap:4px;padding:12px;border:1px solid rgba(148,163,184,.16);background:#080e1d;color:#94a3b8;text-align:left;cursor:pointer}.cohort-row button.active{border-color:rgba(43,184,176,.45);background:rgba(43,184,176,.07);color:#eef7f6}.cohort-row span{color:#53647b;font:7px 'JetBrains Mono',monospace}.cohort-row b{font:11px 'Space Grotesk',sans-serif}.cohort-row small{color:#64748b;font:8px 'JetBrains Mono',monospace}
 	.metric-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:18px 0 7px}.metric-grid article{min-height:118px;padding:16px;border:1px solid rgba(148,163,184,.14);background:#080f1b;transition:border-color .5s,background .5s}.metric-grid article.alert{border-color:rgba(251,113,133,.45);background:rgba(127,29,29,.14)}.metric-grid span,.metric-grid footer{display:block;color:#53647b;font-size:7px;letter-spacing:.12em}.metric-grid strong{display:block;margin:16px 0 14px;font:500 30px 'Space Grotesk',sans-serif}.metric-grid strong small{margin-left:6px;color:#64748b;font:8px 'JetBrains Mono',monospace}.metric-grid .state{color:var(--accent)}
 	.pipeline{display:flex;align-items:stretch;gap:8px;margin:0 0 7px;padding:10px;border:1px solid rgba(148,163,184,.12);background:#050b14}.pipeline>div{display:grid;grid-template-columns:24px 1fr;grid-template-rows:auto auto;align-items:center;flex:1;padding:8px;color:#405168;border:1px solid rgba(148,163,184,.08)}.pipeline>div.active{color:var(--accent);border-color:rgba(var(--accent-rgb),.22);background:rgba(var(--accent-rgb),.04)}.pipeline svg{grid-row:span 2}.pipeline span{font-size:6px;letter-spacing:.12em}.pipeline b{color:#91a8b8;font-size:7px}.pipeline>i{align-self:center;color:#263546;font-style:normal}
-	.main-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(280px,.55fr);gap:7px}.trend-card{padding:16px;border:1px solid rgba(148,163,184,.14);background:#070d18}.trend-card header{display:flex;justify-content:space-between;margin-bottom:10px;color:#53647b;font:7px 'JetBrains Mono',monospace;letter-spacing:.1em}.trend-card header b{color:#dce9e8}.signal-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}.reasoning{display:grid;gap:7px;align-content:start}.reasoning>div{padding:16px;border:1px solid rgba(148,163,184,.14);background:#080f1b}.decision{color:var(--accent)}.decision.blocked{color:#fb7185}.decision>span{display:inline-block;margin-bottom:8px;color:#64748b;font-size:7px;letter-spacing:.13em}.decision strong{display:block;margin:6px 0 9px;font:500 18px/1.1 'Space Grotesk',sans-serif}.decision p,.events p{margin:0;color:#71829a;font-size:10px;line-height:1.6}.events>span{display:block;margin-bottom:15px;color:#64748b;font-size:7px;letter-spacing:.13em}.events div{display:grid;grid-template-columns:8px 38px 1fr;align-items:center;gap:6px;margin:10px 0;font:7px 'JetBrains Mono',monospace}.events div i{width:5px;height:5px;border-radius:50%;background:#2bb8b0}.events div i.danger{background:#fb7185}.events div b{color:#53647b}.events div small{color:#91a8b8}
-	.shap-radar-card{display:flex;flex-direction:column;align-items:center;gap:10px}.shap-radar-card>span{align-self:flex-start;color:#64748b;font:7px 'JetBrains Mono',monospace;letter-spacing:.13em}
+	.signal-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:7px}.trend-card{padding:14px;border:1px solid rgba(148,163,184,.14);background:#070d18}.trend-card header{display:flex;justify-content:space-between;margin-bottom:10px;color:#53647b;font:7px 'JetBrains Mono',monospace;letter-spacing:.1em}.trend-card header b{color:#dce9e8}
+	.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;align-items:stretch}.insight-card{padding:16px;border:1px solid rgba(148,163,184,.14);background:#080f1b;display:flex;flex-direction:column}
+	.decision{color:var(--accent)}.decision.blocked{color:#fb7185}.decision>span{display:inline-block;margin-bottom:8px;color:#64748b;font-size:7px;letter-spacing:.13em;font-family:'JetBrains Mono',monospace}.decision strong{display:block;margin:6px 0 9px;font:500 18px/1.1 'Space Grotesk',sans-serif}.decision p{margin:0;color:#71829a;font-size:10px;line-height:1.6}.decision .dq-row{margin-top:auto;padding-top:14px}
+	.events>span{display:block;margin-bottom:15px;color:#64748b;font-size:7px;letter-spacing:.13em;font-family:'JetBrains Mono',monospace}.events div{display:grid;grid-template-columns:8px 38px 1fr;align-items:center;gap:6px;margin:10px 0;font:7px 'JetBrains Mono',monospace}.events div i{width:5px;height:5px;border-radius:50%;background:#2bb8b0}.events div i.danger{background:#fb7185}.events div b{color:#53647b}.events div small{color:#91a8b8}
+	.shap-radar-card{align-items:center;justify-content:center;gap:10px}.shap-radar-card>span{align-self:flex-start;color:#64748b;font:7px 'JetBrains Mono',monospace;letter-spacing:.13em}
 	.dq-row{display:flex;align-items:center;gap:14px}.dq-copy span{display:block;margin-bottom:6px;color:#64748b;font:7px 'JetBrains Mono',monospace;letter-spacing:.12em}.dq-copy p{margin:0;color:#8fa3b8;font-size:9px;line-height:1.5}
 	.metric-grid article{display:flex;flex-direction:column}.metric-grid article strong{margin-bottom:8px}.metric-grid article :global(svg){display:block;margin:2px 0 10px}
-	.ai-note{margin-top:7px;padding:18px;border:1px solid rgba(56,189,248,.22);background:linear-gradient(135deg,rgba(56,189,248,.05),#070d18 46%);transition:border-color .4s}.ai-note.loading{border-color:rgba(56,189,248,.5)}.ai-note>header{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:12px}.ai-note-title{display:flex;align-items:center;gap:8px;color:#38bdf8}.ai-note-title span{font:8px 'JetBrains Mono',monospace;letter-spacing:.14em}.ai-note-title small{color:#53647b;font:7px 'JetBrains Mono',monospace}.ai-toggle{display:flex;align-items:center;gap:6px;margin-left:auto;color:#71829a;font:7px 'JetBrains Mono',monospace;letter-spacing:.08em;cursor:pointer}.ai-toggle input{accent-color:#38bdf8}.ai-btn{display:flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid rgba(56,189,248,.35);color:#38bdf8;background:rgba(56,189,248,.06);font:7px 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer}.ai-btn:disabled{opacity:.6;cursor:wait}.ai-body{margin:0;color:#c3d4e0;font-size:12px;line-height:1.75;max-width:980px}.ai-body.ai-pending{color:#64748b;font-style:italic}.ai-body.ai-muted{color:#64748b}.ai-disclaimer{margin-top:10px;color:#53647b;font:7px 'JetBrains Mono',monospace;letter-spacing:.08em}
+	.ai-note{margin-top:7px;padding:18px;border:1px solid rgba(56,189,248,.22);background:linear-gradient(135deg,rgba(56,189,248,.05),#070d18 46%);transition:border-color .4s}.ai-note.loading{border-color:rgba(56,189,248,.5)}.ai-note>header{display:flex;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:12px}.ai-note-title{display:flex;align-items:center;gap:8px;color:#38bdf8}.ai-note-title span{font:8px 'JetBrains Mono',monospace;letter-spacing:.14em}.ai-note-title small{color:#53647b;font:7px 'JetBrains Mono',monospace}.ai-toggle{display:flex;align-items:center;gap:6px;margin-left:auto;color:#71829a;font:7px 'JetBrains Mono',monospace;letter-spacing:.08em;cursor:pointer}.ai-toggle input{accent-color:#38bdf8}.ai-btn{display:flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid rgba(56,189,248,.35);color:#38bdf8;background:rgba(56,189,248,.06);font:7px 'JetBrains Mono',monospace;letter-spacing:.1em;cursor:pointer}.ai-btn:disabled{opacity:.6;cursor:wait}.ai-btn--voice{border-color:rgba(43,184,176,.4);color:var(--accent);background:rgba(43,184,176,.07)}.ai-btn--voice.speaking{border-color:rgba(43,184,176,.7);background:var(--accent);color:#03110f}.ai-btn :global(.spin){animation:spin .9s linear infinite}.ai-body{margin:0;color:#c3d4e0;font-size:12px;line-height:1.75;max-width:980px}.ai-body.ai-pending{color:#64748b;font-style:italic}.ai-body.ai-muted{color:#64748b}.ai-disclaimer{margin-top:10px;color:#53647b;font:7px 'JetBrains Mono',monospace;letter-spacing:.08em}
+	.ai-hint{margin:10px 0 0;color:#fbbf24;font:9px 'JetBrains Mono',monospace;letter-spacing:.05em}.ai-hint--error{color:#fb7185}
+	.voice-indicator{display:flex;align-items:center;gap:8px;margin-top:12px;color:var(--accent);font:8px 'JetBrains Mono',monospace;letter-spacing:.1em}.voice-indicator span{display:inline-block;width:3px;height:10px;border-radius:2px;background:var(--accent);animation:voicebar .9s ease-in-out infinite}.voice-indicator span:nth-child(2){animation-delay:.15s}.voice-indicator span:nth-child(3){animation-delay:.3s}.voice-indicator span:nth-child(4){animation-delay:.45s}
 	.evidence{margin-top:7px;border:1px solid rgba(43,184,176,.2);background:linear-gradient(135deg,rgba(43,184,176,.045),#070d18 42%)}.evidence>header{display:flex;justify-content:space-between;align-items:center;padding:13px 15px;border-bottom:1px solid rgba(148,163,184,.1)}.evidence>header div{display:grid;gap:4px}.evidence>header span{color:#2bb8b0;font-size:7px;letter-spacing:.14em}.evidence>header b{color:#64748b;font-size:7px;font-weight:400}.evidence>header a{color:#2bb8b0;font-size:7px;text-decoration:none}.evidence-grid{display:grid;grid-template-columns:repeat(4,1fr)}.evidence-grid article{padding:16px;border-right:1px solid rgba(148,163,184,.1)}.evidence-grid span,.evidence-grid small{display:block;color:#53647b;font-size:6px;letter-spacing:.11em}.evidence-grid strong{display:block;margin:10px 0 6px;color:#dce9e8;font:500 25px 'Space Grotesk',sans-serif}
 	.disclaimer{display:flex;gap:14px;align-items:center;margin-top:18px;padding:14px;border:1px solid rgba(251,191,36,.22);color:#71829a;font-size:7px;letter-spacing:.08em}.disclaimer b{color:#fbbf24}.disclaimer a{margin-left:auto;color:#2bb8b0;text-decoration:none}
 	@keyframes pulse{50%{opacity:.45;box-shadow:0 0 22px var(--accent)}}
-	@media(max-width:950px){.main-grid{grid-template-columns:1fr}.metric-grid,.evidence-grid,.cohort-row{grid-template-columns:1fr 1fr}.pipeline>i{display:none}.pipeline{display:grid;grid-template-columns:1fr 1fr}}
-	@media(max-width:680px){.demo-shell{padding:0 12px 20px}.hero{display:block}.run-state{margin-top:24px}.metric-grid,.evidence-grid,.cohort-row{grid-template-columns:1fr 1fr}.disclaimer,.evidence>header{align-items:flex-start;flex-direction:column}.disclaimer a{margin-left:0}.controls label{margin-left:0}.shortcuts{display:none}.pipeline{grid-template-columns:1fr}.evidence-grid article{border-bottom:1px solid rgba(148,163,184,.1)}.signal-grid{grid-template-columns:1fr}.ai-note>header{flex-direction:column;align-items:flex-start}.ai-toggle{margin-left:0}}
+	@keyframes spin{to{transform:rotate(360deg)}}
+	@keyframes voicebar{0%,100%{transform:scaleY(.4)}50%{transform:scaleY(1)}}
+	@media(max-width:1100px){.signal-grid{grid-template-columns:1fr 1fr}.insight-grid{grid-template-columns:1fr 1fr}.insight-card.events{grid-column:span 2}}
+	@media(max-width:950px){.metric-grid,.evidence-grid,.cohort-row{grid-template-columns:1fr 1fr}.pipeline>i{display:none}.pipeline{display:grid;grid-template-columns:1fr 1fr}}
+	@media(max-width:680px){.demo-shell{padding:0 12px 20px}.hero{display:block}.run-state{margin-top:24px}.metric-grid,.evidence-grid,.cohort-row{grid-template-columns:1fr 1fr}.disclaimer,.evidence>header{align-items:flex-start;flex-direction:column}.disclaimer a{margin-left:0}.controls label{margin-left:0}.shortcuts{display:none}.pipeline{grid-template-columns:1fr}.evidence-grid article{border-bottom:1px solid rgba(148,163,184,.1)}.signal-grid{grid-template-columns:1fr}.insight-grid{grid-template-columns:1fr}.insight-card.events{grid-column:auto}.ai-note>header{flex-direction:column;align-items:flex-start}.ai-toggle{margin-left:0}}
 </style>

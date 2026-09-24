@@ -10,6 +10,11 @@ export default defineConfig({
 				target: 'http://localhost:8010',
 				changeOrigin: true,
 				rewrite: (path) => path.replace(/^\/api/, '')
+			},
+			'/tts': {
+				target: 'http://localhost:8020',
+				changeOrigin: true,
+				rewrite: (path) => path.replace(/^\/tts/, '')
 			}
 		}
 	}

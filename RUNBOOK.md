@@ -72,7 +72,48 @@ Performance, Explainability (+ an AI-generated research-note synthesis in
 the SvelteKit frontend), and Data Quality & Provenance, plus a patient/stay
 selector across the 3+ demo subjects.
 
-### 5. Replay steps
+### 5. Start the Kokoro narration service (terminal 3, optional)
+
+The demo and AI + SHAP pages can read AI research notes aloud with
+[Kokoro](https://github.com/thewh1teagle/kokoro-onnx), a small open-weight
+TTS model. It runs as its own isolated FastAPI process because
+`kokoro-onnx`'s ONNX runtime needs a newer Python than the rest of this
+project is pinned to — it never touches the main `src/` environment or any
+scientific artifact.
+
+```bash
+# one-time setup
+brew install python@3.12   # any Python 3.11+ works
+/opt/homebrew/bin/python3.12 -m venv .venv-tts
+source .venv-tts/bin/activate
+pip install kokoro-onnx soundfile "fastapi" "uvicorn[standard]"
+
+mkdir -p models/kokoro
+curl -L -o models/kokoro/kokoro-v1.0.onnx \
+  https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.onnx
+curl -L -o models/kokoro/voices-v1.0.bin \
+  https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+```
+
+```bash
+# every run
+source .venv-tts/bin/activate
+python3 -m uvicorn tts.server:app --factory --host 127.0.0.1 --port 8020
+```
+
+```bash
+curl --fail http://127.0.0.1:8020/health
+```
+
+The SvelteKit dev server proxies `/tts/*` to `http://localhost:8020` (see
+`frontend/vite.config.ts`). If this service is not running, the "Listen
+(Kokoro)" buttons show a narration error but everything else — predictions,
+TreeSHAP, the AI text note itself — is entirely unaffected; narration is
+strictly optional and downstream of the AI note, never a dependency of it.
+The model files (~340MB) are not committed; re-download them with the
+commands above (see `.gitignore`).
+
+### 6. Replay steps
 
 1. On **Patient Replay**, use "Previous cutoff" / "Next cutoff" / the cutoff
    dropdown to step through the patient's legal replay timestamps.
@@ -83,11 +124,13 @@ selector across the 3+ demo subjects.
 4. Visit **AI + SHAP / Explainability** at any cutoff for TreeSHAP
    contributors per task, and click "Generate summary" for an AI-written
    research note (Groq-hosted `openai/gpt-oss-120b`, called server-side —
-   see step 6a for configuration).
+   see step 7 for configuration), then "Listen (Kokoro)" to hear it read
+   aloud (step 5). The guided demo auto-generates and auto-narrates a note
+   for each new patient it steps to.
 5. Visit **Model Performance** for the frozen, one-time fresh-test evaluation
    (no inference is triggered by this page).
 
-### 6. AI recommendation configuration
+### 7. AI recommendation configuration
 
 The "AI + SHAP" page's research-note synthesis calls Groq's OpenAI-compatible
 chat completions API server-side (the key never reaches the browser). Set:
@@ -103,7 +146,7 @@ structured `{"status": "UNAVAILABLE", ...}` response — the rest of the
 dashboard (predictions, TreeSHAP, model performance) is entirely unaffected,
 since the LLM is called strictly after prediction and never influences it.
 
-### 7. Troubleshooting
+### 8. Troubleshooting
 
 - `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
   was detected; the server refuses to serve rather than guess. Re-verify
@@ -128,8 +171,12 @@ since the LLM is called strictly after prediction and never influences it.
   `GROQ_API_KEY`, the key/model combination is invalid, or the network is
   unreachable — this is a deliberate graceful-degradation path, not a bug;
   check the API server's log for the specific reason.
+- "Narration unavailable"/"Browser blocked autoplay audio": the Kokoro
+  service (step 5) is not running, or the browser blocked an unprompted
+  autoplay — click "Listen (Kokoro)" directly, which is a user gesture and
+  is never blocked.
 
-### 8. Stop
+### 9. Stop
 
 `Ctrl-C` in each terminal.
 
