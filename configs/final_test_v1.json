@@ -3,26 +3,27 @@
   "g3_marker_ref": "artifacts/governance/g3_freeze.json",
   "required_g3_scope": "real",
   "bootstrap_config_ref": "configs/evaluation/bootstrap_v1.json",
-  "bootstrap_config_sha256": "1b8694b37f82c2c97f0bea043d1468661665a229b1d43f063a2680f7ed8bd930",
+  "bootstrap_config_sha256": "ee0370a1dcd24d41f4c001edaeb22fd123ccc1c7346d1d95a64211ee3dbd3148",
   "retry_policy": {
-    "status": "BLOCKED_FINAL_TEST_RETRY_POLICY_REQUIRED",
-    "approved_before_test": false,
-    "policy_version": null
+    "status": "FROZEN_BEFORE_TEST",
+    "approved_before_test": true,
+    "policy_version": "stage5_final_test_retry_policy_v1",
+    "description": "One scientific final-test exposure. An ordinary second run is forbidden after success. A genuine technical crash after access consumption permits only an exact continuation/resume of the SAME frozen run, and only if the governance framework can prove identical run identity, code commit, configuration, and artifact hashes, with preserved access history and no science-affecting change. A reset is never performed merely because metrics are undesirable, and the bootstrap seed/B, slices, model, calibrator, and threshold are never changed post-access. If safe exact-resume cannot be proven, the run fails closed and all evidence is preserved."
   },
   "final_evaluation_plan": {
-    "status": "BLOCKED_FROZEN_FINAL_EVALUATION_PLAN_REQUIRED",
+    "status": "FROZEN_BEFORE_TEST",
     "selected_models_only": true,
-    "evaluate_naive": null,
-    "evaluate_nonselected_families": null,
-    "evaluate_lstm": null,
-    "icu_error_percentiles": null
+    "evaluate_naive": true,
+    "evaluate_nonselected_families": false,
+    "evaluate_lstm": false,
+    "icu_error_percentiles": []
   },
   "error_analysis_spec_ref": "configs/error_analysis/error_analysis_v1.json",
   "g4_schema": {
-    "status": "UNLOCKED_ENGINEERING_PARAMETER",
-    "schema_version": null
+    "status": "FROZEN_BEFORE_TEST",
+    "schema_version": "g4_test_evaluation_freeze_v1"
   },
   "pretest_audit_ref": "artifacts/governance/phase20_pretest_audit_v1.json",
-  "real_test_loader_entrypoint": null,
-  "real_test_evaluator_entrypoint": null
+  "real_test_loader_entrypoint": "experiments.stage5_final_test:stage5_test_loader",
+  "real_test_evaluator_entrypoint": "experiments.stage5_final_test:stage5_evaluator"
 }

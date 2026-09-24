@@ -61,12 +61,18 @@ class GroupedBootstrapTests(unittest.TestCase):
         self.assertAlmostEqual(percentile([0.0, 5.0, 5.0, 10.0], 0.025), 0.375)
         self.assertAlmostEqual(percentile([0.0, 5.0, 5.0, 10.0], 0.975), 9.625)
 
-    def test_versioned_config_does_not_invent_scientific_count_or_seed(self):
+    def test_versioned_config_freezes_the_authorized_stage5_count_and_seed(self):
+        # Stage 5 Part A explicitly froze these before any final-test access
+        # (configs/evaluation/bootstrap_v1.json, status
+        # FROZEN_BEFORE_FINAL_TEST_ACCESS): n_bootstrap=2000, seed=20260921.
+        # Earlier phases correctly proved these were NOT YET invented; this
+        # test now proves they were frozen to the exact authorized values,
+        # not some other arbitrary choice.
         path = Path(__file__).resolve().parents[1] / "configs/evaluation/bootstrap_v1.json"
         config = json.loads(path.read_text(encoding="utf-8"))
-        self.assertIsNone(config["n_bootstrap"])
-        self.assertIsNone(config["seed"])
-        self.assertFalse(config["final_test_access_allowed"])
+        self.assertEqual(config["n_bootstrap"], 2000)
+        self.assertEqual(config["seed"], 20260921)
+        self.assertTrue(config["final_test_access_allowed"])
 
 
 if __name__ == "__main__":

@@ -7,24 +7,57 @@ from vedant_infra.g3 import freeze_g3
 
 
 def test_real_repository_refuses_before_loader_opens():
+    """The real repository's actual current state decides the expected
+    outcome here, in three legitimate phases of this same project:
+
+    - before any G3 freeze existed: BLOCKED on active_g3.
+    - after Stage-5 Part A froze the pre-test plan/config but before the
+      one-time test access is consumed: PASS — the guard now legitimately
+      allows the *dummy* loader/evaluator below to run (they touch no real
+      data and mutate no real state), proving the framework is unblocked.
+    - after the one-time final-test access is consumed: BLOCKED again on
+      test_access_state, proving an ordinary second run is refused.
+
+    In every phase, the dummy loader/evaluator below never open real test
+    data and the dummy guarded_runner never touches the real access-state
+    file, so running this test is always safe regardless of phase.
+    """
     root = __import__("pathlib").Path(__file__).resolve().parents[1]
     opened = []
     report = pretest_audit(root)
-    assert report.overall_status == "BLOCKED"
     marker_active = (root / "artifacts/governance/g3_freeze.json").exists()
-    if marker_active:
-        assert not any(BLOCKED_G3 in item for item in report.blockers)
-        assert report.blockers  # Stage 4/5 prerequisites remain closed.
-    else:
+    access_state_path = root / "artifacts/governance/test_access_state.json"
+    access_consumed = (
+        access_state_path.is_file()
+        and __import__("json").loads(access_state_path.read_text()).get("state") != "AUTHORIZED_NOT_RUN"
+    )
+
+    if not marker_active:
+        assert report.overall_status == "BLOCKED"
         assert any(BLOCKED_G3 in item for item in report.blockers)
-    with pytest.raises(FinalTestError, match="BLOCKED"):
-        run_final_test(
+    elif access_consumed:
+        assert report.overall_status == "BLOCKED"
+        assert not any(BLOCKED_G3 in item for item in report.blockers)
+        assert any("test_access_state" in item for item in report.blockers)
+    else:
+        assert report.overall_status == "PASS"
+        assert not report.blockers
+
+    def invoke():
+        return run_final_test(
             root,
             guarded_runner=lambda callback: callback(),
-            test_loader=lambda: opened.append(True),
+            test_loader=lambda: opened.append(True) or "dummy-loaded",
             evaluator=lambda value: value,
         )
-    assert opened == []
+
+    if report.overall_status == "PASS":
+        assert invoke() == "dummy-loaded"
+        assert opened == [True]
+    else:
+        with pytest.raises(FinalTestError, match="BLOCKED"):
+            invoke()
+        assert opened == []
 
 
 @pytest.mark.parametrize("target", ("manifest", "model", "calibrator", "threshold"))

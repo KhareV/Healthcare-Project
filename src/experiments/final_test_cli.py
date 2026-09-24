@@ -31,22 +31,35 @@ def main() -> None:
     root = args.root.resolve()
     report = pretest_audit(root)
     output = write_pretest_audit(root, report)
-    snapshot = register_pretest_snapshot(root, output)
     print(json.dumps(report.as_dict(), indent=2, sort_keys=True))
     print("pretest_audit=" + str(output))
-    print("registered_snapshot=" + str(snapshot))
     if report.overall_status != "PASS":
+        # Registering the pretest snapshot writes to experiments/artifacts.csv,
+        # which is itself one of G3's bound dependency hashes. Doing that
+        # before `run` would poison the guarded re-audit
+        # run_final_test performs internally, permanently blocking every
+        # future run attempt. `audit` is the standalone pre-flight query, so
+        # it registers its own evidence snapshot immediately; `run` only
+        # registers its snapshot after a successful guarded evaluation, once
+        # no further G3 check will execute in this process.
+        register_pretest_snapshot(root, output)
         parser.exit(2, "BLOCKED — ACTIVE G3 FREEZE REQUIRED\n")
-    if args.command == "run":
-        config = load_final_test_config(root / "configs/final_test_v1.json")
-        loader = _load_callable(config["real_test_loader_entrypoint"])
-        evaluator = _load_callable(config["real_test_evaluator_entrypoint"])
-        run_final_test(
-            root,
-            guarded_runner=lambda callback: run_guarded_final_test(root, callback),
-            test_loader=loader,
-            evaluator=evaluator,
-        )
+    if args.command == "audit":
+        snapshot = register_pretest_snapshot(root, output)
+        print("registered_snapshot=" + str(snapshot))
+        return
+    config = load_final_test_config(root / "configs/final_test_v1.json")
+    loader = _load_callable(config["real_test_loader_entrypoint"])
+    evaluator = _load_callable(config["real_test_evaluator_entrypoint"])
+    result = run_final_test(
+        root,
+        guarded_runner=lambda callback: run_guarded_final_test(root, callback),
+        test_loader=loader,
+        evaluator=evaluator,
+    )
+    snapshot = register_pretest_snapshot(root, output)
+    print("registered_snapshot=" + str(snapshot))
+    print(json.dumps(result, indent=2, sort_keys=True, default=str))
 
 
 if __name__ == "__main__":
