@@ -6,7 +6,20 @@ Retrospective research software for forecasting independent +24/+48-hour SOFA ch
 
 > RETROSPECTIVE SEQUENTIAL REPLAY — NOT REAL-TIME CLINICAL PREDICTION OR CLINICAL DECISION SUPPORT
 
-## Current status
+## Performance V2 — final release (start here)
+
+Performance V2 is complete: four frozen XGBoost models (recovery +24h, recovery +48h, remaining ICU stay time, 24h new organ-support initiation risk), a one-time fresh-test evaluation, and a real, model-backed demo application. See [Performance V2 final report](docs/performance_v2/FINAL_V2_TEST_EVALUATION.md) for the frozen scientific numbers and [`V2_DEMO_SCRIPT.md`](docs/performance_v2/V2_DEMO_SCRIPT.md) for a guided walkthrough.
+
+```bash
+PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --host 127.0.0.1 --port 8010 --factory
+PYTHONPATH=src:. python3 -m uvicorn dashboard.v2_app:app --host 127.0.0.1 --port 8511 --factory
+```
+
+Open `http://127.0.0.1:8511/`. This is a real, model-backed demo: every prediction is recomputed by `src/serving/v2` from raw history truncated at the selected cutoff, through the exact frozen Phase-3 V2 models — never a lookup table, and never the sealed fresh-V2-test cohort (structurally excluded; see [Test/fresh-cohort protection](#v2-fresh-test-protection) below). See the [V2 section of RUNBOOK.md](RUNBOOK.md#v2-final-release-demo-application) for exact commands, health checks, and troubleshooting.
+
+The sections below describe the earlier Benchmark-v1 baseline this project builds on; they remain historically accurate for that baseline and are unaffected by the V2 work above.
+
+## Current status (Benchmark v1, historical)
 
 The scientific and product contracts are implemented and structurally tested with engineering-only synthetic fixtures. Under Project Scope v2, the accepted final research dataset will also be synthetic, but it has not yet been specified or generated and must not be conflated with those fixtures. Model-backed serving remains blocked because an approved selected-model bundle is absent. The package/environment manager and final dependency versions are also unresolved, so **no final environment lock currently exists**. [The observed runtime snapshot](observed_environment_phase15.json) is explicitly non-final.
 
@@ -46,3 +59,7 @@ See [RUNBOOK.md](RUNBOOK.md), [reproducibility guidance](docs/REPRODUCIBILITY.md
 ## Privacy boundary
 
 The committed demo is a manually constructed engineering fixture and is not the authorized final synthetic research dataset. Project Scope v2 does not authorize or require MIMIC-IV access or MIMIC-derived experimental claims. Raw restricted clinical records, identifying extracts, credentials, and local database paths must remain outside this repository.
+
+## V2 fresh-test protection
+
+`src/serving/v2/guard.py` restricts every V2 dashboard/API prediction request to the small, versioned demo set in `configs/performance_v2/v2_demo_manifest_v1.json` (deterministic DEV/TRAIN subjects, selected without regard to model performance). Any other `stay_id` — including every subject in the sealed fresh-V2-test cohort (`artifacts/performance_v2/phase3/fresh_test_cohort/`, access state `FINAL_V2_RUN_COMPLETED`) — is rejected identically to an unknown stay (`404`). The Model Performance dashboard page reads only the already-frozen `artifacts/performance_v2/phase4/` evaluation artifacts and never triggers inference.

@@ -1,5 +1,89 @@
 # Operational Runbook
 
+## V2 final release demo application
+
+This section is self-contained: it does not require reading the historical
+Benchmark-v1 sections below, and needs no developer-specific local paths.
+
+### 1. Prerequisites
+
+```bash
+python3 --version   # tested on CPython 3.9
+python3 -c "import fastapi, xgboost, shap, matplotlib, httpx"   # must import cleanly
+```
+
+If any import fails, install the missing package with your environment's
+package manager (no project-wide lock is currently pinned for these).
+
+### 2. Verify V2 scientific artifacts are present and unchanged
+
+```bash
+PYTHONPATH=src:tests:. python3 -m pytest -q tests/test_v2_serving.py tests/test_v2_dashboard.py
+```
+
+### 3. Start the V2 API (terminal 1)
+
+```bash
+PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --factory --host 127.0.0.1 --port 8010
+```
+
+```bash
+curl --fail http://127.0.0.1:8010/health
+curl -s -X POST http://127.0.0.1:8010/predict \
+  -H "Content-Type: application/json" \
+  -d '{"stay_id":"SYN-E-00000001","prediction_time":"2101-05-31T06:17:26Z"}'
+```
+
+The demo fixture's exact stay IDs and legal cutoffs are listed in
+`configs/performance_v2/v2_demo_manifest_v1.json`.
+
+### 4. Start the V2 dashboard (terminal 2)
+
+```bash
+V2_API_BASE_URL=http://127.0.0.1:8010 \
+PYTHONPATH=src:. python3 -m uvicorn dashboard.v2_app:app --factory --host 127.0.0.1 --port 8511
+```
+
+Open `http://127.0.0.1:8511/`. Use the sidebar to switch between Patient
+Replay, Forecast Details, Model Performance, Explainability, and Data
+Quality & Provenance, and to select one of the 3+ demo patients.
+
+### 5. Replay steps
+
+1. On **Patient Replay**, use "Previous cutoff" / "Next cutoff" / the cutoff
+   dropdown to step through the patient's legal replay timestamps.
+2. Each step issues a new `POST /predict` call recomputed from history
+   truncated at that cutoff — never a cached value.
+3. Watch the recovery trajectory chart, the ICU/support trend charts, and
+   the "Replay history" table accumulate as you advance.
+4. Visit **Explainability** at any cutoff for TreeSHAP contributors per task.
+5. Visit **Model Performance** for the frozen, one-time fresh-test evaluation
+   (no inference is triggered by this page).
+
+### 6. Troubleshooting
+
+- `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
+  was detected; the server refuses to serve rather than guess. Re-verify
+  `artifacts/performance_v2/phase3/selected_models_v2.json` is unchanged.
+- `404` on a stay you expected to work: only demo-manifest stays are
+  servable, by design; check `configs/performance_v2/v2_demo_manifest_v1.json`.
+  A fresh-V2-test subject ID (`SYN-V2-...`) will always 404 here.
+- `422` on a cutoff: the timestamp is not one of that stay's legal cutoffs —
+  use the dropdown rather than typing an arbitrary time.
+- Dashboard shows "Prediction unavailable": the API is not running or
+  `V2_API_BASE_URL` does not point at it.
+- First request after startup is slow (~15-20s): the runtime loads and
+  hash-verifies the DEV canonical timeline once at process start, not per
+  request.
+
+### 7. Stop
+
+`Ctrl-C` in each terminal.
+
+---
+
+## Benchmark-v1 operational runbook (historical)
+
 > **Active scope amendment:** Project Scope v2 replaces MIMIC-IV as the final data source with an authorized synthetic adult cardiac/heart-disease dataset. That dataset has not yet been generated. Existing synthetic demo inputs remain engineering fixtures only. See `docs/governance/project_scope_v2.md`; its status is **DRAFT COMPLETE — TEAM FREEZE REQUIRED**.
 
 All commands below run from the repository root. This document distinguishes the currently testable synthetic input workflow from blocked real serving and from the unapproved final-environment freeze.

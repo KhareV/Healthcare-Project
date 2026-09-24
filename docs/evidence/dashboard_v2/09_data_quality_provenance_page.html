@@ -1,0 +1,99 @@
+<!doctype html><html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Personalized Patient Recovery Trajectory — V2</title><style>
+:root {
+  --bg: #f4f6f8; --card: #ffffff; --ink: #17324d; --muted: #5b6b7c;
+  --border: #dfe6ee; --accent: #0f766e; --accent-2: #2563eb; --danger: #b91c1c;
+  --radius: 10px;
+}
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+.banner { background:#17324d; color:#fff; padding:10px 18px; font-size:13px; letter-spacing:.02em; display:flex; gap:18px; flex-wrap:wrap; align-items:center; }
+.banner b { color:#fca5a5; }
+.layout { display:flex; min-height:100vh; }
+.sidebar { width:250px; flex-shrink:0; background:#0f2436; color:#e6edf3; padding:18px 14px; }
+.sidebar h1 { font-size:16px; margin:0 0 4px; }
+.sidebar .sub { font-size:11px; color:#9db3c4; margin-bottom:18px; }
+.sidebar nav a { display:block; padding:8px 10px; border-radius:8px; color:#cfe0ec; text-decoration:none; font-size:13px; margin-bottom:4px; }
+.sidebar nav a.active { background:#153650; color:#fff; font-weight:600; }
+.sidebar .field { margin-top:16px; }
+.sidebar label { font-size:11px; color:#9db3c4; display:block; margin-bottom:4px; }
+.sidebar select { width:100%; padding:6px; border-radius:6px; border:1px solid #294b63; background:#0f2436; color:#fff; font-size:12px; }
+.sidebar .status { margin-top:18px; font-size:10px; color:#7f97a8; line-height:1.5; }
+.main { flex:1; padding:20px 26px; max-width:1180px; }
+.cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-bottom:20px; }
+.card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; }
+.card h3 { margin:0 0 6px; font-size:11px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.card .value { font-size:24px; font-weight:700; }
+.card .unit { font-size:12px; color:var(--muted); font-weight:400; }
+.card .sub { font-size:11px; color:var(--muted); margin-top:4px; }
+.section { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px; }
+.section h2 { font-size:15px; margin:0 0 10px; }
+.section h3 { font-size:12px; margin: 14px 0 6px; color: var(--muted); text-transform:uppercase; letter-spacing:.03em;}
+.pill { display:inline-block; padding:2px 9px; border-radius:99px; font-size:11px; font-weight:600; }
+.pill.below { background:#dcfce7; color:#166534; }
+.pill.above { background:#fee2e2; color:#991b1b; }
+table { border-collapse:collapse; width:100%; font-size:12px; }
+table th, table td { text-align:left; padding:5px 8px; border-bottom:1px solid var(--border); }
+table th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+img.chart { width:100%; height:auto; border-radius:8px; }
+.hash { font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:11px; color:var(--muted); }
+details summary { cursor:pointer; font-size:12px; color:var(--accent-2); }
+.replay-controls { display:flex; gap:8px; align-items:center; margin-bottom:14px; flex-wrap:wrap; }
+.replay-controls a.btn, .replay-controls select { padding:6px 12px; border-radius:8px; border:1px solid var(--border); background:#fff; font-size:12px; text-decoration:none; color:var(--ink); }
+.replay-controls a.btn.disabled { color:#c1c9d2; pointer-events:none; }
+.error { background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:12px 16px; border-radius:8px; margin-bottom:16px; font-size:13px; }
+.attr-pos { color:#166534; }
+.attr-neg { color:#991b1b; }
+.small { font-size:11px; color:var(--muted); }
+.footer-note { font-size:11px; color:var(--muted); margin-top:24px; }
+</style></head>
+<body>
+<div class="banner"><b>RETROSPECTIVE SEQUENTIAL REPLAY</b> · SYNTHETIC RESEARCH BENCHMARK · NOT REAL-TIME CLINICAL PREDICTION</div>
+<div class="layout">
+  <div class="sidebar">
+    <h1>Personalized Patient Recovery Trajectory</h1>
+    <div class="sub">Time-series forecasting · V2 XGBoost models</div>
+    <nav><a class="" href="/?view=replay&stay_id=SYN-E-00000010&prediction_time=2103-01-07T08%3A02%3A18Z">Patient Replay</a><a class="" href="/?view=forecast&stay_id=SYN-E-00000010&prediction_time=2103-01-07T08%3A02%3A18Z">Forecast Details</a><a class="" href="/?view=performance&stay_id=SYN-E-00000010&prediction_time=2103-01-07T08%3A02%3A18Z">Model Performance</a><a class="" href="/?view=explainability&stay_id=SYN-E-00000010&prediction_time=2103-01-07T08%3A02%3A18Z">Explainability</a><a class="active" href="/?view=dataquality&stay_id=SYN-E-00000010&prediction_time=2103-01-07T08%3A02%3A18Z">Data Quality & Provenance</a></nav>
+    <form method="get" class="field">
+      <input type="hidden" name="view" value="dataquality"/>
+      <label>Demo patient / stay</label>
+      <select name="stay_id" onchange="this.form.submit()"><option value="SYN-E-00000010" selected>SYN-S-00000010 — Arrhythmia</option><option value="SYN-E-00000001" >SYN-S-00000001 — Hf</option><option value="SYN-E-00000007" >SYN-S-00000007 — Ischemic</option></select>
+    </form>
+    <div class="status">
+      RETROSPECTIVE SEQUENTIAL REPLAY over a fixed 48h lookback (eight 6h bins).<br/>
+      Synthetic cardiac benchmark. Not clinically validated. Not deployed.
+    </div>
+  </div>
+  <div class="main">
+    
+    <div class="section"><h2>Patient / Stay Overview</h2><table><tr><td>Demo subject</td><td>SYN-S-00000010</td></tr><tr><td>Demo stay</td><td>SYN-E-00000010</td></tr><tr><td>Age (years)</td><td>26</td></tr><tr><td>Sex</td><td>FEMALE</td></tr><tr><td>Cardiac subtype</td><td>SYNTHETIC_ARRHYTHMIA</td></tr><tr><td>ICU admission (intime)</td><td>2103-01-04T02:02:18.000000Z</td></tr><tr><td>Selected replay timestamp</td><td>2103-01-07T08:02:18Z</td></tr><tr><td>Elapsed ICU hours at cutoff</td><td>78</td></tr></table></div>
+    <div class="replay-controls">
+      <a class="btn " href="/?view=replay&stay_id=SYN-E-00000010&prediction_time=2103-01-07T02%3A02%3A18Z">&larr; Previous cutoff</a>
+      <form method="get" style="display:inline">
+        <input type="hidden" name="view" value="replay"/><input type="hidden" name="stay_id" value="SYN-E-00000010"/>
+        <select name="prediction_time" onchange="this.form.submit()"><option value="2103-01-05T02:02:18Z" >2103-01-05T02:02:18Z (t0)</option><option value="2103-01-05T08:02:18Z" >2103-01-05T08:02:18Z (t1)</option><option value="2103-01-05T14:02:18Z" >2103-01-05T14:02:18Z (t2)</option><option value="2103-01-05T20:02:18Z" >2103-01-05T20:02:18Z (t3)</option><option value="2103-01-06T02:02:18Z" >2103-01-06T02:02:18Z (t4)</option><option value="2103-01-06T08:02:18Z" >2103-01-06T08:02:18Z (t5)</option><option value="2103-01-06T14:02:18Z" >2103-01-06T14:02:18Z (t6)</option><option value="2103-01-06T20:02:18Z" >2103-01-06T20:02:18Z (t7)</option><option value="2103-01-07T02:02:18Z" >2103-01-07T02:02:18Z (t8)</option><option value="2103-01-07T08:02:18Z" selected>2103-01-07T08:02:18Z (t9)</option></select>
+      </form>
+      <a class="btn disabled" href="/?view=replay&stay_id=SYN-E-00000010">Next cutoff &rarr;</a>
+      <a class="btn" href="/?view=replay&stay_id=SYN-E-00000010&prediction_time=2103-01-05T02%3A02%3A18Z">Reset to first cutoff</a>
+      <span class="small">Cutoff t9 of 9</span>
+    </div>
+    <div class="section"><h2>Data Quality — observed-bin counts</h2>
+      <table><tr><td>Total Bins</td><td>8</td></tr><tr><td>Observed Bins</td><td>8</td></tr><tr><td>Padding Bins</td><td>0</td></tr><tr><td>Total Feature Values</td><td>168</td></tr><tr><td>Observed Feature Values</td><td>142</td></tr><tr><td>Missing Feature Values</td><td>26</td></tr><tr><td>Observed Feature Fraction</td><td>0.8452380952380952</td></tr></table>
+      <p class="small">These are transparent observation counts, never a prediction confidence, certainty, or quality score. No such quantity is computed by this application.</p>
+    </div>
+    <div class="section"><h2>Model / Provenance Metadata</h2>
+      <table><tr><th>Task</th><th>Family</th><th>Feature variant</th><th>Model hash</th></tr><tr><td>recovery24</td><td>xgboost</td><td>B_MIN</td>
+        <td><details><summary>b355c2633927…</summary><span class="hash">b355c26339271f0b84c123eb46cfb61c8df0cc9c9c6fcfcbb86c29047d10ad3c</span></details></td></tr><tr><td>recovery48</td><td>xgboost</td><td>B_MIN</td>
+        <td><details><summary>5dda6bb08304…</summary><span class="hash">5dda6bb0830428b44b3a7cf554dc7f6d2adc278c7b218045d1df8ff960f6c701</span></details></td></tr><tr><td>icu_stay_time</td><td>xgboost</td><td>B_PLUS_F</td>
+        <td><details><summary>918c81eef86b…</summary><span class="hash">918c81eef86bd89e91e02bb06c254774375f3f2371c4f3c5200c270dea24f7e6</span></details></td></tr><tr><td>organ_support</td><td>xgboost</td><td>B_FULL</td>
+        <td><details><summary>2fa653a0d2c6…</summary><span class="hash">2fa653a0d2c644d8a1de806146f8e8cba46df87e6bd037868122276b4a440671</span></details></td></tr></table>
+      <p class="small">selected_models_v2.json: <span class="hash">6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8</span><br/>
+      v2_model_freeze_v1.json: <span class="hash">f5feb29cab2e25d6e8bff860af52ac505f40951578aa73547ec420ba8fcda570</span></p>
+    </div>
+    
+    <div class="footer-note">V2_DASHBOARD_INTEGRATION · models frozen in artifacts/performance_v2/phase3/selected_models_v2.json</div>
+  </div>
+</div>
+</body></html>
