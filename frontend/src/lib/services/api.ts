@@ -163,12 +163,105 @@ export type PredictionRunSnapshot = {
 	updated_at: string;
 };
 
-export type Condition = {
-	condition_id: string;
-	label: string;
-	diagnosed_year: number | null;
-	status: string;
+export type PatientProfile = {
+	patient_id: string;
+	owner_user_id: string;
+	display_name_or_alias: string;
+	age_years: number | null;
+	sex_category: string | null;
+	blood_group: string | null;
+	height_cm: number | null;
+	weight_kg: number | null;
 	created_at: string;
+	updated_at: string;
+	schema_version: string;
+};
+
+export type ConditionStatus = 'active' | 'resolved' | 'historical';
+
+export type HealthRecordCondition = {
+	condition_id: string;
+	patient_id: string | null;
+	owner_user_id: string;
+	name: string;
+	code: string | null;
+	diagnosed_date: string | null;
+	status: string;
+	notes: string | null;
+	created_at: string;
+	updated_at: string;
+	schema_version: string;
+};
+
+export type HealthRecordEncounter = {
+	encounter_id: string;
+	stay_id: string;
+	patient_id: string | null;
+	patient_alias: string;
+	age_years: number;
+	sex_category: string;
+	intime: string;
+	outtime: string;
+	encounter_type: string;
+	source: string;
+	observations: CustomObservationInput[];
+	support_intervals: CustomSupportIntervalInput[];
+	created_at: string;
+	updated_at: string;
+};
+
+export type HealthRecordObservationRow = {
+	encounter_id: string;
+	patient_alias: string;
+	concept: string;
+	value: number;
+	hours_since_admission: number;
+};
+
+export type HealthRecordSupportRow = {
+	encounter_id: string;
+	patient_alias: string;
+	kind: string;
+	agent: string | null;
+	rate: number | null;
+	start_hour: number;
+	end_hour: number | null;
+};
+
+export type ReportProcessingStatus = 'UPLOADED' | 'PARSED' | 'FAILED' | 'NOT_PARSED';
+
+export type HealthRecordReport = {
+	report_id: string;
+	patient_id: string;
+	title: string;
+	document_type: string;
+	original_filename: string;
+	mime_type: string;
+	size_bytes: number;
+	report_date: string | null;
+	uploaded_at: string;
+	source: string;
+	processing_status: ReportProcessingStatus;
+	extracted_summary: string | null;
+};
+
+export type HealthRecordAuditEvent = {
+	event_id: string;
+	patient_id: string | null;
+	action: string;
+	target_type: string;
+	target_id: string;
+	timestamp: string;
+};
+
+export type HealthRecordExport = {
+	schema_version: string;
+	exported_at: string;
+	profile: PatientProfile;
+	conditions: HealthRecordCondition[];
+	encounters: HealthRecordEncounter[];
+	reports: HealthRecordReport[];
+	prediction_history: PredictionRunSnapshot[];
 };
 
 export type CustomRecordResult = {
@@ -222,18 +315,82 @@ export const api = {
 		request<CustomRecordResult>('/custom-records', { method: 'POST', body: JSON.stringify(payload) }),
 	getCustomRecord: (stay_id: string) => request<CustomRecordResult>(`/custom-records/${encodeURIComponent(stay_id)}`),
 
-	// Persistent longitudinal record layer (src/serving/v2/persistence.py).
 	// Durable across API restarts when MongoDB is configured — see
 	// /health's persistence_mode; degrades to "whatever is currently
 	// loaded in memory" otherwise, never a fake empty/success response.
 	listCustomRecords: () => request<{ records: CustomRecordSummary[] }>('/custom-records'),
 	getCustomRecordPredictionHistory: (stay_id: string) =>
 		request<{ stay_id: string; predictions: PredictionRunSnapshot[]; note?: string }>(`/custom-records/${encodeURIComponent(stay_id)}/predictions`),
-	listConditions: () => request<{ conditions: Condition[]; note?: string }>('/health-record/conditions'),
-	addCondition: (payload: { label: string; diagnosed_year: number | null; status: string }) =>
-		request<Condition>('/health-record/conditions', { method: 'POST', body: JSON.stringify(payload) }),
-	deleteCondition: (condition_id: string) =>
-		request<{ deleted: boolean; condition_id: string }>(`/health-record/conditions/${encodeURIComponent(condition_id)}`, { method: 'DELETE' }),
+
+	// My Health Record (src/serving/v2/persistence.py + report_storage.py):
+	// one consolidated, owner-scoped longitudinal record -- profile,
+	// conditions, encounters/observations/support (read views over the same
+	// encounters custom-record entry creates), reports, prediction history.
+	healthRecord: {
+		getProfile: () => request<PatientProfile>('/health-record/profile'),
+		updateProfile: (
+			fields: Partial<Pick<PatientProfile, 'display_name_or_alias' | 'age_years' | 'sex_category' | 'blood_group' | 'height_cm' | 'weight_kg'>>
+		) => request<PatientProfile>('/health-record/profile', { method: 'PUT', body: JSON.stringify(fields) }),
+
+		listConditions: () => request<{ conditions: HealthRecordCondition[]; note?: string }>('/health-record/conditions'),
+		addCondition: (payload: { name: string; code?: string | null; diagnosed_date?: string | null; status: ConditionStatus; notes?: string | null }) =>
+			request<HealthRecordCondition>('/health-record/conditions', { method: 'POST', body: JSON.stringify(payload) }),
+		editCondition: (
+			condition_id: string,
+			payload: Partial<{ name: string; code: string | null; diagnosed_date: string | null; status: ConditionStatus; notes: string | null }>
+		) => request<HealthRecordCondition>(`/health-record/conditions/${encodeURIComponent(condition_id)}`, { method: 'PATCH', body: JSON.stringify(payload) }),
+		deleteCondition: (condition_id: string) =>
+			request<{ deleted: boolean; condition_id: string }>(`/health-record/conditions/${encodeURIComponent(condition_id)}`, { method: 'DELETE' }),
+
+		listEncounters: () => request<{ encounters: HealthRecordEncounter[]; note?: string }>('/health-record/encounters'),
+		getEncounter: (encounter_id: string) => request<HealthRecordEncounter>(`/health-record/encounters/${encodeURIComponent(encounter_id)}`),
+
+		listObservations: () => request<{ observations: HealthRecordObservationRow[]; note?: string }>('/health-record/observations'),
+		listSupport: () => request<{ support_intervals: HealthRecordSupportRow[]; note?: string }>('/health-record/support'),
+		listPredictions: () => request<{ predictions: PredictionRunSnapshot[]; note?: string }>('/health-record/predictions'),
+
+		listReports: () => request<{ reports: HealthRecordReport[]; note?: string }>('/health-record/reports'),
+		getReport: (report_id: string) => request<HealthRecordReport>(`/health-record/reports/${encodeURIComponent(report_id)}`),
+		uploadReport: async (payload: { title: string; document_type: string; report_date?: string | null; file: File }): Promise<HealthRecordReport> => {
+			const form = new FormData();
+			form.set('title', payload.title);
+			form.set('document_type', payload.document_type);
+			if (payload.report_date) form.set('report_date', payload.report_date);
+			form.set('file', payload.file);
+			const headers = new Headers();
+			if (authToken.value) headers.set('Authorization', `Bearer ${authToken.value}`);
+			// Deliberately not the shared request() helper: it defaults an
+			// unset Content-Type to application/json, which would break the
+			// browser's own multipart/form-data boundary for a FormData body.
+			const response = await fetch(`${API_BASE}/health-record/reports`, { method: 'POST', body: form, headers });
+			if (!response.ok) {
+				let detail = `Upload failed with status ${response.status}`;
+				try {
+					const body = await response.json();
+					detail = body?.detail || detail;
+				} catch {
+					/* keep default detail */
+				}
+				throw new Error(detail);
+			}
+			return response.json();
+		},
+		downloadReport: async (report_id: string): Promise<Blob> => {
+			const headers = new Headers();
+			if (authToken.value) headers.set('Authorization', `Bearer ${authToken.value}`);
+			// A plain <a href> can't attach an Authorization header, so the
+			// download is fetched here and handed to the caller as a Blob to
+			// save via a temporary object URL -- see the Reports panel.
+			const response = await fetch(`${API_BASE}/health-record/reports/${encodeURIComponent(report_id)}/download`, { headers });
+			if (!response.ok) throw new Error(`Download failed with status ${response.status}`);
+			return response.blob();
+		},
+		deleteReport: (report_id: string) =>
+			request<{ deleted: boolean; report_id: string }>(`/health-record/reports/${encodeURIComponent(report_id)}`, { method: 'DELETE' }),
+
+		exportRecord: () => request<HealthRecordExport>('/health-record/export'),
+		listAuditEvents: () => request<{ events: HealthRecordAuditEvent[]; note?: string }>('/health-record/audit-events')
+	},
 
 	// Kokoro narration microservice — a separate isolated process (see
 	// tts/server.py); returns a playable audio/wav Blob or throws.
