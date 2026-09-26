@@ -172,6 +172,16 @@ commands above (see `.gitignore`).
    independently, never sees the fresh-test cohort, and refuses treatment/
    diagnosis questions by design (see `configs/product_v2/
    trajectory_copilot_prompt_v1.txt`).
+7. From the workspace home or Patient Replay, click **Enter my own record**
+   (`/patients/custom`) to type in your own vitals/labs (heart rate, MAP,
+   SpO2, GCS, lactate, etc., each at a chosen number of hours since a
+   synthetic admission) and get a **real** forecast through the exact same
+   frozen models, feature builder, and SOFA computation as the demo cohort —
+   not a mock. The record exists only in the API server's memory for that
+   process's lifetime (never written to disk, never mixed with the demo
+   manifest or the fresh-test cohort — its `CUSTOM-` stay-id namespace can't
+   collide with either); restarting the API server discards it. See
+   `src/serving/v2/custom_record.py` and `tests/test_v2_custom_record.py`.
 
 ### 8. AI recommendation configuration
 
@@ -229,6 +239,15 @@ since the LLM is called strictly after prediction and never influences it.
 - "Trajectory Copilot is unavailable right now": it shares the same
   `GROQ_API_KEY` configuration as step 8 — if the AI research note also
   says unavailable, the cause is the same.
+- A custom record ("Enter my own record") 404s after a while: the API
+  server was restarted, which discards every custom record by design (it is
+  in-memory only) — create it again.
+- Custom-record creation rejects a `glasgow_coma_scale` value: it must be a
+  whole number (3-15) — SOFA's neurological component requires an integer.
+- Custom-record creation rejects an observation time: it must be strictly
+  greater than 0 (an hour-0 event is indistinguishable from pre-admission
+  padding) and at most 90 (the legal-cutoff grid never extends further,
+  regardless of how the record is otherwise configured).
 
 ### 10. Stop
 

@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "307ac90ab103413bb688cd7aad970a2ad3bd93644bc9e8de2dcbb5906a6e0551",
+      "output_sha256": "7cd3c908576def5578f820159fa6956c366b979e8c8f076bb430778768904eba",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1317,6 +1317,10 @@
           "sha256": "758ff1e1bfaa03b1c031f8b0f181df68a14224daff996f32927138d04af40443"
         },
         {
+          "path": "src/serving/v2/custom_record.py",
+          "sha256": "11729a04c1269ffcf3f95a4f842cce3455953b9f4fabc9aed54c837758fc2221"
+        },
+        {
           "path": "src/serving/v2/explanations.py",
           "sha256": "3e2da00818c474ac33533153ad3ea5f40a3cb1a6d882250484b9b16f6aab212d"
         },
@@ -1326,7 +1330,7 @@
         },
         {
           "path": "src/serving/v2/runtime.py",
-          "sha256": "128bf9d610c64268fe25dd67bf9a7828ef43a45229e3ff5d88625f40574f0102"
+          "sha256": "1e0254da51e02a9966d74e3d9a982fef9672c9902b138e0ac9ffcd783eada4f9"
         },
         {
           "path": "src/training/__init__.py",
@@ -1434,7 +1438,7 @@
         },
         {
           "path": "api/v2_app.py",
-          "sha256": "a1d44793c8c0c0972894c6f484e6458a15ec2b06dca5a74749f1b5d84b13ec9a"
+          "sha256": "70e71f543c76f4192465393b3779967b08d2164b58548b02d8de247701e46076"
         },
         {
           "path": "dashboard/__init__.py",
@@ -2525,6 +2529,10 @@
           "sha256": "182febf1c0ecca1e8156ea9566bdcf3bf8b72b2d17c1e5da3ae5946081b71a7c"
         },
         {
+          "path": "tests/test_v2_custom_record.py",
+          "sha256": "c013cf23d61c3db76a637442beb7ba77235878309855c13b2cdc825d8f9d2a83"
+        },
+        {
           "path": "tests/test_v2_dashboard.py",
           "sha256": "7bda88d029f5251eafd0d6cb4c10814587f031ccec40564581e6ea50670e3a6a"
         },
@@ -2842,7 +2850,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "5edd1c4da2041e92e9d06f02835a5bf38f342ec41e54b92994c610750dcc4e79",
+      "output_sha256": "84186a9359924b3cd664baf9fe3b47ff4fc5ad129bd34d0a516f43987069cd21",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2901,7 +2909,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "8bd8b408b031d8f25a3436cf2b0a01e948eeac164f7291cf629ef0e0461e4ffa",
+      "output_sha256": "9fdea8f1dabe7e080d32ea1ebac160b1047a494a35028a7ab3078a4670041866",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2986,7 +2994,7 @@
         },
         {
           "path": "RUNBOOK.md",
-          "sha256": "c74647f135e74f8195a736a0877693f5a08a331bb8cec1046656b6f3ee2f97ad"
+          "sha256": "72efa119d5c912930363bb191d29e8a2bdf32505cfc497b6866902200cf6cf0c"
         },
         {
           "path": "README.md",
