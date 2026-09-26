@@ -8,12 +8,13 @@ import logging
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
+from serving.v2.custom_record import CustomRecordError, build_custom_record, canonical_concepts, get_custom_record
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
@@ -33,6 +34,23 @@ class AssistantRequest(BaseModel):
     prediction_time: str = Field(..., min_length=1)
     question: Optional[str] = Field(default=None, max_length=500)
     previous_prediction_time: Optional[str] = Field(default=None)
+
+    model_config = {"extra": "forbid"}
+
+
+class CustomObservationIn(BaseModel):
+    concept: str = Field(..., min_length=1)
+    hours_since_admission: float
+    value: float
+
+    model_config = {"extra": "forbid"}
+
+
+class CustomRecordRequest(BaseModel):
+    patient_alias: str = Field(..., min_length=1, max_length=64)
+    age_years: int = Field(..., ge=0, le=120)
+    sex_category: str = Field(..., min_length=1, max_length=32)
+    observations: list[CustomObservationIn] = Field(..., min_length=1)
 
     model_config = {"extra": "forbid"}
 
@@ -165,6 +183,34 @@ def build_v2_app(root: Path) -> FastAPI:
             "demo_subjects": subjects,
         }
 
+    @app.get("/custom-records/schema")
+    def custom_records_schema():
+        """The canonical concepts a custom record may report -- unit and
+        provenance_id are fixed by the frozen feature schema; the caller
+        only ever supplies a concept name, a value, and a relative time."""
+
+        return {"concepts": canonical_concepts(runtime.root)}
+
+    @app.post("/custom-records")
+    def create_custom_record(request: CustomRecordRequest):
+        try:
+            return build_custom_record(
+                runtime,
+                patient_alias=request.patient_alias,
+                age_years=request.age_years,
+                sex_category=request.sex_category,
+                observations=[o.model_dump() for o in request.observations],
+            )
+        except CustomRecordError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/custom-records/{stay_id}")
+    def read_custom_record(stay_id: str):
+        record = get_custom_record(runtime, stay_id)
+        if record is None:
+            raise UnknownDemoStayError("unknown custom record")
+        return record
+
     @app.get("/performance")
     def performance():
         """Reads the frozen, one-time Phase-4 fresh-test evaluation artifacts
@@ -232,7 +278,15 @@ def build_v2_app(root: Path) -> FastAPI:
         }
 
     def _assistant_context(prediction: dict) -> dict:
-        alias_row = demo_aliases.get(prediction["stay_id"], {})
+        alias_row = demo_aliases.get(prediction["stay_id"])
+        if alias_row is None:
+            custom = get_custom_record(runtime, prediction["stay_id"])
+            alias_row = {
+                "patient_alias": custom["patient_alias"],
+                "cardiac_subtype": "custom record (direct entry)",
+                "age_years": custom["age_years"],
+                "sex_category": custom["sex_category"],
+            } if custom else {}
         recovery, icu, support = prediction["recovery"], prediction["icu_stay_time"], prediction["organ_support"]
         explanations = prediction.get("explanations", {})
 

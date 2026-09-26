@@ -141,6 +141,41 @@ class V2ServingRuntime:
         for row in supports:
             self._supports_by_stay.setdefault(row["stay_id"], []).append(row)
 
+        # Ephemeral, in-memory-only records registered via
+        # serving.v2.custom_record (the "bring your own data" product
+        # feature). Never written to disk, never mixed into the frozen demo
+        # manifest or the fresh-test cohort -- a disjoint stay_id namespace
+        # (see custom_record.py) makes collision structurally impossible.
+        # Cleared on every process restart by construction (it is just a
+        # dict), which is the intended "ephemeral" behavior for this
+        # demo-scale feature.
+        self._ephemeral_manifest: dict = {}
+
+    def register_ephemeral_stay(self, *, stay_id: str, subject_id: str, statics_row: Mapping[str, object], events: list, legal_cutoffs: Tuple[str, ...]) -> None:
+        """Register a session-only, non-persisted synthetic stay so the
+        existing /predict, /history, /ai/recommendation, and /assistant
+        endpoints can serve it exactly like a frozen demo subject, through
+        the same unmodified feature-builder and SOFA-provider code paths."""
+
+        self._statics_by_stay[stay_id] = dict(statics_row)
+        self._events_by_stay[stay_id] = list(events)
+        self._supports_by_stay.setdefault(stay_id, [])
+        # SyntheticCanonicalFeatureBuilder._statics is its own copy (made at
+        # construction), so it needs the same row added directly.
+        self.feature_builder._statics[stay_id] = dict(statics_row)
+        # SyntheticCurrentSOFAProvider.stays is a plain mutable dict; .history
+        # is an immutable tuple built once at construction, so it is extended
+        # by reassignment rather than in-place mutation.
+        self.sofa_provider.stays[stay_id] = dict(statics_row)
+        self.sofa_provider.history = self.sofa_provider.history + tuple(events)
+        self._ephemeral_manifest[stay_id] = {"stay_id": stay_id, "subject_id": subject_id, "legal_cutoffs": list(legal_cutoffs)}
+
+    def ephemeral_entry(self, stay_id: str):
+        return self._ephemeral_manifest.get(stay_id)
+
+    def ephemeral_count(self) -> int:
+        return len(self._ephemeral_manifest)
+
     def _build_feature_builder(self) -> SyntheticCanonicalFeatureBuilder:
         statics_rows = load_jsonl(self.root / TIMELINE_DIR / "canonical_statics.jsonl")
         statics_by_stay = {row["stay_id"]: row for row in statics_rows}
@@ -193,12 +228,19 @@ class V2ServingRuntime:
         )
 
     def legal_cutoffs(self, stay_id: str) -> Tuple[str, ...]:
+        ephemeral = self._ephemeral_manifest.get(stay_id)
+        if ephemeral is not None:
+            return tuple(ephemeral["legal_cutoffs"])
         entry = guard_demo_stay(self.root, stay_id)
         return tuple(entry["legal_cutoffs"])
 
     def predict(self, stay_id: str, prediction_time: str) -> V2Prediction:
-        entry = guard_demo_stay(self.root, stay_id)  # UnknownDemoStayError on anything else, incl. fresh-test subjects
-        subject_id = entry["subject_id"]
+        ephemeral = self._ephemeral_manifest.get(stay_id)
+        if ephemeral is not None:
+            subject_id = ephemeral["subject_id"]
+        else:
+            entry = guard_demo_stay(self.root, stay_id)  # UnknownDemoStayError on anything else, incl. fresh-test subjects
+            subject_id = entry["subject_id"]
         legal = self.legal_cutoffs(stay_id)
         if prediction_time not in legal:
             raise IllegalCutoffError(f"prediction_time {prediction_time!r} is not a legal cutoff for {stay_id}")
