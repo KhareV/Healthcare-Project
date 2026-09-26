@@ -10,7 +10,8 @@
 	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type DemoSubject, type PredictionResponse } from '$lib/services/api';
 	import { setCopilotContext, openCopilot } from '$lib/stores/copilot.svelte';
-	import { ChevronLeft, ChevronRight, RotateCcw, Sparkles } from '@lucide/svelte';
+	import { listRememberedCustomRecords, rememberCustomRecord, forgetCustomRecord } from '$lib/stores/custom-records';
+	import { ChevronLeft, ChevronRight, RotateCcw, Sparkles, Plus } from '@lucide/svelte';
 
 	const GROUP_OF: Record<string, string> = {
 		mean_arterial_pressure: 'Cardiovascular', heart_rate: 'Cardiovascular', systolic_blood_pressure: 'Cardiovascular',
@@ -101,8 +102,34 @@
 		try {
 			const result = await api.demoSubjects();
 			subjects = result.demo_subjects;
+
+			// Merge in any custom ("bring your own data") records this browser
+			// created earlier. The server keeps no per-user index for these —
+			// this list is a pure client-side convenience that always
+			// re-verifies against the server (an ephemeral record vanishes on
+			// server restart, at which point we quietly forget it too).
+			const remembered = listRememberedCustomRecords();
+			const fetched = await Promise.allSettled(remembered.map((r) => api.getCustomRecord(r.stay_id)));
+			fetched.forEach((outcome, index) => {
+				if (outcome.status === 'fulfilled') {
+					subjects = [...subjects, outcome.value];
+				} else {
+					forgetCustomRecord(remembered[index].stay_id);
+				}
+			});
+
 			const params = page.url.searchParams;
 			const requested = params.get('stay_id');
+			if (requested && requested.startsWith('CUSTOM-') && !subjects.some((s) => s.stay_id === requested)) {
+				try {
+					const record = await api.getCustomRecord(requested);
+					subjects = [...subjects, record];
+					rememberCustomRecord({ stay_id: record.stay_id, patient_alias: record.patient_alias });
+				} catch {
+					/* not found (e.g. server restarted since the link was shared) — falls through below */
+				}
+			}
+
 			stayId = requested && subjects.some((s) => s.stay_id === requested) ? requested : subjects[0]?.stay_id ?? '';
 			cutoffIndex = Number(params.get('cutoff') ?? 0) || 0;
 			loadingSubjects = false;
@@ -125,11 +152,12 @@
 		<div class="selector-row">
 			<div class="stay-picker">
 				{#each subjects as s}
-					<button class:active={s.stay_id === stayId} onclick={() => selectStay(s.stay_id)}>
+					<button class:active={s.stay_id === stayId} class:custom={s.cardiac_condition_group === 'CUSTOM_RECORD'} onclick={() => selectStay(s.stay_id)}>
 						<span class="sid">{s.patient_alias ?? s.subject_id}</span>
-						<small>{s.cardiac_condition_group.replace('SYNTHETIC_', '')}</small>
+						<small>{s.cardiac_condition_group === 'CUSTOM_RECORD' ? 'YOUR RECORD' : s.cardiac_condition_group.replace('SYNTHETIC_', '')}</small>
 					</button>
 				{/each}
+				<a class="stay-picker-add" href="/patients/custom"><Plus size={14} /> Enter my own record</a>
 			</div>
 			<div class="overview-card">
 				<div><span>Patient</span><b>{subject.patient_alias ?? subject.subject_id}</b></div>
@@ -268,7 +296,11 @@
 	.stay-picker { display: flex; flex-direction: column; gap: 4px; }
 	.stay-picker button { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; border: 1px solid rgba(148,163,184,.16); background: #080e1d; color: #94a3b8; cursor: pointer; font: 11px 'Space Grotesk', sans-serif; text-align: left; }
 	.stay-picker button.active { border-color: rgba(43,184,176,.45); background: rgba(43,184,176,.07); color: #eef7f6; }
+	.stay-picker button.custom { border-style: dashed; }
+	.stay-picker button.custom small { color: #38bdf8; }
 	.stay-picker small { color: #64748b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .08em; }
+	.stay-picker-add { display: flex; align-items: center; justify-content: center; gap: 7px; margin-top: 4px; padding: 12px 14px; border: 1px dashed rgba(148,163,184,.28); color: #71829a; text-decoration: none; font: 10px 'JetBrains Mono', monospace; letter-spacing: .06em; }
+	.stay-picker-add:hover { border-color: #2bb8b0; color: #2bb8b0; }
 	.overview-card { display: grid; gap: 8px; padding: 14px; border-left: 2px solid #2bb8b0; background: rgba(15,23,42,.5); }
 	.overview-card div { display: flex; justify-content: space-between; gap: 10px; }
 	.overview-card span { color: #64748b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .08em; }

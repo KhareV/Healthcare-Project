@@ -5,7 +5,7 @@
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
 	import { api } from '$lib/services/api';
 	import { authFlag } from '$lib/stores/auth.svelte';
-	import { Database, FileUp, PlugZap } from '@lucide/svelte';
+	import { Database, PencilLine, PlugZap } from '@lucide/svelte';
 
 	let demoCount = $state<number | null>(null);
 	let apiReady = $state<boolean | null>(null);
@@ -32,9 +32,9 @@
 		<a class="source-card active" href="/patients">
 			<Database size={18} /><strong>Explore Demo Patients</strong><span>Three structurally-selected synthetic ICU episodes, ready now</span>
 		</a>
-		<div class="source-card soon">
-			<FileUp size={18} /><strong>Upload Synthetic FHIR</strong><span>Coming in a follow-up release</span><em>SOON</em>
-		</div>
+		<a class="source-card active" href="/patients/custom">
+			<PencilLine size={18} /><strong>Enter My Own Record</strong><span>Type in vitals & labs and forecast them through the real frozen models</span>
+		</a>
 		<div class="source-card soon">
 			<PlugZap size={18} /><strong>Connect EHR Sandbox</strong><span>Advanced / sandbox — coming in a follow-up release</span><em>SOON</em>
 		</div>

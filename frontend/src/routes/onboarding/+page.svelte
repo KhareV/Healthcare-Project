@@ -2,7 +2,7 @@
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
   import { useClerkContext } from 'svelte-clerk';
-  import { Microscope, Stethoscope, GraduationCap, Check, Database, FileUp, PlugZap } from '@lucide/svelte';
+  import { Microscope, Stethoscope, GraduationCap, Check, Database, PencilLine, PlugZap } from '@lucide/svelte';
 
   const ctx = useClerkContext();
 
@@ -14,7 +14,7 @@
 
   let disclaimerAccepted = $state(false);
 
-  type DataSourceMode = 'DEMO' | 'FHIR_UPLOAD' | 'EHR_SANDBOX';
+  type DataSourceMode = 'DEMO' | 'CUSTOM_ENTRY' | 'EHR_SANDBOX';
   let dataSourceMode = $state<DataSourceMode>('DEMO');
 
   let saving = $state(false);
@@ -120,9 +120,8 @@
           <button class="source-card" class:active={dataSourceMode === 'DEMO'} onclick={() => (dataSourceMode = 'DEMO')}>
             <Database size={20} /><strong>Explore Demo Patients</strong><span>Recommended — three structurally-selected synthetic ICU episodes, ready now</span>
           </button>
-          <button class="source-card" onclick={() => (dataSourceMode = 'FHIR_UPLOAD')} class:active={dataSourceMode === 'FHIR_UPLOAD'}>
-            <FileUp size={20} /><strong>Upload Synthetic FHIR</strong><span>Coming in a follow-up release — interface reserved</span>
-            <em>SOON</em>
+          <button class="source-card" onclick={() => (dataSourceMode = 'CUSTOM_ENTRY')} class:active={dataSourceMode === 'CUSTOM_ENTRY'}>
+            <PencilLine size={20} /><strong>Enter My Own Record</strong><span>Type in vitals & labs and forecast them through the real frozen models</span>
           </button>
           <button class="source-card" onclick={() => (dataSourceMode = 'EHR_SANDBOX')} class:active={dataSourceMode === 'EHR_SANDBOX'}>
             <PlugZap size={20} /><strong>Connect EHR Sandbox</strong><span>Advanced / sandbox — coming in a follow-up release</span>

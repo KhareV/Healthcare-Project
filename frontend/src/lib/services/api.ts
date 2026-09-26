@@ -103,6 +103,27 @@ export type AIRecommendation = {
 
 export type AssistantTurn = { role: 'user' | 'assistant'; text: string };
 
+export type CanonicalConcept = { concept: string; label: string; hint: string; unit: string; provenance_id: string };
+
+export type CustomObservationInput = { concept: string; hours_since_admission: number; value: number };
+
+export type CustomRecordResult = {
+	stay_id: string;
+	subject_id: string;
+	patient_alias: string;
+	cardiac_condition_group: string;
+	age_years: number;
+	sex_category: string;
+	intime: string;
+	outtime: string;
+	legal_cutoffs: string[];
+	n_legal_cutoffs: number;
+	data_readiness: string;
+	warnings: string[];
+	concept_coverage: { observed: number; total: number; concepts: string[] };
+	source: string;
+};
+
 export const api = {
 	request,
 	health: () => request<{ status: string; ready: boolean; mode: string; scope: string; tasks: string[] }>('/health'),
@@ -126,6 +147,14 @@ export const api = {
 			method: 'POST',
 			body: JSON.stringify({ stay_id, prediction_time, question: question ?? null, previous_prediction_time: previous_prediction_time ?? null })
 		}),
+
+	// "Bring your own data" direct entry — a real ephemeral, session-only
+	// stay served through the exact same /predict, /history, /ai/*
+	// endpoints as any demo subject. See src/serving/v2/custom_record.py.
+	customRecordSchema: () => request<{ concepts: CanonicalConcept[] }>('/custom-records/schema'),
+	createCustomRecord: (payload: { patient_alias: string; age_years: number; sex_category: string; observations: CustomObservationInput[] }) =>
+		request<CustomRecordResult>('/custom-records', { method: 'POST', body: JSON.stringify(payload) }),
+	getCustomRecord: (stay_id: string) => request<CustomRecordResult>(`/custom-records/${encodeURIComponent(stay_id)}`),
 
 	// Kokoro narration microservice — a separate isolated process (see
 	// tts/server.py); returns a playable audio/wav Blob or throws.
