@@ -3,12 +3,19 @@
 // service (src/serving/v2 + api/v2_app.py). There is no local prediction
 // cache or lookup table: each replay step recomputes from raw history
 // truncated at the requested cutoff.
+import { authToken } from '$lib/stores/auth-token.svelte';
+
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 const TTS_BASE = import.meta.env.VITE_TTS_BASE_URL || '/tts';
 
 async function request<T>(path: string, options: RequestInit = {}) {
 	const headers = new Headers(options.headers);
 	if (options.body && !headers.has('Content-Type')) headers.set('Content-Type', 'application/json');
+	// Attached on every call, not just custom-record ones: harmless for demo
+	// predictions (the backend only checks it for CUSTOM- stay ids — see
+	// src/serving/v2/auth.py), required for the backend to verify ownership
+	// of a custom record.
+	if (authToken.value && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${authToken.value}`);
 
 	const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
@@ -107,6 +114,28 @@ export type CanonicalConcept = { concept: string; label: string; hint: string; u
 
 export type CustomObservationInput = { concept: string; hours_since_admission: number; value: number };
 
+export type VasopressorAgent = 'norepinephrine' | 'epinephrine' | 'dopamine' | 'dobutamine';
+
+export type CustomSupportIntervalInput =
+	| { kind: 'vasopressor'; agent: VasopressorAgent; rate: number; start_hour: number; end_hour: number | null }
+	| { kind: 'ventilation'; start_hour: number; end_hour: number | null };
+
+export type CustomRecordReadinessSummary = {
+	observations_entered: number;
+	concepts_represented: number;
+	concepts_total: number;
+	earliest_observation_hour: number | null;
+	latest_observation_hour: number | null;
+	legal_cutoffs: number;
+	first_cutoff_observed_bins: number | null;
+	first_cutoff_total_bins: number | null;
+	sofa_components_observed: string[];
+	sofa_components_missing: string[];
+	support_state_entered: { vasopressor: boolean; invasive_ventilation: boolean };
+	missing_concepts: string[];
+	urine_output_supported: false;
+};
+
 export type CustomRecordResult = {
 	stay_id: string;
 	subject_id: string;
@@ -121,6 +150,7 @@ export type CustomRecordResult = {
 	data_readiness: string;
 	warnings: string[];
 	concept_coverage: { observed: number; total: number; concepts: string[] };
+	readiness_summary: CustomRecordReadinessSummary;
 	source: string;
 };
 
@@ -152,7 +182,7 @@ export const api = {
 	// stay served through the exact same /predict, /history, /ai/*
 	// endpoints as any demo subject. See src/serving/v2/custom_record.py.
 	customRecordSchema: () => request<{ concepts: CanonicalConcept[] }>('/custom-records/schema'),
-	createCustomRecord: (payload: { patient_alias: string; age_years: number; sex_category: string; observations: CustomObservationInput[] }) =>
+	createCustomRecord: (payload: { patient_alias: string; age_years: number; sex_category: string; observations: CustomObservationInput[]; support_intervals?: CustomSupportIntervalInput[] }) =>
 		request<CustomRecordResult>('/custom-records', { method: 'POST', body: JSON.stringify(payload) }),
 	getCustomRecord: (stay_id: string) => request<CustomRecordResult>(`/custom-records/${encodeURIComponent(stay_id)}`),
 

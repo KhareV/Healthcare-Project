@@ -41,7 +41,7 @@
   {@render children()}
 {/if}
 
-{#if page.url.pathname !== '/demo'}
+{#if page.url.pathname === '/'}
   <a class="reviewer-demo-launcher" href="/demo" aria-label="Launch the interactive reviewer demonstration">
     <span class="reviewer-demo-launcher__icon"><MonitorPlay size={17} /></span>
     <span class="reviewer-demo-launcher__copy"><small>INTERACTIVE</small><strong>Reviewer demo</strong></span>

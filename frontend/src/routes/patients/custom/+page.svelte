@@ -3,11 +3,19 @@
 	import { goto } from '$app/navigation';
 	import WorkbenchPage from '$lib/components/dashboard/WorkbenchPage.svelte';
 	import Panel from '$lib/components/dashboard/Panel.svelte';
-	import { api, type CanonicalConcept } from '$lib/services/api';
+	import { api, type CanonicalConcept, type VasopressorAgent } from '$lib/services/api';
 	import { rememberCustomRecord } from '$lib/stores/custom-records';
 	import { Plus, Trash2, Sparkles } from '@lucide/svelte';
 
 	type Row = { concept: string; hours_since_admission: number | null; value: number | null };
+	type SupportRow = { kind: 'vasopressor' | 'ventilation'; agent: VasopressorAgent; rate: number | null; start_hour: number | null; ongoing: boolean; end_hour: number | null };
+
+	const VASOPRESSOR_AGENTS: { value: VasopressorAgent; label: string }[] = [
+		{ value: 'norepinephrine', label: 'Norepinephrine' },
+		{ value: 'epinephrine', label: 'Epinephrine' },
+		{ value: 'dopamine', label: 'Dopamine' },
+		{ value: 'dobutamine', label: 'Dobutamine' }
+	];
 
 	let concepts = $state<CanonicalConcept[]>([]);
 	let loadingConcepts = $state(true);
@@ -17,6 +25,7 @@
 	let ageYears = $state(60);
 	let sexCategory = $state('FEMALE');
 	let rows = $state<Row[]>([]);
+	let supportRows = $state<SupportRow[]>([]);
 
 	let submitting = $state(false);
 	let result: Awaited<ReturnType<typeof api.createCustomRecord>> | null = $state(null);
@@ -28,6 +37,13 @@
 	}
 	function removeRow(index: number) {
 		rows = rows.filter((_, i) => i !== index);
+	}
+
+	function addSupportRow() {
+		supportRows = [...supportRows, { kind: 'vasopressor', agent: 'norepinephrine', rate: 0.1, start_hour: 6, ongoing: true, end_hour: null }];
+	}
+	function removeSupportRow(index: number) {
+		supportRows = supportRows.filter((_, i) => i !== index);
 	}
 
 	function fillPreset(kind: 'stable' | 'deteriorating') {
@@ -57,9 +73,16 @@
 			error = 'Add at least one observation with a time and a value.';
 			return;
 		}
+		const support_intervals = supportRows
+			.filter((r) => r.start_hour !== null && (r.ongoing || r.end_hour !== null))
+			.map((r) =>
+				r.kind === 'vasopressor'
+					? { kind: 'vasopressor' as const, agent: r.agent, rate: r.rate ?? 0.1, start_hour: r.start_hour as number, end_hour: r.ongoing ? null : r.end_hour }
+					: { kind: 'ventilation' as const, start_hour: r.start_hour as number, end_hour: r.ongoing ? null : r.end_hour }
+			);
 		submitting = true;
 		try {
-			result = await api.createCustomRecord({ patient_alias: patientAlias, age_years: ageYears, sex_category: sexCategory, observations });
+			result = await api.createCustomRecord({ patient_alias: patientAlias, age_years: ageYears, sex_category: sexCategory, observations, support_intervals });
 			rememberCustomRecord({ stay_id: result.stay_id, patient_alias: result.patient_alias });
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Could not create the record';
@@ -131,21 +154,72 @@
 			<button type="button" class="add-row" onclick={addRow}><Plus size={14} /> Add observation</button>
 		</Panel>
 
+		<Panel eyebrow="ORGAN SUPPORT" title="Vasopressor & ventilation state (optional)" note="OFF UNLESS ENTERED">
+			<p class="hint-text">Leave empty to model this record with no active organ support at every cutoff — a real, valid state, not an error. Interval boundaries are hour-since-admission, same as observations above; "currently active" means the support has no known end within the replay grid.</p>
+			{#if supportRows.length}
+				<div class="rows">
+					<div class="row row--support row--head"><span>Type</span><span>Agent</span><span>Rate (µg/kg/min)</span><span>Start hour</span><span>End / ongoing</span><span></span></div>
+					{#each supportRows as row, index}
+						<div class="row row--support">
+							<select bind:value={row.kind}>
+								<option value="vasopressor">Vasopressor</option>
+								<option value="ventilation">Invasive ventilation</option>
+							</select>
+							{#if row.kind === 'vasopressor'}
+								<select bind:value={row.agent}>
+									{#each VASOPRESSOR_AGENTS as a}<option value={a.value}>{a.label}</option>{/each}
+								</select>
+								<input type="number" step="0.01" min="0.01" bind:value={row.rate} placeholder="0.1" />
+							{:else}
+								<span class="dash-cell">—</span><span class="dash-cell">—</span>
+							{/if}
+							<input type="number" min="0.01" max="90" step="0.5" bind:value={row.start_hour} placeholder="e.g. 6" />
+							<div class="ongoing-cell">
+								{#if row.ongoing}
+									<span class="ongoing-badge">CURRENTLY ACTIVE</span>
+								{:else}
+									<input type="number" min="0.01" max="120" step="0.5" bind:value={row.end_hour} placeholder="end hour" />
+								{/if}
+								<label class="ongoing-toggle"><input type="checkbox" bind:checked={row.ongoing} /> ongoing</label>
+							</div>
+							<button type="button" class="icon-btn" onclick={() => removeSupportRow(index)} aria-label="Remove support interval"><Trash2 size={14} /></button>
+						</div>
+					{/each}
+				</div>
+			{/if}
+			<button type="button" class="add-row" onclick={addSupportRow}><Plus size={14} /> Add support interval</button>
+		</Panel>
+
 		<div class="submit-row">
 			<button class="submit-btn" onclick={submit} disabled={submitting}>{submitting ? 'Building…' : 'Build my record'}</button>
 			<span class="note">Observations must be timed strictly after admission (hour 0) and no later than hour 90 — the frozen replay grid never extends further.</span>
 		</div>
 
 		{#if result}
-			<Panel eyebrow="RECORD CREATED" title={result.patient_alias} note={result.stay_id}>
+			{@const rs = result.readiness_summary}
+			<Panel eyebrow="DATA READINESS" title={result.patient_alias} note={result.stay_id}>
 				<div class="result-grid">
-					<div><span>Legal cutoffs</span><b>{result.n_legal_cutoffs}</b></div>
-					<div><span>Concepts covered</span><b>{result.concept_coverage.observed} / {result.concept_coverage.total}</b></div>
-					<div><span>Data readiness</span><b>{result.data_readiness}</b></div>
+					<div><span>Legal cutoffs</span><b>{rs.legal_cutoffs}</b></div>
+					<div><span>Observations entered</span><b>{rs.observations_entered}</b></div>
+					<div><span>Concepts represented</span><b>{rs.concepts_represented} / {rs.concepts_total}</b></div>
+					<div><span>Earliest / latest hour</span><b>{rs.earliest_observation_hour ?? '—'}h / {rs.latest_observation_hour ?? '—'}h</b></div>
+					<div><span>First-cutoff observed bins</span><b>{rs.first_cutoff_observed_bins ?? '—'} / {rs.first_cutoff_total_bins ?? '—'}</b></div>
+					<div><span>Support state entered</span><b>{rs.support_state_entered.vasopressor ? 'Vasopressor' : ''}{rs.support_state_entered.vasopressor && rs.support_state_entered.invasive_ventilation ? ' + ' : ''}{rs.support_state_entered.invasive_ventilation ? 'Ventilation' : ''}{!rs.support_state_entered.vasopressor && !rs.support_state_entered.invasive_ventilation ? 'None' : ''}</b></div>
+				</div>
+				<div class="sofa-coverage">
+					<span class="sofa-coverage-label">SOFA COMPONENTS SUPPORTED BY ENTERED DATA</span>
+					<div class="sofa-pills">
+						{#each rs.sofa_components_observed as c}<span class="sofa-pill sofa-pill--observed">{c.replace(/_/g, ' ')}</span>{/each}
+						{#each rs.sofa_components_missing as c}<span class="sofa-pill sofa-pill--missing">{c.replace(/_/g, ' ')}</span>{/each}
+					</div>
 				</div>
 				{#if result.warnings.length}
-					<ul class="warnings">{#each result.warnings as w}<li>{w}</li>{/each}</ul>
+					<div class="missing-observations">
+						<span class="missing-observations-label">MISSING OBSERVATIONS</span>
+						<ul class="warnings">{#each result.warnings as w}<li>{w}</li>{/each}</ul>
+					</div>
 				{/if}
+				<p class="urine-note">Urine output is not supported by direct entry — renal SOFA requires a fully continuous 24-hour reading chain that manual entry cannot honestly provide; renal scoring here uses creatinine alone.</p>
 				<button class="submit-btn" onclick={openReplay}><Sparkles size={14} /> Open in Patient Replay</button>
 			</Panel>
 		{/if}
@@ -178,10 +252,27 @@
 	.result-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 14px; }
 	.result-grid span { display: block; color: #64748b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .08em; }
 	.result-grid b { display: block; margin-top: 6px; color: #eef7f6; font: 500 16px 'Space Grotesk', sans-serif; }
-	.warnings { margin: 0 0 14px; padding-left: 18px; color: #fbbf24; font-size: 11px; line-height: 1.7; }
+	.warnings { margin: 0; padding-left: 18px; color: #fbbf24; font-size: 11px; line-height: 1.7; }
+	.hint-text { margin: 0 0 14px; color: #64748b; font-size: 11px; line-height: 1.7; max-width: 640px; }
+	.row--support { grid-template-columns: 1.1fr 1.1fr 1fr 0.9fr 1.3fr 32px; }
+	.dash-cell { color: #405067; text-align: center; }
+	.ongoing-cell { display: flex; align-items: center; gap: 8px; }
+	.ongoing-cell input { flex: 1; }
+	.ongoing-badge { padding: 8px 10px; border: 1px solid rgba(43,184,176,.3); background: rgba(43,184,176,.08); color: #2bb8b0; font: 8px 'JetBrains Mono', monospace; letter-spacing: .06em; white-space: nowrap; flex: 1; text-align: center; }
+	.ongoing-toggle { display: flex; align-items: center; gap: 5px; color: #71829a; font: 8px 'JetBrains Mono', monospace; letter-spacing: .06em; white-space: nowrap; }
+	.ongoing-toggle input { width: auto; accent-color: #2bb8b0; }
+	.sofa-coverage { margin: 4px 0 14px; }
+	.sofa-coverage-label, .missing-observations-label { display: block; margin-bottom: 8px; color: #53647b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .1em; }
+	.sofa-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+	.sofa-pill { padding: 5px 10px; border: 1px solid rgba(148,163,184,.2); font: 9px 'JetBrains Mono', monospace; letter-spacing: .04em; text-transform: uppercase; }
+	.sofa-pill--observed { border-color: rgba(43,184,176,.35); color: #2bb8b0; background: rgba(43,184,176,.06); }
+	.sofa-pill--missing { color: #64748b; }
+	.missing-observations { margin-bottom: 14px; }
+	.urine-note { margin: 0 0 16px; padding: 10px 12px; border: 1px solid rgba(148,163,184,.14); color: #64748b; font-size: 10px; line-height: 1.6; }
 	@media (max-width: 760px) {
 		.basics-grid { grid-template-columns: 1fr; }
 		.row { grid-template-columns: 1fr; }
 		.row--head { display: none; }
+		.result-grid { grid-template-columns: 1fr 1fr; }
 	}
 </style>

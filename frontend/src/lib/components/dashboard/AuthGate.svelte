@@ -13,12 +13,41 @@
   import { goto } from '$app/navigation';
   import { page } from '$app/state';
   import { isProtectedPath } from '$lib/auth/protected-routes';
+  import { authToken } from '$lib/stores/auth-token.svelte';
   import type { Snippet } from 'svelte';
 
   let { children }: { children: Snippet } = $props();
   const ctx = useClerkContext();
 
   let ready = $state(false);
+
+  // Keeps authToken.value fresh so api.ts can attach it as a bearer token on
+  // custom-record requests (backend ownership verification -- see
+  // src/serving/v2/auth.py). Clerk session tokens are short-lived (~60s),
+  // so this refreshes well within that window; harmless when signed out
+  // (token cleared) or when the backend has no Clerk key configured (the
+  // backend simply ignores the header in that mode).
+  $effect(() => {
+    if (!ctx.session) {
+      authToken.value = null;
+      return;
+    }
+    let cancelled = false;
+    const refresh = async () => {
+      try {
+        const token = await ctx.session?.getToken();
+        if (!cancelled) authToken.value = token ?? null;
+      } catch {
+        if (!cancelled) authToken.value = null;
+      }
+    };
+    void refresh();
+    const interval = window.setInterval(refresh, 45_000);
+    return () => {
+      cancelled = true;
+      window.clearInterval(interval);
+    };
+  });
 
   $effect(() => {
     const path = page.url.pathname;
