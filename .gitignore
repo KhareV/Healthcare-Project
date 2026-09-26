@@ -9,6 +9,7 @@ env/
 .env
 .env.*
 !.env.example
+!.env.test.example
 .DS_Store
 data/raw/
 data/mimic*/
@@ -48,6 +49,11 @@ frontend/.svelte-kit/
 frontend/build/
 frontend/.vercel/
 frontend/.vite/
+
+# Playwright: saved auth state (a live session token) and run artifacts.
+frontend/tests/e2e/.auth/
+frontend/playwright-report/
+frontend/test-results/
 
 # Kokoro narration microservice: isolated Python 3.12 venv (kokoro-onnx needs
 # a newer onnxruntime than the project's pinned Python 3.9) and its

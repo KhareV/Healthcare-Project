@@ -28,7 +28,7 @@ import json
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Mapping, Tuple
+from typing import Mapping, Optional, Tuple
 
 import numpy as np
 import xgboost as xgb
@@ -151,7 +151,7 @@ class V2ServingRuntime:
         # demo-scale feature.
         self._ephemeral_manifest: dict = {}
 
-    def register_ephemeral_stay(self, *, stay_id: str, subject_id: str, statics_row: Mapping[str, object], events: list, legal_cutoffs: Tuple[str, ...]) -> None:
+    def register_ephemeral_stay(self, *, stay_id: str, subject_id: str, statics_row: Mapping[str, object], events: list, legal_cutoffs: Tuple[str, ...], owner_user_id: str) -> None:
         """Register a session-only, non-persisted synthetic stay so the
         existing /predict, /history, /ai/recommendation, and /assistant
         endpoints can serve it exactly like a frozen demo subject, through
@@ -168,10 +168,68 @@ class V2ServingRuntime:
         # by reassignment rather than in-place mutation.
         self.sofa_provider.stays[stay_id] = dict(statics_row)
         self.sofa_provider.history = self.sofa_provider.history + tuple(events)
-        self._ephemeral_manifest[stay_id] = {"stay_id": stay_id, "subject_id": subject_id, "legal_cutoffs": list(legal_cutoffs)}
+        self._ephemeral_manifest[stay_id] = {
+            "stay_id": stay_id, "subject_id": subject_id, "legal_cutoffs": list(legal_cutoffs), "owner_user_id": owner_user_id,
+        }
 
     def ephemeral_entry(self, stay_id: str):
         return self._ephemeral_manifest.get(stay_id)
+
+    def ephemeral_owner(self, stay_id: str) -> Optional[str]:
+        entry = self._ephemeral_manifest.get(stay_id)
+        return entry["owner_user_id"] if entry else None
+
+    def register_ephemeral_support(self, *, stay_id: str, support_rows: list) -> None:
+        """Extend an already-registered ephemeral stay with organ-support
+        intervals (vasopressor / invasive ventilation).
+
+        `support_rows` are raw dicts in the exact support_intervals.jsonl
+        shape (support_type, agent_key/respiratory_category, interval_start/
+        end, support_event_id, ...). This feeds the same two consumers the
+        frozen corpus feeds: the feature builder (via the per-call
+        FeatureBuildContext.support_intervals list -- see predict() below,
+        which reads self._supports_by_stay) and the SOFA support provider
+        (via the same NormalizedActiveInterval/NormalizedVentilationInterval/
+        VasoactiveExposure conversion _build_sofa_provider applies to the
+        frozen corpus at process start)."""
+
+        from data.synthetic.sofa import VasoactiveExposure
+
+        self._supports_by_stay[stay_id] = list(self._supports_by_stay.get(stay_id, [])) + list(support_rows)
+
+        dictionary = self._support_event_dictionary
+        vaso_rows = [r for r in support_rows if r["support_type"] == "VASOPRESSOR"]
+        vent_rows = [r for r in support_rows if r["support_type"] == "RESPIRATORY"]
+
+        new_vaso = tuple(
+            NormalizedActiveInterval.from_mapping({
+                "stay_id": r["stay_id"], "agent_key": r["agent_key"], "interval_start": r["interval_start"],
+                "interval_end": r["interval_end"], "source_event_ref": r["support_event_id"],
+                "normalization_provenance_version": dictionary.synthetic_mapping_provenance_version,
+            })
+            for r in vaso_rows
+        )
+        new_vent = tuple(
+            NormalizedVentilationInterval.from_mapping({
+                "stay_id": r["stay_id"], "category": r["respiratory_category"], "interval_start": r["interval_start"],
+                "interval_end": r["interval_end"], "source_state_ref": r["support_event_id"],
+                "concept_version": dictionary.ventilation.synthetic_concept_version,
+                "adapter_version": dictionary.ventilation.synthetic_adapter_version,
+                "normalization_provenance_ref": r["normalization_provenance_ref"],
+            })
+            for r in vent_rows
+        )
+        new_exposures = tuple(
+            VasoactiveExposure(
+                stay_id=r["stay_id"], agent=r["agent_key"], rate=float(r["rate_value"]), unit=r["rate_unit"],
+                interval_start=_dt(r["interval_start"]), interval_end=_dt(r["interval_end"]), source_ref=r["support_event_id"],
+            )
+            for r in vaso_rows
+        )
+
+        support_provider = self.sofa_provider.support_provider
+        support_provider.ventilation_intervals = support_provider.ventilation_intervals + new_vent
+        support_provider.vasoactive_exposures = support_provider.vasoactive_exposures + new_exposures
 
     def ephemeral_count(self) -> int:
         return len(self._ephemeral_manifest)
@@ -185,6 +243,7 @@ class V2ServingRuntime:
 
     def _build_sofa_provider(self) -> SyntheticCurrentSOFAProvider:
         dictionary = load_synthetic_event_dictionary(self.root / EVENT_DICT_PATH)
+        self._support_event_dictionary = dictionary  # reused by register_ephemeral_support
         support_hash = sha256_file(self.root / SUPPORT_PROCESS_PATH)
         supports = load_jsonl(self.root / RAW_DIR / "support_intervals.jsonl")
         vaso_rows = [r for r in supports if r["support_type"] == "VASOPRESSOR"]

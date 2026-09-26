@@ -5,15 +5,17 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
+from serving.v2.auth import AuthError, ClerkAuthenticator
 from serving.v2.custom_record import CustomRecordError, build_custom_record, canonical_concepts, get_custom_record
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
@@ -46,11 +48,22 @@ class CustomObservationIn(BaseModel):
     model_config = {"extra": "forbid"}
 
 
+class CustomSupportIntervalIn(BaseModel):
+    kind: str = Field(..., min_length=1)  # "vasopressor" | "ventilation"
+    agent: Optional[str] = None  # required for vasopressor
+    rate: Optional[float] = None  # ug/kg/min, required for vasopressor
+    start_hour: float
+    end_hour: Optional[float] = None  # null = currently active
+
+    model_config = {"extra": "forbid"}
+
+
 class CustomRecordRequest(BaseModel):
     patient_alias: str = Field(..., min_length=1, max_length=64)
     age_years: int = Field(..., ge=0, le=120)
     sex_category: str = Field(..., min_length=1, max_length=32)
     observations: list[CustomObservationIn] = Field(..., min_length=1)
+    support_intervals: list[CustomSupportIntervalIn] = Field(default_factory=list)
 
     model_config = {"extra": "forbid"}
 
@@ -133,6 +146,7 @@ def build_v2_app(root: Path) -> FastAPI:
     root = Path(root).resolve()
     runtime = V2ServingRuntime(root)
     demo_aliases = _load_demo_patient_aliases(root)
+    authenticator = ClerkAuthenticator(publishable_key=os.environ.get("PUBLIC_CLERK_PUBLISHABLE_KEY"))
     app = FastAPI(title="Performance-V2 Retrospective Replay API")
     app.add_middleware(
         CORSMiddleware,
@@ -140,6 +154,35 @@ def build_v2_app(root: Path) -> FastAPI:
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    def _authenticate(authorization: Optional[str]) -> str:
+        """Verified Clerk user id, or the fixed local-dev owner id if this
+        backend has no Clerk key configured at all. Raises HTTPException(401)
+        for a missing/invalid/expired token when Clerk IS configured."""
+
+        try:
+            return authenticator.verify(authorization)
+        except AuthError as exc:
+            raise HTTPException(status_code=401, detail=str(exc)) from exc
+
+    def _authorize_custom_stay(stay_id: str, authorization: Optional[str]) -> None:
+        """If stay_id is an ephemeral custom record, require a verified
+        token whose user id matches the record's owner -- otherwise raise
+        UnknownDemoStayError (-> 404), the same fail-closed response used
+        for a stay that never existed, so an unauthorized caller can never
+        distinguish "not yours" from "doesn't exist". Demo/unknown stays are
+        untouched: this is a no-op for them, exactly matching current
+        product behavior (demo patients remain globally servable)."""
+
+        owner = runtime.ephemeral_owner(stay_id)
+        if owner is None:
+            return
+        try:
+            caller = authenticator.verify(authorization)
+        except AuthError as exc:
+            raise UnknownDemoStayError("unknown stay_id") from exc
+        if caller != owner:
+            raise UnknownDemoStayError("unknown stay_id")
 
     @app.get("/health")
     def health():
@@ -149,6 +192,7 @@ def build_v2_app(root: Path) -> FastAPI:
             "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
             "scope": "PERFORMANCE_V2_SYNTHETIC_BENCHMARK",
             "tasks": ["recovery24", "recovery48", "icu_stay_time", "organ_support"],
+            "auth_mode": "clerk_verified" if authenticator.configured else "local_dev_no_auth",
         }
 
     @app.get("/model-metadata")
@@ -167,7 +211,8 @@ def build_v2_app(root: Path) -> FastAPI:
         }
 
     @app.post("/predict")
-    def predict(request: PredictRequest):
+    def predict(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
+        _authorize_custom_stay(request.stay_id, authorization)
         return _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
 
     @app.get("/demo-subjects")
@@ -192,20 +237,24 @@ def build_v2_app(root: Path) -> FastAPI:
         return {"concepts": canonical_concepts(runtime.root)}
 
     @app.post("/custom-records")
-    def create_custom_record(request: CustomRecordRequest):
+    def create_custom_record(request: CustomRecordRequest, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
         try:
             return build_custom_record(
                 runtime,
+                owner_user_id=owner_user_id,
                 patient_alias=request.patient_alias,
                 age_years=request.age_years,
                 sex_category=request.sex_category,
                 observations=[o.model_dump() for o in request.observations],
+                support_intervals=[s.model_dump() for s in request.support_intervals],
             )
         except CustomRecordError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
 
     @app.get("/custom-records/{stay_id}")
-    def read_custom_record(stay_id: str):
+    def read_custom_record(stay_id: str, authorization: Optional[str] = Header(default=None)):
+        _authorize_custom_stay(stay_id, authorization)
         record = get_custom_record(runtime, stay_id)
         if record is None:
             raise UnknownDemoStayError("unknown custom record")
@@ -235,10 +284,12 @@ def build_v2_app(root: Path) -> FastAPI:
         }
 
     @app.get("/history")
-    def history(stay_id: str, prediction_time: str):
+    def history(stay_id: str, prediction_time: str, authorization: Optional[str] = Header(default=None)):
         """Raw canonical events with event_time <= prediction_time, for the
         historical-timeline panel. Reuses the same guard/legal-cutoff checks
         as /predict; returns no future data."""
+
+        _authorize_custom_stay(stay_id, authorization)
 
         from datetime import datetime, timezone
 
@@ -261,7 +312,8 @@ def build_v2_app(root: Path) -> FastAPI:
         return {"stay_id": stay_id, "prediction_time": prediction_time, "events": visible, "count": len(visible)}
 
     @app.post("/ai/recommendation")
-    def ai_recommendation(request: PredictRequest):
+    def ai_recommendation(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
+        _authorize_custom_stay(request.stay_id, authorization)
         prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
         result = generate_recommendation(prediction=prediction)
         return result.as_dict()
@@ -333,13 +385,14 @@ def build_v2_app(root: Path) -> FastAPI:
         }
 
     @app.post("/assistant")
-    def assistant(request: AssistantRequest):
+    def assistant(request: AssistantRequest, authorization: Optional[str] = Header(default=None)):
         """Trajectory Copilot: a grounded interpretation layer over an
         already-computed prediction. Never predicts independently, never
         sees raw free text, never reaches the fresh-test cohort (the guard
         that protects /predict protects this identically, since it is built
         from the exact same _build_prediction_payload call)."""
 
+        _authorize_custom_stay(request.stay_id, authorization)
         prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
         context = _assistant_context(prediction)
 
