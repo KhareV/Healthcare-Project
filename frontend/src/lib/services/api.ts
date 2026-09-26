@@ -230,6 +230,16 @@ export type HealthRecordSupportRow = {
 
 export type ReportProcessingStatus = 'UPLOADED' | 'PARSED' | 'FAILED' | 'NOT_PARSED';
 
+export type ReportCandidateMeasurement = {
+	candidate_id: string;
+	raw_label: string;
+	concept: string | null;
+	value: number;
+	unit: string | null;
+	observed_at: string | null;
+	confirmed: boolean;
+};
+
 export type HealthRecordReport = {
 	report_id: string;
 	patient_id: string;
@@ -243,6 +253,7 @@ export type HealthRecordReport = {
 	source: string;
 	processing_status: ReportProcessingStatus;
 	extracted_summary: string | null;
+	candidate_measurements?: ReportCandidateMeasurement[];
 };
 
 export type HealthRecordAuditEvent = {
@@ -387,6 +398,13 @@ export const api = {
 		},
 		deleteReport: (report_id: string) =>
 			request<{ deleted: boolean; report_id: string }>(`/health-record/reports/${encodeURIComponent(report_id)}`, { method: 'DELETE' }),
+
+		// Report Intelligence: parse proposes candidates (never inserted
+		// automatically); confirm is the human-in-the-loop step that turns
+		// selected candidates into real observations on a named encounter.
+		parseReport: (report_id: string) => request<HealthRecordReport>(`/health-record/reports/${encodeURIComponent(report_id)}/parse`, { method: 'POST' }),
+		confirmReportMeasurements: (report_id: string, payload: { encounter_id: string; confirmations: { candidate_id: string; hours_since_admission: number }[] }) =>
+			request<{ added: number; encounter: CustomRecordResult }>(`/health-record/reports/${encodeURIComponent(report_id)}/confirm`, { method: 'POST', body: JSON.stringify(payload) }),
 
 		exportRecord: () => request<HealthRecordExport>('/health-record/export'),
 		listAuditEvents: () => request<{ events: HealthRecordAuditEvent[]; note?: string }>('/health-record/audit-events')

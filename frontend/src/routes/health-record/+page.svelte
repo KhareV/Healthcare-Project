@@ -55,6 +55,13 @@
 	let uploadFile = $state<File | null>(null);
 	let uploading = $state(false);
 
+	let parsingReportId = $state<string | null>(null);
+	let expandedReportId = $state<string | null>(null);
+	let selectedCandidateIds = $state<Set<string>>(new Set());
+	let confirmEncounterId = $state('');
+	let confirmHours = $state<number | null>(6);
+	let confirming = $state(false);
+
 	const encounterAlias = $derived(new Map(encounters.map((e) => [e.stay_id, e.patient_alias])));
 	const conceptOptions = $derived([...new Set(observations.map((o) => o.concept))].sort());
 	const filteredObservations = $derived(
@@ -217,6 +224,48 @@
 			reports = reports.filter((r) => r.report_id !== id);
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Could not delete the report';
+		}
+	}
+
+	// Report Intelligence: analyze proposes candidates (Groq-assisted text
+	// extraction) but never writes an observation by itself -- only
+	// confirmSelectedCandidates, an explicit user action naming a target
+	// encounter and hour, does that.
+	async function analyzeReport(report: HealthRecordReport) {
+		parsingReportId = report.report_id;
+		try {
+			const updated = await api.healthRecord.parseReport(report.report_id);
+			reports = reports.map((r) => (r.report_id === updated.report_id ? updated : r));
+			expandedReportId = updated.report_id;
+			selectedCandidateIds = new Set((updated.candidate_measurements ?? []).filter((c) => c.concept && !c.confirmed).map((c) => c.candidate_id));
+			if (!confirmEncounterId && encounters.length) confirmEncounterId = encounters[encounters.length - 1].stay_id;
+		} catch (cause) {
+			error = cause instanceof Error ? cause.message : 'Could not analyze this report';
+		} finally {
+			parsingReportId = null;
+		}
+	}
+
+	function toggleCandidate(id: string) {
+		const next = new Set(selectedCandidateIds);
+		if (next.has(id)) next.delete(id);
+		else next.add(id);
+		selectedCandidateIds = next;
+	}
+
+	async function confirmSelectedCandidates(report: HealthRecordReport) {
+		if (!confirmEncounterId || confirmHours === null || selectedCandidateIds.size === 0) return;
+		confirming = true;
+		try {
+			const confirmations = [...selectedCandidateIds].map((candidate_id) => ({ candidate_id, hours_since_admission: confirmHours as number }));
+			await api.healthRecord.confirmReportMeasurements(report.report_id, { encounter_id: confirmEncounterId, confirmations });
+			selectedCandidateIds = new Set();
+			await refreshAll();
+			expandedReportId = report.report_id;
+		} catch (cause) {
+			error = cause instanceof Error ? cause.message : 'Could not add the selected measurements';
+		} finally {
+			confirming = false;
 		}
 	}
 
@@ -418,23 +467,66 @@
 					<input type="file" accept=".pdf,.png,.jpg,.jpeg,application/pdf,image/png,image/jpeg" onchange={(e) => (uploadFile = (e.currentTarget as HTMLInputElement).files?.[0] ?? null)} />
 					<button type="button" class="submit-btn" onclick={submitReport} disabled={uploading || !uploadFile || !uploadTitle.trim() || persistenceMode !== 'mongodb'}><Upload size={14} /> {uploading ? 'Uploading…' : 'Upload'}</button>
 				</div>
-				<p class="hint-text">Uploaded content is never used as a model input — see the Data & Provenance page for how forecasts are actually computed. Parsing is not implemented in this pass; every report stays <code>NOT_PARSED</code>.</p>
+				<p class="hint-text">Uploaded content is never used as a model input by itself — see the Data & Provenance page for how forecasts are actually computed. PDF reports can be analyzed below; detected measurements only become part of your record after you explicitly confirm them.</p>
 			</Panel>
 
 			<Panel eyebrow="REPORTS" title="Your reports">
 				{#if reports.length}
 					<div class="report-cards">
 						{#each reports as r (r.report_id)}
-							<div class="report-card">
-								<div class="report-icon"><FileText size={18} /></div>
-								<div class="report-meta">
-									<b>{r.title}</b>
-									<small>{r.document_type.replace(/_/g, ' ')} · {(r.size_bytes / 1024).toFixed(0)} KB · {r.report_date ?? r.uploaded_at.slice(0, 10)}</small>
+							<div class="report-card-wrap">
+								<div class="report-card">
+									<div class="report-icon"><FileText size={18} /></div>
+									<div class="report-meta">
+										<b>{r.title}</b>
+										<small>{r.document_type.replace(/_/g, ' ')} · {(r.size_bytes / 1024).toFixed(0)} KB · {r.report_date ?? r.uploaded_at.slice(0, 10)} · {r.processing_status}</small>
+									</div>
+									<div class="report-actions">
+										{#if r.candidate_measurements?.length}
+											<button type="button" class="add-row" onclick={() => (expandedReportId = expandedReportId === r.report_id ? null : r.report_id)}>{expandedReportId === r.report_id ? 'Hide analysis' : 'View analysis'}</button>
+										{/if}
+										{#if r.mime_type === 'application/pdf'}
+											<button type="button" class="add-row" onclick={() => analyzeReport(r)} disabled={parsingReportId === r.report_id}>
+												<Sparkles size={13} /> {parsingReportId === r.report_id ? 'Analyzing…' : r.candidate_measurements?.length ? 'Re-analyze' : 'Analyze'}
+											</button>
+										{/if}
+										<button type="button" class="icon-btn" onclick={() => downloadReport(r)} aria-label="Download report"><Download size={14} /></button>
+										<button type="button" class="icon-btn icon-btn--danger" onclick={() => removeReport(r.report_id)} aria-label="Delete report"><Trash2 size={14} /></button>
+									</div>
 								</div>
-								<div class="report-actions">
-									<button type="button" class="icon-btn" onclick={() => downloadReport(r)} aria-label="Download report"><Download size={14} /></button>
-									<button type="button" class="icon-btn icon-btn--danger" onclick={() => removeReport(r.report_id)} aria-label="Delete report"><Trash2 size={14} /></button>
-								</div>
+
+								{#if expandedReportId === r.report_id}
+									<div class="candidate-panel">
+										<span class="candidate-panel-label">REPORT ANALYSIS — REVIEW BEFORE ADDING TO YOUR RECORD</span>
+										{#if r.candidate_measurements?.length}
+											<div class="candidate-list">
+												{#each r.candidate_measurements as c (c.candidate_id)}
+													<label class="candidate-row" class:candidate-row--disabled={!c.concept || c.confirmed}>
+														<input type="checkbox" checked={selectedCandidateIds.has(c.candidate_id)} disabled={!c.concept || c.confirmed} onchange={() => toggleCandidate(c.candidate_id)} />
+														<span class="candidate-name">
+															{c.raw_label}
+															{#if c.confirmed}<small> · already added to your record</small>{:else if !c.concept}<small> · not a recognized concept, cannot be added</small>{/if}
+														</span>
+														<span class="candidate-value">{c.value} {c.unit ?? ''}</span>
+													</label>
+												{/each}
+											</div>
+											<div class="candidate-confirm-row">
+												<select bind:value={confirmEncounterId}>
+													<option value="">Add to encounter…</option>
+													{#each encounters as enc}<option value={enc.stay_id}>{enc.patient_alias}</option>{/each}
+												</select>
+												<label class="hours-label">Hours since admission<input type="number" min="0.01" max="90" step="0.5" bind:value={confirmHours} /></label>
+												<button type="button" class="submit-btn" onclick={() => confirmSelectedCandidates(r)} disabled={confirming || !confirmEncounterId || selectedCandidateIds.size === 0}>
+													{confirming ? 'Adding…' : `Add ${selectedCandidateIds.size} selected measurement${selectedCandidateIds.size === 1 ? '' : 's'}`}
+												</button>
+											</div>
+											<p class="hint-text">A report's own date has no connection to an encounter's synthetic admission clock, so you choose the relative hour yourself. Nothing is inserted until you click "Add".</p>
+										{:else}
+											<p class="hint-text">No measurements were detected in this report.</p>
+										{/if}
+									</div>
+								{/if}
 							</div>
 						{/each}
 					</div>
@@ -476,7 +568,6 @@
 	.notice code { font-family: 'JetBrains Mono', monospace; }
 	.hint-text { margin: 0; color: #64748b; font-size: 11px; line-height: 1.7; }
 	.hint-text a { color: #2bb8b0; }
-	.hint-text code { font-family: 'JetBrains Mono', monospace; }
 	.dim { color: #53647b; }
 
 	.tab-strip { display: flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; border-bottom: 1px solid rgba(148,163,184,.14); padding-bottom: 10px; }
@@ -536,7 +627,20 @@
 	.report-icon { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid rgba(43,184,176,.25); color: #2bb8b0; }
 	.report-meta b { display: block; color: #eef7f6; font: 500 12px 'Space Grotesk', sans-serif; }
 	.report-meta small { color: #64748b; font: 9px 'JetBrains Mono', monospace; letter-spacing: .04em; }
-	.report-actions { display: flex; gap: 8px; }
+	.report-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+	.report-card-wrap { display: grid; gap: 0; }
+	.candidate-panel { padding: 12px 14px; border: 1px solid rgba(43,184,176,.2); border-top: none; background: #05090f; }
+	.candidate-panel-label { display: block; margin-bottom: 10px; color: #2bb8b0; font: 7px 'JetBrains Mono', monospace; letter-spacing: .1em; }
+	.candidate-list { display: grid; gap: 6px; margin-bottom: 12px; }
+	.candidate-row { display: grid; grid-template-columns: 20px 1fr auto; align-items: center; gap: 10px; padding: 8px 10px; border: 1px solid rgba(148,163,184,.14); background: #080e1d; cursor: pointer; }
+	.candidate-row--disabled { opacity: .55; cursor: default; }
+	.candidate-name { color: #dce9e8; font: 12px 'Space Grotesk', sans-serif; }
+	.candidate-name small { color: #53647b; }
+	.candidate-value { color: #94a3b8; font: 11px 'JetBrains Mono', monospace; }
+	.candidate-confirm-row { display: flex; align-items: end; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+	.candidate-confirm-row select { padding: 9px 10px; border: 1px solid rgba(148,163,184,.2); background: #0a1220; color: #dce9e8; font: 12px 'Space Grotesk', sans-serif; }
+	.hours-label { display: grid; gap: 6px; color: #71829a; font: 8px 'JetBrains Mono', monospace; letter-spacing: .08em; }
+	.hours-label input { padding: 9px 10px; border: 1px solid rgba(148,163,184,.2); background: #0a1220; color: #dce9e8; font: 12px 'Space Grotesk', sans-serif; width: 140px; }
 
 	@media (max-width: 900px) {
 		.overview-grid, .profile-grid { grid-template-columns: repeat(2, 1fr); }
