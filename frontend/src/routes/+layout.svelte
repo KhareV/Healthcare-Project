@@ -4,9 +4,21 @@
   import { afterNavigate } from '$app/navigation';
   import { page } from '$app/state';
   import { MonitorPlay } from '@lucide/svelte';
+  import { env } from '$env/dynamic/public';
+  import { authFlag } from '$lib/stores/auth.svelte';
   import type { Snippet } from 'svelte';
 
   let { children }: { children: Snippet } = $props();
+
+  // This app is a fully client-rendered SPA (ssr = false), so there is no
+  // server-rendered HTML to hydrate auth state into — Clerk's own JS SDK
+  // establishes session state client-side regardless. The real security
+  // boundary (redirecting an unauthenticated request away from protected
+  // routes before any client JS runs) lives in hooks.server.ts, which
+  // separately checks both PUBLIC_CLERK_PUBLISHABLE_KEY and CLERK_SECRET_KEY.
+  const publishableKey = env.PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
+  const authConfigured = Boolean(publishableKey);
+  authFlag.enabled = authConfigured;
 
   afterNavigate(({ to }) => {
     // Preserve native anchor navigation while making page-to-page transitions
@@ -16,7 +28,17 @@
 </script>
 
 <SmoothCursor />
-{@render children()}
+
+{#if authConfigured}
+  {#await Promise.all([import('$lib/components/dashboard/ClerkRoot.svelte'), import('$lib/components/dashboard/OnboardingGate.svelte')]) then [{ default: ClerkRoot }, { default: OnboardingGate }]}
+    <ClerkRoot {publishableKey}>
+      <OnboardingGate />
+      {@render children()}
+    </ClerkRoot>
+  {/await}
+{:else}
+  {@render children()}
+{/if}
 
 {#if page.url.pathname !== '/demo'}
   <a class="reviewer-demo-launcher" href="/demo" aria-label="Launch the interactive reviewer demonstration">

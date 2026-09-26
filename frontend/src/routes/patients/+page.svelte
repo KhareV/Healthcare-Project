@@ -9,7 +9,8 @@
 	import TemporalHeatmap from '$lib/components/dashboard/TemporalHeatmap.svelte';
 	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type DemoSubject, type PredictionResponse } from '$lib/services/api';
-	import { ChevronLeft, ChevronRight, RotateCcw } from '@lucide/svelte';
+	import { setCopilotContext, openCopilot } from '$lib/stores/copilot.svelte';
+	import { ChevronLeft, ChevronRight, RotateCcw, Sparkles } from '@lucide/svelte';
 
 	const GROUP_OF: Record<string, string> = {
 		mean_arterial_pressure: 'Cardiovascular', heart_rate: 'Cardiovascular', systolic_blood_pressure: 'Cardiovascular',
@@ -60,6 +61,12 @@
 			sofaHistoryValues = historyPredictions.map((p) => p.current_sofa);
 			const historyResult = await api.history(stayId, t);
 			events = historyResult.events;
+			setCopilotContext({
+				stayId,
+				patientAlias: subject?.patient_alias ?? stayId,
+				predictionTime: t,
+				previousPredictionTime: cutoffIndex > 0 ? cutoffs[cutoffIndex - 1] : null
+			});
 		} catch (cause) {
 			errorMessage = cause instanceof Error ? cause.message : 'Prediction request failed';
 			prediction = null;
@@ -119,12 +126,13 @@
 			<div class="stay-picker">
 				{#each subjects as s}
 					<button class:active={s.stay_id === stayId} onclick={() => selectStay(s.stay_id)}>
-						<span class="sid">{s.subject_id}</span>
+						<span class="sid">{s.patient_alias ?? s.subject_id}</span>
 						<small>{s.cardiac_condition_group.replace('SYNTHETIC_', '')}</small>
 					</button>
 				{/each}
 			</div>
 			<div class="overview-card">
+				<div><span>Patient</span><b>{subject.patient_alias ?? subject.subject_id}</b></div>
 				<div><span>Age / Sex</span><b>{subject.age_years}y · {subject.sex_category.replace('SYNTHETIC_', '')}</b></div>
 				<div><span>ICU admission</span><b>{subject.intime.slice(0, 16).replace('T', ' ')}</b></div>
 				<div><span>Selected cutoff</span><b>{cutoffs[cutoffIndex]?.slice(0, 16).replace('T', ' ')}</b></div>
@@ -139,6 +147,16 @@
 			</select>
 			<button onclick={() => setCutoff(cutoffIndex + 1)} disabled={cutoffIndex === cutoffs.length - 1}>Next <ChevronRight size={14} /></button>
 			<button onclick={() => setCutoff(0)}><RotateCcw size={14} /> Reset</button>
+			<button
+				class="ask-copilot"
+				onclick={() =>
+					openCopilot({
+						stayId,
+						patientAlias: subject?.patient_alias ?? stayId,
+						predictionTime: cutoffs[cutoffIndex],
+						previousPredictionTime: cutoffIndex > 0 ? cutoffs[cutoffIndex - 1] : null
+					})}
+			><Sparkles size={14} /> Ask Copilot</button>
 			<span class="cutoff-count">cutoff {cutoffIndex + 1} / {cutoffs.length}</span>
 		</div>
 
@@ -260,6 +278,8 @@
 	.replay-controls button:disabled { opacity: .35; cursor: default; }
 	.replay-controls button:not(:disabled):hover { border-color: #2bb8b0; color: #2bb8b0; }
 	.cutoff-count { margin-left: auto; color: #64748b; font: 9px 'JetBrains Mono', monospace; letter-spacing: .08em; }
+	.ask-copilot { border-color: rgba(56,189,248,.35) !important; color: #38bdf8 !important; }
+	.ask-copilot:hover { border-color: #38bdf8 !important; }
 	.metrics { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-bottom: 8px; }
 	.window-layout { display: flex; align-items: center; gap: 24px; }
 	.window-heatmap { flex: 1; min-width: 0; }

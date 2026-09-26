@@ -35,6 +35,7 @@ export type DemoSubject = {
 	outtime: string;
 	legal_cutoffs: string[];
 	n_legal_cutoffs: number;
+	patient_alias?: string;
 };
 
 export type ContributorItem = { feature_name: string; label: string; attribution: number };
@@ -100,6 +101,8 @@ export type AIRecommendation = {
 	error: string | null;
 };
 
+export type AssistantTurn = { role: 'user' | 'assistant'; text: string };
+
 export const api = {
 	request,
 	health: () => request<{ status: string; ready: boolean; mode: string; scope: string; tasks: string[] }>('/health'),
@@ -115,6 +118,14 @@ export const api = {
 		),
 	aiRecommendation: (stay_id: string, prediction_time: string) =>
 		request<AIRecommendation>('/ai/recommendation', { method: 'POST', body: JSON.stringify({ stay_id, prediction_time }) }),
+
+	// Trajectory Copilot — grounded interpretation layer over an
+	// already-computed prediction. See src/serving/v2/ai_recommendation.py.
+	assistant: (stay_id: string, prediction_time: string, question?: string, previous_prediction_time?: string) =>
+		request<AIRecommendation>('/assistant', {
+			method: 'POST',
+			body: JSON.stringify({ stay_id, prediction_time, question: question ?? null, previous_prediction_time: previous_prediction_time ?? null })
+		}),
 
 	// Kokoro narration microservice — a separate isolated process (see
 	// tts/server.py); returns a playable audio/wav Blob or throws.

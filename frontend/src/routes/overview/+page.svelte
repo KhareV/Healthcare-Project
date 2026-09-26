@@ -4,6 +4,8 @@
 	import Panel from '$lib/components/dashboard/Panel.svelte';
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
 	import { api } from '$lib/services/api';
+	import { authFlag } from '$lib/stores/auth.svelte';
+	import { Database, FileUp, PlugZap } from '@lucide/svelte';
 
 	let demoCount = $state<number | null>(null);
 	let apiReady = $state<boolean | null>(null);
@@ -22,6 +24,22 @@
 <svelte:head><title>Overview | Personalized Patient Recovery Trajectory</title></svelte:head>
 
 <WorkbenchPage eyebrow="00 / PROJECT OVERVIEW" title="Personalized Patient Recovery Trajectory." description="Time-series forecasting of recovery, remaining ICU stay time, and new organ-support initiation risk — from a fixed 48-hour history window, recomputed at every sequential replay cutoff.">
+	{#if authFlag.enabled}
+		{#await import('$lib/components/dashboard/WorkspaceGreeting.svelte') then { default: WorkspaceGreeting }}<WorkspaceGreeting />{/await}
+	{/if}
+
+	<div class="source-grid">
+		<a class="source-card active" href="/patients">
+			<Database size={18} /><strong>Explore Demo Patients</strong><span>Three structurally-selected synthetic ICU episodes, ready now</span>
+		</a>
+		<div class="source-card soon">
+			<FileUp size={18} /><strong>Upload Synthetic FHIR</strong><span>Coming in a follow-up release</span><em>SOON</em>
+		</div>
+		<div class="source-card soon">
+			<PlugZap size={18} /><strong>Connect EHR Sandbox</strong><span>Advanced / sandbox — coming in a follow-up release</span><em>SOON</em>
+		</div>
+	</div>
+
 	<div class="metrics">
 		<MetricTile label="Lookback window" value="48" unit="h" detail="EIGHT 6-HOUR BINS" />
 		<MetricTile label="Model family" value="XGBoost" detail="ALL 4 FINAL V2 TASKS" tone="cyan" />
@@ -58,6 +76,14 @@
 </WorkbenchPage>
 
 <style>
+	.source-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
+	.source-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; border: 1px solid rgba(148,163,184,.16); background: #080e1d; color: #94a3b8; text-decoration: none; }
+	.source-card strong { color: #eef7f6; font: 600 12px 'Space Grotesk', sans-serif; }
+	.source-card span { color: #64748b; font-size: 11px; }
+	.source-card.active { border-color: rgba(43,184,176,.4); }
+	.source-card.active:hover { background: rgba(43,184,176,.06); }
+	.source-card.soon { opacity: .55; }
+	.source-card em { position: absolute; top: 12px; right: 12px; color: #fbbf24; font: 7px 'JetBrains Mono', monospace; letter-spacing: .1em; font-style: normal; }
 	.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
 	.grid.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 8px 0; }
 	.grid.three p { margin: 0 0 14px; color: #94a3b8; font-size: 12px; line-height: 1.7; }
@@ -68,5 +94,5 @@
 	.links { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(148,163,184,.12); }
 	.links a { padding: 8px 12px; border: 1px solid rgba(148,163,184,.2); color: #cbd5e1; font: 9px 'JetBrains Mono', monospace; letter-spacing: .06em; text-decoration: none; }
 	.links a:hover { border-color: #2bb8b0; color: #2bb8b0; }
-	@media (max-width: 900px) { .metrics { grid-template-columns: 1fr 1fr; } .grid.three { grid-template-columns: 1fr; } }
+	@media (max-width: 900px) { .metrics { grid-template-columns: 1fr 1fr; } .grid.three { grid-template-columns: 1fr; } .source-grid { grid-template-columns: 1fr; } }
 </style>

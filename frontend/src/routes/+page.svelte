@@ -185,8 +185,8 @@
 			<a class="nav__demo" href="/demo">Live demo</a>
 		</div>
 
-		<a class="nav__cta button--glass" href="/patients">
-			<span>Open Dashboard</span>
+		<a class="nav__cta button--glass" href="/overview">
+			<span>Open Research Workspace</span>
 			<span class="arrow">↗</span>
 		</a>
 	</nav>
