@@ -13,7 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
-from serving.v2.ai_recommendation import generate_recommendation
+from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
@@ -26,6 +26,31 @@ class PredictRequest(BaseModel):
     prediction_time: str = Field(..., min_length=1)
 
     model_config = {"extra": "forbid"}
+
+
+class AssistantRequest(BaseModel):
+    stay_id: str = Field(..., min_length=1)
+    prediction_time: str = Field(..., min_length=1)
+    question: Optional[str] = Field(default=None, max_length=500)
+    previous_prediction_time: Optional[str] = Field(default=None)
+
+    model_config = {"extra": "forbid"}
+
+
+def _load_demo_patient_aliases(root: Path) -> dict:
+    """Product-layer alias map (stay_id -> DEMO-CARDIAC-NNN + display fields).
+
+    Additive, non-scientific: read from artifacts/performance_v2/product/
+    demo_patients_v1.json (built by scripts/product_v2_build_demo_patients.py).
+    Falls back to raw stay_id if the product artifact is missing so the app
+    never crashes on this being absent.
+    """
+
+    path = root / "artifacts" / "performance_v2" / "product" / "demo_patients_v1.json"
+    if not path.exists():
+        return {}
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    return {row["stay_id"]: row for row in payload.get("demo_patients", [])}
 
 
 def _explanation_payload(runtime: V2ServingRuntime, task: str, matrix, feature_names):
@@ -89,6 +114,7 @@ def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, predictio
 def build_v2_app(root: Path) -> FastAPI:
     root = Path(root).resolve()
     runtime = V2ServingRuntime(root)
+    demo_aliases = _load_demo_patient_aliases(root)
     app = FastAPI(title="Performance-V2 Retrospective Replay API")
     app.add_middleware(
         CORSMiddleware,
@@ -129,10 +155,14 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.get("/demo-subjects")
     def demo_subjects():
         manifest = load_demo_manifest(root)
+        subjects = [
+            {**subject, "patient_alias": demo_aliases.get(subject["stay_id"], {}).get("patient_alias", subject["stay_id"])}
+            for subject in manifest["demo_subjects"]
+        ]
         return {
             "status": manifest["status"],
             "selection_criteria": manifest["selection_criteria"],
-            "demo_subjects": manifest["demo_subjects"],
+            "demo_subjects": subjects,
         }
 
     @app.get("/performance")
@@ -188,6 +218,85 @@ def build_v2_app(root: Path) -> FastAPI:
     def ai_recommendation(request: PredictRequest):
         prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
         result = generate_recommendation(prediction=prediction)
+        return result.as_dict()
+
+    def _assistant_state(prediction: dict) -> dict:
+        return {
+            "prediction_time": prediction["prediction_time"],
+            "current_sofa": prediction["current_sofa"],
+            "predicted_sofa_24h": prediction["recovery"]["sofa_hat_24h"],
+            "predicted_sofa_48h": prediction["recovery"]["sofa_hat_48h"],
+            "remaining_icu_hours": prediction["icu_stay_time"]["remaining_hours"],
+            "support_probability": prediction["organ_support"]["probability_24h"],
+            "support_alert": prediction["organ_support"]["alert"],
+        }
+
+    def _assistant_context(prediction: dict) -> dict:
+        alias_row = demo_aliases.get(prediction["stay_id"], {})
+        recovery, icu, support = prediction["recovery"], prediction["icu_stay_time"], prediction["organ_support"]
+        explanations = prediction.get("explanations", {})
+
+        def contributors_for(task: str):
+            payload = explanations.get(task) or {}
+            items = list(payload.get("top_positive_contributors", [])) + list(payload.get("top_negative_contributors", []))
+            return [{"label": item["label"], "attribution": item["attribution"]} for item in items[:5]]
+
+        return {
+            "patient_alias": alias_row.get("patient_alias", prediction["stay_id"]),
+            "prediction_time": prediction["prediction_time"],
+            "episode": {
+                "elapsed_hours": prediction["elapsed_icu_hours"],
+                "cardiac_subtype": alias_row.get("cardiac_subtype", "unknown"),
+                "age_years": alias_row.get("age_years"),
+                "sex": alias_row.get("sex_category"),
+            },
+            "current_state": {"current_sofa": prediction["current_sofa"]},
+            "forecasts": {
+                "delta_sofa_24": recovery["delta_24h"],
+                "delta_sofa_48": recovery["delta_48h"],
+                "predicted_sofa_24h": recovery["sofa_hat_24h"],
+                "predicted_sofa_48h": recovery["sofa_hat_48h"],
+                "remaining_icu_hours": icu["remaining_hours"],
+                "support_raw_probability": support["raw_probability"],
+                "support_calibrated_probability": support["probability_24h"],
+                "support_threshold": support["threshold"],
+                "support_alert": support["alert"],
+            },
+            "top_contributors": {
+                "recovery24": contributors_for("recovery24"),
+                "recovery48": contributors_for("recovery48"),
+                "icu": contributors_for("icu_stay_time"),
+                "support": contributors_for("organ_support"),
+            },
+            "data_quality": prediction.get("data_quality", {}),
+            "system_limitations": [
+                "synthetic research benchmark",
+                "retrospective replay, not real-time",
+                "not clinically validated",
+                "point forecasts for regression tasks (no per-prediction uncertainty interval)",
+                "TreeSHAP attribution is descriptive/non-causal, computed on the raw model margin before calibration",
+            ],
+        }
+
+    @app.post("/assistant")
+    def assistant(request: AssistantRequest):
+        """Trajectory Copilot: a grounded interpretation layer over an
+        already-computed prediction. Never predicts independently, never
+        sees raw free text, never reaches the fresh-test cohort (the guard
+        that protects /predict protects this identically, since it is built
+        from the exact same _build_prediction_payload call)."""
+
+        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+        context = _assistant_context(prediction)
+
+        if request.previous_prediction_time:
+            try:
+                previous_prediction = _build_prediction_payload(runtime, request.stay_id, request.previous_prediction_time)
+                context["previous_cutoff"] = _assistant_state(previous_prediction)
+            except (IllegalCutoffError, UnknownDemoStayError):
+                pass  # ignore an invalid previous cutoff rather than failing the whole request
+
+        result = generate_assistant_response(context=context, question=request.question)
         return result.as_dict()
 
     @app.exception_handler(UnknownDemoStayError)

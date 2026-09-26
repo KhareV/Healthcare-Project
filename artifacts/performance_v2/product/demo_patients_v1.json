@@ -1,0 +1,43 @@
+{
+  "artifact_version": "product_v2_demo_patients_v1",
+  "status": "V2_PRODUCT_DEMO_PATIENTS_READY",
+  "alias_rule": "lexicographic sort of stay_id, 1-indexed DEMO-CARDIAC-NNN; independent of prediction outcome or accuracy",
+  "source_manifest_ref": {
+    "ref": "configs/performance_v2/v2_demo_manifest_v1.json",
+    "artifact_version": "performance_v2_v2_demo_manifest_v1"
+  },
+  "selection_independent_of_model_performance": true,
+  "n_demo_patients": 3,
+  "demo_patients": [
+    {
+      "patient_alias": "DEMO-CARDIAC-001",
+      "stay_id": "SYN-E-00000001",
+      "subject_id": "SYN-S-00000001",
+      "cardiac_subtype": "HF",
+      "age_years": 81,
+      "sex_category": "FEMALE",
+      "n_legal_cutoffs": 8,
+      "source_population": "DEV TRAIN split only (never fresh V2 test)"
+    },
+    {
+      "patient_alias": "DEMO-CARDIAC-002",
+      "stay_id": "SYN-E-00000007",
+      "subject_id": "SYN-S-00000007",
+      "cardiac_subtype": "ISCHEMIC",
+      "age_years": 38,
+      "sex_category": "MALE",
+      "n_legal_cutoffs": 8,
+      "source_population": "DEV TRAIN split only (never fresh V2 test)"
+    },
+    {
+      "patient_alias": "DEMO-CARDIAC-003",
+      "stay_id": "SYN-E-00000010",
+      "subject_id": "SYN-S-00000010",
+      "cardiac_subtype": "ARRHYTHMIA",
+      "age_years": 26,
+      "sex_category": "FEMALE",
+      "n_legal_cutoffs": 10,
+      "source_population": "DEV TRAIN split only (never fresh V2 test)"
+    }
+  ]
+}
