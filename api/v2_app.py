@@ -16,9 +16,13 @@ from pydantic import BaseModel, Field
 
 from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
 from serving.v2.auth import AuthError, ClerkAuthenticator
-from serving.v2.custom_record import CustomRecordError, build_custom_record, canonical_concepts, get_custom_record
+from serving.v2.custom_record import (
+    CustomRecordError, build_custom_record, canonical_concepts, get_custom_record,
+    list_custom_records, rehydrate_if_needed,
+)
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
+from serving.v2.persistence import MongoPersistence
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
 
 logger = logging.getLogger("api.v2")
@@ -68,6 +72,14 @@ class CustomRecordRequest(BaseModel):
     model_config = {"extra": "forbid"}
 
 
+class ConditionIn(BaseModel):
+    label: str = Field(..., min_length=1, max_length=200)
+    diagnosed_year: Optional[int] = Field(default=None, ge=1900, le=2100)
+    status: str = Field(default="active", min_length=1, max_length=32)
+
+    model_config = {"extra": "forbid"}
+
+
 def _load_demo_patient_aliases(root: Path) -> dict:
     """Product-layer alias map (stay_id -> DEMO-CARDIAC-NNN + display fields).
 
@@ -94,14 +106,14 @@ def _explanation_payload(runtime: V2ServingRuntime, task: str, matrix, feature_n
     }
 
 
-def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, prediction_time: str) -> dict:
+def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, prediction_time: str, persistence: Optional[MongoPersistence] = None) -> dict:
     prediction = runtime.predict(stay_id, prediction_time)
     explanations = {
         task: _explanation_payload(runtime, task, prediction.matrices[task], prediction.feature_names[task])
         for task in ("recovery24", "recovery48", "icu_stay_time", "organ_support")
     }
     data_quality = _data_quality(prediction.feature_row)
-    return {
+    payload = {
         "schema_version": "v2_prediction_response_v1",
         "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
         "stay_id": prediction.stay_id,
@@ -140,6 +152,31 @@ def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, predictio
             "v2_model_freeze_sha256": "f5feb29cab2e25d6e8bff860af52ac505f40951578aa73547ec420ba8fcda570",
         },
     }
+    owner = runtime.ephemeral_owner(stay_id)
+    if owner is not None and persistence is not None and persistence.enabled:
+        # Only custom records get a persisted prediction-history trail --
+        # demo patients are already permanently described by the frozen
+        # manifest artifact, so there is nothing new to make durable there.
+        # A write failure here must never break the response itself.
+        try:
+            persistence.save_prediction_run(
+                owner_user_id=owner, stay_id=stay_id, prediction_time=prediction_time,
+                snapshot={
+                    "current_sofa": prediction.current_sofa,
+                    "delta_sofa_24": prediction.recovery24_delta,
+                    "delta_sofa_48": prediction.recovery48_delta,
+                    "predicted_sofa_24h": prediction.recovery24_sofa,
+                    "predicted_sofa_48h": prediction.recovery48_sofa,
+                    "remaining_icu_hours": prediction.icu_remaining_hours,
+                    "support_raw_probability": prediction.support_raw_probability,
+                    "support_calibrated_probability": prediction.support_calibrated_probability,
+                    "support_threshold": prediction.support_threshold,
+                    "support_alert": prediction.support_alert,
+                },
+            )
+        except Exception:  # noqa: BLE001
+            logger.warning("failed to persist prediction run for %s @ %s", stay_id, prediction_time)
+    return payload
 
 
 def build_v2_app(root: Path) -> FastAPI:
@@ -147,6 +184,7 @@ def build_v2_app(root: Path) -> FastAPI:
     runtime = V2ServingRuntime(root)
     demo_aliases = _load_demo_patient_aliases(root)
     authenticator = ClerkAuthenticator(publishable_key=os.environ.get("PUBLIC_CLERK_PUBLISHABLE_KEY"))
+    persistence = MongoPersistence(uri=os.environ.get("MONGODB_URI"))
     app = FastAPI(title="Performance-V2 Retrospective Replay API")
     app.add_middleware(
         CORSMiddleware,
@@ -172,8 +210,17 @@ def build_v2_app(root: Path) -> FastAPI:
         for a stay that never existed, so an unauthorized caller can never
         distinguish "not yours" from "doesn't exist". Demo/unknown stays are
         untouched: this is a no-op for them, exactly matching current
-        product behavior (demo patients remain globally servable)."""
+        product behavior (demo patients remain globally servable).
 
+        Before checking ownership, attempts to rehydrate stay_id from
+        persistent storage if it is a custom record this process has not
+        loaded yet (e.g. right after a restart) -- see
+        serving.v2.custom_record.rehydrate_if_needed. This never weakens
+        the ownership check below: rehydration only restores a stay under
+        its true recorded owner, taken from the record itself, never from
+        the current caller."""
+
+        rehydrate_if_needed(runtime, persistence, stay_id)
         owner = runtime.ephemeral_owner(stay_id)
         if owner is None:
             return
@@ -193,6 +240,7 @@ def build_v2_app(root: Path) -> FastAPI:
             "scope": "PERFORMANCE_V2_SYNTHETIC_BENCHMARK",
             "tasks": ["recovery24", "recovery48", "icu_stay_time", "organ_support"],
             "auth_mode": "clerk_verified" if authenticator.configured else "local_dev_no_auth",
+            "persistence_mode": "mongodb" if persistence.enabled else "in_memory_only",
         }
 
     @app.get("/model-metadata")
@@ -213,7 +261,7 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.post("/predict")
     def predict(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
         _authorize_custom_stay(request.stay_id, authorization)
-        return _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+        return _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
 
     @app.get("/demo-subjects")
     def demo_subjects():
@@ -248,9 +296,20 @@ def build_v2_app(root: Path) -> FastAPI:
                 sex_category=request.sex_category,
                 observations=[o.model_dump() for o in request.observations],
                 support_intervals=[s.model_dump() for s in request.support_intervals],
+                persistence=persistence,
             )
         except CustomRecordError as exc:
             raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+    @app.get("/custom-records")
+    def list_own_custom_records(authorization: Optional[str] = Header(default=None)):
+        """Every custom record owned by the caller -- durable across
+        restarts when MongoDB persistence is configured (see /health's
+        persistence_mode), otherwise whatever this process currently has
+        loaded in memory."""
+
+        owner_user_id = _authenticate(authorization)
+        return {"records": list_custom_records(runtime, persistence, owner_user_id)}
 
     @app.get("/custom-records/{stay_id}")
     def read_custom_record(stay_id: str, authorization: Optional[str] = Header(default=None)):
@@ -259,6 +318,47 @@ def build_v2_app(root: Path) -> FastAPI:
         if record is None:
             raise UnknownDemoStayError("unknown custom record")
         return record
+
+    @app.get("/custom-records/{stay_id}/predictions")
+    def custom_record_prediction_history(stay_id: str, authorization: Optional[str] = Header(default=None)):
+        """Persisted prediction-run snapshots for this encounter, one per
+        distinct cutoff actually replayed, oldest first. Empty (with an
+        explanatory note, never a fake history) when persistence is not
+        configured."""
+
+        _authorize_custom_stay(stay_id, authorization)
+        owner = runtime.ephemeral_owner(stay_id)
+        if owner is None:
+            raise UnknownDemoStayError("unknown custom record")
+        if not persistence.enabled:
+            return {"stay_id": stay_id, "predictions": [], "note": "persistence is not configured; prediction history is unavailable"}
+        return {"stay_id": stay_id, "predictions": persistence.list_prediction_runs(owner_user_id=owner, stay_id=stay_id)}
+
+    @app.post("/health-record/conditions")
+    def add_condition(request: ConditionIn, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            raise HTTPException(status_code=503, detail="persistence is not configured; conditions cannot be saved")
+        return persistence.add_condition(
+            owner_user_id=owner_user_id, label=request.label, diagnosed_year=request.diagnosed_year, status=request.status,
+        )
+
+    @app.get("/health-record/conditions")
+    def list_conditions(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"conditions": [], "note": "persistence is not configured"}
+        return {"conditions": persistence.list_conditions(owner_user_id=owner_user_id)}
+
+    @app.delete("/health-record/conditions/{condition_id}")
+    def delete_condition(condition_id: str, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            raise HTTPException(status_code=503, detail="persistence is not configured")
+        deleted = persistence.delete_condition(owner_user_id=owner_user_id, condition_id=condition_id)
+        if not deleted:
+            raise HTTPException(status_code=404, detail="unknown condition_id")
+        return {"deleted": True, "condition_id": condition_id}
 
     @app.get("/performance")
     def performance():
@@ -314,7 +414,7 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.post("/ai/recommendation")
     def ai_recommendation(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
         _authorize_custom_stay(request.stay_id, authorization)
-        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
         result = generate_recommendation(prediction=prediction)
         return result.as_dict()
 
@@ -393,12 +493,12 @@ def build_v2_app(root: Path) -> FastAPI:
         from the exact same _build_prediction_payload call)."""
 
         _authorize_custom_stay(request.stay_id, authorization)
-        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time)
+        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
         context = _assistant_context(prediction)
 
         if request.previous_prediction_time:
             try:
-                previous_prediction = _build_prediction_payload(runtime, request.stay_id, request.previous_prediction_time)
+                previous_prediction = _build_prediction_payload(runtime, request.stay_id, request.previous_prediction_time, persistence=persistence)
                 context["previous_cutoff"] = _assistant_state(previous_prediction)
             except (IllegalCutoffError, UnknownDemoStayError):
                 pass  # ignore an invalid previous cutoff rather than failing the whole request
@@ -425,6 +525,7 @@ def build_v2_app(root: Path) -> FastAPI:
         return JSONResponse(status_code=500, content={"detail": "internal error"})
 
     app.state.v2_runtime = runtime
+    app.state.v2_persistence = persistence
     return app
 
 

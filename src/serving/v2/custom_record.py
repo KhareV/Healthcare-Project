@@ -3,10 +3,19 @@ vitals/labs (and, optionally, organ-support state) and get a real
 prediction through the exact same frozen V2 pipeline used for the demo
 subjects, without touching any frozen scientific artifact.
 
-Ephemeral, in-memory-only, process-lifetime storage (see
-V2ServingRuntime.register_ephemeral_stay) -- restarting the server discards
-every custom record. This is intentional: it is a demo feature, not a
-clinical data store, and nothing here is written to any git-tracked path.
+Serving is always in-memory (see V2ServingRuntime.register_ephemeral_stay)
+-- the frozen feature builder and SOFA provider only ever read from that
+runtime's dicts, never from a database. Durability across restarts is a
+separate, optional concern layered on top: when serving.v2.persistence is
+configured with a reachable MongoDB cluster, the *raw* structured input
+(observations, support intervals, profile fields) is additionally saved
+there, and `rehydrate_if_needed` reconstructs the in-memory representation
+from that raw input the next time the stay is requested after a restart --
+using the exact same registration path as fresh creation, never a cached
+derived representation. Nothing here is ever written to a git-tracked path.
+Without persistence configured, behavior is unchanged from the original
+design: a restart discards every custom record.
+
 Every record is bound to the `owner_user_id` of the request that created it
 (a verified Clerk user id, or the fixed local-dev owner when the backend has
 no Clerk key configured -- see serving.v2.auth); ownership is enforced by
@@ -26,6 +35,7 @@ never faking data rules out. Renal SOFA still works from creatinine alone.
 from __future__ import annotations
 
 import json
+import logging
 import math
 import secrets
 from dataclasses import dataclass
@@ -35,6 +45,8 @@ from typing import List, Mapping, Optional, Sequence
 
 from data.timestamps import RetainedICUStay, generate_prediction_rows_for_stay
 from serving.v2.runtime import FEATURE_SCHEMA_PATH, V2ServingRuntime
+
+logger = logging.getLogger("serving.v2.custom_record")
 
 CUSTOM_RECORD_SCHEMA_VERSION = "custom_record_v1"
 
@@ -217,6 +229,28 @@ def _build_support_rows(*, stay_id: str, subject_id: str, intime: datetime, supp
     return rows
 
 
+def _build_event_rows(*, stay_id: str, subject_id: str, intime: datetime, parsed: Sequence[_Observation], concept_index: Mapping[str, Mapping[str, object]]) -> List[dict]:
+    events = []
+    for index, item in enumerate(parsed):
+        meta = concept_index[item.concept]
+        # SOFA's central-nervous-system component requires an integer GCS
+        # (data/synthetic/sofa.py::_validate_point, integer_required=True);
+        # every other concept is a plain float.
+        value_numeric: object = int(item.value) if item.concept == "glasgow_coma_scale" else float(item.value)
+        events.append({
+            "stay_id": stay_id,
+            "subject_id": subject_id,
+            "event_time": _iso(intime + timedelta(hours=item.hours_since_admission)),
+            "canonical_concept": item.concept,
+            "event_id": f"{stay_id}-EV-{index:04d}",
+            "unit": meta["unit"],
+            "provenance_id": meta["provenance_id"],
+            "value_numeric": value_numeric,
+            "event_kind": "point",
+        })
+    return events
+
+
 def build_custom_record(
     runtime: V2ServingRuntime,
     *,
@@ -226,6 +260,7 @@ def build_custom_record(
     sex_category: str,
     observations: Sequence[Mapping[str, object]],
     support_intervals: Sequence[Mapping[str, object]] = (),
+    persistence=None,
 ) -> Mapping[str, object]:
     if not owner_user_id:
         raise CustomRecordError("owner_user_id is required")
@@ -254,24 +289,7 @@ def build_custom_record(
     outtime_hours = max(30.0, last_observation_hour + 6.0, min(last_support_hour, MAX_HOURS_SINCE_ADMISSION) + 6.0)
     outtime = intime + timedelta(hours=outtime_hours)
 
-    events = []
-    for index, item in enumerate(parsed):
-        meta = concept_index[item.concept]
-        # SOFA's central-nervous-system component requires an integer GCS
-        # (data/synthetic/sofa.py::_validate_point, integer_required=True);
-        # every other concept is a plain float.
-        value_numeric: object = int(item.value) if item.concept == "glasgow_coma_scale" else float(item.value)
-        events.append({
-            "stay_id": stay_id,
-            "subject_id": subject_id,
-            "event_time": _iso(intime + timedelta(hours=item.hours_since_admission)),
-            "canonical_concept": item.concept,
-            "event_id": f"{stay_id}-EV-{index:04d}",
-            "unit": meta["unit"],
-            "provenance_id": meta["provenance_id"],
-            "value_numeric": value_numeric,
-            "event_kind": "point",
-        })
+    events = _build_event_rows(stay_id=stay_id, subject_id=subject_id, intime=intime, parsed=parsed, concept_index=concept_index)
 
     statics_row = {
         "stay_id": stay_id,
@@ -295,7 +313,112 @@ def build_custom_record(
     if support_rows:
         runtime.register_ephemeral_support(stay_id=stay_id, support_rows=support_rows)
 
+    if persistence is not None and persistence.enabled:
+        # Durability is additive, never a hard dependency: a write failure
+        # here must not break record creation -- the record still serves
+        # correctly for the rest of this process's lifetime, it just will
+        # not survive a restart, exactly like the pre-persistence behavior.
+        try:
+            persistence.save_encounter(
+                owner_user_id=owner_user_id, stay_id=stay_id, subject_id=subject_id,
+                patient_alias=str(patient_alias).strip(), age_years=int(age_years), sex_category=str(sex_category),
+                intime=_iso(intime), outtime=_iso(outtime),
+                observations=list(observations), support_intervals=list(support_intervals),
+            )
+        except Exception:  # noqa: BLE001
+            logger.warning("failed to persist custom encounter %s; continuing in-memory-only", stay_id)
+
     return _describe_record(runtime, stay_id=stay_id, statics=statics_row, entry_legal_cutoffs=legal_cutoffs, support_rows=support_rows)
+
+
+def rehydrate_if_needed(runtime: V2ServingRuntime, persistence, stay_id: str) -> bool:
+    """If `stay_id` is a persisted custom record that this process has not
+    (yet) loaded into the in-memory runtime -- most commonly right after an
+    API restart -- rebuild it from MongoDB via the exact same registration
+    path used at creation time, from the same raw observations/support
+    intervals the user originally entered (never a cached derived
+    representation).
+
+    Returns True if the stay is now available in the runtime (whether it
+    already was, or was just rehydrated); False if no persisted encounter
+    exists for this stay_id at all, in which case callers should fall
+    through to their normal "unknown stay" handling. Ownership is *not*
+    checked here -- rehydration only restores the stay under its true
+    recorded owner; the caller's existing ownership comparison
+    (api/v2_app.py::_authorize_custom_stay) is what enforces access.
+    """
+
+    if runtime.ephemeral_owner(stay_id) is not None:
+        return True
+    if persistence is None or not persistence.enabled or not stay_id.startswith("CUSTOM-"):
+        return False
+
+    doc = persistence.get_encounter(stay_id=stay_id)
+    if doc is None:
+        return False
+
+    intime = datetime.fromisoformat(str(doc["intime"]).replace("Z", "+00:00"))
+    outtime = datetime.fromisoformat(str(doc["outtime"]).replace("Z", "+00:00"))
+    subject_id = str(doc["subject_id"])
+
+    concept_index = {item["concept"]: item for item in canonical_concepts(runtime.root)}
+    parsed = _parse_observations(doc.get("observations", []), concept_index)
+    events = _build_event_rows(stay_id=stay_id, subject_id=subject_id, intime=intime, parsed=parsed, concept_index=concept_index)
+    support_rows = _build_support_rows(stay_id=stay_id, subject_id=subject_id, intime=intime, support_intervals=doc.get("support_intervals", []))
+
+    statics_row = {
+        "stay_id": stay_id, "subject_id": subject_id, "intime": _iso(intime), "outtime": _iso(outtime),
+        "age_years": int(doc["age_years"]), "sex_category": str(doc["sex_category"]),
+        "cardiac_condition_group": "CUSTOM_RECORD", "patient_alias": str(doc["patient_alias"]),
+    }
+
+    stay = RetainedICUStay(subject_id=subject_id, stay_id=stay_id, intime=intime, outtime=outtime)
+    rows = generate_prediction_rows_for_stay(stay)
+    legal_cutoffs = tuple(_iso(row.prediction_time) for row in rows)
+
+    runtime.register_ephemeral_stay(
+        stay_id=stay_id, subject_id=subject_id, statics_row=statics_row, events=events,
+        legal_cutoffs=legal_cutoffs, owner_user_id=str(doc["owner_user_id"]),
+    )
+    if support_rows:
+        runtime.register_ephemeral_support(stay_id=stay_id, support_rows=support_rows)
+    return True
+
+
+def list_custom_records(runtime: V2ServingRuntime, persistence, owner_user_id: str) -> List[Mapping[str, object]]:
+    """Every custom record owned by this caller. Backed by MongoDB when
+    persistence is configured (durable across restarts); falls back to
+    whatever this process currently has loaded in memory otherwise (the
+    original, pre-persistence behavior) -- never silently returns a fake
+    empty list when the real answer is "persistence is off, here is what's
+    actually loaded right now"."""
+
+    if persistence is not None and persistence.enabled:
+        docs = persistence.list_encounters(owner_user_id=owner_user_id)
+        return [
+            {
+                "stay_id": d["stay_id"], "patient_alias": d["patient_alias"],
+                "age_years": d["age_years"], "sex_category": d["sex_category"],
+                "created_at": d.get("created_at"),
+                "observations_entered": len(d.get("observations", [])),
+                "support_intervals_entered": len(d.get("support_intervals", [])),
+            }
+            for d in docs
+        ]
+
+    out: List[Mapping[str, object]] = []
+    for stay_id, entry in runtime._ephemeral_manifest.items():
+        if entry["owner_user_id"] != owner_user_id:
+            continue
+        statics = runtime._statics_by_stay.get(stay_id, {})
+        out.append({
+            "stay_id": stay_id, "patient_alias": statics.get("patient_alias", stay_id),
+            "age_years": statics.get("age_years"), "sex_category": statics.get("sex_category"),
+            "created_at": None,
+            "observations_entered": len(runtime._events_by_stay.get(stay_id, [])),
+            "support_intervals_entered": len(runtime._supports_by_stay.get(stay_id, [])),
+        })
+    return out
 
 
 def _hours_between(intime: datetime, iso_timestamp: str) -> float:
