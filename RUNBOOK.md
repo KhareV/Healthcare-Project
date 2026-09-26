@@ -132,12 +132,12 @@ single fixed local-dev owner (`local-dev-user`) instead of a real per-user
 identity — fine for solo local development, but keep the two `.env` files
 in sync for anything resembling a real multi-user demo.
 
-### 6. Configure persistent health records (optional)
+### 6. Configure My Health Record persistence (optional)
 
 By default, custom records ("Enter My Own Record") live only in the API
-process's memory and are discarded on restart. To make them durable --
-plus enable a per-user conditions list -- configure a MongoDB connection
-string:
+process's memory and are discarded on restart, and My Health Record
+(`/health-record`) has nothing to show. To make everything durable,
+configure a MongoDB connection string:
 
 ```bash
 pip3 install --user pymongo
@@ -146,35 +146,52 @@ cp .env.example .env   # if you have not already, from step 5
 # add: MONGODB_URI=mongodb+srv://user:password@your-cluster.mongodb.net/
 ```
 
-Restart the API. `GET /health` now reports `"persistence_mode": "mongodb"`
-(it reports `"in_memory_only"`, and the original behavior, if the cluster
-is unset or unreachable at startup -- persistence is never a hard
-dependency; a connection failure at startup is logged and the server keeps
-running exactly as before). With it configured:
+Never commit a real `MONGODB_URI` or paste one into a chat, issue, or log --
+`.env` is gitignored specifically so this stays local. Restart the API.
+`GET /health` now reports `"persistence_mode": "mongodb"` (it reports
+`"in_memory_only"`, and the original behavior, if the cluster is unset or
+unreachable at startup -- persistence is never a hard dependency; a
+connection failure at startup is logged and the server keeps running
+exactly as before). With it configured, **My Health Record**
+(`/health-record`) becomes a consolidated, longitudinal record for the
+signed-in user:
 
-1. Every custom record's raw structured input (observations, support
-   intervals, profile fields) is saved to MongoDB when created. If this
-   process later restarts, the *next* request for that stay_id transparently
-   rebuilds it into the in-memory serving runtime from that raw input --
-   through the exact same registration path used at creation time -- before
-   serving the request. Scientific derived state (features, SHAP, model
-   internals) is never stored; only the raw input a user actually typed in.
-2. `GET /custom-records` lists every record the caller owns, and `/patients`
-   (Patient Replay) uses it to show your records alongside the demo cohort
-   without any client-side bookkeeping.
-3. `GET /custom-records/{stay_id}/predictions` returns one snapshot per
-   distinct cutoff you've actually replayed for that record (current SOFA,
-   both recovery forecasts, remaining ICU time, support probability) --
-   visible on the new **My Health Record** (`/health-record`) page.
-4. `/health-record` also lets you add/remove free-text **conditions**
-   (label, year, status) tied to your account -- pure display context,
-   never a model input, and unrelated to any one encounter.
+1. A **patient profile** (display name, age, sex, blood group, height,
+   weight) is created automatically on first use and editable from the
+   Overview tab -- pure display context, never a model input.
+2. **Conditions** (name, optional code, diagnosed date, status, notes) can
+   be added, edited, and deleted.
+3. **Encounters** -- every custom record built via "Enter My Own Record" --
+   are linked to that one profile and listed with a link back into Patient
+   Replay. If this process later restarts, the *next* request for an
+   encounter's stay_id transparently rebuilds it into the in-memory serving
+   runtime from its stored raw input -- through the exact same registration
+   path used at creation time. Scientific derived state (features, SHAP,
+   model internals) is never stored; only the raw input a user actually
+   typed in.
+4. **Vitals & Labs** and **Support / Interventions** tabs show every
+   observation and organ-support interval across every encounter,
+   chronologically, with filters -- a read-side view over the same embedded
+   data, not a new source of truth.
+5. **Reports** (PDF/PNG/JPEG, 10MB limit) can be uploaded, downloaded, and
+   deleted. Binary content is stored locally under `runtime/uploads/`
+   (gitignored), never in MongoDB and never as a model input -- every
+   report's `processing_status` stays `NOT_PARSED` in this pass. See
+   [`docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md`](docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md)
+   for the storage-security details (type/size limits, filename
+   sanitization, path-traversal defenses, owner-scoped downloads).
+6. **Prediction History** lists every cutoff actually replayed, across
+   every encounter -- derived evidence, never the source of truth for
+   replay (which always recomputes through the frozen model pipeline).
+7. **Export my record** downloads one structured JSON file (profile,
+   conditions, encounters, report metadata, prediction history -- never
+   report binaries).
 
 Everything stored is scoped by the same verified Clerk `owner_user_id` used
 everywhere else in this product; a request body can never set it. Keep all
-persisted data synthetic/demo-only -- this layer has no encryption-at-rest,
-audit logging, or deletion/export tooling, so treat it the same as the rest
-of this project's synthetic benchmark data, not real patient information.
+persisted data synthetic/demo-only -- this layer has no encryption-at-rest
+or formal compliance program, so treat it the same as the rest of this
+project's synthetic benchmark data, not real patient information.
 
 ### 7. Start the Kokoro narration service (terminal 3, optional)
 
