@@ -18,12 +18,13 @@ from pydantic import BaseModel, Field
 from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
 from serving.v2.auth import AuthError, ClerkAuthenticator
 from serving.v2.custom_record import (
-    CustomRecordError, build_custom_record, canonical_concepts, get_custom_record,
-    list_custom_records, rehydrate_if_needed,
+    CustomRecordError, append_observations_to_encounter, build_custom_record, canonical_concepts,
+    get_custom_record, list_custom_records, rehydrate_if_needed,
 )
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
 from serving.v2.persistence import CONDITION_STATUSES, MongoPersistence
+from serving.v2.report_parser import ReportParsingUnavailable, extract_candidate_measurements, extract_text
 from serving.v2.report_storage import (
     ALLOWED_REPORT_MIME_TYPES, MAX_REPORT_SIZE_BYTES, LocalReportStorage, ReportStorageError, sanitize_filename,
 )
@@ -103,6 +104,20 @@ class ConditionUpdate(BaseModel):
     diagnosed_date: Optional[str] = Field(default=None, max_length=32)
     status: Optional[str] = Field(default=None, min_length=1, max_length=32)
     notes: Optional[str] = Field(default=None, max_length=2000)
+
+    model_config = {"extra": "forbid"}
+
+
+class ReportConfirmationIn(BaseModel):
+    candidate_id: str = Field(..., min_length=1)
+    hours_since_admission: float
+
+    model_config = {"extra": "forbid"}
+
+
+class ReportConfirmRequest(BaseModel):
+    encounter_id: str = Field(..., min_length=1)
+    confirmations: list[ReportConfirmationIn] = Field(..., min_length=1)
 
     model_config = {"extra": "forbid"}
 
@@ -574,6 +589,90 @@ def build_v2_app(root: Path) -> FastAPI:
             action="report_deleted", target_type="report", target_id=report_id,
         )
         return {"deleted": True, "report_id": report_id}
+
+    @app.post("/health-record/reports/{report_id}/parse")
+    def parse_report(report_id: str, authorization: Optional[str] = Header(default=None)):
+        """Report Intelligence, step 1: extract text (PDF only -- an image
+        report's processing_status simply stays NOT_PARSED/FAILED) and ask
+        Groq to propose candidate measurements. Never writes an observation
+        -- candidates are stored pending explicit confirmation
+        (POST .../confirm)."""
+
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        record = persistence.get_report(owner_user_id=owner_user_id, report_id=report_id)
+        if record is None:
+            raise HTTPException(status_code=404, detail="unknown report_id")
+        try:
+            data = report_storage.open(key=record["storage_key"])
+        except ReportStorageError as exc:
+            raise HTTPException(status_code=404, detail="report file is missing") from exc
+
+        text = extract_text(data=data, mime_type=record["mime_type"])
+        try:
+            candidates = extract_candidate_measurements(report_text=text, canonical_concepts=canonical_concepts(runtime.root))
+        except ReportParsingUnavailable as exc:
+            persistence.save_report_candidates(owner_user_id=owner_user_id, report_id=report_id, candidates=[], status="FAILED")
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+        candidate_dicts = [c.as_dict() for c in candidates]
+        persistence.save_report_candidates(owner_user_id=owner_user_id, report_id=report_id, candidates=candidate_dicts, status="PARSED")
+        updated = persistence.get_report(owner_user_id=owner_user_id, report_id=report_id)
+        updated.pop("storage_key", None)
+        return updated
+
+    @app.post("/health-record/reports/{report_id}/confirm")
+    def confirm_report_measurements(report_id: str, request: ReportConfirmRequest, authorization: Optional[str] = Header(default=None)):
+        """Report Intelligence, step 2: the human-in-the-loop boundary.
+        Only candidates the caller explicitly lists -- each with a
+        caller-supplied hours_since_admission, since a report's real-world
+        timestamp has no principled mapping onto an encounter's synthetic
+        admission clock -- become real observations on the named encounter,
+        through the exact same validation path direct entry uses."""
+
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        record = persistence.get_report(owner_user_id=owner_user_id, report_id=report_id)
+        if record is None:
+            raise HTTPException(status_code=404, detail="unknown report_id")
+        # Ownership + rehydration for the target encounter, same fail-closed
+        # 404 pattern as every other cross-user-record boundary.
+        _authorize_custom_stay(request.encounter_id, authorization)
+        if runtime.ephemeral_owner(request.encounter_id) is None:
+            raise UnknownDemoStayError("unknown encounter_id")
+
+        candidates_by_id = {c["candidate_id"]: c for c in record.get("candidate_measurements", [])}
+        new_observations = []
+        confirmed_ids = []
+        for item in request.confirmations:
+            candidate = candidates_by_id.get(item.candidate_id)
+            if candidate is None:
+                raise HTTPException(status_code=404, detail=f"unknown candidate_id: {item.candidate_id!r}")
+            if candidate.get("confirmed"):
+                continue  # already confirmed earlier -- skip rather than duplicate
+            if not candidate.get("concept"):
+                raise HTTPException(status_code=422, detail=f"candidate {item.candidate_id!r} has no mapped canonical concept and cannot be confirmed")
+            new_observations.append({
+                "concept": candidate["concept"], "hours_since_admission": item.hours_since_admission, "value": candidate["value"],
+            })
+            confirmed_ids.append(item.candidate_id)
+
+        if not new_observations:
+            return {"added": 0, "encounter": get_custom_record(runtime, request.encounter_id)}
+
+        try:
+            updated_encounter = append_observations_to_encounter(
+                runtime, persistence, owner_user_id=owner_user_id, stay_id=request.encounter_id, observations=new_observations,
+            )
+        except CustomRecordError as exc:
+            raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+        persistence.confirm_report_candidates(owner_user_id=owner_user_id, report_id=report_id, candidate_ids=confirmed_ids)
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=record.get("patient_id"),
+            action="report_measurements_confirmed", target_type="report", target_id=report_id,
+        )
+        return {"added": len(new_observations), "encounter": updated_encounter}
 
     @app.get("/health-record/export")
     def export_health_record(authorization: Optional[str] = Header(default=None)):

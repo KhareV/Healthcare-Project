@@ -234,6 +234,18 @@ class V2ServingRuntime:
     def ephemeral_count(self) -> int:
         return len(self._ephemeral_manifest)
 
+    def append_ephemeral_events(self, *, stay_id: str, events: list) -> None:
+        """Extends an already-registered ephemeral stay with additional
+        observation events (e.g. measurements a user confirmed from a
+        parsed report) -- mirrors register_ephemeral_stay's event
+        registration exactly, appending rather than replacing, into both
+        the feature-builder-visible _events_by_stay dict and the SOFA
+        provider's history tuple (a separate store the SOFA provider reads
+        from, populated the same way at initial registration)."""
+
+        self._events_by_stay.setdefault(stay_id, []).extend(events)
+        self.sofa_provider.history = self.sofa_provider.history + tuple(events)
+
     def _build_feature_builder(self) -> SyntheticCanonicalFeatureBuilder:
         statics_rows = load_jsonl(self.root / TIMELINE_DIR / "canonical_statics.jsonl")
         statics_by_stay = {row["stay_id"]: row for row in statics_rows}

@@ -518,3 +518,52 @@ def get_custom_record(runtime: V2ServingRuntime, stay_id: str) -> Optional[Mappi
     statics = runtime._statics_by_stay.get(stay_id, {})
     support_rows = runtime._supports_by_stay.get(stay_id, [])
     return _describe_record(runtime, stay_id=stay_id, statics=statics, entry_legal_cutoffs=entry["legal_cutoffs"], support_rows=support_rows)
+
+
+def append_observations_to_encounter(
+    runtime: V2ServingRuntime, persistence, *, owner_user_id: str, stay_id: str, observations: Sequence[Mapping[str, object]],
+) -> Mapping[str, object]:
+    """Adds user-confirmed observations (e.g. from Report Intelligence,
+    serving.v2.report_parser) to an *existing* encounter -- never creates a
+    new one, and never accepts a value the caller has not already validated
+    came from an explicit human confirmation (see api/v2_app.py's
+    `/health-record/reports/{report_id}/confirm`).
+
+    Validates and builds event rows through the exact same
+    `_parse_observations`/`_build_event_rows` path fresh creation uses, so
+    a confirmed report measurement is held to the identical standard as one
+    typed directly into "Enter My Own Record" -- there is no separate,
+    looser validation path for report-derived data.
+    """
+
+    if runtime.ephemeral_owner(stay_id) != owner_user_id:
+        raise CustomRecordError("unknown stay_id")
+    if not observations:
+        raise CustomRecordError("at least one observation is required")
+
+    statics = runtime._statics_by_stay.get(stay_id, {})
+    subject_id = str(statics.get("subject_id", ""))
+    intime = datetime.fromisoformat(str(statics["intime"]).replace("Z", "+00:00"))
+
+    concept_index = {item["concept"]: item for item in canonical_concepts(runtime.root)}
+    parsed = _parse_observations(observations, concept_index)
+    existing_count = len(runtime._events_by_stay.get(stay_id, []))
+    new_events = _build_event_rows(
+        stay_id=stay_id, subject_id=subject_id, intime=intime, parsed=parsed, concept_index=concept_index,
+    )
+    # Re-index event_id suffixes past whatever this stay already has, so a
+    # second confirmation batch can never collide with the first.
+    for offset, event in enumerate(new_events):
+        event["event_id"] = f"{stay_id}-EV-{existing_count + offset:04d}"
+
+    runtime.append_ephemeral_events(stay_id=stay_id, events=new_events)
+
+    if persistence is not None and persistence.enabled:
+        try:
+            persistence.append_encounter_observations(owner_user_id=owner_user_id, stay_id=stay_id, observations=list(observations))
+        except Exception:  # noqa: BLE001
+            logger.warning("failed to persist appended observations for %s; runtime already updated in-memory", stay_id)
+
+    entry = runtime.ephemeral_entry(stay_id)
+    support_rows = runtime._supports_by_stay.get(stay_id, [])
+    return _describe_record(runtime, stay_id=stay_id, statics=statics, entry_legal_cutoffs=entry["legal_cutoffs"], support_rows=support_rows)

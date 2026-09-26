@@ -471,6 +471,44 @@ class MongoPersistence:
         doc = self._db.reports.find_one_and_delete({"owner_user_id": owner_user_id, "report_id": report_id})
         return _without_mongo_id(doc) if doc else None
 
+    # -- report intelligence: candidate measurements (never auto-inserted) --
+    # A candidate is stored on its report's own document (no new collection
+    # needed) as `candidate_measurements`, each with a `confirmed: bool`.
+    # Only `confirm_report_candidates` ever flips that flag, and only after
+    # the API layer has copied the confirmed values into an encounter's real
+    # observations (serving.v2.custom_record.append_observations_to_encounter)
+    # -- this method itself never touches an encounter.
+
+    @_retrying
+    def save_report_candidates(self, *, owner_user_id: str, report_id: str, candidates: Sequence[Mapping[str, object]], status: str) -> None:
+        self._db.reports.update_one(
+            {"owner_user_id": owner_user_id, "report_id": report_id},
+            {"$set": {"candidate_measurements": list(candidates), "processing_status": status, "parsed_at": _utcnow_iso()}},
+        )
+
+    @_retrying
+    def confirm_report_candidates(self, *, owner_user_id: str, report_id: str, candidate_ids: Sequence[str]) -> None:
+        if not candidate_ids:
+            return
+        self._db.reports.update_one(
+            {"owner_user_id": owner_user_id, "report_id": report_id},
+            {"$set": {"candidate_measurements.$[elem].confirmed": True}},
+            array_filters=[{"elem.candidate_id": {"$in": list(candidate_ids)}}],
+        )
+
+    # -- encounters: appending confirmed report measurements ----------------
+
+    @_retrying
+    def append_encounter_observations(self, *, owner_user_id: str, stay_id: str, observations: Sequence[Mapping[str, object]]) -> None:
+        """Extends an existing encounter's raw observations (e.g. from
+        confirmed report candidates) -- additive only, never replaces or
+        reorders what was already there."""
+
+        self._db.encounters.update_one(
+            {"owner_user_id": owner_user_id, "stay_id": stay_id},
+            {"$push": {"observations": {"$each": list(observations)}}, "$set": {"updated_at": _utcnow_iso()}},
+        )
+
     # -- audit events --------------------------------------------------
 
     def record_event(self, *, owner_user_id: str, patient_id: Optional[str], action: str, target_type: str, target_id: str) -> None:
