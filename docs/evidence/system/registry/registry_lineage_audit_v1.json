@@ -259,6 +259,8 @@
       "artifacts/performance_v2/phase4/predictions/recovery48_predictions_v1.jsonl",
       "artifacts/performance_v2/phase4/preflight_report_v1.json",
       "artifacts/performance_v2/product/demo_patients_v1.json",
+      "artifacts/performance_v2/product/final_product_release_v2.json",
+      "artifacts/performance_v2/product/v2_product_serving_bundle_v1.json",
       "artifacts/performance_v2/release/final_project_release_v2.json",
       "artifacts/performance_v2/serving/v2_dashboard_serving_bundle_v1.json",
       "artifacts/preprocessors/recovery_target_scaler_synthetic_v1.json",

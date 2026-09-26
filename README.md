@@ -21,12 +21,15 @@ This is a real, model-backed demo: every prediction is recomputed by `src/servin
 
 On top of the frozen scientific system (branch `product-v2`, built from the same commit as the frozen `performance-v2` branch — see [`docs/product_v2/CURRENT_UI_INTEGRATION_AUDIT.md`](docs/product_v2/CURRENT_UI_INTEGRATION_AUDIT.md)), the dashboard now has:
 
-- **Authentication** (Clerk, via the community `svelte-clerk` SvelteKit SDK) gating the dashboard routes, with a graceful "auth disabled" fallback when no keys are configured.
+- **Authentication** (Clerk, via the community `svelte-clerk` SvelteKit SDK) gating the dashboard routes both client-side (soft navigation) and server-side (hard reload), with a graceful "auth disabled" fallback when no keys are configured.
 - **Onboarding** (role → research disclaimer → data-source mode) for first-time signed-in users.
 - **Human-readable demo patient aliases** (`DEMO-CARDIAC-001`, …) instead of raw synthetic subject IDs, from a new additive product artifact (`artifacts/performance_v2/product/demo_patients_v1.json`) that never touches the frozen demo manifest's selection criteria.
 - **Trajectory Copilot**, a grounded Q&A drawer over the existing prediction/SHAP output (`POST /assistant`) — never predicts independently, refuses treatment/diagnosis questions by design, and is fully optional to the core dashboard.
+- **Enter My Own Record**, a manually-entered custom clinical record (vitals/labs plus vasopressor/ventilation organ-support intervals) served through the exact same frozen V2 pipeline as the demo cohort. Every record is bound server-side to its creating user's verified Clerk identity (`owner_user_id`, never client-supplied) — a second user gets a 404 on someone else's record, identical to a nonexistent stay. Records are ephemeral: in-memory only, never written to disk, discarded on API restart. See [`docs/product_v2/CUSTOM_RECORD_FLOW.md`](docs/product_v2/CUSTOM_RECORD_FLOW.md) and [`docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md`](docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md).
 
-Synthetic FHIR upload/export, an EHR sandbox connector, and the full Playwright/screenshot evidence suite are scoped as a deliberate follow-up (see the audit doc above) and are not yet implemented.
+A full Playwright end-to-end suite (`frontend/tests/e2e/`) drives the real Clerk sign-in flow, onboarding, demo replay, custom-record entry, explainability, Copilot, and the performance/provenance pages against a real running API and frontend, and captures the screenshot evidence in `docs/evidence/product_v2/`.
+
+A synthetic FHIR upload/export and a SMART-on-FHIR EHR sandbox connector remain explicitly **not implemented** — only a documented future-extension interface exists (`src/serving/v2/external_record_adapter.py`). "Connect EHR Sandbox" in the UI is labeled "SOON" because it does not work yet; manual entry above is the only working data-entry path. See the six documents in `docs/product_v2/` for the full architecture, auth boundaries, Copilot grounding, and demo scripts.
 
 The sections below describe the earlier Benchmark-v1 baseline this project builds on; they remain historically accurate for that baseline and are unaffected by the V2 work above.
 

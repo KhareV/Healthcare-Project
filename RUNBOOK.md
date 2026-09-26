@@ -76,12 +76,15 @@ selector across the 3+ demo subjects.
 
 The dashboard routes (`/overview`, `/patients`, `/trends`, `/research/*`,
 `/ai/*`, `/system/*`, `/demo`) sit behind Clerk-based authentication using
-the community SvelteKit SDK `svelte-clerk`. Authentication is **optional at
-the infrastructure level**: with no keys configured, the app runs fully open
-(no redirect to sign-in) so the product remains inspectable without a Clerk
-account — the same graceful-degradation pattern used for Groq/Kokoro.
+the community SvelteKit SDK `svelte-clerk`, enforced on **both** soft
+client-side navigation (`AuthGate.svelte`) and hard server-side reload
+(`hooks.server.ts`). Authentication is **optional at the infrastructure
+level**: with no keys configured, the app runs fully open (no redirect to
+sign-in) so the product remains inspectable without a Clerk account — the
+same graceful-degradation pattern used for Groq/Kokoro.
 
-To enable it:
+To enable it, configure the key in **both** the frontend and the backend
+(they must agree — see the note at the end of this step):
 
 ```bash
 cd frontend
@@ -91,20 +94,39 @@ cp .env.example .env
 # CLERK_SECRET_KEY=sk_test_...
 ```
 
-Restart `npm run dev` after editing `.env`. With both keys set:
+```bash
+# repository root
+cp .env.example .env
+# paste the SAME publishable key (this is a public value, not a secret):
+# PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+```
+
+Restart both the API (terminal 1) and `npm run dev` (terminal 2) after
+editing either `.env`. With both configured:
 
 1. Visiting any dashboard route while signed out redirects to `/sign-in`
-   (enforced server-side in `frontend/src/hooks.server.ts` — this is a real
-   security boundary, not just a UI nicety).
+   (enforced both client- and server-side — a real security boundary, not
+   just a UI nicety).
 2. After signing up/in, a first-time user is nudged to `/onboarding`
    (role → research disclaimer → data-source mode → done), tracked in
    Clerk's `unsafeMetadata` on the user object — no extra backend or
    database needed for this.
-3. Sign out from the user menu at the bottom of the sidebar.
+3. `GET /health` on the API reports `"auth_mode": "clerk_verified"`. Every
+   custom-record endpoint (`/custom-records*`, and `/predict`/`/history`/
+   `/assistant` when the target is a custom record) now verifies a real
+   Clerk session token server-side (RS256 against Clerk's public JWKS, no
+   secret key needed for verification) and binds/checks the record's
+   `owner_user_id` — see [`docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md`](docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md).
+4. Sign out from the user menu at the bottom of the sidebar.
 
-Both keys are required together — setting only one leaves the client trying
-to render Clerk UI while the server-side redirect stays disabled; keep them
-in sync.
+Both frontend keys are required together — setting only one leaves the
+client trying to render Clerk UI while the server-side redirect stays
+disabled. If the backend's `PUBLIC_CLERK_PUBLISHABLE_KEY` is left unset
+while the frontend has Clerk enabled, the API falls back to
+`"auth_mode": "local_dev_no_auth"` and stamps every custom record with a
+single fixed local-dev owner (`local-dev-user`) instead of a real per-user
+identity — fine for solo local development, but keep the two `.env` files
+in sync for anything resembling a real multi-user demo.
 
 ### 6. Start the Kokoro narration service (terminal 3, optional)
 
@@ -175,13 +197,25 @@ commands above (see `.gitignore`).
 7. From the workspace home or Patient Replay, click **Enter my own record**
    (`/patients/custom`) to type in your own vitals/labs (heart rate, MAP,
    SpO2, GCS, lactate, etc., each at a chosen number of hours since a
-   synthetic admission) and get a **real** forecast through the exact same
-   frozen models, feature builder, and SOFA computation as the demo cohort —
-   not a mock. The record exists only in the API server's memory for that
-   process's lifetime (never written to disk, never mixed with the demo
-   manifest or the fresh-test cohort — its `CUSTOM-` stay-id namespace can't
-   collide with either); restarting the API server discards it. See
-   `src/serving/v2/custom_record.py` and `tests/test_v2_custom_record.py`.
+   synthetic admission), optionally add **organ-support intervals**
+   (vasopressor agent + rate, or invasive ventilation, with a start hour and
+   either an end hour or "currently active"), and get a **real** forecast
+   through the exact same frozen models, feature builder, SOFA computation,
+   and support-state logic as the demo cohort — not a mock. The result shows
+   a honest **DATA READINESS** summary (observations entered, SOFA
+   components observed vs. missing, legal cutoffs, support state entered) —
+   never a confidence score — and explicitly notes that urine output cannot
+   be entered (SOFA's renal component needs a fully gapless 24-hour reading
+   chain that episodic manual entry can't honestly provide). The record
+   exists only in the API server's memory for that process's lifetime
+   (never written to disk, never mixed with the demo manifest or the
+   fresh-test cohort — its `CUSTOM-` stay-id namespace can't collide with
+   either) and is bound to the signed-in user who created it (when Clerk is
+   configured on both sides, per step 5) — another signed-in user gets a 404
+   on it, identical to a nonexistent stay; restarting the API server
+   discards every custom record for every user. See
+   [`docs/product_v2/CUSTOM_RECORD_FLOW.md`](docs/product_v2/CUSTOM_RECORD_FLOW.md),
+   `src/serving/v2/custom_record.py`, and `tests/test_v2_custom_record.py`.
 
 ### 8. AI recommendation configuration
 
@@ -199,7 +233,62 @@ structured `{"status": "UNAVAILABLE", ...}` response — the rest of the
 dashboard (predictions, TreeSHAP, model performance) is entirely unaffected,
 since the LLM is called strictly after prediction and never influences it.
 
-### 9. Troubleshooting
+### 9. Final demo flow (reference checklist)
+
+The complete end-to-end path this product supports, in order:
+
+1. Start the V2 API (step 3).
+2. Start the frontend (step 4).
+3. Configure Clerk locally, on both frontend and backend (step 5).
+4. Open the app at `http://localhost:5173/`.
+5. Sign in (or sign up) through the real Clerk widget.
+6. Complete onboarding (role → research disclaimer → data-source mode).
+7. Explore a demo patient (`DEMO-CARDIAC-00N`) on Patient Replay.
+8. Replay several cutoffs with "Next cutoff" and watch the trajectory chart
+   and status cards update from a freshly recomputed prediction each time.
+9. Open TreeSHAP (AI + SHAP page) for the current cutoff's top contributors.
+10. Open Trajectory Copilot and ask "What changed since the previous
+    cutoff?"
+11. Click **Enter My Own Record** to start a custom record.
+12. Add vitals/labs (and, if desired, organ-support intervals — step 7
+    above).
+13. Submit and review the DATA READINESS summary.
+14. The submission runs an actual frozen-V2 prediction immediately — no
+    separate "run prediction" step exists; the result is already the real
+    forecast.
+15. Show **Model Performance** — the frozen final-evaluation metrics; this
+    page triggers zero inference.
+16. Show **Data Quality & Provenance** — model/hash metadata and the
+    temporal-window observation heatmap, plus the documented limitations
+    (synthetic benchmark, retrospective replay, no urine-output support for
+    custom records, no FHIR/EHR connector yet).
+
+See [`docs/product_v2/FINAL_DEMO_SCRIPT.md`](docs/product_v2/FINAL_DEMO_SCRIPT.md)
+for timed 4-minute and 7-minute narrated versions of this same flow.
+
+### 10. Automated browser tests (Playwright)
+
+```bash
+cd frontend
+npm install        # first time only; installs @playwright/test
+npx playwright install chromium   # first time only; downloads the browser
+cp .env.test.example .env.test
+# edit .env.test: PLAYWRIGHT_TEST_EMAIL/PASSWORD for a dedicated Clerk test
+# user (do not reuse a real personal account), CLERK_SECRET_KEY for the
+# same Clerk instance (used only to reset that test user's onboarding state
+# and is never sent to the browser)
+npm run test:e2e
+```
+
+This drives the real Clerk sign-in widget (no auth bypass anywhere in the
+codebase — see [`docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md`](docs/product_v2/AUTH_AND_DATA_BOUNDARIES.md)),
+completes onboarding, replays a demo patient, submits a custom record,
+opens TreeSHAP and Trajectory Copilot, and checks the Model Performance and
+Data/Provenance pages — starting its own API and dev-server instances if
+they are not already running (`playwright.config.ts`). Screenshots land in
+`docs/evidence/product_v2/`.
+
+### 11. Troubleshooting
 
 - `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
   was detected; the server refuses to serve rather than guess. Re-verify
@@ -248,8 +337,21 @@ since the LLM is called strictly after prediction and never influences it.
   greater than 0 (an hour-0 event is indistinguishable from pre-admission
   padding) and at most 90 (the legal-cutoff grid never extends further,
   regardless of how the record is otherwise configured).
+- A custom record 404s for a user who didn't create it: expected — records
+  are bound to the creating user's verified Clerk identity and a different
+  user gets a 404, identical to a nonexistent stay (step 5).
+- Custom-record creation rejects a vasopressor/ventilation interval: the
+  agent must be one of `norepinephrine`/`epinephrine`/`dopamine`/
+  `dobutamine`, the rate must be positive, and `end_hour` (if not "ongoing")
+  must be after `start_hour`.
+- Urine output cannot be entered on a custom record: this is a deliberate,
+  documented limitation, not a bug — see
+  [`docs/product_v2/CUSTOM_RECORD_FLOW.md`](docs/product_v2/CUSTOM_RECORD_FLOW.md).
+- Playwright fails at the sign-in step: confirm `.env.test` has valid
+  credentials for a real (dedicated test) Clerk user on the same Clerk
+  instance the frontend/backend `.env` files point at.
 
-### 10. Stop
+### 12. Stop
 
 `Ctrl-C` in each terminal.
 

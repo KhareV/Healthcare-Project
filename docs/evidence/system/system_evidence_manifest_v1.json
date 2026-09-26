@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "7cd3c908576def5578f820159fa6956c366b979e8c8f076bb430778768904eba",
+      "output_sha256": "332519b2dcfece8d8ac2a8d9ef27fa8f505e51272ccbf634e33a74db7041a3d3",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1317,12 +1317,20 @@
           "sha256": "758ff1e1bfaa03b1c031f8b0f181df68a14224daff996f32927138d04af40443"
         },
         {
+          "path": "src/serving/v2/auth.py",
+          "sha256": "694f887b46618bdd3c6d7edd75a814df1387c7498a9537e31bfb0fbd259fc5d3"
+        },
+        {
           "path": "src/serving/v2/custom_record.py",
-          "sha256": "11729a04c1269ffcf3f95a4f842cce3455953b9f4fabc9aed54c837758fc2221"
+          "sha256": "23ff5c968b0c925b4e6a2bd8c1bb0dd82cfbe91d3bf21d43e3a5325e71a2e204"
         },
         {
           "path": "src/serving/v2/explanations.py",
           "sha256": "3e2da00818c474ac33533153ad3ea5f40a3cb1a6d882250484b9b16f6aab212d"
+        },
+        {
+          "path": "src/serving/v2/external_record_adapter.py",
+          "sha256": "7482a99d35a90c17721f3882e1e6557144e2da39b076f76a4eec56e95306501e"
         },
         {
           "path": "src/serving/v2/guard.py",
@@ -1330,7 +1338,7 @@
         },
         {
           "path": "src/serving/v2/runtime.py",
-          "sha256": "1e0254da51e02a9966d74e3d9a982fef9672c9902b138e0ac9ffcd783eada4f9"
+          "sha256": "5e8bebb3a83f027740207ee928852fdd4d5f5d6df2f206bafdb4bab8debe76ac"
         },
         {
           "path": "src/training/__init__.py",
@@ -1438,7 +1446,7 @@
         },
         {
           "path": "api/v2_app.py",
-          "sha256": "70e71f543c76f4192465393b3779967b08d2164b58548b02d8de247701e46076"
+          "sha256": "8832d90f3a3a7e4519586757d4f57eb121416975cc6b8428962ff20180e5cb62"
         },
         {
           "path": "dashboard/__init__.py",
@@ -2529,8 +2537,12 @@
           "sha256": "182febf1c0ecca1e8156ea9566bdcf3bf8b72b2d17c1e5da3ae5946081b71a7c"
         },
         {
+          "path": "tests/test_v2_auth.py",
+          "sha256": "d4c05d6c09a801a31e121101ff6d96d9dcfb06c1880ca04bb52c3fbadc6c1757"
+        },
+        {
           "path": "tests/test_v2_custom_record.py",
-          "sha256": "c013cf23d61c3db76a637442beb7ba77235878309855c13b2cdc825d8f9d2a83"
+          "sha256": "dc123babad1da871966c4d63d195e1f7c12c53a9647b7f3ce8b489e11e719bb8"
         },
         {
           "path": "tests/test_v2_dashboard.py",
@@ -2850,7 +2862,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "84186a9359924b3cd664baf9fe3b47ff4fc5ad129bd34d0a516f43987069cd21",
+      "output_sha256": "91a3be117f44dda1546e38805ddb1e576fbd3f58db47f7f27e012ad41099297d",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2888,7 +2900,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "166898c83c1ec5bae6514ad6af27e2c984128878ca5ab30242f0bd42777929c0",
+      "output_sha256": "96cc81ad62d0e7962423fc1209f59f9fdfe4f8bba6901e910249b351c96010e6",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2909,7 +2921,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "9fdea8f1dabe7e080d32ea1ebac160b1047a494a35028a7ab3078a4670041866",
+      "output_sha256": "3f10c77d0368c744457eabe1adaa5466b076969f34637828f485ac13a8943eb2",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2994,11 +3006,11 @@
         },
         {
           "path": "RUNBOOK.md",
-          "sha256": "72efa119d5c912930363bb191d29e8a2bdf32505cfc497b6866902200cf6cf0c"
+          "sha256": "248fe56d9994b3a5297d3e00ecfb97441e79a5f430560a7e2c7dffef87de9b6b"
         },
         {
           "path": "README.md",
-          "sha256": "e0f7bbbe47875ae4a317b9ef0f5636d344dbf39f8f295a917d544ed67c1464e1"
+          "sha256": "73dc6f6186e42b62c668372b677ca4795ebd8b64e0355005a7a79354e6c55a6a"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",
