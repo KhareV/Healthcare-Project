@@ -3,6 +3,7 @@ import { sequence } from '@sveltejs/kit/hooks';
 import { env as publicEnv } from '$env/dynamic/public';
 import { env as privateEnv } from '$env/dynamic/private';
 import { withClerkHandler } from 'svelte-clerk/server';
+import { isProtectedPath } from '$lib/auth/protected-routes';
 
 // Authentication is optional at the infrastructure level: if no Clerk keys
 // are configured, the app runs fully open with a visible "auth disabled"
@@ -10,31 +11,9 @@ import { withClerkHandler } from 'svelte-clerk/server';
 // degradation philosophy already used for the Groq/Kokoro integrations.
 export const clerkConfigured = Boolean(publicEnv.PUBLIC_CLERK_PUBLISHABLE_KEY && privateEnv.CLERK_SECRET_KEY);
 
-// Routes that require a signed-in session. The public landing page, sign-in/
-// sign-up, and the onboarding flow itself stay reachable without a session
-// (onboarding still requires auth, handled below) so an unauthenticated
-// visitor always lands somewhere coherent rather than a raw redirect loop.
-const PROTECTED_PREFIXES = [
-	'/overview',
-	'/patients',
-	'/trends',
-	'/research',
-	'/ai',
-	'/system',
-	'/demo',
-	'/signals',
-	'/fl',
-	'/monitor',
-	'/monitoring',
-	'/alerts',
-	'/reports',
-	'/onboarding'
-];
-
-function isProtectedPath(pathname: string): boolean {
-	return PROTECTED_PREFIXES.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
-}
-
+// This only protects direct/hard-reload requests (this app is ssr=false, so
+// in-app link clicks are client-side soft navigations that never reach this
+// hook) — see AuthGate.svelte for the client-side guard that covers those.
 const routeProtection: Handle = async ({ event, resolve }) => {
 	event.locals.authConfigured = clerkConfigured;
 

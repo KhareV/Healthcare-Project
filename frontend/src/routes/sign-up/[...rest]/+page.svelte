@@ -1,5 +1,8 @@
 <script lang="ts">
   import { SignUp } from 'svelte-clerk';
+  import { page } from '$app/state';
+
+  const redirectUrl = page.url.searchParams.get('redirect_url') || '/onboarding';
 
   const appearance = {
     variables: {
@@ -29,7 +32,7 @@
     <span class="auth-disclaimer">SYNTHETIC RESEARCH BENCHMARK · NOT A CLINICAL TOOL</span>
   </div>
   <div class="auth-widget">
-    <SignUp {appearance} />
+    <SignUp {appearance} fallbackRedirectUrl={redirectUrl} />
   </div>
 </div>
 

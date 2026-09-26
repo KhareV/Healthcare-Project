@@ -1,5 +1,8 @@
 <script lang="ts">
   import { SignIn } from 'svelte-clerk';
+  import { page } from '$app/state';
+
+  const redirectUrl = page.url.searchParams.get('redirect_url') || '/overview';
 
   const appearance = {
     variables: {
@@ -29,7 +32,7 @@
     <span class="auth-disclaimer">SYNTHETIC RESEARCH BENCHMARK · NOT A CLINICAL TOOL</span>
   </div>
   <div class="auth-widget">
-    <SignIn {appearance} />
+    <SignIn {appearance} fallbackRedirectUrl={redirectUrl} />
   </div>
 </div>
 

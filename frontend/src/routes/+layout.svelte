@@ -30,10 +30,11 @@
 <SmoothCursor />
 
 {#if authConfigured}
-  {#await Promise.all([import('$lib/components/dashboard/ClerkRoot.svelte'), import('$lib/components/dashboard/OnboardingGate.svelte')]) then [{ default: ClerkRoot }, { default: OnboardingGate }]}
+  {#await Promise.all([import('$lib/components/dashboard/ClerkRoot.svelte'), import('$lib/components/dashboard/AuthGate.svelte')]) then [{ default: ClerkRoot }, { default: AuthGate }]}
     <ClerkRoot {publishableKey}>
-      <OnboardingGate />
-      {@render children()}
+      <AuthGate>
+        {@render children()}
+      </AuthGate>
     </ClerkRoot>
   {/await}
 {:else}
