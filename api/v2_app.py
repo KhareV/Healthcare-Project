@@ -6,12 +6,13 @@ from __future__ import annotations
 import json
 import logging
 import os
+import secrets
 from pathlib import Path
 from typing import Optional
 
-from fastapi import FastAPI, Header, HTTPException
+from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from pydantic import BaseModel, Field
 
 from serving.v2.ai_recommendation import generate_assistant_response, generate_recommendation
@@ -22,7 +23,10 @@ from serving.v2.custom_record import (
 )
 from serving.v2.explanations import explain
 from serving.v2.guard import UnknownDemoStayError, load_demo_manifest
-from serving.v2.persistence import MongoPersistence
+from serving.v2.persistence import CONDITION_STATUSES, MongoPersistence
+from serving.v2.report_storage import (
+    ALLOWED_REPORT_MIME_TYPES, MAX_REPORT_SIZE_BYTES, LocalReportStorage, ReportStorageError, sanitize_filename,
+)
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
 
 logger = logging.getLogger("api.v2")
@@ -72,10 +76,33 @@ class CustomRecordRequest(BaseModel):
     model_config = {"extra": "forbid"}
 
 
+class PatientProfileUpdate(BaseModel):
+    display_name_or_alias: Optional[str] = Field(default=None, min_length=1, max_length=120)
+    age_years: Optional[int] = Field(default=None, ge=0, le=120)
+    sex_category: Optional[str] = Field(default=None, min_length=1, max_length=32)
+    blood_group: Optional[str] = Field(default=None, max_length=8)
+    height_cm: Optional[float] = Field(default=None, ge=0, le=300)
+    weight_kg: Optional[float] = Field(default=None, ge=0, le=500)
+
+    model_config = {"extra": "forbid"}
+
+
 class ConditionIn(BaseModel):
-    label: str = Field(..., min_length=1, max_length=200)
-    diagnosed_year: Optional[int] = Field(default=None, ge=1900, le=2100)
+    name: str = Field(..., min_length=1, max_length=200)
+    code: Optional[str] = Field(default=None, max_length=64)
+    diagnosed_date: Optional[str] = Field(default=None, max_length=32)
     status: str = Field(default="active", min_length=1, max_length=32)
+    notes: Optional[str] = Field(default=None, max_length=2000)
+
+    model_config = {"extra": "forbid"}
+
+
+class ConditionUpdate(BaseModel):
+    name: Optional[str] = Field(default=None, min_length=1, max_length=200)
+    code: Optional[str] = Field(default=None, max_length=64)
+    diagnosed_date: Optional[str] = Field(default=None, max_length=32)
+    status: Optional[str] = Field(default=None, min_length=1, max_length=32)
+    notes: Optional[str] = Field(default=None, max_length=2000)
 
     model_config = {"extra": "forbid"}
 
@@ -185,6 +212,7 @@ def build_v2_app(root: Path) -> FastAPI:
     demo_aliases = _load_demo_patient_aliases(root)
     authenticator = ClerkAuthenticator(publishable_key=os.environ.get("PUBLIC_CLERK_PUBLISHABLE_KEY"))
     persistence = MongoPersistence(uri=os.environ.get("MONGODB_URI"))
+    report_storage = LocalReportStorage(root / "runtime" / "uploads")
     app = FastAPI(title="Performance-V2 Retrospective Replay API")
     app.add_middleware(
         CORSMiddleware,
@@ -334,14 +362,53 @@ def build_v2_app(root: Path) -> FastAPI:
             return {"stay_id": stay_id, "predictions": [], "note": "persistence is not configured; prediction history is unavailable"}
         return {"stay_id": stay_id, "predictions": persistence.list_prediction_runs(owner_user_id=owner, stay_id=stay_id)}
 
+    # ---------------------------------------------------------------------
+    # My Health Record: patient profile, conditions, encounters/observations/
+    # support (read views over the same encounters custom-record entry
+    # already creates), reports, prediction history, export, audit events.
+    # Every route below is owner-scoped from a verified Clerk identity; none
+    # accepts an owner/patient id from the request body. See
+    # docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md.
+    # ---------------------------------------------------------------------
+
+    def _require_persistence() -> None:
+        if not persistence.enabled:
+            raise HTTPException(status_code=503, detail="persistence is not configured")
+
+    @app.get("/health-record/profile")
+    def get_profile(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        return persistence.get_or_create_profile(owner_user_id=owner_user_id)
+
+    @app.put("/health-record/profile")
+    def update_profile(request: PatientProfileUpdate, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        fields = request.model_dump(exclude_unset=True)
+        updated = persistence.update_profile(owner_user_id=owner_user_id, fields=fields)
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=updated["patient_id"],
+            action="profile_updated", target_type="profile", target_id=updated["patient_id"],
+        )
+        return updated
+
     @app.post("/health-record/conditions")
     def add_condition(request: ConditionIn, authorization: Optional[str] = Header(default=None)):
         owner_user_id = _authenticate(authorization)
-        if not persistence.enabled:
-            raise HTTPException(status_code=503, detail="persistence is not configured; conditions cannot be saved")
-        return persistence.add_condition(
-            owner_user_id=owner_user_id, label=request.label, diagnosed_year=request.diagnosed_year, status=request.status,
+        _require_persistence()
+        if request.status not in CONDITION_STATUSES:
+            raise HTTPException(status_code=422, detail=f"status must be one of {CONDITION_STATUSES}")
+        profile = persistence.get_or_create_profile(owner_user_id=owner_user_id)
+        record = persistence.add_condition(
+            owner_user_id=owner_user_id, patient_id=profile["patient_id"], name=request.name, code=request.code,
+            diagnosed_date=request.diagnosed_date, status=request.status, notes=request.notes,
         )
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=profile["patient_id"],
+            action="condition_created", target_type="condition", target_id=record["condition_id"],
+        )
+        return record
 
     @app.get("/health-record/conditions")
     def list_conditions(authorization: Optional[str] = Header(default=None)):
@@ -350,15 +417,176 @@ def build_v2_app(root: Path) -> FastAPI:
             return {"conditions": [], "note": "persistence is not configured"}
         return {"conditions": persistence.list_conditions(owner_user_id=owner_user_id)}
 
+    @app.patch("/health-record/conditions/{condition_id}")
+    def edit_condition(condition_id: str, request: ConditionUpdate, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        if request.status is not None and request.status not in CONDITION_STATUSES:
+            raise HTTPException(status_code=422, detail=f"status must be one of {CONDITION_STATUSES}")
+        updated = persistence.update_condition(
+            owner_user_id=owner_user_id, condition_id=condition_id, fields=request.model_dump(exclude_unset=True)
+        )
+        if updated is None:
+            raise HTTPException(status_code=404, detail="unknown condition_id")
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=updated.get("patient_id"),
+            action="condition_updated", target_type="condition", target_id=condition_id,
+        )
+        return updated
+
     @app.delete("/health-record/conditions/{condition_id}")
     def delete_condition(condition_id: str, authorization: Optional[str] = Header(default=None)):
         owner_user_id = _authenticate(authorization)
-        if not persistence.enabled:
-            raise HTTPException(status_code=503, detail="persistence is not configured")
+        _require_persistence()
+        existing = persistence.get_condition(owner_user_id=owner_user_id, condition_id=condition_id)
         deleted = persistence.delete_condition(owner_user_id=owner_user_id, condition_id=condition_id)
         if not deleted:
             raise HTTPException(status_code=404, detail="unknown condition_id")
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=(existing or {}).get("patient_id"),
+            action="condition_deleted", target_type="condition", target_id=condition_id,
+        )
         return {"deleted": True, "condition_id": condition_id}
+
+    @app.get("/health-record/encounters")
+    def list_health_record_encounters(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"encounters": [], "note": "persistence is not configured"}
+        return {"encounters": persistence.list_encounters(owner_user_id=owner_user_id)}
+
+    @app.get("/health-record/encounters/{encounter_id}")
+    def get_health_record_encounter(encounter_id: str, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if persistence.enabled:
+            for encounter in persistence.list_encounters(owner_user_id=owner_user_id):
+                if encounter.get("encounter_id") == encounter_id or encounter.get("stay_id") == encounter_id:
+                    return encounter
+        raise HTTPException(status_code=404, detail="unknown encounter_id")
+
+    @app.get("/health-record/observations")
+    def list_health_record_observations(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"observations": [], "note": "persistence is not configured"}
+        return {"observations": persistence.list_observations(owner_user_id=owner_user_id)}
+
+    @app.get("/health-record/support")
+    def list_health_record_support(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"support_intervals": [], "note": "persistence is not configured"}
+        return {"support_intervals": persistence.list_support_intervals(owner_user_id=owner_user_id)}
+
+    @app.get("/health-record/predictions")
+    def list_health_record_predictions(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"predictions": [], "note": "persistence is not configured"}
+        return {"predictions": persistence.list_prediction_runs(owner_user_id=owner_user_id)}
+
+    @app.post("/health-record/reports")
+    async def upload_report(
+        title: str = Form(..., min_length=1, max_length=200),
+        document_type: str = Form(..., min_length=1, max_length=64),
+        report_date: Optional[str] = Form(default=None),
+        file: UploadFile = File(...),
+        authorization: Optional[str] = Header(default=None),
+    ):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        if file.content_type not in ALLOWED_REPORT_MIME_TYPES:
+            raise HTTPException(status_code=415, detail=f"unsupported file type: {file.content_type!r}")
+        data = await file.read()
+        if not data:
+            raise HTTPException(status_code=422, detail="uploaded file is empty")
+        if len(data) > MAX_REPORT_SIZE_BYTES:
+            raise HTTPException(status_code=413, detail=f"file exceeds the {MAX_REPORT_SIZE_BYTES // (1024 * 1024)}MB limit")
+
+        profile = persistence.get_or_create_profile(owner_user_id=owner_user_id)
+        safe_name = sanitize_filename(file.filename or "report")
+        # A random, server-generated key -- never derived from anything a
+        # client controls beyond the (sanitized) filename suffix, and
+        # LocalReportStorage independently refuses to resolve outside its
+        # root regardless.
+        storage_key = f"{owner_user_id}/{secrets.token_hex(12)}_{safe_name}"
+        try:
+            report_storage.save(key=storage_key, data=data)
+        except ReportStorageError as exc:
+            raise HTTPException(status_code=500, detail="failed to store report") from exc
+
+        record = persistence.add_report(
+            owner_user_id=owner_user_id, patient_id=profile["patient_id"], title=title, document_type=document_type,
+            original_filename=safe_name, mime_type=file.content_type, storage_key=storage_key,
+            size_bytes=len(data), report_date=report_date,
+        )
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=profile["patient_id"],
+            action="report_uploaded", target_type="report", target_id=record["report_id"],
+        )
+        return record
+
+    @app.get("/health-record/reports")
+    def list_reports(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"reports": [], "note": "persistence is not configured"}
+        return {"reports": persistence.list_reports(owner_user_id=owner_user_id)}
+
+    @app.get("/health-record/reports/{report_id}")
+    def get_report(report_id: str, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        record = persistence.get_report(owner_user_id=owner_user_id, report_id=report_id) if persistence.enabled else None
+        if record is None:
+            raise HTTPException(status_code=404, detail="unknown report_id")
+        record.pop("storage_key", None)
+        return record
+
+    @app.get("/health-record/reports/{report_id}/download")
+    def download_report(report_id: str, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        record = persistence.get_report(owner_user_id=owner_user_id, report_id=report_id) if persistence.enabled else None
+        if record is None:
+            raise HTTPException(status_code=404, detail="unknown report_id")
+        try:
+            data = report_storage.open(key=record["storage_key"])
+        except ReportStorageError as exc:
+            raise HTTPException(status_code=404, detail="report file is missing") from exc
+        filename = record["original_filename"].replace('"', "")
+        return Response(
+            content=data, media_type=record["mime_type"],
+            headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+        )
+
+    @app.delete("/health-record/reports/{report_id}")
+    def delete_report(report_id: str, authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        deleted = persistence.delete_report(owner_user_id=owner_user_id, report_id=report_id)
+        if deleted is None:
+            raise HTTPException(status_code=404, detail="unknown report_id")
+        try:
+            report_storage.delete(key=deleted["storage_key"])
+        except ReportStorageError:
+            logger.warning("report file already missing for deleted report %s", report_id)
+        persistence.record_event(
+            owner_user_id=owner_user_id, patient_id=deleted.get("patient_id"),
+            action="report_deleted", target_type="report", target_id=report_id,
+        )
+        return {"deleted": True, "report_id": report_id}
+
+    @app.get("/health-record/export")
+    def export_health_record(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        _require_persistence()
+        return persistence.export_record(owner_user_id=owner_user_id)
+
+    @app.get("/health-record/audit-events")
+    def list_audit_events(authorization: Optional[str] = Header(default=None)):
+        owner_user_id = _authenticate(authorization)
+        if not persistence.enabled:
+            return {"events": [], "note": "persistence is not configured"}
+        return {"events": persistence.list_audit_events(owner_user_id=owner_user_id)}
 
     @app.get("/performance")
     def performance():
@@ -521,7 +749,10 @@ def build_v2_app(root: Path) -> FastAPI:
 
     @app.exception_handler(Exception)
     def _unhandled(_request, exc: Exception):
-        logger.error("unhandled V2 API error: %s", type(exc).__name__)
+        # Full traceback server-side only -- the client response never
+        # leaks internal detail, but a bare exception-type name is not
+        # enough to actually debug a real failure.
+        logger.exception("unhandled V2 API error: %s", type(exc).__name__)
         return JSONResponse(status_code=500, content={"detail": "internal error"})
 
     app.state.v2_runtime = runtime

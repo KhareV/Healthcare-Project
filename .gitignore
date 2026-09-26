@@ -62,3 +62,8 @@ frontend/test-results/
 .venv-tts/
 models/kokoro/*.onnx
 models/kokoro/*.bin
+
+# Health-record report uploads (local object-storage backend): user-supplied
+# files, synthetic/demo-only by policy, never committed. See
+# src/serving/v2/report_storage.py and docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md.
+runtime/uploads/

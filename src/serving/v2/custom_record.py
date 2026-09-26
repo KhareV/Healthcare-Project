@@ -319,11 +319,16 @@ def build_custom_record(
         # correctly for the rest of this process's lifetime, it just will
         # not survive a restart, exactly like the pre-persistence behavior.
         try:
+            profile = persistence.get_or_create_profile(owner_user_id=owner_user_id)
             persistence.save_encounter(
-                owner_user_id=owner_user_id, stay_id=stay_id, subject_id=subject_id,
+                owner_user_id=owner_user_id, patient_id=profile["patient_id"], stay_id=stay_id, subject_id=subject_id,
                 patient_alias=str(patient_alias).strip(), age_years=int(age_years), sex_category=str(sex_category),
                 intime=_iso(intime), outtime=_iso(outtime),
                 observations=list(observations), support_intervals=list(support_intervals),
+            )
+            persistence.record_event(
+                owner_user_id=owner_user_id, patient_id=profile["patient_id"],
+                action="encounter_created", target_type="encounter", target_id=stay_id,
             )
         except Exception:  # noqa: BLE001
             logger.warning("failed to persist custom encounter %s; continuing in-memory-only", stay_id)
