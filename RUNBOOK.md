@@ -72,7 +72,41 @@ Performance, Explainability (+ an AI-generated research-note synthesis in
 the SvelteKit frontend), and Data Quality & Provenance, plus a patient/stay
 selector across the 3+ demo subjects.
 
-### 5. Start the Kokoro narration service (terminal 3, optional)
+### 5. Configure authentication (optional)
+
+The dashboard routes (`/overview`, `/patients`, `/trends`, `/research/*`,
+`/ai/*`, `/system/*`, `/demo`) sit behind Clerk-based authentication using
+the community SvelteKit SDK `svelte-clerk`. Authentication is **optional at
+the infrastructure level**: with no keys configured, the app runs fully open
+(no redirect to sign-in) so the product remains inspectable without a Clerk
+account — the same graceful-degradation pattern used for Groq/Kokoro.
+
+To enable it:
+
+```bash
+cd frontend
+cp .env.example .env
+# create a free application at https://dashboard.clerk.com, then paste:
+# PUBLIC_CLERK_PUBLISHABLE_KEY=pk_test_...
+# CLERK_SECRET_KEY=sk_test_...
+```
+
+Restart `npm run dev` after editing `.env`. With both keys set:
+
+1. Visiting any dashboard route while signed out redirects to `/sign-in`
+   (enforced server-side in `frontend/src/hooks.server.ts` — this is a real
+   security boundary, not just a UI nicety).
+2. After signing up/in, a first-time user is nudged to `/onboarding`
+   (role → research disclaimer → data-source mode → done), tracked in
+   Clerk's `unsafeMetadata` on the user object — no extra backend or
+   database needed for this.
+3. Sign out from the user menu at the bottom of the sidebar.
+
+Both keys are required together — setting only one leaves the client trying
+to render Clerk UI while the server-side redirect stays disabled; keep them
+in sync.
+
+### 6. Start the Kokoro narration service (terminal 3, optional)
 
 The demo and AI + SHAP pages can read AI research notes aloud with
 [Kokoro](https://github.com/thewh1teagle/kokoro-onnx), a small open-weight
@@ -113,7 +147,7 @@ strictly optional and downstream of the AI note, never a dependency of it.
 The model files (~340MB) are not committed; re-download them with the
 commands above (see `.gitignore`).
 
-### 6. Replay steps
+### 7. Replay steps
 
 1. On **Patient Replay**, use "Previous cutoff" / "Next cutoff" / the cutoff
    dropdown to step through the patient's legal replay timestamps.
@@ -124,13 +158,22 @@ commands above (see `.gitignore`).
 4. Visit **AI + SHAP / Explainability** at any cutoff for TreeSHAP
    contributors per task, and click "Generate summary" for an AI-written
    research note (Groq-hosted `openai/gpt-oss-120b`, called server-side —
-   see step 7 for configuration), then "Listen (Kokoro)" to hear it read
-   aloud (step 5). The guided demo auto-generates and auto-narrates a note
+   see step 8 for configuration), then "Listen (Kokoro)" to hear it read
+   aloud (step 6). The guided demo auto-generates and auto-narrates a note
    for each new patient it steps to.
 5. Visit **Model Performance** for the frozen, one-time fresh-test evaluation
    (no inference is triggered by this page).
+6. Open **Trajectory Copilot** from the header ("COPILOT" button, top right)
+   or "Ask Copilot" on Patient Replay — it opens grounded to whichever
+   patient/cutoff you were just viewing, auto-generates a default trajectory
+   summary, and offers suggested prompts (e.g. "What changed since the
+   previous cutoff?"). It calls `POST /assistant`, which reuses the exact
+   same `/predict` payload as the dashboard — it never predicts
+   independently, never sees the fresh-test cohort, and refuses treatment/
+   diagnosis questions by design (see `configs/product_v2/
+   trajectory_copilot_prompt_v1.txt`).
 
-### 7. AI recommendation configuration
+### 8. AI recommendation configuration
 
 The "AI + SHAP" page's research-note synthesis calls Groq's OpenAI-compatible
 chat completions API server-side (the key never reaches the browser). Set:
@@ -146,7 +189,7 @@ structured `{"status": "UNAVAILABLE", ...}` response — the rest of the
 dashboard (predictions, TreeSHAP, model performance) is entirely unaffected,
 since the LLM is called strictly after prediction and never influences it.
 
-### 8. Troubleshooting
+### 9. Troubleshooting
 
 - `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
   was detected; the server refuses to serve rather than guess. Re-verify
@@ -172,11 +215,22 @@ since the LLM is called strictly after prediction and never influences it.
   unreachable — this is a deliberate graceful-degradation path, not a bug;
   check the API server's log for the specific reason.
 - "Narration unavailable"/"Browser blocked autoplay audio": the Kokoro
-  service (step 5) is not running, or the browser blocked an unprompted
+  service (step 6) is not running, or the browser blocked an unprompted
   autoplay — click "Listen (Kokoro)" directly, which is a user gesture and
   is never blocked.
+- Signed-in but stuck bouncing to `/onboarding`: onboarding state lives in
+  Clerk's `unsafeMetadata` on the browser-side user object; clearing
+  cookies/local storage or using a different browser resets it — this is
+  expected for a demo-scale app with no separate onboarding database.
+- Dashboard routes are reachable without signing in: this is by design when
+  `PUBLIC_CLERK_PUBLISHABLE_KEY`/`CLERK_SECRET_KEY` are unset (step 5) —
+  add both to `frontend/.env` and restart `npm run dev` to enable the
+  server-side redirect.
+- "Trajectory Copilot is unavailable right now": it shares the same
+  `GROQ_API_KEY` configuration as step 8 — if the AI research note also
+  says unavailable, the cause is the same.
 
-### 9. Stop
+### 10. Stop
 
 `Ctrl-C` in each terminal.
 

@@ -700,12 +700,12 @@
       "status": "PASS"
     },
     {
-      "blocker": null,
+      "blocker": "passing JUnit execution required",
       "description": "Machine-parsed pytest JUnit result",
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "1ad6b01edf55b95a4a5c5b7c8d6a52c7936b5fcf4c134dc254f7247a75b8ce5c",
+      "output_sha256": "307ac90ab103413bb688cd7aad970a2ad3bd93644bc9e8de2dcbb5906a6e0551",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1314,7 +1314,7 @@
         },
         {
           "path": "src/serving/v2/ai_recommendation.py",
-          "sha256": "7bd1297b81c52b3e0b0bcd123b72302b960f7fa71e8ffa7b854f8b58c955c4c8"
+          "sha256": "758ff1e1bfaa03b1c031f8b0f181df68a14224daff996f32927138d04af40443"
         },
         {
           "path": "src/serving/v2/explanations.py",
@@ -1434,7 +1434,7 @@
         },
         {
           "path": "api/v2_app.py",
-          "sha256": "b6d99627d370230d3788913677989954eef211a615477e93020366e0c402bdab"
+          "sha256": "a1d44793c8c0c0972894c6f484e6458a15ec2b06dca5a74749f1b5d84b13ec9a"
         },
         {
           "path": "dashboard/__init__.py",
@@ -2533,6 +2533,10 @@
           "sha256": "5b7feb8499aa9f0947f3ce024910cbb1d4d8f1e23e71976610fcd44f318e696e"
         },
         {
+          "path": "tests/test_v2_trajectory_copilot.py",
+          "sha256": "f99c762cc04377dc4e7a69623fd3ca4fa5c9c4cf2800a876fe8e46f06a4c0b10"
+        },
+        {
           "path": "tests/test_validation_calibration_integration.py",
           "sha256": "916b3013fe5ff911a35bab3f1d5689b4aac51ddae6206f7872c660cd42fe242d"
         },
@@ -2830,7 +2834,7 @@
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "blocker": null,
@@ -2838,7 +2842,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "ac3fb603d4785f06d6e8e7ab299171b9bbb7b0d78e56eb4babd76967b6c9d696",
+      "output_sha256": "5edd1c4da2041e92e9d06f02835a5bf38f342ec41e54b92994c610750dcc4e79",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2847,7 +2851,7 @@
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "blocker": "BLOCKED \u2014 EXACT ENVIRONMENT LOCK REQUIRED FOR FINAL REPRODUCIBILITY CLAIM",
@@ -2876,7 +2880,7 @@
       "evidence_id": "registry_lineage",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/registry/registry_lineage_audit_v1.json",
-      "output_sha256": "23858b2eea9b4412277a29c7078a1c90e390131d6b0d1b857004f76abcb473c0",
+      "output_sha256": "166898c83c1ec5bae6514ad6af27e2c984128878ca5ab30242f0bd42777929c0",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2897,7 +2901,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "055e293cab2834759734ca0e10b3e07cf4cac3e8c25bcd33b8eca2df4b219647",
+      "output_sha256": "8bd8b408b031d8f25a3436cf2b0a01e948eeac164f7291cf629ef0e0461e4ffa",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -2982,11 +2986,11 @@
         },
         {
           "path": "RUNBOOK.md",
-          "sha256": "aae72c463eb1cf7e7aa099185ee7bff1eadc789d296058d8f238e470cbe1e9d3"
+          "sha256": "c74647f135e74f8195a736a0877693f5a08a331bb8cec1046656b6f3ee2f97ad"
         },
         {
           "path": "README.md",
-          "sha256": "3a75931ef42f42fc7d38fdcfe394105c7d40fd8ede4e2e9352829256745aa171"
+          "sha256": "e0f7bbbe47875ae4a317b9ef0f5636d344dbf39f8f295a917d544ed67c1464e1"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",

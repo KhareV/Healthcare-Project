@@ -15,7 +15,18 @@ PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --host 127.0.0.1 --port 8010 
 cd frontend && npm install && npm run dev   # dashboard at http://localhost:5173
 ```
 
-This is a real, model-backed demo: every prediction is recomputed by `src/serving/v2` from raw history truncated at the selected cutoff, through the exact frozen Phase-3 V2 models — never a lookup table, and never the sealed fresh-V2-test cohort (structurally excluded; see [Test/fresh-cohort protection](#v2-fresh-test-protection) below). The dashboard (`frontend/`) is a SvelteKit app reusing its existing component library, restyled for this project, with an AI-generated (Groq) research-note synthesis on the Explainability page. A dependency-free, server-rendered Python dashboard (`dashboard/v2_app.py`, port 8511) remains available as a Node-free fallback covering the same five views. See the [V2 section of RUNBOOK.md](RUNBOOK.md#v2-final-release-demo-application) for exact commands, health checks, AI-key configuration, and troubleshooting.
+This is a real, model-backed demo: every prediction is recomputed by `src/serving/v2` from raw history truncated at the selected cutoff, through the exact frozen Phase-3 V2 models — never a lookup table, and never the sealed fresh-V2-test cohort (structurally excluded; see [Test/fresh-cohort protection](#v2-fresh-test-protection) below). The dashboard (`frontend/`) is a SvelteKit app reusing its existing component library, restyled for this project, with an AI-generated (Groq) research-note synthesis on the Explainability page and voice narration via a local Kokoro TTS service. A dependency-free, server-rendered Python dashboard (`dashboard/v2_app.py`, port 8511) remains available as a Node-free fallback covering the same five views. See the [V2 section of RUNBOOK.md](RUNBOOK.md#v2-final-release-demo-application) for exact commands, health checks, AI-key configuration, and troubleshooting.
+
+### Product layer: authentication, onboarding, Trajectory Copilot
+
+On top of the frozen scientific system (branch `product-v2`, built from the same commit as the frozen `performance-v2` branch — see [`docs/product_v2/CURRENT_UI_INTEGRATION_AUDIT.md`](docs/product_v2/CURRENT_UI_INTEGRATION_AUDIT.md)), the dashboard now has:
+
+- **Authentication** (Clerk, via the community `svelte-clerk` SvelteKit SDK) gating the dashboard routes, with a graceful "auth disabled" fallback when no keys are configured.
+- **Onboarding** (role → research disclaimer → data-source mode) for first-time signed-in users.
+- **Human-readable demo patient aliases** (`DEMO-CARDIAC-001`, …) instead of raw synthetic subject IDs, from a new additive product artifact (`artifacts/performance_v2/product/demo_patients_v1.json`) that never touches the frozen demo manifest's selection criteria.
+- **Trajectory Copilot**, a grounded Q&A drawer over the existing prediction/SHAP output (`POST /assistant`) — never predicts independently, refuses treatment/diagnosis questions by design, and is fully optional to the core dashboard.
+
+Synthetic FHIR upload/export, an EHR sandbox connector, and the full Playwright/screenshot evidence suite are scoped as a deliberate follow-up (see the audit doc above) and are not yet implemented.
 
 The sections below describe the earlier Benchmark-v1 baseline this project builds on; they remain historically accurate for that baseline and are unaffected by the V2 work above.
 
