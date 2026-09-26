@@ -72,7 +72,12 @@ correctly scoped to custom records only.
 
 ## What is never logged or persisted
 
-No raw bearer token, no Clerk secret key, no custom-record content is
-written to any log statement or git-tracked file. Custom records live only
-in the API process's memory for its lifetime (see
-[`CUSTOM_RECORD_FLOW.md`](CUSTOM_RECORD_FLOW.md)).
+No raw bearer token, no Clerk secret key, and no custom-record content is
+ever written to a log statement or a git-tracked file. Custom records
+always live in the API process's memory for its lifetime; when
+`MONGODB_URI` is configured, the raw structured input (never a derived
+representation, and never through a log line) is additionally saved to a
+MongoDB collection scoped by the caller's verified `owner_user_id` — see
+[`CUSTOM_RECORD_FLOW.md`](CUSTOM_RECORD_FLOW.md)'s "Ephemerality,
+durability, and ownership" section for exactly what that does and does not
+change.

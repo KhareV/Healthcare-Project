@@ -9,11 +9,15 @@ Benchmark-v1 sections below, and needs no developer-specific local paths.
 
 ```bash
 python3 --version   # tested on CPython 3.9
-python3 -c "import fastapi, xgboost, shap, matplotlib, httpx"   # must import cleanly
+python3 -c "import fastapi, xgboost, shap, matplotlib, httpx, jwt"   # must import cleanly
 ```
 
 If any import fails, install the missing package with your environment's
 package manager (no project-wide lock is currently pinned for these).
+
+`pymongo` (`pip3 install --user pymongo`) is needed only if you configure
+`MONGODB_URI` (step 6, persistent longitudinal records) -- without it, the
+persistence layer is simply disabled and everything else is unaffected.
 
 ### 2. Verify V2 scientific artifacts are present and unchanged
 
@@ -128,7 +132,51 @@ single fixed local-dev owner (`local-dev-user`) instead of a real per-user
 identity — fine for solo local development, but keep the two `.env` files
 in sync for anything resembling a real multi-user demo.
 
-### 6. Start the Kokoro narration service (terminal 3, optional)
+### 6. Configure persistent health records (optional)
+
+By default, custom records ("Enter My Own Record") live only in the API
+process's memory and are discarded on restart. To make them durable --
+plus enable a per-user conditions list -- configure a MongoDB connection
+string:
+
+```bash
+pip3 install --user pymongo
+# repository root .env:
+cp .env.example .env   # if you have not already, from step 5
+# add: MONGODB_URI=mongodb+srv://user:password@your-cluster.mongodb.net/
+```
+
+Restart the API. `GET /health` now reports `"persistence_mode": "mongodb"`
+(it reports `"in_memory_only"`, and the original behavior, if the cluster
+is unset or unreachable at startup -- persistence is never a hard
+dependency; a connection failure at startup is logged and the server keeps
+running exactly as before). With it configured:
+
+1. Every custom record's raw structured input (observations, support
+   intervals, profile fields) is saved to MongoDB when created. If this
+   process later restarts, the *next* request for that stay_id transparently
+   rebuilds it into the in-memory serving runtime from that raw input --
+   through the exact same registration path used at creation time -- before
+   serving the request. Scientific derived state (features, SHAP, model
+   internals) is never stored; only the raw input a user actually typed in.
+2. `GET /custom-records` lists every record the caller owns, and `/patients`
+   (Patient Replay) uses it to show your records alongside the demo cohort
+   without any client-side bookkeeping.
+3. `GET /custom-records/{stay_id}/predictions` returns one snapshot per
+   distinct cutoff you've actually replayed for that record (current SOFA,
+   both recovery forecasts, remaining ICU time, support probability) --
+   visible on the new **My Health Record** (`/health-record`) page.
+4. `/health-record` also lets you add/remove free-text **conditions**
+   (label, year, status) tied to your account -- pure display context,
+   never a model input, and unrelated to any one encounter.
+
+Everything stored is scoped by the same verified Clerk `owner_user_id` used
+everywhere else in this product; a request body can never set it. Keep all
+persisted data synthetic/demo-only -- this layer has no encryption-at-rest,
+audit logging, or deletion/export tooling, so treat it the same as the rest
+of this project's synthetic benchmark data, not real patient information.
+
+### 7. Start the Kokoro narration service (terminal 3, optional)
 
 The demo and AI + SHAP pages can read AI research notes aloud with
 [Kokoro](https://github.com/thewh1teagle/kokoro-onnx), a small open-weight
@@ -169,7 +217,7 @@ strictly optional and downstream of the AI note, never a dependency of it.
 The model files (~340MB) are not committed; re-download them with the
 commands above (see `.gitignore`).
 
-### 7. Replay steps
+### 8. Replay steps
 
 1. On **Patient Replay**, use "Previous cutoff" / "Next cutoff" / the cutoff
    dropdown to step through the patient's legal replay timestamps.
@@ -180,8 +228,8 @@ commands above (see `.gitignore`).
 4. Visit **AI + SHAP / Explainability** at any cutoff for TreeSHAP
    contributors per task, and click "Generate summary" for an AI-written
    research note (Groq-hosted `openai/gpt-oss-120b`, called server-side —
-   see step 8 for configuration), then "Listen (Kokoro)" to hear it read
-   aloud (step 6). The guided demo auto-generates and auto-narrates a note
+   see step 9 for configuration), then "Listen (Kokoro)" to hear it read
+   aloud (step 7). The guided demo auto-generates and auto-narrates a note
    for each new patient it steps to.
 5. Visit **Model Performance** for the frozen, one-time fresh-test evaluation
    (no inference is triggered by this page).
@@ -212,12 +260,16 @@ commands above (see `.gitignore`).
    fresh-test cohort — its `CUSTOM-` stay-id namespace can't collide with
    either) and is bound to the signed-in user who created it (when Clerk is
    configured on both sides, per step 5) — another signed-in user gets a 404
-   on it, identical to a nonexistent stay; restarting the API server
-   discards every custom record for every user. See
+   on it, identical to a nonexistent stay. Without `MONGODB_URI` configured
+   (step 6), restarting the API server discards every custom record for
+   every user; with it configured, records and their prediction history
+   survive a restart and are visible on **My Health Record**
+   (`/health-record`). See
    [`docs/product_v2/CUSTOM_RECORD_FLOW.md`](docs/product_v2/CUSTOM_RECORD_FLOW.md),
-   `src/serving/v2/custom_record.py`, and `tests/test_v2_custom_record.py`.
+   `src/serving/v2/custom_record.py`, `src/serving/v2/persistence.py`, and
+   `tests/test_v2_custom_record.py`.
 
-### 8. AI recommendation configuration
+### 9. AI recommendation configuration
 
 The "AI + SHAP" page's research-note synthesis calls Groq's OpenAI-compatible
 chat completions API server-side (the key never reaches the browser). Set:
@@ -233,7 +285,7 @@ structured `{"status": "UNAVAILABLE", ...}` response — the rest of the
 dashboard (predictions, TreeSHAP, model performance) is entirely unaffected,
 since the LLM is called strictly after prediction and never influences it.
 
-### 9. Final demo flow (reference checklist)
+### 10. Final demo flow (reference checklist)
 
 The complete end-to-end path this product supports, in order:
 
@@ -250,8 +302,8 @@ The complete end-to-end path this product supports, in order:
 10. Open Trajectory Copilot and ask "What changed since the previous
     cutoff?"
 11. Click **Enter My Own Record** to start a custom record.
-12. Add vitals/labs (and, if desired, organ-support intervals — step 7
-    above).
+12. Add vitals/labs (and, if desired, organ-support intervals — see the
+    "Enter my own record" step in step 8's Replay steps above).
 13. Submit and review the DATA READINESS summary.
 14. The submission runs an actual frozen-V2 prediction immediately — no
     separate "run prediction" step exists; the result is already the real
@@ -263,10 +315,15 @@ The complete end-to-end path this product supports, in order:
     (synthetic benchmark, retrospective replay, no urine-output support for
     custom records, no FHIR/EHR connector yet).
 
+If `MONGODB_URI` is configured (step 6), add: 17. Restart the API and reopen
+the custom record from **My Health Record** (`/health-record`) or Patient
+Replay — it rehydrates from MongoDB and serves identically, proving
+persistence rather than just describing it.
+
 See [`docs/product_v2/FINAL_DEMO_SCRIPT.md`](docs/product_v2/FINAL_DEMO_SCRIPT.md)
 for timed 4-minute and 7-minute narrated versions of this same flow.
 
-### 10. Automated browser tests (Playwright)
+### 11. Automated browser tests (Playwright)
 
 ```bash
 cd frontend
@@ -288,7 +345,16 @@ Data/Provenance pages — starting its own API and dev-server instances if
 they are not already running (`playwright.config.ts`). Screenshots land in
 `docs/evidence/product_v2/`.
 
-### 11. Troubleshooting
+If `MONGODB_URI` is configured (step 6), the custom-record and
+`/health-record` specs create real, durable records/conditions under the
+dedicated e2e test account on every run (there is no delete-record UI, by
+design — see step 6). This is expected and harmless (it's the same
+synthetic-only test account every time), but it does mean repeated runs
+accumulate documents in that cluster over time; periodically clean them up
+directly if that matters for your deployment, e.g.:
+`python3 -c "from serving.v2.persistence import MongoPersistence; p = MongoPersistence(uri='...'); p._db.encounters.delete_many({'owner_user_id': '<e2e-test-user-id>'})"`.
+
+### 12. Troubleshooting
 
 - `503` from `/predict`: a Phase-3 model/calibrator/threshold hash mismatch
   was detected; the server refuses to serve rather than guess. Re-verify
@@ -314,7 +380,7 @@ they are not already running (`playwright.config.ts`). Screenshots land in
   unreachable — this is a deliberate graceful-degradation path, not a bug;
   check the API server's log for the specific reason.
 - "Narration unavailable"/"Browser blocked autoplay audio": the Kokoro
-  service (step 6) is not running, or the browser blocked an unprompted
+  service (step 7) is not running, or the browser blocked an unprompted
   autoplay — click "Listen (Kokoro)" directly, which is a user gesture and
   is never blocked.
 - Signed-in but stuck bouncing to `/onboarding`: onboarding state lives in
@@ -326,11 +392,15 @@ they are not already running (`playwright.config.ts`). Screenshots land in
   add both to `frontend/.env` and restart `npm run dev` to enable the
   server-side redirect.
 - "Trajectory Copilot is unavailable right now": it shares the same
-  `GROQ_API_KEY` configuration as step 8 — if the AI research note also
+  `GROQ_API_KEY` configuration as step 9 — if the AI research note also
   says unavailable, the cause is the same.
-- A custom record ("Enter my own record") 404s after a while: the API
-  server was restarted, which discards every custom record by design (it is
-  in-memory only) — create it again.
+- A custom record ("Enter my own record") 404s after a while: if
+  `MONGODB_URI` is not configured (step 6), this is expected — the API
+  server was restarted, which discards every in-memory-only custom record
+  by design — create it again. If `MONGODB_URI` *is* configured, this
+  should not happen (the record is transparently rehydrated from MongoDB on
+  first access after a restart); check `GET /health`'s `persistence_mode`
+  and the API server's log for a MongoDB connection error.
 - Custom-record creation rejects a `glasgow_coma_scale` value: it must be a
   whole number (3-15) — SOFA's neurological component requires an integer.
 - Custom-record creation rejects an observation time: it must be strictly
@@ -351,7 +421,7 @@ they are not already running (`playwright.config.ts`). Screenshots land in
   credentials for a real (dedicated test) Clerk user on the same Clerk
   instance the frontend/backend `.env` files point at.
 
-### 12. Stop
+### 13. Stop
 
 `Ctrl-C` in each terminal.
 

@@ -38,6 +38,16 @@ existed before this work and the smallest-surface-area plan that guided it.
  │  frozen: feature builder, SOFA provider, 4 XGBoost models │
  │  + register_ephemeral_stay / register_ephemeral_support   │
  │    (in-memory only, additive, never touches frozen state) │
+ └───────────────────────────┬───────────────────────────────┘
+                              │ raw observations/support-intervals only
+                              │ (never derived features, never SHAP, never
+                              │  model internals) -- optional
+                              ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │  MongoDB (serving/v2/persistence.py) -- optional          │
+ │  conditions, encounters (raw input), prediction_runs      │
+ │  rehydrate_if_needed() rebuilds the runtime's in-memory    │
+ │  representation from raw input after a restart             │
  └─────────────────────────────────────────────────────────┘
 ```
 
@@ -75,14 +85,25 @@ fixed `local-dev-user` owner, with no token required. `GET /health` reports
 developer) can tell at a glance. This must only ever happen in local
 development — see [`AUTH_AND_DATA_BOUNDARIES.md`](AUTH_AND_DATA_BOUNDARIES.md).
 
-## Ephemeral custom-record storage
+## Custom-record storage: in-memory serving, optional durability
 
 `V2ServingRuntime.register_ephemeral_stay`/`register_ephemeral_support` add
 entries to plain in-memory dicts/tuples already used to hold the frozen
 corpus — the same feature builder, SOFA provider, and models serve both
-without knowing the difference. Nothing is written to disk; a process
-restart discards every custom record. See
-[`CUSTOM_RECORD_FLOW.md`](CUSTOM_RECORD_FLOW.md) for the full mechanics.
+without knowing the difference. This part is unconditional: serving never
+reads from a database.
+
+Durability across restarts is a separate, optional layer
+(`serving/v2/persistence.py`, MongoDB). When `MONGODB_URI` is configured,
+the *raw* structured input a user entered (never a derived representation)
+is saved alongside registration, and the next request for that stay_id
+after a restart calls `rehydrate_if_needed`, which rebuilds the in-memory
+representation from that raw input via the exact same registration path
+used at creation. Without `MONGODB_URI`, nothing changes from the original
+design: nothing is written to disk, and a process restart discards every
+custom record. See [`CUSTOM_RECORD_FLOW.md`](CUSTOM_RECORD_FLOW.md) for the
+full mechanics, and `GET /health`'s `persistence_mode` field to check which
+mode is active.
 
 ## What stays untouched
 

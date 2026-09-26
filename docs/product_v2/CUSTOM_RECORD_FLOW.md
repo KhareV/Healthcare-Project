@@ -100,11 +100,39 @@ observation-mask/data-quality machinery every prediction already reports),
 so a sparse record is a real, valid, low-completeness case, not an error
 state requiring a fake pass/fail gate.
 
-## Ephemerality and ownership
+## Ephemerality, durability, and ownership
 
-In-memory only (`V2ServingRuntime`'s plain Python dicts/tuples) — a process
-restart discards everything, and nothing is ever written to a git-tracked
-path. Every record is stamped with the `owner_user_id` of the authenticated
+Serving is always in-memory (`V2ServingRuntime`'s plain Python dicts/
+tuples) — the frozen feature builder and SOFA provider never read from a
+database. Durability across restarts is a separate, optional layer
+(`serving/v2/persistence.py`): when `MONGODB_URI` is configured, the raw
+observations/support-intervals/profile fields a user entered are also saved
+to MongoDB, and the next request for that stay_id after a restart
+transparently rebuilds the in-memory representation from that raw input
+(`rehydrate_if_needed`, using the exact same registration path as fresh
+creation) before serving. Nothing derived (features, SHAP, model internals)
+is ever persisted — only what the user actually typed in. Without
+`MONGODB_URI` configured, behavior is unchanged from the original design: a
+process restart discards everything, and nothing is ever written to a
+git-tracked path.
+
+Every record is stamped with the `owner_user_id` of the authenticated
 caller who created it (never a value the request body can supply); see
 [`AUTH_AND_DATA_BOUNDARIES.md`](AUTH_AND_DATA_BOUNDARIES.md) for how that's
-enforced on every subsequent read/predict/history/assistant call.
+enforced on every subsequent read/predict/history/assistant call — including
+after a rehydration, since it restores the stay under its true recorded
+owner rather than the current caller.
+
+Each `/predict` call against a custom record also (optionally) saves a
+prediction-run snapshot keyed by `(owner_user_id, stay_id, prediction_time)`
+so a user can see how their own forecast evolved across the cutoffs they
+actually replayed (`GET /custom-records/{stay_id}/predictions`, surfaced on
+**My Health Record**, `/health-record`). Demo patients are unaffected —
+they are already permanently described by the frozen manifest artifact, so
+nothing new needs to be made durable for them.
+
+A separate, profile-level **conditions** list (label, diagnosed year,
+status) is also available per authenticated user
+(`/health-record/conditions`) — pure display context the user records about
+themselves, never fed into the forecasting models and unrelated to any one
+encounter.
