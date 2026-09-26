@@ -2,7 +2,7 @@
 	import { page } from '$app/state';
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
-	import { Activity, Waypoints, BrainCircuit, FlaskConical, ShieldCheck, DatabaseZap, MonitorPlay, Menu, X, ArrowUpRight, Sparkles } from '@lucide/svelte';
+	import { Activity, Waypoints, BrainCircuit, FlaskConical, ShieldCheck, DatabaseZap, MonitorPlay, Menu, X, ArrowUpRight, Sparkles, ClipboardList } from '@lucide/svelte';
 	import { api } from '$lib/services/api';
 	import { authFlag } from '$lib/stores/auth.svelte';
 	import { copilotState, openCopilot, closeCopilot } from '$lib/stores/copilot.svelte';
@@ -10,6 +10,7 @@
 	const NAV = [
 		{ label: 'OVERVIEW', detail: 'Project', path: '/overview', icon: Activity },
 		{ label: 'REPLAY', detail: 'Patients', path: '/patients', icon: Waypoints },
+		{ label: 'MY RECORD', detail: 'Longitudinal', path: '/health-record', icon: ClipboardList },
 		{ label: 'FORECAST', detail: 'Details', path: '/trends', icon: FlaskConical },
 		{ label: 'PERFORMANCE', detail: 'Final V2', path: '/research/analytics', icon: ShieldCheck },
 		{ label: 'AI + SHAP', detail: 'Insight', path: '/ai/insights', icon: BrainCircuit },
@@ -19,6 +20,7 @@
 	const GROUPS: Record<string, string> = {
 		'/overview': '/overview', '/monitor': '/overview', '/monitoring': '/overview', '/alerts': '/overview', '/reports': '/overview',
 		'/patients': '/patients',
+		'/health-record': '/health-record',
 		'/trends': '/trends',
 		'/research': '/research/analytics', '/signals': '/research/analytics',
 		'/ai': '/ai/insights', '/fl': '/ai/insights',

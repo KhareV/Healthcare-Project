@@ -6,6 +6,7 @@
 export const PROTECTED_PREFIXES = [
 	'/overview',
 	'/patients',
+	'/health-record',
 	'/trends',
 	'/research',
 	'/ai',

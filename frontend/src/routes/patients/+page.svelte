@@ -10,7 +10,6 @@
 	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
 	import { api, type DemoSubject, type PredictionResponse } from '$lib/services/api';
 	import { setCopilotContext, openCopilot } from '$lib/stores/copilot.svelte';
-	import { listRememberedCustomRecords, rememberCustomRecord, forgetCustomRecord } from '$lib/stores/custom-records';
 	import { ChevronLeft, ChevronRight, RotateCcw, Sparkles, Plus } from '@lucide/svelte';
 
 	const GROUP_OF: Record<string, string> = {
@@ -103,20 +102,21 @@
 			const result = await api.demoSubjects();
 			subjects = result.demo_subjects;
 
-			// Merge in any custom ("bring your own data") records this browser
-			// created earlier. The server keeps no per-user index for these —
-			// this list is a pure client-side convenience that always
-			// re-verifies against the server (an ephemeral record vanishes on
-			// server restart, at which point we quietly forget it too).
-			const remembered = listRememberedCustomRecords();
-			const fetched = await Promise.allSettled(remembered.map((r) => api.getCustomRecord(r.stay_id)));
-			fetched.forEach((outcome, index) => {
-				if (outcome.status === 'fulfilled') {
-					subjects = [...subjects, outcome.value];
-				} else {
-					forgetCustomRecord(remembered[index].stay_id);
-				}
-			});
+			// Merge in every custom ("bring your own data") record owned by
+			// the signed-in caller, via the real backend index (persisted in
+			// MongoDB when configured — see /health's persistence_mode — so
+			// this list survives an API restart; otherwise whatever this
+			// process currently has loaded in memory, the pre-persistence
+			// behavior). No client-side list to keep in sync any more.
+			try {
+				const { records } = await api.listCustomRecords();
+				const fetched = await Promise.allSettled(records.map((r) => api.getCustomRecord(r.stay_id)));
+				fetched.forEach((outcome) => {
+					if (outcome.status === 'fulfilled') subjects = [...subjects, outcome.value];
+				});
+			} catch {
+				/* not signed in yet, or persistence temporarily unreachable — demo cohort still loads */
+			}
 
 			const params = page.url.searchParams;
 			const requested = params.get('stay_id');
@@ -124,9 +124,8 @@
 				try {
 					const record = await api.getCustomRecord(requested);
 					subjects = [...subjects, record];
-					rememberCustomRecord({ stay_id: record.stay_id, patient_alias: record.patient_alias });
 				} catch {
-					/* not found (e.g. server restarted since the link was shared) — falls through below */
+					/* not found (e.g. never persisted and the server that held it in memory has since restarted) — falls through below */
 				}
 			}
 

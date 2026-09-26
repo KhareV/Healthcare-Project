@@ -136,6 +136,41 @@ export type CustomRecordReadinessSummary = {
 	urine_output_supported: false;
 };
 
+export type CustomRecordSummary = {
+	stay_id: string;
+	patient_alias: string;
+	age_years: number;
+	sex_category: string;
+	created_at: string | null;
+	observations_entered: number;
+	support_intervals_entered: number;
+};
+
+export type PredictionRunSnapshot = {
+	stay_id: string;
+	prediction_time: string;
+	current_sofa: number;
+	delta_sofa_24: number;
+	delta_sofa_48: number;
+	predicted_sofa_24h: number;
+	predicted_sofa_48h: number;
+	remaining_icu_hours: number;
+	support_raw_probability: number;
+	support_calibrated_probability: number;
+	support_threshold: number;
+	support_alert: boolean;
+	created_at: string;
+	updated_at: string;
+};
+
+export type Condition = {
+	condition_id: string;
+	label: string;
+	diagnosed_year: number | null;
+	status: string;
+	created_at: string;
+};
+
 export type CustomRecordResult = {
 	stay_id: string;
 	subject_id: string;
@@ -156,7 +191,8 @@ export type CustomRecordResult = {
 
 export const api = {
 	request,
-	health: () => request<{ status: string; ready: boolean; mode: string; scope: string; tasks: string[] }>('/health'),
+	health: () =>
+		request<{ status: string; ready: boolean; mode: string; scope: string; tasks: string[]; auth_mode: string; persistence_mode: 'mongodb' | 'in_memory_only' }>('/health'),
 	modelMetadata: () => request('/model-metadata'),
 	demoSubjects: () =>
 		request<{ status: string; selection_criteria: Record<string, unknown>; demo_subjects: DemoSubject[] }>('/demo-subjects'),
@@ -185,6 +221,19 @@ export const api = {
 	createCustomRecord: (payload: { patient_alias: string; age_years: number; sex_category: string; observations: CustomObservationInput[]; support_intervals?: CustomSupportIntervalInput[] }) =>
 		request<CustomRecordResult>('/custom-records', { method: 'POST', body: JSON.stringify(payload) }),
 	getCustomRecord: (stay_id: string) => request<CustomRecordResult>(`/custom-records/${encodeURIComponent(stay_id)}`),
+
+	// Persistent longitudinal record layer (src/serving/v2/persistence.py).
+	// Durable across API restarts when MongoDB is configured — see
+	// /health's persistence_mode; degrades to "whatever is currently
+	// loaded in memory" otherwise, never a fake empty/success response.
+	listCustomRecords: () => request<{ records: CustomRecordSummary[] }>('/custom-records'),
+	getCustomRecordPredictionHistory: (stay_id: string) =>
+		request<{ stay_id: string; predictions: PredictionRunSnapshot[]; note?: string }>(`/custom-records/${encodeURIComponent(stay_id)}/predictions`),
+	listConditions: () => request<{ conditions: Condition[]; note?: string }>('/health-record/conditions'),
+	addCondition: (payload: { label: string; diagnosed_year: number | null; status: string }) =>
+		request<Condition>('/health-record/conditions', { method: 'POST', body: JSON.stringify(payload) }),
+	deleteCondition: (condition_id: string) =>
+		request<{ deleted: boolean; condition_id: string }>(`/health-record/conditions/${encodeURIComponent(condition_id)}`, { method: 'DELETE' }),
 
 	// Kokoro narration microservice — a separate isolated process (see
 	// tts/server.py); returns a playable audio/wav Blob or throws.

@@ -4,7 +4,6 @@
 	import WorkbenchPage from '$lib/components/dashboard/WorkbenchPage.svelte';
 	import Panel from '$lib/components/dashboard/Panel.svelte';
 	import { api, type CanonicalConcept, type VasopressorAgent } from '$lib/services/api';
-	import { rememberCustomRecord } from '$lib/stores/custom-records';
 	import { Plus, Trash2, Sparkles } from '@lucide/svelte';
 
 	type Row = { concept: string; hours_since_admission: number | null; value: number | null };
@@ -82,8 +81,11 @@
 			);
 		submitting = true;
 		try {
+			// Persisted server-side (MongoDB when configured, see /health's
+			// persistence_mode) and bound to the authenticated caller — no
+			// client-side remembering needed; /patients lists it via the
+			// real GET /custom-records endpoint.
 			result = await api.createCustomRecord({ patient_alias: patientAlias, age_years: ageYears, sex_category: sexCategory, observations, support_intervals });
-			rememberCustomRecord({ stay_id: result.stay_id, patient_alias: result.patient_alias });
 		} catch (cause) {
 			error = cause instanceof Error ? cause.message : 'Could not create the record';
 		} finally {
@@ -113,7 +115,7 @@
 <WorkbenchPage
 	eyebrow="WORKSPACE / ENTER MY OWN RECORD"
 	title="Build a synthetic ICU episode and forecast it."
-	description="Type in vitals and labs at hours since a synthetic ICU admission. This runs through the exact same frozen models as the demo cohort — real feature construction, real TreeSHAP, real forecasts — for a record that exists only in this server process and is never written to disk."
+	description="Type in vitals and labs at hours since a synthetic ICU admission. This runs through the exact same frozen models as the demo cohort — real feature construction, real TreeSHAP, real forecasts. It's bound to your account and saved to your health record (see My Health Record) when persistence is configured on this server; otherwise it lives only for this server process's lifetime."
 >
 	{#if error}<div class="error">{error}</div>{/if}
 

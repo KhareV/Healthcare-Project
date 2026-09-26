@@ -20,6 +20,15 @@
   const ctx = useClerkContext();
 
   let ready = $state(false);
+  // Becomes true once the first token fetch attempt below has settled
+  // (successfully or not) -- see the comment on the `ready` effect for why
+  // this matters: without it, a hard page load (page.goto, not an in-app
+  // link click) can render a protected page's content, and fire its
+  // onMount API calls, before the async getToken() call has resolved,
+  // sending an unauthenticated request that the backend correctly (but
+  // confusingly) rejects with 401/404. Caught by
+  // frontend/tests/e2e/07-health-record.spec.ts.
+  let tokenReady = $state(false);
 
   // Keeps authToken.value fresh so api.ts can attach it as a bearer token on
   // custom-record requests (backend ownership verification -- see
@@ -30,8 +39,14 @@
   $effect(() => {
     if (!ctx.session) {
       authToken.value = null;
+      tokenReady = true; // no session to wait for (e.g. signed out) -- never block on it
       return;
     }
+    // A session just became available (this effect re-runs reactively when
+    // it does) -- reset to false so the `ready` effect actually waits for
+    // THIS fetch, instead of seeing a stale `true` left over from the
+    // earlier "no session yet" run above.
+    tokenReady = false;
     let cancelled = false;
     const refresh = async () => {
       try {
@@ -39,6 +54,8 @@
         if (!cancelled) authToken.value = token ?? null;
       } catch {
         if (!cancelled) authToken.value = null;
+      } finally {
+        if (!cancelled) tokenReady = true;
       }
     };
     void refresh();
@@ -75,6 +92,14 @@
         void goto(`/onboarding?redirect_url=${encodeURIComponent(path)}`);
         return;
       }
+    }
+
+    // Hold rendering (and therefore this page's onMount) until the first
+    // bearer-token fetch has settled, so a page that calls an authenticated
+    // endpoint immediately on mount never races an empty authToken.value.
+    if (!tokenReady) {
+      ready = false;
+      return;
     }
 
     ready = true;
