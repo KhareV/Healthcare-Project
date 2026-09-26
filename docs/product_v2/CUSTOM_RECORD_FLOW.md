@@ -100,6 +100,19 @@ observation-mask/data-quality machinery every prediction already reports),
 so a sparse record is a real, valid, low-completeness case, not an error
 state requiring a fake pass/fail gate.
 
+## Adding observations after creation
+
+An encounter's observations are not fixed forever at creation time.
+`serving/v2/custom_record.py::append_observations_to_encounter` extends an
+*existing* encounter through the identical `_parse_observations`/
+`_build_event_rows` validation path, then appends the new event rows into
+both `V2ServingRuntime._events_by_stay` and the SOFA provider's `history`
+tuple (mirroring initial registration exactly) so the very next prediction
+already reflects them. The only caller today is Report Intelligence's
+confirm step (`POST /health-record/reports/{id}/confirm` — see
+[`HEALTH_RECORD_ARCHITECTURE.md`](HEALTH_RECORD_ARCHITECTURE.md)), which
+only ever passes observations a human explicitly confirmed.
+
 ## Ephemerality, durability, and ownership
 
 Serving is always in-memory (`V2ServingRuntime`'s plain Python dicts/

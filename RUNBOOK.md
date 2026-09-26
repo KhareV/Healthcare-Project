@@ -175,11 +175,21 @@ signed-in user:
    data, not a new source of truth.
 5. **Reports** (PDF/PNG/JPEG, 10MB limit) can be uploaded, downloaded, and
    deleted. Binary content is stored locally under `runtime/uploads/`
-   (gitignored), never in MongoDB and never as a model input -- every
-   report's `processing_status` stays `NOT_PARSED` in this pass. See
+   (gitignored), never in MongoDB and never as a model input. See
    [`docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md`](docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md)
    for the storage-security details (type/size limits, filename
    sanitization, path-traversal defenses, owner-scoped downloads).
+   **Report Intelligence**: click "Analyze" on a PDF report to extract its
+   text and have Groq propose candidate measurements against this
+   product's canonical concept vocabulary (requires `GROQ_API_KEY`, step 9)
+   -- this never writes an observation by itself. Review the candidates,
+   pick a target encounter and the hour they belong at (a report's
+   real-world date has no relationship to an encounter's synthetic
+   admission clock), and click "Add" to confirm only the ones you choose
+   into that encounter's real observations, through the exact same
+   validation path direct entry uses. A candidate with no recognized
+   concept can never be confirmed. Image reports can be uploaded but are
+   not parsed (no OCR in this pass).
 6. **Prediction History** lists every cutoff actually replayed, across
    every encounter -- derived evidence, never the source of truth for
    replay (which always recomputes through the frozen model pipeline).
@@ -434,6 +444,15 @@ directly if that matters for your deployment, e.g.:
 - Urine output cannot be entered on a custom record: this is a deliberate,
   documented limitation, not a bug — see
   [`docs/product_v2/CUSTOM_RECORD_FLOW.md`](docs/product_v2/CUSTOM_RECORD_FLOW.md).
+- "Analyze" on a report fails or returns no candidates: it shares the same
+  `GROQ_API_KEY` configuration as step 9; a scanned/image report also
+  yields no candidates by design (no OCR in this pass). Check the API
+  server's log for the specific reason (the report's `processing_status`
+  becomes `FAILED` on any parsing failure).
+- A report measurement can't be confirmed ("no mapped canonical concept"):
+  expected — a candidate the extraction wasn't confident about is shown
+  with `concept: null` and is intentionally never confirmable, rather than
+  guessed at.
 - Playwright fails at the sign-in step: confirm `.env.test` has valid
   credentials for a real (dedicated test) Clerk user on the same Clerk
   instance the frontend/backend `.env` files point at.

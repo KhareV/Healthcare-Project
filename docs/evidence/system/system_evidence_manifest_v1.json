@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "edb776345e55c679d971fc35073c1860526aee3dd7017ccf429d2f9510d90d17",
+      "output_sha256": "17805da8ba68ac07ef28ffd2470479c3f4ebbb03c9cc1b8adac64748a2184db7",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -1322,7 +1322,7 @@
         },
         {
           "path": "src/serving/v2/custom_record.py",
-          "sha256": "8fb57404a10376e85fbebcd4ebad134ce5f2c608c515157787a51ce6b18eab4c"
+          "sha256": "d6a7cf9ca1c701c5f523b369b41dec38293d8bcb673c478c2d561843413221c3"
         },
         {
           "path": "src/serving/v2/explanations.py",
@@ -1338,7 +1338,11 @@
         },
         {
           "path": "src/serving/v2/persistence.py",
-          "sha256": "57a13e7878d186139ec6cd0e4d75878b76bb0018b2855475e044922bce59a186"
+          "sha256": "564f3c2b48e44f813bdb3cc96a2ca17e74b5673a00c7789764f56dc18cc02781"
+        },
+        {
+          "path": "src/serving/v2/report_parser.py",
+          "sha256": "698e47e1bfb451225efe9328c814ff5b6fb79815352846d37bb76d6f8df89b3b"
         },
         {
           "path": "src/serving/v2/report_storage.py",
@@ -1346,7 +1350,7 @@
         },
         {
           "path": "src/serving/v2/runtime.py",
-          "sha256": "5e8bebb3a83f027740207ee928852fdd4d5f5d6df2f206bafdb4bab8debe76ac"
+          "sha256": "a2820ebadd85dfd5be52191aed292bfad4e484ea1a64d80ee60afb79cd5a1abf"
         },
         {
           "path": "src/training/__init__.py",
@@ -1454,7 +1458,7 @@
         },
         {
           "path": "api/v2_app.py",
-          "sha256": "3e84d07e233c25b5e4653f0eaba5fe5ffdf71b6f51a26870f92e0b5dc1063053"
+          "sha256": "4e681ee438f087853761e7c2fda77caf2338b9ca1847946fd968be29ac7317a4"
         },
         {
           "path": "dashboard/__init__.py",
@@ -2561,6 +2565,10 @@
           "sha256": "8594ea1f22672a78db3bb6de4db3cebab092aec195c61c5f5281dca27a2c34a0"
         },
         {
+          "path": "tests/test_v2_report_intelligence.py",
+          "sha256": "1b914a4a63321439212b3489cc4fe42261d37a51140fafdca897522edb3f76ca"
+        },
+        {
           "path": "tests/test_v2_serving.py",
           "sha256": "5b7feb8499aa9f0947f3ce024910cbb1d4d8f1e23e71976610fcd44f318e696e"
         },
@@ -2874,7 +2882,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "bfd6562c7f371970e3ade51840a407becc745a92edc99fe83026993d6b97cb1c",
+      "output_sha256": "465701d4c8cbb81b63324e5913091b792caa4b91a3ab01d5eb8c550ec1882506",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -2933,7 +2941,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "3ebcab79e0a859ff43a1f333e7fea5c52e39d9b83e46f67969d81755ea5c7ec6",
+      "output_sha256": "49ea51b5066fe578d0671e907ad3f8bc85770b8d157e0bcb955fa30e1f85d6fa",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -3018,11 +3026,11 @@
         },
         {
           "path": "RUNBOOK.md",
-          "sha256": "650efb703a9b90ec2390fc43d9114b655d58a3bf5adfa6a345ed3cbce2fe893a"
+          "sha256": "dbc3e016c240c630e71ba206d27ca15e5e50df4938f35be703c83af83ca2241e"
         },
         {
           "path": "README.md",
-          "sha256": "d6825d03a05c09432606a0a3eef4df328d2935de550dd0d07eba76a5900523e6"
+          "sha256": "f9068c61a715ea6b64ec38471e3401336475dc288157002a14559639c3613ff6"
         }
       ],
       "source_command": "PYTHONPATH=src:tests:. python3 -m evidence.system generate --root . --junit <pytest-junit.xml>",

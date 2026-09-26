@@ -116,17 +116,46 @@ ever touched:
   endpoint, which streams file bytes with a `Content-Disposition` header
   naming the original filename.
 
-## Report parsing: explicitly out of scope for this pass
+## Report Intelligence: candidates only, never an automatic observation
 
-Every uploaded report is stored with `processing_status = "NOT_PARSED"`
-and stays that way. **Uploaded report content is never used as a model
-input.** The forecasting pipeline continues to consume only validated
-structured observations/support intervals entered through "Enter My Own
-Record" — nothing a report-parsing step might one day extract is inserted
-into the clinical timeline automatically. If parsing is implemented in a
-future pass, it must produce a separate candidate/extracted-data payload
-and require explicit user confirmation before any extracted value could
-become a real observation.
+A PDF report can be *analyzed* (`POST /health-record/reports/{id}/parse`,
+`src/serving/v2/report_parser.py`): text is extracted locally (`pypdf`, PDF
+only — an image report simply has no text to extract, so parsing it
+produces zero candidates) and sent once to Groq with a strict prompt asking
+it to map free-text lab lines onto this product's frozen canonical concept
+vocabulary. The result is stored as `candidate_measurements` on the
+report's own metadata document, each with `confirmed: false` — **this step
+never writes an observation, never touches an encounter, and never touches
+the serving runtime.** A candidate whose concept the model isn't confident
+about comes back with `concept: null`, and such a candidate can never be
+confirmed (the confirm endpoint rejects it with 422) — a human seeing a
+label the system doesn't recognize is exactly the honest outcome, not a
+guess.
+
+`POST /health-record/reports/{id}/confirm` is the human-in-the-loop
+boundary: only candidates a user explicitly lists, each paired with a
+user-supplied `hours_since_admission`, become real observations — appended
+to the *named* encounter through the exact same validation path
+("`serving.v2.custom_record.append_observations_to_encounter`") direct
+entry uses, so a confirmed report measurement is held to an identical
+standard as one typed by hand. There is no automatic mapping from a
+report's real-world date to an encounter's `hours_since_admission`: every
+encounter's admission time is a fixed synthetic anchor
+(`2024-01-01T00:00:00Z`, see [`CUSTOM_RECORD_FLOW.md`](CUSTOM_RECORD_FLOW.md)),
+which has no principled relationship to when a real report happened to be
+dated — asking the user for the hour directly is the honest choice, not a
+missing feature. If the currently-loaded encounter is already served from
+this process's memory, the new observation is appended live
+(`V2ServingRuntime.append_ephemeral_events`, mirroring registration exactly,
+including the SOFA provider's separate `history` tuple) so the very next
+prediction reflects it — confirmed live end-to-end, including a subsequent
+`/predict` call, in `tests/test_v2_report_intelligence.py`.
+
+Already-confirmed candidates are simply skipped on a repeat confirm call
+(`added: 0`), never duplicated. Image reports (PNG/JPEG) can still be
+uploaded and stored, but parsing one yields no candidates — OCR is a
+meaningfully heavier dependency (a system Tesseract binary) this
+local-first demo deliberately does not take on.
 
 ## Medication history: deliberately narrow
 
@@ -163,9 +192,11 @@ side effect of that same call, never read back to short-circuit it.
 
 Trajectory Copilot may ground its answers in a user's structured record —
 selected encounter, current forecast, prediction history, conditions, and
-report *metadata* — but never raw report file content (binary or
-extracted text) unless a future parser explicitly supports it and a user
-has confirmed the extraction. See
+report *metadata* — but never a report's raw file content or extracted
+text, confirmed or not. Report Intelligence (above) never feeds the
+Copilot directly: a confirmed measurement only ever reaches it the same
+way any other observation does, already flattened into the frozen
+pipeline's ordinary feature/SOFA computation. See
 [`TRAJECTORY_COPILOT.md`](TRAJECTORY_COPILOT.md).
 
 ## Export and deletion
