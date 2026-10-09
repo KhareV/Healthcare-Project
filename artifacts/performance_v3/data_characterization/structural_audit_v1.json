@@ -1,0 +1,240 @@
+{
+  "artifact_version": "performance_v3_structural_audit_v1",
+  "cohorts": {
+    "D1": {
+      "checks": {
+        "cutoff_not_later_than_outtime_minus_6h": {
+          "pass": true,
+          "rows": 12951
+        },
+        "first_cutoff_is_intime_plus_24h": {
+          "pass": true,
+          "rows": 12951
+        },
+        "history_shape_8x21_and_names": {
+          "pass": true,
+          "rows": 12951
+        },
+        "icu_time_log1p_exact": {
+          "pass": true,
+          "rows": 12951
+        },
+        "identity_one_episode_per_subject_all_retained": {
+          "generated": 2100,
+          "pass": true,
+          "retained": 2100,
+          "stays_with_rows": 2100
+        },
+        "max_12_cutoffs_per_stay": {
+          "max_observed": 12,
+          "pass": true,
+          "stays": 2100
+        },
+        "no_prohibited_predictor_names": {
+          "hits": [],
+          "pass": true
+        },
+        "padding_monotone_and_padded_cells_unobserved": {
+          "pass": true,
+          "rows": 12951
+        },
+        "recovery_masks_and_ranges": {
+          "pass": true,
+          "rows": 12951
+        },
+        "support_disposition_counts": {
+          "counts": {
+            "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4322,
+            "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4812,
+            "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 351,
+            "INTERNAL_POSITIVE_INITIATION": 3466
+          },
+          "pass": true
+        },
+        "support_label_eligibility_consistent": {
+          "pass": true,
+          "rows": 12951
+        }
+      },
+      "pass": true,
+      "rows": 12951
+    },
+    "D2": {
+      "checks": {
+        "cutoff_not_later_than_outtime_minus_6h": {
+          "pass": true,
+          "rows": 12774
+        },
+        "first_cutoff_is_intime_plus_24h": {
+          "pass": true,
+          "rows": 12774
+        },
+        "history_shape_8x21_and_names": {
+          "pass": true,
+          "rows": 12774
+        },
+        "icu_time_log1p_exact": {
+          "pass": true,
+          "rows": 12774
+        },
+        "identity_one_episode_per_subject_all_retained": {
+          "generated": 2100,
+          "pass": true,
+          "retained": 2100,
+          "stays_with_rows": 2100
+        },
+        "max_12_cutoffs_per_stay": {
+          "max_observed": 12,
+          "pass": true,
+          "stays": 2100
+        },
+        "no_prohibited_predictor_names": {
+          "hits": [],
+          "pass": true
+        },
+        "padding_monotone_and_padded_cells_unobserved": {
+          "pass": true,
+          "rows": 12774
+        },
+        "recovery_masks_and_ranges": {
+          "pass": true,
+          "rows": 12774
+        },
+        "support_disposition_counts": {
+          "counts": {
+            "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4230,
+            "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4664,
+            "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 333,
+            "INTERNAL_POSITIVE_INITIATION": 3547
+          },
+          "pass": true
+        },
+        "support_label_eligibility_consistent": {
+          "pass": true,
+          "rows": 12774
+        }
+      },
+      "pass": true,
+      "rows": 12774
+    },
+    "D3": {
+      "checks": {
+        "cutoff_not_later_than_outtime_minus_6h": {
+          "pass": true,
+          "rows": 12754
+        },
+        "first_cutoff_is_intime_plus_24h": {
+          "pass": true,
+          "rows": 12754
+        },
+        "history_shape_8x21_and_names": {
+          "pass": true,
+          "rows": 12754
+        },
+        "icu_time_log1p_exact": {
+          "pass": true,
+          "rows": 12754
+        },
+        "identity_one_episode_per_subject_all_retained": {
+          "generated": 2100,
+          "pass": true,
+          "retained": 2100,
+          "stays_with_rows": 2100
+        },
+        "max_12_cutoffs_per_stay": {
+          "max_observed": 12,
+          "pass": true,
+          "stays": 2100
+        },
+        "no_prohibited_predictor_names": {
+          "hits": [],
+          "pass": true
+        },
+        "padding_monotone_and_padded_cells_unobserved": {
+          "pass": true,
+          "rows": 12754
+        },
+        "recovery_masks_and_ranges": {
+          "pass": true,
+          "rows": 12754
+        },
+        "support_disposition_counts": {
+          "counts": {
+            "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4160,
+            "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4621,
+            "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 324,
+            "INTERNAL_POSITIVE_INITIATION": 3649
+          },
+          "pass": true
+        },
+        "support_label_eligibility_consistent": {
+          "pass": true,
+          "rows": 12754
+        }
+      },
+      "pass": true,
+      "rows": 12754
+    },
+    "LCE": {
+      "checks": {
+        "cutoff_not_later_than_outtime_minus_6h": {
+          "pass": true,
+          "rows": 8909
+        },
+        "first_cutoff_is_intime_plus_24h": {
+          "pass": true,
+          "rows": 8909
+        },
+        "history_shape_8x21_and_names": {
+          "pass": true,
+          "rows": 8909
+        },
+        "icu_time_log1p_exact": {
+          "pass": true,
+          "rows": 8909
+        },
+        "identity_one_episode_per_subject_all_retained": {
+          "generated": 1500,
+          "pass": true,
+          "retained": 1500,
+          "stays_with_rows": 1500
+        },
+        "max_12_cutoffs_per_stay": {
+          "max_observed": 12,
+          "pass": true,
+          "stays": 1500
+        },
+        "no_prohibited_predictor_names": {
+          "hits": [],
+          "pass": true
+        },
+        "padding_monotone_and_padded_cells_unobserved": {
+          "pass": true,
+          "rows": 8909
+        },
+        "recovery_masks_and_ranges": {
+          "pass": true,
+          "rows": 8909
+        },
+        "support_disposition_counts": {
+          "counts": {
+            "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 3024,
+            "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 3154,
+            "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 255,
+            "INTERNAL_POSITIVE_INITIATION": 2476
+          },
+          "pass": true
+        },
+        "support_label_eligibility_consistent": {
+          "pass": true,
+          "rows": 8909
+        }
+      },
+      "pass": true,
+      "rows": 8909
+    }
+  },
+  "reuses": "src/acceptance/phase13.py invariants D01,E01,F01,H01,I01,J01,K01,L01",
+  "sealed_cohort_labels_read": false,
+  "verdict": "PASS"
+}

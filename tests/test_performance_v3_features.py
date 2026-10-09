@@ -61,7 +61,7 @@ def synthetic_rows(n_stays=24, cutoffs=4, seed=3):
                 "static_feature_names": ["age_years", "sex_category", "cardiac_condition_group"],
                 "static_features": [30 + s, "MALE" if s % 2 else "FEMALE", group],
                 "elapsed_episode_hours_at_t": elapsed, "cutoff_index": k, "hours_since_first_eligible_cutoff": elapsed - 24.0,
-                "baseline_sofa": None if (s + k) % 5 == 0 else float(rng.randint(0, 12)),
+                "baseline_sofa": float(rng.randint(0, 12)),  # D1: current SOFA(t) exists for every row
                 "delta_sofa_24": rng.gauss(0, 1) if k < 3 else None, "delta_sofa_48": rng.gauss(0, 1) if k < 2 else None,
                 "icu_time_log1p": rng.uniform(1, 4), "organ_support_label": float(rng.random() < 0.4) if k < 3 else None,
                 "recovery24_eligible": k < 3, "recovery48_eligible": k < 2, "icu_time_eligible": True, "organ_support_eligible": k < 3,
@@ -83,6 +83,8 @@ def real_sample(n=200):
         r = dict(row)
         r.update({"elapsed_episode_hours_at_t": elapsed, "cutoff_index": int(row["grid_index"]),
                   "hours_since_first_eligible_cutoff": elapsed - 24.0, "cohort_id": "SYN-V3-D1", "split": "dev"})
+        if r.get("baseline_sofa") is None:
+            continue  # D1: null-baseline rows have no current SOFA without a SOFA(t) cache; covered by dedicated tests
         out.append(r)
         if len(out) >= n:
             break
@@ -99,7 +101,9 @@ def trends(rows):
     rng = random.Random(11)
     out = {}
     for r in rows[::2]:
-        out[(r["stay_id"], r["prediction_time"])] = {k: float(rng.randint(0, 10)) for k in ("t", "t_minus_6h", "t_minus_12h", "t_minus_24h", "t_minus_48h")}
+        trend = {k: float(rng.randint(0, 10)) for k in ("t_minus_6h", "t_minus_12h", "t_minus_24h", "t_minus_48h")}
+        trend["t"] = float(r["baseline_sofa"])
+        out[(r["stay_id"], r["prediction_time"])] = trend
     return out
 
 

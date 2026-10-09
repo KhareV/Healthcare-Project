@@ -1,0 +1,129 @@
+{
+  "amendment": "performance_v3_protocol_amendment_v1_1",
+  "artifact_version": "performance_v3_null_pattern_audit_v1",
+  "caches": {
+    "dev_pool": {
+      "columns": 981,
+      "current_sofa_nan_fraction": 0.0,
+      "flagged_columns": [],
+      "max_abs_gap": 0.021137178089143997,
+      "rows": 48859,
+      "threshold": 0.05,
+      "top_gaps": [
+        {
+          "gap": 0.021137178089143997,
+          "name": "C__lactate__latest__slope_24h",
+          "nan_rate": 0.37026955115741217
+        },
+        {
+          "gap": 0.019634103621805055,
+          "name": "C__platelet_count__latest__slope_24h",
+          "nan_rate": 0.5006651793937658
+        },
+        {
+          "gap": 0.018398060402825784,
+          "name": "D__lactate__latest__max_12h",
+          "nan_rate": 0.28850365336990114
+        },
+        {
+          "gap": 0.018398060402825784,
+          "name": "D__lactate__latest__mean_12h",
+          "nan_rate": 0.28850365336990114
+        },
+        {
+          "gap": 0.018398060402825784,
+          "name": "D__lactate__latest__min_12h",
+          "nan_rate": 0.28850365336990114
+        },
+        {
+          "gap": 0.018398060402825784,
+          "name": "D__lactate__latest__std_12h",
+          "nan_rate": 0.28850365336990114
+        },
+        {
+          "gap": 0.017310535093099006,
+          "name": "D__platelet_count__latest__max_12h",
+          "nan_rate": 0.3788657156306924
+        },
+        {
+          "gap": 0.017310535093099006,
+          "name": "D__platelet_count__latest__mean_12h",
+          "nan_rate": 0.3788657156306924
+        },
+        {
+          "gap": 0.017310535093099006,
+          "name": "D__platelet_count__latest__min_12h",
+          "nan_rate": 0.3788657156306924
+        },
+        {
+          "gap": 0.017310535093099006,
+          "name": "D__platelet_count__latest__std_12h",
+          "nan_rate": 0.3788657156306924
+        }
+      ],
+      "verdict": "PASS"
+    },
+    "features_LCE": {
+      "columns": 981,
+      "current_sofa_nan_fraction": 0.0,
+      "flagged_columns": [],
+      "max_abs_gap": 0.04727500243315784,
+      "rows": 8909,
+      "threshold": 0.05,
+      "top_gaps": [
+        {
+          "gap": 0.04727500243315784,
+          "name": "C__lactate__latest__slope_24h",
+          "nan_rate": 0.37052418902233697
+        },
+        {
+          "gap": 0.039490695741946726,
+          "name": "D__lactate__latest__max_12h",
+          "nan_rate": 0.28925805365360874
+        },
+        {
+          "gap": 0.039490695741946726,
+          "name": "D__lactate__latest__mean_12h",
+          "nan_rate": 0.28925805365360874
+        },
+        {
+          "gap": 0.039490695741946726,
+          "name": "D__lactate__latest__min_12h",
+          "nan_rate": 0.28925805365360874
+        },
+        {
+          "gap": 0.039490695741946726,
+          "name": "D__lactate__latest__std_12h",
+          "nan_rate": 0.28925805365360874
+        },
+        {
+          "gap": 0.03922314204997428,
+          "name": "A__bin6__lactate__latest__value",
+          "nan_rate": 0.535189134583006
+        },
+        {
+          "gap": 0.03667518609876476,
+          "name": "C__creatinine__latest__slope_24h",
+          "nan_rate": 0.4494331574811988
+        },
+        {
+          "gap": 0.03297346580633889,
+          "name": "A__bin4__urine_output_volume__sum__value",
+          "nan_rate": 0.37602424514535865
+        },
+        {
+          "gap": 0.031821142544413976,
+          "name": "A__bin7__lactate__latest__value",
+          "nan_rate": 0.5388932540127961
+        },
+        {
+          "gap": 0.03155358885244154,
+          "name": "C__lactate__latest__diff_last_minus_6h",
+          "nan_rate": 0.7848243349421933
+        }
+      ],
+      "verdict": "PASS"
+    }
+  },
+  "verdict": "PASS"
+}

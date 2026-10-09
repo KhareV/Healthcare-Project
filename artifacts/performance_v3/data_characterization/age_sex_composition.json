@@ -1,0 +1,205 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 54.268687,
+        "SYNTHETIC_HF": 53.728655,
+        "SYNTHETIC_ISCHEMIC": 55.469333
+      },
+      "age_years": {
+        "mean": 54.477619,
+        "n": 2100,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 37.0,
+        "p5": 21.95,
+        "p50": 55.0,
+        "p75": 71.25,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 20.764956
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.514286,
+          "stays": 1080
+        },
+        "MALE": {
+          "fraction": 0.485714,
+          "stays": 1020
+        }
+      }
+    },
+    "D2": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 52.897233,
+        "SYNTHETIC_HF": 54.532483,
+        "SYNTHETIC_ISCHEMIC": 55.051913
+      },
+      "age_years": {
+        "mean": 54.319524,
+        "n": 2100,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 35.0,
+        "p5": 21.0,
+        "p50": 54.0,
+        "p75": 73.0,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 21.46416
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.499524,
+          "stays": 1049
+        },
+        "MALE": {
+          "fraction": 0.500476,
+          "stays": 1051
+        }
+      }
+    },
+    "D3": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 53.624113,
+        "SYNTHETIC_HF": 55.337838,
+        "SYNTHETIC_ISCHEMIC": 53.459834
+      },
+      "age_years": {
+        "mean": 54.231905,
+        "n": 2100,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 35.0,
+        "p5": 21.0,
+        "p50": 54.0,
+        "p75": 72.0,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 21.193859
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.52381,
+          "stays": 1100
+        },
+        "MALE": {
+          "fraction": 0.47619,
+          "stays": 1000
+        }
+      }
+    },
+    "DEV_POOL": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 54.025577,
+        "SYNTHETIC_HF": 54.536904,
+        "SYNTHETIC_ISCHEMIC": 54.371377
+      },
+      "age_years": {
+        "mean": 54.351625,
+        "n": 8000,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 36.0,
+        "p5": 21.0,
+        "p50": 54.0,
+        "p75": 72.25,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 21.108581
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.510875,
+          "stays": 4087
+        },
+        "MALE": {
+          "fraction": 0.489125,
+          "stays": 3913
+        }
+      }
+    },
+    "LCE": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 54.09893,
+        "SYNTHETIC_HF": 53.19376,
+        "SYNTHETIC_ISCHEMIC": 54.450677
+      },
+      "age_years": {
+        "mean": 53.852667,
+        "n": 1500,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 36.0,
+        "p5": 21.0,
+        "p50": 54.0,
+        "p75": 73.0,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 21.563881
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.515333,
+          "stays": 773
+        },
+        "MALE": {
+          "fraction": 0.484667,
+          "stays": 727
+        }
+      }
+    },
+    "V1_DEV": {
+      "age_by_subtype_mean": {
+        "SYNTHETIC_ARRHYTHMIA": 55.60373,
+        "SYNTHETIC_HF": 54.6,
+        "SYNTHETIC_ISCHEMIC": 53.248731
+      },
+      "age_years": {
+        "mean": 54.383529,
+        "n": 1700,
+        "p0": 18.0,
+        "p1": 18.0,
+        "p100": 90.0,
+        "p25": 36.0,
+        "p5": 21.0,
+        "p50": 55.0,
+        "p75": 73.0,
+        "p95": 87.0,
+        "p99": 90.0,
+        "sd": 20.9985
+      },
+      "sex": {
+        "FEMALE": {
+          "fraction": 0.504706,
+          "stays": 858
+        },
+        "MALE": {
+          "fraction": 0.495294,
+          "stays": 842
+        }
+      }
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

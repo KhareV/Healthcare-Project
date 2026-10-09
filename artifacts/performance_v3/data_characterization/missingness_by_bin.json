@@ -1,0 +1,1039 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.679746,
+          "creatinine": 0.573115,
+          "diastolic_blood_pressure": 0.020527,
+          "fio2": 0.332425,
+          "glasgow_coma_scale": 0.512625,
+          "heart_rate": 0.011989,
+          "lactate": 0.538056,
+          "mean_arterial_pressure": 0.063034,
+          "oxygen_saturation": 0.009083,
+          "pao2": 0.419255,
+          "platelet_count": 0.612716,
+          "respiratory_rate": 0.035604,
+          "systolic_blood_pressure": 0.022888,
+          "temperature": 0.123161,
+          "urine_output_volume": 0.386194
+        },
+        "nonpadded_rows": 5505,
+        "padded_fraction": 0.574936
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.685973,
+          "creatinine": 0.577059,
+          "diastolic_blood_pressure": 0.020201,
+          "fio2": 0.33225,
+          "glasgow_coma_scale": 0.512219,
+          "heart_rate": 0.012007,
+          "lactate": 0.537647,
+          "mean_arterial_pressure": 0.066535,
+          "oxygen_saturation": 0.009182,
+          "pao2": 0.423224,
+          "platelet_count": 0.611527,
+          "respiratory_rate": 0.035598,
+          "systolic_blood_pressure": 0.024438,
+          "temperature": 0.124029,
+          "urine_output_volume": 0.386354
+        },
+        "nonpadded_rows": 7079,
+        "padded_fraction": 0.453401
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.686416,
+          "creatinine": 0.581437,
+          "diastolic_blood_pressure": 0.021289,
+          "fio2": 0.332845,
+          "glasgow_coma_scale": 0.511039,
+          "heart_rate": 0.012052,
+          "lactate": 0.534918,
+          "mean_arterial_pressure": 0.065893,
+          "oxygen_saturation": 0.009124,
+          "pao2": 0.423406,
+          "platelet_count": 0.61399,
+          "respiratory_rate": 0.035932,
+          "systolic_blood_pressure": 0.026132,
+          "temperature": 0.123226,
+          "urine_output_volume": 0.388376
+        },
+        "nonpadded_rows": 8878,
+        "padded_fraction": 0.314493
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.685467,
+          "creatinine": 0.577458,
+          "diastolic_blood_pressure": 0.022302,
+          "fio2": 0.336006,
+          "glasgow_coma_scale": 0.510736,
+          "heart_rate": 0.012533,
+          "lactate": 0.53525,
+          "mean_arterial_pressure": 0.064049,
+          "oxygen_saturation": 0.0094,
+          "pao2": 0.423187,
+          "platelet_count": 0.613031,
+          "respiratory_rate": 0.036679,
+          "systolic_blood_pressure": 0.025988,
+          "temperature": 0.126256,
+          "urine_output_volume": 0.385863
+        },
+        "nonpadded_rows": 10851,
+        "padded_fraction": 0.16215
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.688209,
+          "creatinine": 0.579338,
+          "diastolic_blood_pressure": 0.023628,
+          "fio2": 0.335959,
+          "glasgow_coma_scale": 0.511775,
+          "heart_rate": 0.012663,
+          "lactate": 0.535789,
+          "mean_arterial_pressure": 0.063547,
+          "oxygen_saturation": 0.009961,
+          "pao2": 0.422747,
+          "platelet_count": 0.614315,
+          "respiratory_rate": 0.03714,
+          "systolic_blood_pressure": 0.026484,
+          "temperature": 0.124392,
+          "urine_output_volume": 0.38746
+        },
+        "nonpadded_rows": 12951,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.686974,
+          "creatinine": 0.578102,
+          "diastolic_blood_pressure": 0.025326,
+          "fio2": 0.336808,
+          "glasgow_coma_scale": 0.510154,
+          "heart_rate": 0.013435,
+          "lactate": 0.53548,
+          "mean_arterial_pressure": 0.063856,
+          "oxygen_saturation": 0.010192,
+          "pao2": 0.424523,
+          "platelet_count": 0.615551,
+          "respiratory_rate": 0.038144,
+          "systolic_blood_pressure": 0.025326,
+          "temperature": 0.125473,
+          "urine_output_volume": 0.390086
+        },
+        "nonpadded_rows": 12951,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.689908,
+          "creatinine": 0.575708,
+          "diastolic_blood_pressure": 0.025172,
+          "fio2": 0.333951,
+          "glasgow_coma_scale": 0.513783,
+          "heart_rate": 0.013667,
+          "lactate": 0.536406,
+          "mean_arterial_pressure": 0.065169,
+          "oxygen_saturation": 0.009652,
+          "pao2": 0.426531,
+          "platelet_count": 0.617172,
+          "respiratory_rate": 0.03853,
+          "systolic_blood_pressure": 0.025558,
+          "temperature": 0.125473,
+          "urine_output_volume": 0.389777
+        },
+        "nonpadded_rows": 12951,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.689522,
+          "creatinine": 0.5754,
+          "diastolic_blood_pressure": 0.027565,
+          "fio2": 0.331866,
+          "glasgow_coma_scale": 0.513783,
+          "heart_rate": 0.01274,
+          "lactate": 0.53741,
+          "mean_arterial_pressure": 0.06347,
+          "oxygen_saturation": 0.010733,
+          "pao2": 0.423597,
+          "platelet_count": 0.616169,
+          "respiratory_rate": 0.037526,
+          "systolic_blood_pressure": 0.023782,
+          "temperature": 0.124624,
+          "urine_output_volume": 0.388464
+        },
+        "nonpadded_rows": 12951,
+        "padded_fraction": 0.0
+      }
+    },
+    "D2": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69107,
+          "creatinine": 0.58643,
+          "diastolic_blood_pressure": 0.025883,
+          "fio2": 0.328711,
+          "glasgow_coma_scale": 0.51821,
+          "heart_rate": 0.014236,
+          "lactate": 0.528009,
+          "mean_arterial_pressure": 0.05953,
+          "oxygen_saturation": 0.009244,
+          "pao2": 0.427251,
+          "platelet_count": 0.611758,
+          "respiratory_rate": 0.036236,
+          "systolic_blood_pressure": 0.026253,
+          "temperature": 0.122573,
+          "urine_output_volume": 0.375485
+        },
+        "nonpadded_rows": 5409,
+        "padded_fraction": 0.576562
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.690524,
+          "creatinine": 0.585109,
+          "diastolic_blood_pressure": 0.02477,
+          "fio2": 0.333525,
+          "glasgow_coma_scale": 0.508929,
+          "heart_rate": 0.013393,
+          "lactate": 0.52909,
+          "mean_arterial_pressure": 0.06178,
+          "oxygen_saturation": 0.010513,
+          "pao2": 0.425979,
+          "platelet_count": 0.612471,
+          "respiratory_rate": 0.037442,
+          "systolic_blood_pressure": 0.02621,
+          "temperature": 0.12572,
+          "urine_output_volume": 0.379752
+        },
+        "nonpadded_rows": 6944,
+        "padded_fraction": 0.456396
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.693578,
+          "creatinine": 0.584633,
+          "diastolic_blood_pressure": 0.025573,
+          "fio2": 0.335092,
+          "glasgow_coma_scale": 0.509174,
+          "heart_rate": 0.014794,
+          "lactate": 0.528326,
+          "mean_arterial_pressure": 0.060436,
+          "oxygen_saturation": 0.010206,
+          "pao2": 0.427064,
+          "platelet_count": 0.6125,
+          "respiratory_rate": 0.037844,
+          "systolic_blood_pressure": 0.025917,
+          "temperature": 0.128555,
+          "urine_output_volume": 0.380619
+        },
+        "nonpadded_rows": 8720,
+        "padded_fraction": 0.317363
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.696646,
+          "creatinine": 0.582724,
+          "diastolic_blood_pressure": 0.025576,
+          "fio2": 0.336238,
+          "glasgow_coma_scale": 0.510399,
+          "heart_rate": 0.014802,
+          "lactate": 0.532977,
+          "mean_arterial_pressure": 0.059959,
+          "oxygen_saturation": 0.010118,
+          "pao2": 0.428237,
+          "platelet_count": 0.611486,
+          "respiratory_rate": 0.03813,
+          "systolic_blood_pressure": 0.025482,
+          "temperature": 0.128724,
+          "urine_output_volume": 0.381394
+        },
+        "nonpadded_rows": 10674,
+        "padded_fraction": 0.164396
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.694692,
+          "creatinine": 0.584155,
+          "diastolic_blood_pressure": 0.025364,
+          "fio2": 0.337404,
+          "glasgow_coma_scale": 0.510725,
+          "heart_rate": 0.015031,
+          "lactate": 0.536637,
+          "mean_arterial_pressure": 0.061453,
+          "oxygen_saturation": 0.009707,
+          "pao2": 0.426726,
+          "platelet_count": 0.615782,
+          "respiratory_rate": 0.038594,
+          "systolic_blood_pressure": 0.025677,
+          "temperature": 0.125959,
+          "urine_output_volume": 0.379051
+        },
+        "nonpadded_rows": 12774,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.694457,
+          "creatinine": 0.58259,
+          "diastolic_blood_pressure": 0.024816,
+          "fio2": 0.339909,
+          "glasgow_coma_scale": 0.514326,
+          "heart_rate": 0.014796,
+          "lactate": 0.53421,
+          "mean_arterial_pressure": 0.062705,
+          "oxygen_saturation": 0.009159,
+          "pao2": 0.425239,
+          "platelet_count": 0.617348,
+          "respiratory_rate": 0.038124,
+          "systolic_blood_pressure": 0.026303,
+          "temperature": 0.124785,
+          "urine_output_volume": 0.379521
+        },
+        "nonpadded_rows": 12774,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69297,
+          "creatinine": 0.581024,
+          "diastolic_blood_pressure": 0.02325,
+          "fio2": 0.339909,
+          "glasgow_coma_scale": 0.513308,
+          "heart_rate": 0.014874,
+          "lactate": 0.536872,
+          "mean_arterial_pressure": 0.062079,
+          "oxygen_saturation": 0.008924,
+          "pao2": 0.425004,
+          "platelet_count": 0.617661,
+          "respiratory_rate": 0.038124,
+          "systolic_blood_pressure": 0.02693,
+          "temperature": 0.121027,
+          "urine_output_volume": 0.376624
+        },
+        "nonpadded_rows": 12774,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69524,
+          "creatinine": 0.579615,
+          "diastolic_blood_pressure": 0.023172,
+          "fio2": 0.3385,
+          "glasgow_coma_scale": 0.516988,
+          "heart_rate": 0.014796,
+          "lactate": 0.53515,
+          "mean_arterial_pressure": 0.060592,
+          "oxygen_saturation": 0.00869,
+          "pao2": 0.424926,
+          "platelet_count": 0.616643,
+          "respiratory_rate": 0.038672,
+          "systolic_blood_pressure": 0.027478,
+          "temperature": 0.121888,
+          "urine_output_volume": 0.372945
+        },
+        "nonpadded_rows": 12774,
+        "padded_fraction": 0.0
+      }
+    },
+    "D3": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.703861,
+          "creatinine": 0.568446,
+          "diastolic_blood_pressure": 0.025309,
+          "fio2": 0.344356,
+          "glasgow_coma_scale": 0.500092,
+          "heart_rate": 0.011269,
+          "lactate": 0.532607,
+          "mean_arterial_pressure": 0.065213,
+          "oxygen_saturation": 0.010715,
+          "pao2": 0.425088,
+          "platelet_count": 0.608535,
+          "respiratory_rate": 0.036763,
+          "systolic_blood_pressure": 0.019952,
+          "temperature": 0.11417,
+          "urine_output_volume": 0.361352
+        },
+        "nonpadded_rows": 5413,
+        "padded_fraction": 0.575584
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.703341,
+          "creatinine": 0.573301,
+          "diastolic_blood_pressure": 0.025202,
+          "fio2": 0.34015,
+          "glasgow_coma_scale": 0.500576,
+          "heart_rate": 0.012241,
+          "lactate": 0.532546,
+          "mean_arterial_pressure": 0.06682,
+          "oxygen_saturation": 0.010657,
+          "pao2": 0.419643,
+          "platelet_count": 0.605703,
+          "respiratory_rate": 0.036146,
+          "systolic_blood_pressure": 0.022753,
+          "temperature": 0.115927,
+          "urine_output_volume": 0.366359
+        },
+        "nonpadded_rows": 6944,
+        "padded_fraction": 0.455543
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.698276,
+          "creatinine": 0.570805,
+          "diastolic_blood_pressure": 0.024483,
+          "fio2": 0.337471,
+          "glasgow_coma_scale": 0.505632,
+          "heart_rate": 0.012184,
+          "lactate": 0.526322,
+          "mean_arterial_pressure": 0.067701,
+          "oxygen_saturation": 0.010115,
+          "pao2": 0.421379,
+          "platelet_count": 0.607011,
+          "respiratory_rate": 0.036207,
+          "systolic_blood_pressure": 0.023563,
+          "temperature": 0.117241,
+          "urine_output_volume": 0.368506
+        },
+        "nonpadded_rows": 8700,
+        "padded_fraction": 0.317861
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69617,
+          "creatinine": 0.571804,
+          "diastolic_blood_pressure": 0.023465,
+          "fio2": 0.338089,
+          "glasgow_coma_scale": 0.509198,
+          "heart_rate": 0.012671,
+          "lactate": 0.531819,
+          "mean_arterial_pressure": 0.065703,
+          "oxygen_saturation": 0.009855,
+          "pao2": 0.423034,
+          "platelet_count": 0.606533,
+          "respiratory_rate": 0.0367,
+          "systolic_blood_pressure": 0.024592,
+          "temperature": 0.119767,
+          "urine_output_volume": 0.369063
+        },
+        "nonpadded_rows": 10654,
+        "padded_fraction": 0.164654
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.692489,
+          "creatinine": 0.57433,
+          "diastolic_blood_pressure": 0.02509,
+          "fio2": 0.339893,
+          "glasgow_coma_scale": 0.509252,
+          "heart_rate": 0.013016,
+          "lactate": 0.533558,
+          "mean_arterial_pressure": 0.064999,
+          "oxygen_saturation": 0.009566,
+          "pao2": 0.427003,
+          "platelet_count": 0.605143,
+          "respiratory_rate": 0.036773,
+          "systolic_blood_pressure": 0.024385,
+          "temperature": 0.118316,
+          "urine_output_volume": 0.370629
+        },
+        "nonpadded_rows": 12754,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.688333,
+          "creatinine": 0.572448,
+          "diastolic_blood_pressure": 0.024149,
+          "fio2": 0.334248,
+          "glasgow_coma_scale": 0.506429,
+          "heart_rate": 0.012937,
+          "lactate": 0.533244,
+          "mean_arterial_pressure": 0.062882,
+          "oxygen_saturation": 0.010114,
+          "pao2": 0.427866,
+          "platelet_count": 0.6053,
+          "respiratory_rate": 0.037243,
+          "systolic_blood_pressure": 0.024698,
+          "temperature": 0.120276,
+          "urine_output_volume": 0.372119
+        },
+        "nonpadded_rows": 12754,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.687627,
+          "creatinine": 0.574251,
+          "diastolic_blood_pressure": 0.025717,
+          "fio2": 0.331896,
+          "glasgow_coma_scale": 0.509252,
+          "heart_rate": 0.013094,
+          "lactate": 0.530422,
+          "mean_arterial_pressure": 0.061706,
+          "oxygen_saturation": 0.009487,
+          "pao2": 0.426298,
+          "platelet_count": 0.605065,
+          "respiratory_rate": 0.038106,
+          "systolic_blood_pressure": 0.024933,
+          "temperature": 0.12404,
+          "urine_output_volume": 0.369531
+        },
+        "nonpadded_rows": 12754,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.689352,
+          "creatinine": 0.576682,
+          "diastolic_blood_pressure": 0.02462,
+          "fio2": 0.331582,
+          "glasgow_coma_scale": 0.515133,
+          "heart_rate": 0.012545,
+          "lactate": 0.529716,
+          "mean_arterial_pressure": 0.062412,
+          "oxygen_saturation": 0.009722,
+          "pao2": 0.42371,
+          "platelet_count": 0.607339,
+          "respiratory_rate": 0.036616,
+          "systolic_blood_pressure": 0.025012,
+          "temperature": 0.123334,
+          "urine_output_volume": 0.374549
+        },
+        "nonpadded_rows": 12754,
+        "padded_fraction": 0.0
+      }
+    },
+    "DEV_POOL": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.693642,
+          "creatinine": 0.575563,
+          "diastolic_blood_pressure": 0.023915,
+          "fio2": 0.334767,
+          "glasgow_coma_scale": 0.507295,
+          "heart_rate": 0.012996,
+          "lactate": 0.534399,
+          "mean_arterial_pressure": 0.063339,
+          "oxygen_saturation": 0.009566,
+          "pao2": 0.423906,
+          "platelet_count": 0.609576,
+          "respiratory_rate": 0.037105,
+          "systolic_blood_pressure": 0.02377,
+          "temperature": 0.118707,
+          "urine_output_volume": 0.373949
+        },
+        "nonpadded_rows": 20698,
+        "padded_fraction": 0.576373
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.695791,
+          "creatinine": 0.578504,
+          "diastolic_blood_pressure": 0.0236,
+          "fio2": 0.334498,
+          "glasgow_coma_scale": 0.505449,
+          "heart_rate": 0.013191,
+          "lactate": 0.535626,
+          "mean_arterial_pressure": 0.065427,
+          "oxygen_saturation": 0.010109,
+          "pao2": 0.423337,
+          "platelet_count": 0.609057,
+          "respiratory_rate": 0.037204,
+          "systolic_blood_pressure": 0.024803,
+          "temperature": 0.121458,
+          "urine_output_volume": 0.376287
+        },
+        "nonpadded_rows": 26610,
+        "padded_fraction": 0.455372
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.694851,
+          "creatinine": 0.578638,
+          "diastolic_blood_pressure": 0.023632,
+          "fio2": 0.333932,
+          "glasgow_coma_scale": 0.507084,
+          "heart_rate": 0.013478,
+          "lactate": 0.532632,
+          "mean_arterial_pressure": 0.064576,
+          "oxygen_saturation": 0.009944,
+          "pao2": 0.423039,
+          "platelet_count": 0.610477,
+          "respiratory_rate": 0.03699,
+          "systolic_blood_pressure": 0.025249,
+          "temperature": 0.121454,
+          "urine_output_volume": 0.377183
+        },
+        "nonpadded_rows": 33387,
+        "padded_fraction": 0.316666
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.694584,
+          "creatinine": 0.577523,
+          "diastolic_blood_pressure": 0.023618,
+          "fio2": 0.336083,
+          "glasgow_coma_scale": 0.507917,
+          "heart_rate": 0.013804,
+          "lactate": 0.534619,
+          "mean_arterial_pressure": 0.063364,
+          "oxygen_saturation": 0.009863,
+          "pao2": 0.424142,
+          "platelet_count": 0.610098,
+          "respiratory_rate": 0.037348,
+          "systolic_blood_pressure": 0.025233,
+          "temperature": 0.12269,
+          "urine_output_volume": 0.377126
+        },
+        "nonpadded_rows": 40859,
+        "padded_fraction": 0.163736
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69371,
+          "creatinine": 0.579238,
+          "diastolic_blood_pressure": 0.024458,
+          "fio2": 0.336806,
+          "glasgow_coma_scale": 0.509384,
+          "heart_rate": 0.013959,
+          "lactate": 0.536135,
+          "mean_arterial_pressure": 0.063161,
+          "oxygen_saturation": 0.009845,
+          "pao2": 0.424671,
+          "platelet_count": 0.611719,
+          "respiratory_rate": 0.037393,
+          "systolic_blood_pressure": 0.025441,
+          "temperature": 0.121145,
+          "urine_output_volume": 0.37729
+        },
+        "nonpadded_rows": 48859,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.691357,
+          "creatinine": 0.577151,
+          "diastolic_blood_pressure": 0.024499,
+          "fio2": 0.336356,
+          "glasgow_coma_scale": 0.509814,
+          "heart_rate": 0.014143,
+          "lactate": 0.534743,
+          "mean_arterial_pressure": 0.063039,
+          "oxygen_saturation": 0.009886,
+          "pao2": 0.424814,
+          "platelet_count": 0.612907,
+          "respiratory_rate": 0.037864,
+          "systolic_blood_pressure": 0.025584,
+          "temperature": 0.121206,
+          "urine_output_volume": 0.378641
+        },
+        "nonpadded_rows": 48859,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.690947,
+          "creatinine": 0.577232,
+          "diastolic_blood_pressure": 0.024642,
+          "fio2": 0.334514,
+          "glasgow_coma_scale": 0.511267,
+          "heart_rate": 0.014347,
+          "lactate": 0.534579,
+          "mean_arterial_pressure": 0.0631,
+          "oxygen_saturation": 0.009538,
+          "pao2": 0.424548,
+          "platelet_count": 0.613152,
+          "respiratory_rate": 0.038192,
+          "systolic_blood_pressure": 0.02585,
+          "temperature": 0.121247,
+          "urine_output_volume": 0.377085
+        },
+        "nonpadded_rows": 48859,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.691828,
+          "creatinine": 0.577846,
+          "diastolic_blood_pressure": 0.025011,
+          "fio2": 0.333531,
+          "glasgow_coma_scale": 0.513785,
+          "heart_rate": 0.01404,
+          "lactate": 0.533658,
+          "mean_arterial_pressure": 0.062261,
+          "oxygen_saturation": 0.009763,
+          "pao2": 0.42332,
+          "platelet_count": 0.61305,
+          "respiratory_rate": 0.03768,
+          "systolic_blood_pressure": 0.025461,
+          "temperature": 0.121881,
+          "urine_output_volume": 0.37688
+        },
+        "nonpadded_rows": 48859,
+        "padded_fraction": 0.0
+      }
+    },
+    "LCE": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.702518,
+          "creatinine": 0.574713,
+          "diastolic_blood_pressure": 0.01861,
+          "fio2": 0.33908,
+          "glasgow_coma_scale": 0.507937,
+          "heart_rate": 0.012315,
+          "lactate": 0.531746,
+          "mean_arterial_pressure": 0.065134,
+          "oxygen_saturation": 0.009031,
+          "pao2": 0.427203,
+          "platelet_count": 0.614669,
+          "respiratory_rate": 0.039956,
+          "systolic_blood_pressure": 0.023262,
+          "temperature": 0.128352,
+          "urine_output_volume": 0.369458
+        },
+        "nonpadded_rows": 3654,
+        "padded_fraction": 0.589853
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.700842,
+          "creatinine": 0.578947,
+          "diastolic_blood_pressure": 0.020211,
+          "fio2": 0.338105,
+          "glasgow_coma_scale": 0.508,
+          "heart_rate": 0.012,
+          "lactate": 0.528211,
+          "mean_arterial_pressure": 0.063158,
+          "oxygen_saturation": 0.008,
+          "pao2": 0.430737,
+          "platelet_count": 0.614947,
+          "respiratory_rate": 0.038947,
+          "systolic_blood_pressure": 0.025053,
+          "temperature": 0.126947,
+          "urine_output_volume": 0.362526
+        },
+        "nonpadded_rows": 4750,
+        "padded_fraction": 0.466831
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.703728,
+          "creatinine": 0.579727,
+          "diastolic_blood_pressure": 0.021804,
+          "fio2": 0.340546,
+          "glasgow_coma_scale": 0.507324,
+          "heart_rate": 0.012317,
+          "lactate": 0.525632,
+          "mean_arterial_pressure": 0.064581,
+          "oxygen_saturation": 0.007823,
+          "pao2": 0.431591,
+          "platelet_count": 0.62034,
+          "respiratory_rate": 0.039447,
+          "systolic_blood_pressure": 0.026298,
+          "temperature": 0.127164,
+          "urine_output_volume": 0.366178
+        },
+        "nonpadded_rows": 6008,
+        "padded_fraction": 0.325626
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.703064,
+          "creatinine": 0.58186,
+          "diastolic_blood_pressure": 0.02335,
+          "fio2": 0.346066,
+          "glasgow_coma_scale": 0.508436,
+          "heart_rate": 0.012552,
+          "lactate": 0.525037,
+          "mean_arterial_pressure": 0.064651,
+          "oxygen_saturation": 0.007423,
+          "pao2": 0.427048,
+          "platelet_count": 0.623836,
+          "respiratory_rate": 0.040761,
+          "systolic_blood_pressure": 0.026994,
+          "temperature": 0.127818,
+          "urine_output_volume": 0.37063
+        },
+        "nonpadded_rows": 7409,
+        "padded_fraction": 0.168369
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.70266,
+          "creatinine": 0.58323,
+          "diastolic_blood_pressure": 0.023459,
+          "fio2": 0.343697,
+          "glasgow_coma_scale": 0.508924,
+          "heart_rate": 0.013245,
+          "lactate": 0.531485,
+          "mean_arterial_pressure": 0.066001,
+          "oxygen_saturation": 0.007296,
+          "pao2": 0.424515,
+          "platelet_count": 0.623751,
+          "respiratory_rate": 0.040409,
+          "systolic_blood_pressure": 0.026827,
+          "temperature": 0.128971,
+          "urine_output_volume": 0.376024
+        },
+        "nonpadded_rows": 8909,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.69963,
+          "creatinine": 0.587159,
+          "diastolic_blood_pressure": 0.023235,
+          "fio2": 0.342912,
+          "glasgow_coma_scale": 0.511393,
+          "heart_rate": 0.015041,
+          "lactate": 0.531597,
+          "mean_arterial_pressure": 0.065327,
+          "oxygen_saturation": 0.008082,
+          "pao2": 0.4308,
+          "platelet_count": 0.62117,
+          "respiratory_rate": 0.039623,
+          "systolic_blood_pressure": 0.028174,
+          "temperature": 0.125716,
+          "urine_output_volume": 0.375688
+        },
+        "nonpadded_rows": 8909,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.698844,
+          "creatinine": 0.581322,
+          "diastolic_blood_pressure": 0.023572,
+          "fio2": 0.339432,
+          "glasgow_coma_scale": 0.51375,
+          "heart_rate": 0.015602,
+          "lactate": 0.535189,
+          "mean_arterial_pressure": 0.063868,
+          "oxygen_saturation": 0.008418,
+          "pao2": 0.431474,
+          "platelet_count": 0.619823,
+          "respiratory_rate": 0.039735,
+          "systolic_blood_pressure": 0.029857,
+          "temperature": 0.12392,
+          "urine_output_volume": 0.382647
+        },
+        "nonpadded_rows": 8909,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.694579,
+          "creatinine": 0.584465,
+          "diastolic_blood_pressure": 0.024245,
+          "fio2": 0.342912,
+          "glasgow_coma_scale": 0.513638,
+          "heart_rate": 0.015939,
+          "lactate": 0.538893,
+          "mean_arterial_pressure": 0.063307,
+          "oxygen_saturation": 0.008531,
+          "pao2": 0.431698,
+          "platelet_count": 0.617129,
+          "respiratory_rate": 0.039735,
+          "systolic_blood_pressure": 0.029521,
+          "temperature": 0.121899,
+          "urine_output_volume": 0.37681
+        },
+        "nonpadded_rows": 8909,
+        "padded_fraction": 0.0
+      }
+    },
+    "V1_DEV": {
+      "0": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.70167,
+          "creatinine": 0.574011,
+          "diastolic_blood_pressure": 0.024022,
+          "fio2": 0.333333,
+          "glasgow_coma_scale": 0.495996,
+          "heart_rate": 0.014871,
+          "lactate": 0.539922,
+          "mean_arterial_pressure": 0.066118,
+          "oxygen_saturation": 0.009151,
+          "pao2": 0.424159,
+          "platelet_count": 0.60421,
+          "respiratory_rate": 0.040494,
+          "systolic_blood_pressure": 0.026539,
+          "temperature": 0.113933,
+          "urine_output_volume": 0.372226
+        },
+        "nonpadded_rows": 4371,
+        "padded_fraction": 0.578902
+      },
+      "1": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.705299,
+          "creatinine": 0.578593,
+          "diastolic_blood_pressure": 0.024455,
+          "fio2": 0.331561,
+          "glasgow_coma_scale": 0.498671,
+          "heart_rate": 0.015595,
+          "lactate": 0.544923,
+          "mean_arterial_pressure": 0.066808,
+          "oxygen_saturation": 0.010101,
+          "pao2": 0.424774,
+          "platelet_count": 0.605883,
+          "respiratory_rate": 0.040227,
+          "systolic_blood_pressure": 0.02605,
+          "temperature": 0.119794,
+          "urine_output_volume": 0.371611
+        },
+        "nonpadded_rows": 5643,
+        "padded_fraction": 0.456358
+      },
+      "2": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.702779,
+          "creatinine": 0.577373,
+          "diastolic_blood_pressure": 0.023134,
+          "fio2": 0.329525,
+          "glasgow_coma_scale": 0.50134,
+          "heart_rate": 0.015235,
+          "lactate": 0.542813,
+          "mean_arterial_pressure": 0.064184,
+          "oxygen_saturation": 0.010439,
+          "pao2": 0.419664,
+          "platelet_count": 0.607843,
+          "respiratory_rate": 0.038228,
+          "systolic_blood_pressure": 0.025391,
+          "temperature": 0.115672,
+          "urine_output_volume": 0.369587
+        },
+        "nonpadded_rows": 7089,
+        "padded_fraction": 0.317052
+      },
+      "3": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.701498,
+          "creatinine": 0.578226,
+          "diastolic_blood_pressure": 0.023041,
+          "fio2": 0.333525,
+          "glasgow_coma_scale": 0.49977,
+          "heart_rate": 0.015553,
+          "lactate": 0.539286,
+          "mean_arterial_pressure": 0.063825,
+          "oxygen_saturation": 0.010138,
+          "pao2": 0.421659,
+          "platelet_count": 0.609101,
+          "respiratory_rate": 0.038018,
+          "systolic_blood_pressure": 0.02477,
+          "temperature": 0.114401,
+          "urine_output_volume": 0.370853
+        },
+        "nonpadded_rows": 8680,
+        "padded_fraction": 0.163776
+      },
+      "4": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.700867,
+          "creatinine": 0.579094,
+          "diastolic_blood_pressure": 0.023603,
+          "fio2": 0.333333,
+          "glasgow_coma_scale": 0.504913,
+          "heart_rate": 0.015414,
+          "lactate": 0.539114,
+          "mean_arterial_pressure": 0.062524,
+          "oxygen_saturation": 0.010212,
+          "pao2": 0.421676,
+          "platelet_count": 0.611561,
+          "respiratory_rate": 0.036994,
+          "systolic_blood_pressure": 0.025145,
+          "temperature": 0.114644,
+          "urine_output_volume": 0.370617
+        },
+        "nonpadded_rows": 10380,
+        "padded_fraction": 0.0
+      },
+      "5": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.696724,
+          "creatinine": 0.575048,
+          "diastolic_blood_pressure": 0.023507,
+          "fio2": 0.334008,
+          "glasgow_coma_scale": 0.507996,
+          "heart_rate": 0.015703,
+          "lactate": 0.53632,
+          "mean_arterial_pressure": 0.06262,
+          "oxygen_saturation": 0.010116,
+          "pao2": 0.420906,
+          "platelet_count": 0.613487,
+          "respiratory_rate": 0.037958,
+          "systolic_blood_pressure": 0.026108,
+          "temperature": 0.11262,
+          "urine_output_volume": 0.371291
+        },
+        "nonpadded_rows": 10380,
+        "padded_fraction": 0.0
+      },
+      "6": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.693834,
+          "creatinine": 0.578131,
+          "diastolic_blood_pressure": 0.024374,
+          "fio2": 0.331792,
+          "glasgow_coma_scale": 0.508092,
+          "heart_rate": 0.016089,
+          "lactate": 0.534586,
+          "mean_arterial_pressure": 0.063487,
+          "oxygen_saturation": 0.010212,
+          "pao2": 0.419364,
+          "platelet_count": 0.612524,
+          "respiratory_rate": 0.037958,
+          "systolic_blood_pressure": 0.026012,
+          "temperature": 0.112813,
+          "urine_output_volume": 0.371098
+        },
+        "nonpadded_rows": 10380,
+        "padded_fraction": 0.0
+      },
+      "7": {
+        "missing_fraction_by_clinical_channel": {
+          "bilirubin_total": 0.693545,
+          "creatinine": 0.580154,
+          "diastolic_blood_pressure": 0.024566,
+          "fio2": 0.331888,
+          "glasgow_coma_scale": 0.508189,
+          "heart_rate": 0.01657,
+          "lactate": 0.531985,
+          "mean_arterial_pressure": 0.06262,
+          "oxygen_saturation": 0.009923,
+          "pao2": 0.42052,
+          "platelet_count": 0.611753,
+          "respiratory_rate": 0.037958,
+          "systolic_blood_pressure": 0.025626,
+          "temperature": 0.116667,
+          "urine_output_volume": 0.370135
+        },
+        "nonpadded_rows": 10380,
+        "padded_fraction": 0.0
+      }
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

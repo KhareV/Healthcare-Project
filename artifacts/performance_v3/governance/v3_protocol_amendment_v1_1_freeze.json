@@ -1,0 +1,21 @@
+{
+  "amendment_ref": "configs/performance_v3/protocol_amendment_v1_1.yaml",
+  "amendment_sha256": "4988b23163c3565923c1b87324a7a7176113af8e0d800ef4b8104cecb239bc30",
+  "artifact_version": "performance_v3_protocol_amendment_v1_1_freeze",
+  "corrected_cache_sha256": {
+    "dev_pool": "8d60b092a92544eeb92d7c7844cb6824e7a766c4941d067b985fa2e26c88f1d6",
+    "features_LCE": "826bc1de09964471c8a769630393a7ec8b4f2a38048ebc0f39558e57dbd74486"
+  },
+  "invalidated": [
+    "INVALIDATED_trial_ledger_v1_nullSOFA_leak.jsonl (79 trials)",
+    "learning-curve v1 outputs",
+    "features_*/dev_pool caches built before the fix"
+  ],
+  "null_pattern_audit_ref": "artifacts/performance_v3/data_characterization/null_pattern_audit_v1.json",
+  "null_pattern_audit_sha256": "27edb153772dddf8f438e0d073964b5111454e882ce1d6016d4a7ec5fc247c06",
+  "parent_protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b",
+  "status": "AMENDMENT_FROZEN_BEFORE_ANY_CORRECTED_SELECTION_OR_TEST_ACCESS",
+  "test_accessed": false,
+  "v2_discrepancy_check_ref": "artifacts/performance_v3/data_characterization/v2_support_discrepancy_check_v1.json",
+  "v2_discrepancy_check_sha256": "59edb98c291058874eabb735e4cc349a7aedfdb01c85c47fdc63de590c4c1335"
+}

@@ -1,0 +1,207 @@
+{
+  "all_cross_cohort_subject_and_stay_intersections_zero": true,
+  "artifact_version": "performance_v3_overlap_audit_v1",
+  "blockers": [],
+  "clone_group_count": 0,
+  "clone_groups": [],
+  "cohorts": {
+    "D1": {
+      "stays": 2100,
+      "subjects": 2100,
+      "unique_fingerprints": 2100
+    },
+    "D2": {
+      "stays": 2100,
+      "subjects": 2100,
+      "unique_fingerprints": 2100
+    },
+    "D3": {
+      "stays": 2100,
+      "subjects": 2100,
+      "unique_fingerprints": 2100
+    },
+    "LCE": {
+      "stays": 1500,
+      "subjects": 1500,
+      "unique_fingerprints": 1500
+    },
+    "V1_TEST": {
+      "stays": 300,
+      "subjects": 300,
+      "unique_fingerprints": 300
+    },
+    "V1_TRAIN": {
+      "stays": 1400,
+      "subjects": 1400,
+      "unique_fingerprints": 1400
+    },
+    "V1_VALIDATION": {
+      "stays": 300,
+      "subjects": 300,
+      "unique_fingerprints": 300
+    },
+    "V2_FRESH_TEST": {
+      "stays": 1000,
+      "subjects": 1000,
+      "unique_fingerprints": 1000
+    }
+  },
+  "fold_assignment_policy": "every member of an exact-fingerprint clone group is assigned the fold of its lexicographically first member (performance_v3.splits.clone_safe_folds); clones are never counted as independent subjects",
+  "pairwise": {
+    "D1|D2": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|D3": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|LCE": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|V1_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|V1_TRAIN": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D1|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|D3": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|LCE": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|V1_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|V1_TRAIN": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D2|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D3|LCE": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D3|V1_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D3|V1_TRAIN": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D3|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "D3|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "LCE|V1_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "LCE|V1_TRAIN": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "LCE|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "LCE|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_TEST|V1_TRAIN": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_TEST|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_TEST|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_TRAIN|V1_VALIDATION": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_TRAIN|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    },
+    "V1_VALIDATION|V2_FRESH_TEST": {
+      "fingerprint_intersection": 0,
+      "stay_intersection": 0,
+      "subject_intersection": 0
+    }
+  },
+  "sealed_v3_test_cohort_included": false,
+  "v1_dev_equals_train_plus_validation": true,
+  "v1_dev_manifest_subjects": 1700,
+  "v1_total_subjects": 2000,
+  "verdict": "PASS",
+  "within_cohort_duplicate_fingerprints": {
+    "D1": 0,
+    "D2": 0,
+    "D3": 0,
+    "LCE": 0,
+    "V1_TEST": 0,
+    "V1_TRAIN": 0,
+    "V1_VALIDATION": 0,
+    "V2_FRESH_TEST": 0
+  }
+}

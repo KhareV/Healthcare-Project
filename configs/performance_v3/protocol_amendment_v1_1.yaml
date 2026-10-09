@@ -1,0 +1,65 @@
+# Performance V3 — protocol amendment v1.1
+# Issued BEFORE any model selection result, calibration decision or test access was
+# produced from corrected data. Amends scientific_protocol_v1.yaml only where stated.
+amendment_version: performance_v3_protocol_amendment_v1_1
+status: FROZEN_BEFORE_ANY_V3_SELECTION_OR_TEST_ACCESS
+parent_protocol: configs/performance_v3/scientific_protocol_v1.yaml
+parent_protocol_sha256: fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b
+decision_authority: USER_DELEGATED_AI_PROJECT_DECISION
+test_accessed: false
+
+defect:
+  id: D1_NULL_BASELINE_SOFA_AVAILABILITY_LEAK
+  summary: >
+    The pre-split scientific package stores baseline_sofa only for rows whose 24-hour horizon
+    label is computable (t + 24h <= outtime). Feature B__current_sofa (V2 context vector, all
+    V2 variants B_MIN/B_FULL/B_PLUS_F) was built from that field, so its MISSINGNESS encodes
+    whether the stay ends within 24 hours of the cutoff - future information. SOFA(t) itself is
+    computable from data at or before t for every row (frozen data.synthetic.sofa.sofa_at).
+  evidence_development_data_only:
+    rows_pool: 48859
+    rows_with_null_baseline_sofa: 20656   # 42.3 %
+    null_iff_recovery24_ineligible: true
+    frozen_sofa_at_t_available_rows_fraction: 1.0
+    sofa_at_t_equals_baseline_where_present: true
+    support_eligible_rows_with_null_baseline: 4083
+    support_positive_rate_null_vs_nonnull: [1.0, 0.349]
+    elapsed_time_matched_nan_rate_gap_other_columns_max: 0.021
+    scan_columns: 393
+  affected_frozen_artifacts_not_modified:
+    - artifacts/performance_v2/phase3/selected_models_v2.json   # models trained with the null pattern
+    - V2 final-evaluation harness rows (pre-split baseline_sofa passed with nulls preserved)
+  benchmark_v1_affected: false   # V1 flat feature map excludes current SOFA
+  recovery_tasks_affected_in_evaluation: false   # eligible rows always have non-null baseline_sofa
+
+correction:
+  feature_contract: performance_v3_feature_contract_v1_1
+  current_sofa: "frozen sofa_at(t) total from the SOFA-trend cache for EVERY row; missing = hard failure"
+  consistency_assertion: "equals pre-split baseline_sofa wherever the latter is non-null"
+  forbidden: "any model feature whose missingness is determined by horizon/outtime availability"
+  required_audit: "elapsed-time-matched NaN-rate gap vs recovery24_eligible must be <= 0.05 for every feature column before any model is trained"
+
+invalidated_v3_artifacts:   # built on the pre-correction cache; kept, renamed or flagged, never used
+  - artifacts/performance_v3/phase2/INVALIDATED_trial_ledger_v1_nullSOFA_leak.jsonl
+  - artifacts/performance_v3/data_characterization/learning_curve_*   # to be regenerated
+  - artifacts/performance_v3/cache/features_*  and dev_pool           # to be rebuilt as *_v1_1
+
+comparator_definitions:   # supersede v1 'v2_comparator_contract' wording; frozen V2 artifacts are never refit
+  V2_AS_SERVED:
+    definition: frozen V2 models fed exactly what the V2 serving runtime feeds them - SOFA(t) computed for every row
+    role: PRIMARY basis for promotion decisions (behaviour of the deployed product)
+  V2_AS_EVALUATED:
+    definition: frozen V2 models fed pre-split baseline_sofa with nulls preserved (the V2 offline evaluation harness)
+    role: reported for historical continuity and leak attribution; not a promotion basis
+  V2_RECIPE_REFIT_ON_V3_POOL_REPAIRED:
+    definition: V2 hyperparameters/variants/isotonic recipe refit on the 8000-subject pool with corrected features
+    role: secondary control separating data-size from modelling effects
+  clean_subset_report:
+    definition: rows with >= 24h follow-up available (non-null baseline_sofa); V2_AS_EVALUATED == V2_AS_SERVED there
+    role: leak-free like-for-like secondary comparison
+
+unchanged:
+  - partitions, cohort identities, seeds (derived from protocol v1 hash; cohort configs record the derivation)
+  - cross-fitting design, search budget, selection/tie rules, calibration comparison, threshold rule
+  - promotion rule (paired 98.75 % stay-cluster CI excludes zero; support additionally delta Brier <= +0.003)
+  - negative-result policy and sealed-test governance

@@ -1,0 +1,151 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "icu_time": {
+        "eligible_rows": 12951,
+        "unique_stays": 2100
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 12951,
+        "unique_stays": 2100
+      },
+      "organ_support": {
+        "eligible_rows": 8278,
+        "unique_stays": 1665
+      },
+      "recovery24": {
+        "eligible_rows": 7492,
+        "unique_stays": 1574
+      },
+      "recovery48": {
+        "eligible_rows": 2831,
+        "unique_stays": 708
+      }
+    },
+    "D2": {
+      "icu_time": {
+        "eligible_rows": 12774,
+        "unique_stays": 2100
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 12774,
+        "unique_stays": 2100
+      },
+      "organ_support": {
+        "eligible_rows": 8211,
+        "unique_stays": 1647
+      },
+      "recovery24": {
+        "eligible_rows": 7346,
+        "unique_stays": 1535
+      },
+      "recovery48": {
+        "eligible_rows": 2742,
+        "unique_stays": 681
+      }
+    },
+    "D3": {
+      "icu_time": {
+        "eligible_rows": 12754,
+        "unique_stays": 2100
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 12754,
+        "unique_stays": 2100
+      },
+      "organ_support": {
+        "eligible_rows": 8270,
+        "unique_stays": 1636
+      },
+      "recovery24": {
+        "eligible_rows": 7392,
+        "unique_stays": 1531
+      },
+      "recovery48": {
+        "eligible_rows": 2847,
+        "unique_stays": 687
+      }
+    },
+    "DEV_POOL": {
+      "icu_time": {
+        "eligible_rows": 48859,
+        "unique_stays": 8000
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 48859,
+        "unique_stays": 8000
+      },
+      "organ_support": {
+        "eligible_rows": 31434,
+        "unique_stays": 6298
+      },
+      "recovery24": {
+        "eligible_rows": 28203,
+        "unique_stays": 5912
+      },
+      "recovery48": {
+        "eligible_rows": 10620,
+        "unique_stays": 2626
+      }
+    },
+    "LCE": {
+      "icu_time": {
+        "eligible_rows": 8909,
+        "unique_stays": 1500
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 8909,
+        "unique_stays": 1500
+      },
+      "organ_support": {
+        "eligible_rows": 5630,
+        "unique_stays": 1174
+      },
+      "recovery24": {
+        "eligible_rows": 5004,
+        "unique_stays": 1096
+      },
+      "recovery48": {
+        "eligible_rows": 1741,
+        "unique_stays": 440
+      }
+    },
+    "V1_DEV": {
+      "icu_time": {
+        "eligible_rows": 10380,
+        "unique_stays": 1700
+      },
+      "legal_prediction_rows": {
+        "eligible_rows": 10380,
+        "unique_stays": 1700
+      },
+      "organ_support": {
+        "eligible_rows": 6675,
+        "unique_stays": 1350
+      },
+      "recovery24": {
+        "eligible_rows": 5973,
+        "unique_stays": 1272
+      },
+      "recovery48": {
+        "eligible_rows": 2200,
+        "unique_stays": 550
+      }
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

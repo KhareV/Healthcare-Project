@@ -25,6 +25,13 @@ FINAL_SCOPE = "AUTHORIZED_FINAL_SYNTHETIC_DATA"
 FINAL_IDENTITIES = {
     (20260921, 2000): "SYN",
     (402995653, 1000): "SYN-V2",
+    # Performance V3 development / learning-curve-evaluation cohorts. Seeds are
+    # SHA-256-derived from the frozen protocol (configs/performance_v3/
+    # scientific_protocol_v1.yaml, see src/performance_v3/protocol.py).
+    (2734423652, 2100): "SYN-V3-D1",
+    (1794194598, 2100): "SYN-V3-D2",
+    (2960591411, 2100): "SYN-V3-D3",
+    (3733563462, 1500): "SYN-V3-LCE",
 }
 
 

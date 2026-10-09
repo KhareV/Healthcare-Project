@@ -1,0 +1,661 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.687198,
+        "observed_fraction_nonpadded_bins": 0.312802
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.577362,
+        "observed_fraction_nonpadded_bins": 0.422638
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.023824,
+        "observed_fraction_nonpadded_bins": 0.976176
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.334284,
+        "observed_fraction_nonpadded_bins": 0.665716
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.512025,
+        "observed_fraction_nonpadded_bins": 0.487975
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.012768,
+        "observed_fraction_nonpadded_bins": 0.987232
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.536229,
+        "observed_fraction_nonpadded_bins": 0.463771
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.064363,
+        "observed_fraction_nonpadded_bins": 0.935637
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.009784,
+        "observed_fraction_nonpadded_bins": 0.990216
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.423672,
+        "observed_fraction_nonpadded_bins": 0.576328
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.614691,
+        "observed_fraction_nonpadded_bins": 0.385309
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.037151,
+        "observed_fraction_nonpadded_bins": 0.962849
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.025239,
+        "observed_fraction_nonpadded_bins": 0.974761
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.124767,
+        "observed_fraction_nonpadded_bins": 0.875233
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.38809,
+        "observed_fraction_nonpadded_bins": 0.61191
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    },
+    "D2": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.694024,
+        "observed_fraction_nonpadded_bins": 0.305976
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.582825,
+        "observed_fraction_nonpadded_bins": 0.417175
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.024649,
+        "observed_fraction_nonpadded_bins": 0.975351
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.337059,
+        "observed_fraction_nonpadded_bins": 0.662941
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.512777,
+        "observed_fraction_nonpadded_bins": 0.487223
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.01469,
+        "observed_fraction_nonpadded_bins": 0.98531
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.533527,
+        "observed_fraction_nonpadded_bins": 0.466473
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.061212,
+        "observed_fraction_nonpadded_bins": 0.938788
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.009488,
+        "observed_fraction_nonpadded_bins": 0.990512
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.426155,
+        "observed_fraction_nonpadded_bins": 0.573845
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.615007,
+        "observed_fraction_nonpadded_bins": 0.384993
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.038072,
+        "observed_fraction_nonpadded_bins": 0.961928
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.026327,
+        "observed_fraction_nonpadded_bins": 0.973673
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.124778,
+        "observed_fraction_nonpadded_bins": 0.875222
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.378101,
+        "observed_fraction_nonpadded_bins": 0.621899
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    },
+    "D3": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.693353,
+        "observed_fraction_nonpadded_bins": 0.306647
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.573223,
+        "observed_fraction_nonpadded_bins": 0.426777
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.02472,
+        "observed_fraction_nonpadded_bins": 0.97528
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.336335,
+        "observed_fraction_nonpadded_bins": 0.663665
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.508008,
+        "observed_fraction_nonpadded_bins": 0.491992
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.012632,
+        "observed_fraction_nonpadded_bins": 0.987368
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.531302,
+        "observed_fraction_nonpadded_bins": 0.468698
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.064308,
+        "observed_fraction_nonpadded_bins": 0.935692
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.009924,
+        "observed_fraction_nonpadded_bins": 0.990076
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.424674,
+        "observed_fraction_nonpadded_bins": 0.575326
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.606138,
+        "observed_fraction_nonpadded_bins": 0.393862
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.036905,
+        "observed_fraction_nonpadded_bins": 0.963095
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.024128,
+        "observed_fraction_nonpadded_bins": 0.975872
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.119876,
+        "observed_fraction_nonpadded_bins": 0.880124
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.369903,
+        "observed_fraction_nonpadded_bins": 0.630097
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    },
+    "DEV_POOL": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.693034,
+        "observed_fraction_nonpadded_bins": 0.306966
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.577807,
+        "observed_fraction_nonpadded_bins": 0.422193
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.024275,
+        "observed_fraction_nonpadded_bins": 0.975725
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.335156,
+        "observed_fraction_nonpadded_bins": 0.664844
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.509521,
+        "observed_fraction_nonpadded_bins": 0.490479
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.013862,
+        "observed_fraction_nonpadded_bins": 0.986138
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.534578,
+        "observed_fraction_nonpadded_bins": 0.465422
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.063371,
+        "observed_fraction_nonpadded_bins": 0.936629
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.009808,
+        "observed_fraction_nonpadded_bins": 0.990192
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.424064,
+        "observed_fraction_nonpadded_bins": 0.575936
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.611625,
+        "observed_fraction_nonpadded_bins": 0.388375
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.03755,
+        "observed_fraction_nonpadded_bins": 0.96245
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.025319,
+        "observed_fraction_nonpadded_bins": 0.974681
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.121382,
+        "observed_fraction_nonpadded_bins": 0.878618
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.377069,
+        "observed_fraction_nonpadded_bins": 0.622931
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    },
+    "LCE": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.70035,
+        "observed_fraction_nonpadded_bins": 0.29965
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.582296,
+        "observed_fraction_nonpadded_bins": 0.417704
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.0228,
+        "observed_fraction_nonpadded_bins": 0.9772
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.342012,
+        "observed_fraction_nonpadded_bins": 0.657988
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.510416,
+        "observed_fraction_nonpadded_bins": 0.489584
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.013958,
+        "observed_fraction_nonpadded_bins": 0.986042
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.531528,
+        "observed_fraction_nonpadded_bins": 0.468472
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.064535,
+        "observed_fraction_nonpadded_bins": 0.935465
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.008023,
+        "observed_fraction_nonpadded_bins": 0.991977
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.429434,
+        "observed_fraction_nonpadded_bins": 0.570566
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.620064,
+        "observed_fraction_nonpadded_bins": 0.379936
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.039873,
+        "observed_fraction_nonpadded_bins": 0.960127
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.027516,
+        "observed_fraction_nonpadded_bins": 0.972484
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.126042,
+        "observed_fraction_nonpadded_bins": 0.873958
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.373862,
+        "observed_fraction_nonpadded_bins": 0.626138
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    },
+    "V1_DEV": {
+      "bilirubin_total__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.698721,
+        "observed_fraction_nonpadded_bins": 0.301279
+      },
+      "creatinine__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.57782,
+        "observed_fraction_nonpadded_bins": 0.42218
+      },
+      "diastolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.023833,
+        "observed_fraction_nonpadded_bins": 0.976167
+      },
+      "dobutamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "dopamine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "epinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "fio2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.332452,
+        "observed_fraction_nonpadded_bins": 0.667548
+      },
+      "glasgow_coma_scale__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.504242,
+        "observed_fraction_nonpadded_bins": 0.495758
+      },
+      "heart_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.01572,
+        "observed_fraction_nonpadded_bins": 0.98428
+      },
+      "invasive_ventilation_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "lactate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.537836,
+        "observed_fraction_nonpadded_bins": 0.462164
+      },
+      "mean_arterial_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.063638,
+        "observed_fraction_nonpadded_bins": 0.936362
+      },
+      "norepinephrine_rate": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      },
+      "oxygen_saturation__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.010089,
+        "observed_fraction_nonpadded_bins": 0.989911
+      },
+      "pao2__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.421229,
+        "observed_fraction_nonpadded_bins": 0.578771
+      },
+      "platelet_count__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.610374,
+        "observed_fraction_nonpadded_bins": 0.389626
+      },
+      "respiratory_rate__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.0382,
+        "observed_fraction_nonpadded_bins": 0.9618
+      },
+      "systolic_blood_pressure__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.025645,
+        "observed_fraction_nonpadded_bins": 0.974355
+      },
+      "temperature__latest": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.114824,
+        "observed_fraction_nonpadded_bins": 0.885176
+      },
+      "urine_output_volume__sum": {
+        "channel_type": "clinical_observation",
+        "missing_fraction_nonpadded_bins": 0.37083,
+        "observed_fraction_nonpadded_bins": 0.62917
+      },
+      "vasopressor_on": {
+        "channel_type": "support_state_always_known",
+        "missing_fraction_nonpadded_bins": 0.0,
+        "observed_fraction_nonpadded_bins": 1.0
+      }
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

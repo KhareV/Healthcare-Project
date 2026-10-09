@@ -1,0 +1,141 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "DEV_POOL": {
+      "channels": {
+        "creatinine": {
+          "between_var": 0.00263,
+          "groups": 7055,
+          "icc1": 0.686825,
+          "n": 20626,
+          "within_var": 0.001199
+        },
+        "glasgow_coma_scale": {
+          "between_var": 0.103694,
+          "groups": 7237,
+          "icc1": 0.420093,
+          "n": 23756,
+          "within_var": 0.143142
+        },
+        "heart_rate": {
+          "between_var": 23.404432,
+          "groups": 7997,
+          "icc1": 0.534668,
+          "n": 48173,
+          "within_var": 20.369324
+        },
+        "lactate": {
+          "between_var": 0.007128,
+          "groups": 7161,
+          "icc1": 0.662319,
+          "n": 22785,
+          "within_var": 0.003634
+        },
+        "mean_arterial_pressure": {
+          "between_var": 17.029745,
+          "groups": 7975,
+          "icc1": 0.430684,
+          "n": 45817,
+          "within_var": 22.511404
+        },
+        "oxygen_saturation": {
+          "between_var": 0.376977,
+          "groups": 7993,
+          "icc1": 0.694925,
+          "n": 48382,
+          "within_var": 0.165495
+        },
+        "platelet_count": {
+          "between_var": 235.257342,
+          "groups": 6857,
+          "icc1": 0.531899,
+          "n": 18906,
+          "within_var": 207.039598
+        },
+        "temperature": {
+          "between_var": 0.090025,
+          "groups": 7911,
+          "icc1": 0.572365,
+          "n": 42904,
+          "within_var": 0.067261
+        }
+      },
+      "method": "one-way random-effects ICC(1), unbalanced ANOVA estimator; groups=stays, observations=newest-bin values of that stay's cutoff rows (disjoint 6h bins)"
+    },
+    "LCE": {
+      "channels": {
+        "creatinine": {
+          "between_var": 0.002772,
+          "groups": 1300,
+          "icc1": 0.690549,
+          "n": 3702,
+          "within_var": 0.001242
+        },
+        "glasgow_coma_scale": {
+          "between_var": 0.100335,
+          "groups": 1360,
+          "icc1": 0.408008,
+          "n": 4333,
+          "within_var": 0.145579
+        },
+        "heart_rate": {
+          "between_var": 25.106902,
+          "groups": 1500,
+          "icc1": 0.556059,
+          "n": 8767,
+          "within_var": 20.044635
+        },
+        "lactate": {
+          "between_var": 0.007696,
+          "groups": 1348,
+          "icc1": 0.677245,
+          "n": 4108,
+          "within_var": 0.003668
+        },
+        "mean_arterial_pressure": {
+          "between_var": 17.441408,
+          "groups": 1498,
+          "icc1": 0.429143,
+          "n": 8345,
+          "within_var": 23.200976
+        },
+        "oxygen_saturation": {
+          "between_var": 0.386655,
+          "groups": 1497,
+          "icc1": 0.703743,
+          "n": 8833,
+          "within_var": 0.162771
+        },
+        "platelet_count": {
+          "between_var": 252.503954,
+          "groups": 1277,
+          "icc1": 0.545565,
+          "n": 3411,
+          "within_var": 210.326003
+        },
+        "temperature": {
+          "between_var": 0.097136,
+          "groups": 1485,
+          "icc1": 0.593861,
+          "n": 7823,
+          "within_var": 0.066431
+        }
+      },
+      "method": "one-way random-effects ICC(1), unbalanced ANOVA estimator; groups=stays, observations=newest-bin values of that stay's cutoff rows (disjoint 6h bins)"
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

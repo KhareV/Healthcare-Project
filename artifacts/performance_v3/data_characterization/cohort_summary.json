@@ -1,0 +1,91 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "legal_cutoffs_per_stay_mean": 6.167143,
+      "padding": {
+        "nonpadded_cells": 84117,
+        "padded_bin_fraction": 0.188123,
+        "padded_cells": 19491
+      },
+      "retained_stays": 2100,
+      "rows": 12951,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "D2": {
+      "legal_cutoffs_per_stay_mean": 6.082857,
+      "padding": {
+        "nonpadded_cells": 82843,
+        "padded_bin_fraction": 0.18934,
+        "padded_cells": 19349
+      },
+      "retained_stays": 2100,
+      "rows": 12774,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "D3": {
+      "legal_cutoffs_per_stay_mean": 6.073333,
+      "padding": {
+        "nonpadded_cells": 82727,
+        "padded_bin_fraction": 0.189205,
+        "padded_cells": 19305
+      },
+      "retained_stays": 2100,
+      "rows": 12754,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "DEV_POOL": {
+      "legal_cutoffs_per_stay_mean": 6.107375,
+      "padding": {
+        "nonpadded_cells": 316990,
+        "padded_bin_fraction": 0.189018,
+        "padded_cells": 73882
+      },
+      "retained_stays": 8000,
+      "rows": 48859,
+      "stays_with_legal_cutoff": 8000,
+      "subjects_generated": 8000
+    },
+    "LCE": {
+      "legal_cutoffs_per_stay_mean": 5.939333,
+      "padding": {
+        "nonpadded_cells": 57457,
+        "padded_bin_fraction": 0.193835,
+        "padded_cells": 13815
+      },
+      "retained_stays": 1500,
+      "rows": 8909,
+      "stays_with_legal_cutoff": 1500,
+      "subjects_generated": 1500
+    },
+    "V1_DEV": {
+      "legal_cutoffs_per_stay_mean": 6.105882,
+      "padding": {
+        "nonpadded_cells": 67303,
+        "padded_bin_fraction": 0.189511,
+        "padded_cells": 15737
+      },
+      "retained_stays": 1700,
+      "rows": 10380,
+      "stays_with_legal_cutoff": 1700,
+      "subjects_generated": 1700
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

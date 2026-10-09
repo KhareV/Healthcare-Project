@@ -1,0 +1,746 @@
+{
+  "artifact_version": "performance_v3_v2_support_discrepancy_check_v1",
+  "eligibility_null_leak_diagnostics": {
+    "LCE": {
+      "baseline_sofa_null_fraction": 0.13676731793960922,
+      "frozen_v2_mean_raw_p_not_null": 0.4317929383474613,
+      "frozen_v2_mean_raw_p_null": 0.6627786311236294,
+      "frozen_v2_raw_auprc_all": 0.7811353514282016,
+      "frozen_v2_raw_auprc_not_null_only": 0.4963450392556692,
+      "positive_rate_when_not_null": 0.35102880658436214,
+      "positive_rate_when_null": 1.0,
+      "support_eligible_rows": 5630
+    },
+    "V1_DEV": {
+      "baseline_sofa_null_fraction": 0.13363295880149811,
+      "frozen_v2_mean_raw_p_not_null": 0.42744257584917655,
+      "frozen_v2_mean_raw_p_null": 0.6653713068753615,
+      "frozen_v2_raw_auprc_all": 0.8460686885511381,
+      "frozen_v2_raw_auprc_not_null_only": 0.6074215487358019,
+      "positive_rate_when_not_null": 0.358637385440083,
+      "positive_rate_when_null": 1.0,
+      "support_eligible_rows": 6675
+    },
+    "v2_recipe_retrained_with_v2_matrix_builders_on_v1_dev__scored_on_LCE": {
+      "raw_auprc": 0.8462010671088205,
+      "raw_auroc": 0.846935876888944
+    }
+  },
+  "identity": {
+    "hash_fields": {
+      "cohort/synthetic_cohort_manifest_v2.json/code_identity/source_bundle_sha256": {
+        "lce": "52ffdd2e63e31210",
+        "same": false,
+        "v2": "5b24a9a282a6f55f"
+      },
+      "cohort/synthetic_cohort_manifest_v2.json/cohort_spec_sha256": {
+        "lce": "a77a2c7e8d3fc011",
+        "same": true,
+        "v2": "a77a2c7e8d3fc011"
+      },
+      "cohort/synthetic_cohort_manifest_v2.json/project_scope_sha256": {
+        "lce": "4fcab7045b30b631",
+        "same": true,
+        "v2": "4fcab7045b30b631"
+      },
+      "cohort/synthetic_cohort_manifest_v2.json/retained_cohort_schema_sha256": {
+        "lce": "e746fbc36b09906d",
+        "same": true,
+        "v2": "e746fbc36b09906d"
+      },
+      "cohort/synthetic_cohort_manifest_v2.json/structural_index_schema_sha256": {
+        "lce": "67e9bf99509b548b",
+        "same": true,
+        "v2": "67e9bf99509b548b"
+      },
+      "cohort/synthetic_cohort_manifest_v2.json/timestamp_spec_sha256": {
+        "lce": "c7bd20e6d475ab36",
+        "same": true,
+        "v2": "c7bd20e6d475ab36"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/builder_sha256": {
+        "lce": "19411671e0c8ec93",
+        "same": true,
+        "v2": "19411671e0c8ec93"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/feature_schema_sha256": {
+        "lce": "f5de442cf4d0bf96",
+        "same": true,
+        "v2": "f5de442cf4d0bf96"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/project_scope_sha256_current": {
+        "lce": "09c2b15a05a87f78",
+        "same": true,
+        "v2": "09c2b15a05a87f78"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/structural_index_sha256": {
+        "lce": "ebafb9534fb03872",
+        "same": false,
+        "v2": "42e2e8d222c08721"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/tensor_contract_sha256": {
+        "lce": "d998456430d632b8",
+        "same": true,
+        "v2": "d998456430d632b8"
+      },
+      "features/synthetic_feature_input_manifest_v1.json/timestamp_spec_sha256": {
+        "lce": "de3a424fcd60affd",
+        "same": true,
+        "v2": "de3a424fcd60affd"
+      },
+      "pre_split/phase9_pre_split_manifest_v1.json/dependencies/event_dictionary/sha256": {
+        "lce": "162b4a4ae9b893ce",
+        "same": true,
+        "v2": "162b4a4ae9b893ce"
+      },
+      "pre_split/phase9_pre_split_manifest_v1.json/dependencies/sofa_spec/sha256": {
+        "lce": "1c170bc24ebf6c0c",
+        "same": true,
+        "v2": "1c170bc24ebf6c0c"
+      },
+      "pre_split/phase9_pre_split_manifest_v1.json/dependencies/support_process/sha256": {
+        "lce": "a66faeeae5ac3c95",
+        "same": true,
+        "v2": "a66faeeae5ac3c95"
+      },
+      "raw/synthetic_dataset_manifest_v1.json/generator_code_identity/source_bundle_sha256": {
+        "lce": "52ffdd2e63e31210",
+        "same": false,
+        "v2": "5b24a9a282a6f55f"
+      },
+      "raw/synthetic_dataset_manifest_v1.json/generator_config_sha256": {
+        "lce": "0dd26c48cdd01540",
+        "same": false,
+        "v2": "554e4b681f617fb2"
+      },
+      "raw/synthetic_dataset_manifest_v1.json/generator_config_source_sha256": {
+        "lce": "23c94603a2760224",
+        "same": false,
+        "v2": "0a2a3d78b37502df"
+      },
+      "raw/synthetic_dataset_manifest_v1.json/project_scope_sha256": {
+        "lce": "4fcab7045b30b631",
+        "same": true,
+        "v2": "4fcab7045b30b631"
+      },
+      "raw/synthetic_dataset_manifest_v1.json/raw_schema_sha256": {
+        "lce": "85751b498c7529f4",
+        "same": true,
+        "v2": "85751b498c7529f4"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/code_identity/source_bundle_sha256": {
+        "lce": "52ffdd2e63e31210",
+        "same": false,
+        "v2": "5b24a9a282a6f55f"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/concept_map_sha256": {
+        "lce": "24de193ea0041c12",
+        "same": true,
+        "v2": "24de193ea0041c12"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/feature_dictionary_sha256": {
+        "lce": "b2cf6f95b3f51afc",
+        "same": true,
+        "v2": "b2cf6f95b3f51afc"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/phase4_manifest_sha256": {
+        "lce": "3bcc708e6c0bd606",
+        "same": false,
+        "v2": "eb5b0b3c0316666e"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/processed_schema_sha256": {
+        "lce": "7e0ba3d3789b5b46",
+        "same": true,
+        "v2": "7e0ba3d3789b5b46"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/project_scope_sha256": {
+        "lce": "4fcab7045b30b631",
+        "same": true,
+        "v2": "4fcab7045b30b631"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/provenance_sha256": {
+        "lce": "ed6c06c04533bd8b",
+        "same": true,
+        "v2": "ed6c06c04533bd8b"
+      },
+      "timeline/synthetic_processed_manifest_v1.json/static_schema_sha256": {
+        "lce": "d333c62c53c2d4d7",
+        "same": true,
+        "v2": "d333c62c53c2d4d7"
+      }
+    },
+    "lce_code_commit": "360185e120d758f468a5d78f9e8d374ec8b7168d",
+    "non_count_field_differences": {
+      "cohort/synthetic_cohort_manifest_v2.json": {
+        "/code_identity/git_commit": {
+          "lce": "360185e120d758f468a5d78f9e8d374ec8b7168d",
+          "v2_fresh": "393414f987161a8f2f4cb9728329b2b21021badd"
+        },
+        "/environment_identity/platform": {
+          "lce": "macOS-27.0.1-arm64-arm-64bit",
+          "v2_fresh": "macOS-27.0-arm64-arm-64bit"
+        },
+        "/generation_timestamp_utc": {
+          "lce": "2026-10-11T00:00:00Z",
+          "v2_fresh": "2026-09-24T00:00:00Z"
+        }
+      },
+      "features/synthetic_feature_input_manifest_v1.json": {
+        "/generation_timestamp_utc": {
+          "lce": "2026-10-11T00:00:00Z",
+          "v2_fresh": "2026-09-24T00:00:00Z"
+        }
+      },
+      "pre_split/phase9_pre_split_manifest_v1.json": {
+        "/generation_timestamp_utc": {
+          "lce": "2026-10-11T00:00:00Z",
+          "v2_fresh": "2026-09-24T00:00:00Z"
+        }
+      },
+      "raw/synthetic_dataset_manifest_v1.json": {
+        "/environment_identity/platform": {
+          "lce": "macOS-27.0.1-arm64-arm-64bit",
+          "v2_fresh": "macOS-27.0-arm64-arm-64bit"
+        },
+        "/generation_timestamp_utc": {
+          "lce": "2026-10-11T00:00:00Z",
+          "v2_fresh": "2026-09-24T00:00:00Z"
+        },
+        "/generator_code_identity/git_commit": {
+          "lce": "360185e120d758f468a5d78f9e8d374ec8b7168d",
+          "v2_fresh": "393414f987161a8f2f4cb9728329b2b21021badd"
+        },
+        "/generator_config_version": {
+          "lce": "performance_v3_cohort_lce_v1",
+          "v2_fresh": "performance_v2_fresh_test_cohort_v1"
+        }
+      },
+      "timeline/synthetic_processed_manifest_v1.json": {
+        "/code_identity/git_commit": {
+          "lce": "360185e120d758f468a5d78f9e8d374ec8b7168d",
+          "v2_fresh": "393414f987161a8f2f4cb9728329b2b21021badd"
+        },
+        "/environment_identity/platform": {
+          "lce": "macOS-27.0.1-arm64-arm-64bit",
+          "v2_fresh": "macOS-27.0-arm64-arm-64bit"
+        },
+        "/generation_timestamp_utc": {
+          "lce": "2026-10-11T00:00:00Z",
+          "v2_fresh": "2026-09-24T00:00:00Z"
+        }
+      }
+    },
+    "v2_fresh_code_commit": "393414f987161a8f2f4cb9728329b2b21021badd (from manifests)"
+  },
+  "scores": {
+    "D1": {
+      "icu_stay_time": {
+        "n_rows": 12951,
+        "weighted_median_ae_hours": 5.319700209723422
+      },
+      "n_rows": 12951,
+      "n_subjects": 2100,
+      "organ_support": {
+        "cal_auprc": 0.6983418129490213,
+        "cal_auroc": 0.8020929804590524,
+        "cal_brier": 0.18695215451315075,
+        "f1_at_frozen_threshold": 0.688214590461154,
+        "n_rows": 8278,
+        "n_stays": 1665,
+        "prevalence_rows": 0.4187001691229766,
+        "prevalence_stay_balanced": 0.4003886787220121,
+        "raw_auprc": 0.750462963238653,
+        "raw_auroc": 0.8094389051533055,
+        "raw_brier": 0.1949321496745533,
+        "threshold": 0.39781983118092895
+      },
+      "recovery24": {
+        "mae": 1.0356016556757461,
+        "n_rows": 7492,
+        "n_stays": 1574
+      },
+      "recovery48": {
+        "mae": 1.342750976353301,
+        "n_rows": 2831,
+        "n_stays": 708
+      }
+    },
+    "LCE": {
+      "icu_stay_time": {
+        "n_rows": 8909,
+        "weighted_median_ae_hours": 5.1453061156625175
+      },
+      "n_rows": 8909,
+      "n_subjects": 1500,
+      "organ_support": {
+        "cal_auprc": 0.7320258154820384,
+        "cal_auroc": 0.8084079750420854,
+        "cal_brier": 0.18331939822705481,
+        "f1_at_frozen_threshold": 0.7069615796872768,
+        "n_rows": 5630,
+        "n_stays": 1174,
+        "prevalence_rows": 0.4397868561278863,
+        "prevalence_stay_balanced": 0.4285561566013014,
+        "raw_auprc": 0.7811353514282016,
+        "raw_auroc": 0.8171397125618967,
+        "raw_brier": 0.19378688578564382,
+        "threshold": 0.39781983118092895
+      },
+      "recovery24": {
+        "mae": 1.057783535845869,
+        "n_rows": 5004,
+        "n_stays": 1096
+      },
+      "recovery48": {
+        "mae": 1.3635280796171227,
+        "n_rows": 1741,
+        "n_stays": 440
+      }
+    },
+    "V1_DEV": {
+      "icu_stay_time": {
+        "n_rows": 10380,
+        "weighted_median_ae_hours": 5.1189304020291075
+      },
+      "n_rows": 10380,
+      "n_subjects": 1700,
+      "organ_support": {
+        "cal_auprc": 0.7932146087474916,
+        "cal_auroc": 0.8647670444083916,
+        "cal_brier": 0.15924230515225052,
+        "f1_at_frozen_threshold": 0.7682494998252886,
+        "n_rows": 6675,
+        "n_stays": 1350,
+        "prevalence_rows": 0.4443445692883895,
+        "prevalence_stay_balanced": 0.43365164876275986,
+        "raw_auprc": 0.8460686885511381,
+        "raw_auroc": 0.87369570217479,
+        "raw_brier": 0.1835927278065047,
+        "threshold": 0.39781983118092895
+      },
+      "recovery24": {
+        "mae": 0.7738257162930335,
+        "n_rows": 5973,
+        "n_stays": 1272
+      },
+      "recovery48": {
+        "mae": 1.0339225929890712,
+        "n_rows": 2200,
+        "n_stays": 550
+      }
+    }
+  },
+  "structure": {
+    "D1": {
+      "age_mean": 54.47761904761905,
+      "age_sd": 20.760011332403987,
+      "episode_hours_mean": 65.62424286523809,
+      "episode_hours_median": 60.937334,
+      "episode_hours_p10_p90": [
+        39.3639199,
+        99.08080770000001
+      ],
+      "grid_index_share": {
+        "0": 0.16214964095436646,
+        "1": 0.1523434483823643,
+        "10": 0.023859161454713923,
+        "11": 0.018376959308161533,
+        "2": 0.13890819241757393,
+        "3": 0.12153501660103468,
+        "4": 0.1011504903096286,
+        "5": 0.0841633850667902,
+        "6": 0.06679020925025095,
+        "7": 0.054667593236043546,
+        "8": 0.042776619566056676,
+        "9": 0.03327928345301521
+      },
+      "n_rows": 12951,
+      "n_stays": 2100,
+      "obs_fraction_by_bin": [
+        0.7933134380000642,
+        0.7924646338263773,
+        0.7920917409540582,
+        0.792180663621034,
+        0.7917425019578589,
+        0.7914557066745355,
+        0.7911211121773302,
+        0.7915880737283771
+      ],
+      "obs_fraction_by_channel": {
+        "bilirubin_total__latest": 0.31280240617235516,
+        "creatinine__latest": 0.4226375167920872,
+        "diastolic_blood_pressure__latest": 0.976176040514997,
+        "dobutamine_rate": 1.0,
+        "dopamine_rate": 1.0,
+        "epinephrine_rate": 1.0,
+        "fio2__latest": 0.6657156103998003,
+        "glasgow_coma_scale__latest": 0.4879750823258081,
+        "heart_rate__latest": 0.9872320696173187,
+        "invasive_ventilation_on": 1.0,
+        "lactate__latest": 0.46377070033405854,
+        "mean_arterial_pressure__latest": 0.9356372671398172,
+        "norepinephrine_rate": 1.0,
+        "oxygen_saturation__latest": 0.990216008654612,
+        "pao2__latest": 0.5763282095176956,
+        "platelet_count__latest": 0.3853085583175815,
+        "respiratory_rate__latest": 0.9628493645755317,
+        "systolic_blood_pressure__latest": 0.9747613443180332,
+        "temperature__latest": 0.8752333059904657,
+        "urine_output_volume__sum": 0.6119096021018343,
+        "vasopressor_on": 1.0
+      },
+      "rows_per_stay": 6.167142857142857,
+      "sex_share": {
+        "FEMALE": 0.5142857142857142,
+        "MALE": 0.4857142857142857
+      },
+      "subtype_share": {
+        "SYNTHETIC_ARRHYTHMIA": 0.2357142857142857,
+        "SYNTHETIC_HF": 0.40714285714285714,
+        "SYNTHETIC_ISCHEMIC": 0.35714285714285715
+      },
+      "support_on_at_t_fraction": {
+        "invasive_ventilation_on": 0.08099760636244306,
+        "vasopressor_on": 0.2653076982472396
+      }
+    },
+    "D2": {
+      "age_mean": 54.31952380952381,
+      "age_sd": 21.459048480256634,
+      "episode_hours_mean": 64.90710690714286,
+      "episode_hours_median": 60.537442,
+      "episode_hours_p10_p90": [
+        38.099988100000004,
+        99.687698
+      ],
+      "grid_index_share": {
+        "0": 0.16439643024894315,
+        "1": 0.1529669641459214,
+        "10": 0.025912008767809615,
+        "11": 0.018709879442617816,
+        "2": 0.13903240958196336,
+        "3": 0.12016596211053703,
+        "4": 0.10122123062470643,
+        "5": 0.08407703147017379,
+        "6": 0.06622827618600281,
+        "7": 0.05331141380930014,
+        "8": 0.04141224361985282,
+        "9": 0.0325661499921716
+      },
+      "n_rows": 12774,
+      "n_stays": 2100,
+      "obs_fraction_by_bin": [
+        0.7923390469147347,
+        0.7921329822251202,
+        0.7916994320663704,
+        0.7912908089973414,
+        0.7910972436570614,
+        0.7910338708834947,
+        0.7914961193495013,
+        0.7916526873783095
+      ],
+      "obs_fraction_by_channel": {
+        "bilirubin_total__latest": 0.3059763649312555,
+        "creatinine__latest": 0.4171746556739857,
+        "diastolic_blood_pressure__latest": 0.975350965078522,
+        "dobutamine_rate": 1.0,
+        "dopamine_rate": 1.0,
+        "epinephrine_rate": 1.0,
+        "fio2__latest": 0.662940743333776,
+        "glasgow_coma_scale__latest": 0.48722281906739257,
+        "heart_rate__latest": 0.9853095614596284,
+        "invasive_ventilation_on": 1.0,
+        "lactate__latest": 0.4664727255169417,
+        "mean_arterial_pressure__latest": 0.9387878275774658,
+        "norepinephrine_rate": 1.0,
+        "oxygen_saturation__latest": 0.9905121736296367,
+        "pao2__latest": 0.5738445010441438,
+        "platelet_count__latest": 0.38499330058061637,
+        "respiratory_rate__latest": 0.9619279842593822,
+        "systolic_blood_pressure__latest": 0.9736730924761295,
+        "temperature__latest": 0.8752218051012155,
+        "urine_output_volume__sum": 0.621899255217701,
+        "vasopressor_on": 1.0
+      },
+      "rows_per_stay": 6.082857142857143,
+      "sex_share": {
+        "FEMALE": 0.49952380952380954,
+        "MALE": 0.5004761904761905
+      },
+      "subtype_share": {
+        "SYNTHETIC_ARRHYTHMIA": 0.24095238095238095,
+        "SYNTHETIC_HF": 0.4104761904761905,
+        "SYNTHETIC_ISCHEMIC": 0.3485714285714286
+      },
+      "support_on_at_t_fraction": {
+        "invasive_ventilation_on": 0.08290277125410991,
+        "vasopressor_on": 0.26859245342101146
+      }
+    },
+    "D3": {
+      "age_mean": 54.231904761904765,
+      "age_sd": 21.18881176448858,
+      "episode_hours_mean": 65.30884507809525,
+      "episode_hours_median": 60.71018,
+      "episode_hours_p10_p90": [
+        38.3014332,
+        99.37497760000002
+      ],
+      "grid_index_share": {
+        "0": 0.16465422612513722,
+        "1": 0.1532068370707229,
+        "10": 0.024776540693115884,
+        "11": 0.019209659714599342,
+        "2": 0.13768229575035282,
+        "3": 0.12004077152265956,
+        "4": 0.1006742982593696,
+        "5": 0.08436568919554649,
+        "6": 0.06735141916261565,
+        "7": 0.05386545397522346,
+        "8": 0.04202603104908264,
+        "9": 0.03214677748157441
+      },
+      "n_rows": 12754,
+      "n_stays": 2100,
+      "obs_fraction_by_bin": [
+        0.7939176409525355,
+        0.7937445139345766,
+        0.793957307060717,
+        0.7934064558805994,
+        0.7931218590618871,
+        0.7937005757296749,
+        0.7937416459448087,
+        0.7932226677717602
+      ],
+      "obs_fraction_by_channel": {
+        "bilirubin_total__latest": 0.3066471647708729,
+        "creatinine__latest": 0.426777231133729,
+        "diastolic_blood_pressure__latest": 0.9752801382861702,
+        "dobutamine_rate": 1.0,
+        "dopamine_rate": 1.0,
+        "epinephrine_rate": 1.0,
+        "fio2__latest": 0.6636648252686548,
+        "glasgow_coma_scale__latest": 0.4919917318408742,
+        "heart_rate__latest": 0.9873680902244732,
+        "invasive_ventilation_on": 1.0,
+        "lactate__latest": 0.46869824845576413,
+        "mean_arterial_pressure__latest": 0.9356920956882275,
+        "norepinephrine_rate": 1.0,
+        "oxygen_saturation__latest": 0.9900757914586532,
+        "pao2__latest": 0.5753260725035357,
+        "platelet_count__latest": 0.3938617380057297,
+        "respiratory_rate__latest": 0.9630954827323607,
+        "systolic_blood_pressure__latest": 0.975872447931147,
+        "temperature__latest": 0.8801237806278482,
+        "urine_output_volume__sum": 0.630096582735987,
+        "vasopressor_on": 1.0
+      },
+      "rows_per_stay": 6.073333333333333,
+      "sex_share": {
+        "FEMALE": 0.5238095238095238,
+        "MALE": 0.47619047619047616
+      },
+      "subtype_share": {
+        "SYNTHETIC_ARRHYTHMIA": 0.26857142857142857,
+        "SYNTHETIC_HF": 0.38761904761904764,
+        "SYNTHETIC_ISCHEMIC": 0.3438095238095238
+      },
+      "support_on_at_t_fraction": {
+        "invasive_ventilation_on": 0.08271914693429512,
+        "vasopressor_on": 0.2737180492394543
+      }
+    },
+    "LCE": {
+      "age_mean": 53.852666666666664,
+      "age_sd": 21.556691758142193,
+      "episode_hours_mean": 63.98428774133333,
+      "episode_hours_median": 60.140010000000004,
+      "episode_hours_p10_p90": [
+        38.1453633,
+        95.4745414
+      ],
+      "grid_index_share": {
+        "0": 0.1683690649904591,
+        "1": 0.1572567067010888,
+        "10": 0.021663486362105737,
+        "11": 0.01638792232573802,
+        "2": 0.1412055225053317,
+        "3": 0.1230216634863621,
+        "4": 0.10360309799079583,
+        "5": 0.08485800875519138,
+        "6": 0.06644965764956785,
+        "7": 0.049388259063868,
+        "8": 0.03782691660118981,
+        "9": 0.029969693568301717
+      },
+      "n_rows": 8909,
+      "n_stays": 1500,
+      "obs_fraction_by_bin": [
+        0.7921912059843116,
+        0.7925413533834441,
+        0.7916904444866918,
+        0.790974940387787,
+        0.7904526722575546,
+        0.7902121450218528,
+        0.7901212791772535,
+        0.790319046015495
+      ],
+      "obs_fraction_by_channel": {
+        "bilirubin_total__latest": 0.29965017317298154,
+        "creatinine__latest": 0.4177036740518997,
+        "diastolic_blood_pressure__latest": 0.9772003411246671,
+        "dobutamine_rate": 1.0,
+        "dopamine_rate": 1.0,
+        "epinephrine_rate": 1.0,
+        "fio2__latest": 0.657987712550255,
+        "glasgow_coma_scale__latest": 0.4895835146283308,
+        "heart_rate__latest": 0.9860417355587657,
+        "invasive_ventilation_on": 1.0,
+        "lactate__latest": 0.46847207476895764,
+        "mean_arterial_pressure__latest": 0.9354647823589815,
+        "norepinephrine_rate": 1.0,
+        "oxygen_saturation__latest": 0.9919766085942531,
+        "pao2__latest": 0.5705658144351428,
+        "platelet_count__latest": 0.3799363001897071,
+        "respiratory_rate__latest": 0.9601267034477957,
+        "systolic_blood_pressure__latest": 0.9724837704718311,
+        "temperature__latest": 0.8739579163548393,
+        "urine_output_volume__sum": 0.6261378074037977,
+        "vasopressor_on": 1.0
+      },
+      "rows_per_stay": 5.939333333333333,
+      "sex_share": {
+        "FEMALE": 0.5153333333333333,
+        "MALE": 0.4846666666666667
+      },
+      "subtype_share": {
+        "SYNTHETIC_ARRHYTHMIA": 0.24933333333333332,
+        "SYNTHETIC_HF": 0.406,
+        "SYNTHETIC_ISCHEMIC": 0.3446666666666667
+      },
+      "support_on_at_t_fraction": {
+        "invasive_ventilation_on": 0.08238859580199798,
+        "vasopressor_on": 0.2699517342013694
+      }
+    },
+    "V2_FRESH(exposed; outcome-free fields only)": {
+      "age_mean": 53.371,
+      "age_sd": 21.521230424861866,
+      "episode_hours_mean": 65.192822755,
+      "episode_hours_median": 60.132646,
+      "episode_hours_p10_p90": [
+        38.690199,
+        99.459222
+      ],
+      "grid_index_share": {
+        "0": 0.1643925694558606,
+        "1": 0.1551865855663324,
+        "10": 0.02449449284892323,
+        "11": 0.019069538056879828,
+        "2": 0.13776097320401118,
+        "3": 0.12000657570277823,
+        "4": 0.10438928160447147,
+        "5": 0.0830182475752096,
+        "6": 0.06625020549071182,
+        "7": 0.05244122965641953,
+        "8": 0.042084497780700315,
+        "9": 0.03090580305770179
+      },
+      "n_rows": 6083,
+      "n_stays": 1000,
+      "obs_fraction_by_bin": [
+        0.7933544479635779,
+        0.7923140173973326,
+        0.7923468976863443,
+        0.7921268841984778,
+        0.7918398659808894,
+        0.7908065412585964,
+        0.7911901239206605,
+        0.7912527496614041
+      ],
+      "obs_fraction_by_channel": {
+        "bilirubin_total__latest": 0.30383503271952517,
+        "creatinine__latest": 0.4208136762542485,
+        "diastolic_blood_pressure__latest": 0.9704256074671537,
+        "dobutamine_rate": 1.0,
+        "dopamine_rate": 1.0,
+        "epinephrine_rate": 1.0,
+        "fio2__latest": 0.6572566326789429,
+        "glasgow_coma_scale__latest": 0.4803936488611576,
+        "heart_rate__latest": 0.9855425353827424,
+        "invasive_ventilation_on": 1.0,
+        "lactate__latest": 0.4649469892964034,
+        "mean_arterial_pressure__latest": 0.9352711408715061,
+        "norepinephrine_rate": 1.0,
+        "oxygen_saturation__latest": 0.9920103485009892,
+        "pao2__latest": 0.5792116877187643,
+        "platelet_count__latest": 0.3924313904530006,
+        "respiratory_rate__latest": 0.9616243088317354,
+        "systolic_blood_pressure__latest": 0.9776289758027698,
+        "temperature__latest": 0.8845178308730279,
+        "urine_output_volume__sum": 0.6201745041343276,
+        "vasopressor_on": 1.0
+      },
+      "rows_per_stay": 6.083,
+      "sex_share": {
+        "FEMALE": 0.484,
+        "MALE": 0.516
+      },
+      "subtype_share": {
+        "SYNTHETIC_ARRHYTHMIA": 0.254,
+        "SYNTHETIC_HF": 0.399,
+        "SYNTHETIC_ISCHEMIC": 0.347
+      },
+      "support_on_at_t_fraction": {
+        "invasive_ventilation_on": 0.07890843333881309,
+        "vasopressor_on": 0.2715765247410817
+      }
+    }
+  },
+  "structure_vs_v2_fresh": {
+    "D1": {
+      "age_mean_diff": -1.1066190476190485,
+      "episode_hours_mean_diff": -0.43142011023809346,
+      "max_abs_obs_fraction_diff": 0.009284524882562262,
+      "mean_abs_obs_fraction_diff": 0.0032979415245574135,
+      "rows_per_stay_diff": -0.08414285714285707,
+      "support_on_at_t_diff": {
+        "invasive_ventilation_on": -0.0020891730236299727,
+        "vasopressor_on": 0.0062688264938420835
+      }
+    },
+    "D2": {
+      "age_mean_diff": -0.948523809523806,
+      "episode_hours_mean_diff": 0.28571584785713355,
+      "max_abs_obs_fraction_diff": 0.009296025771812433,
+      "mean_abs_obs_fraction_diff": 0.0027656273877081678,
+      "rows_per_stay_diff": 0.00014285714285744433,
+      "support_on_at_t_diff": {
+        "invasive_ventilation_on": -0.003994337915296825,
+        "vasopressor_on": 0.002984071320070225
+      }
+    },
+    "D3": {
+      "age_mean_diff": -0.860904761904763,
+      "episode_hours_mean_diff": -0.11602232309525107,
+      "max_abs_obs_fraction_diff": 0.011598082979716595,
+      "mean_abs_obs_fraction_diff": 0.0029727910745936735,
+      "rows_per_stay_diff": 0.009666666666666934,
+      "support_on_at_t_diff": {
+        "invasive_ventilation_on": -0.003810713595482032,
+        "vasopressor_on": -0.0021415244983726267
+      }
+    },
+    "LCE": {
+      "age_mean_diff": -0.481666666666662,
+      "episode_hours_mean_diff": 1.208535013666662,
+      "max_abs_obs_fraction_diff": 0.012495090263293485,
+      "mean_abs_obs_fraction_diff": 0.0034547238160539235,
+      "rows_per_stay_diff": 0.14366666666666728,
+      "support_on_at_t_diff": {
+        "invasive_ventilation_on": -0.003480162463184888,
+        "vasopressor_on": 0.001624790539712262
+      }
+    }
+  }
+}

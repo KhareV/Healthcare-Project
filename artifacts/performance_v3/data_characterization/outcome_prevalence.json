@@ -1,0 +1,121 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "censored_rows": 4322,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4322,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4812,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 351,
+        "INTERNAL_POSITIVE_INITIATION": 3466
+      },
+      "eligible_rows": 8278,
+      "eligible_stays": 1665,
+      "negative_rows": 4812,
+      "not_at_risk_rows": 351,
+      "positive_rows": 3466,
+      "row_prevalence": 0.4187,
+      "stay_balanced_prevalence": 0.400389,
+      "stays_with_any_positive": 1001
+    },
+    "D2": {
+      "censored_rows": 4230,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4230,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4664,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 333,
+        "INTERNAL_POSITIVE_INITIATION": 3547
+      },
+      "eligible_rows": 8211,
+      "eligible_stays": 1647,
+      "negative_rows": 4664,
+      "not_at_risk_rows": 333,
+      "positive_rows": 3547,
+      "row_prevalence": 0.431981,
+      "stay_balanced_prevalence": 0.425588,
+      "stays_with_any_positive": 1017
+    },
+    "D3": {
+      "censored_rows": 4160,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 4160,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 4621,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 324,
+        "INTERNAL_POSITIVE_INITIATION": 3649
+      },
+      "eligible_rows": 8270,
+      "eligible_stays": 1636,
+      "negative_rows": 4621,
+      "not_at_risk_rows": 324,
+      "positive_rows": 3649,
+      "row_prevalence": 0.441233,
+      "stay_balanced_prevalence": 0.430737,
+      "stays_with_any_positive": 1050
+    },
+    "DEV_POOL": {
+      "censored_rows": 16135,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 16135,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 17806,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 1290,
+        "INTERNAL_POSITIVE_INITIATION": 13628
+      },
+      "eligible_rows": 31434,
+      "eligible_stays": 6298,
+      "negative_rows": 17806,
+      "not_at_risk_rows": 1290,
+      "positive_rows": 13628,
+      "row_prevalence": 0.433543,
+      "stay_balanced_prevalence": 0.421992,
+      "stays_with_any_positive": 3920
+    },
+    "LCE": {
+      "censored_rows": 3024,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 3024,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 3154,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 255,
+        "INTERNAL_POSITIVE_INITIATION": 2476
+      },
+      "eligible_rows": 5630,
+      "eligible_stays": 1174,
+      "negative_rows": 3154,
+      "not_at_risk_rows": 255,
+      "positive_rows": 2476,
+      "row_prevalence": 0.439787,
+      "stay_balanced_prevalence": 0.428556,
+      "stays_with_any_positive": 724
+    },
+    "V1_DEV": {
+      "censored_rows": 3423,
+      "disposition_rows": {
+        "INTERNAL_CENSORED_EARLY_EXIT_NO_INITIATION": 3423,
+        "INTERNAL_NEGATIVE_FULL_FOLLOWUP": 3709,
+        "INTERNAL_NOT_AT_RISK_BOTH_COMPONENTS_ON": 282,
+        "INTERNAL_POSITIVE_INITIATION": 2966
+      },
+      "eligible_rows": 6675,
+      "eligible_stays": 1350,
+      "negative_rows": 3709,
+      "not_at_risk_rows": 282,
+      "positive_rows": 2966,
+      "row_prevalence": 0.444345,
+      "stay_balanced_prevalence": 0.433652,
+      "stays_with_any_positive": 852
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

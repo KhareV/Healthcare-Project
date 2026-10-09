@@ -179,9 +179,32 @@ def _iter_rows(source: RowSource) -> Iterator[Mapping[str, object]]:
     return iter(source() if callable(source) else source)
 
 
+def current_sofa_at_t(row: Mapping[str, object], trend: Optional[Mapping[str, object]]) -> float:
+    """SOFA(t) for ANY row, from the frozen sofa_at(t) value in the trend record.
+
+    Defect D1 (protocol amendment v1.1): the pre-split package stores baseline_sofa only for rows
+    whose 24h horizon is computable, so using that field's NULL pattern leaks future availability.
+    SOFA(t) depends on data <= t only and exists for every legal cutoff; absence is a hard error.
+    """
+
+    base = row.get("baseline_sofa")
+    t_value = None if not trend else trend.get("t")
+    if t_value is None:
+        if base is None:
+            raise FeatureCacheError(
+                "current SOFA(t) unavailable for stay %s at %s: refusing a null current_sofa feature (defect D1)"
+                % (row.get("stay_id"), row.get("prediction_time"))
+            )
+        return float(base)
+    if base is not None and abs(float(base) - float(t_value)) > 1e-9:
+        raise FeatureCacheError("baseline_sofa disagrees with frozen sofa_at(t) for %s" % (row.get("stay_id"),))
+    return float(t_value)
+
+
 def _row_features(row, sofa_trends, sofa_components) -> Dict[str, float]:
     key = (row["stay_id"], row["prediction_time"])
-    features = build_all_groups(row, baseline_sofa=row.get("baseline_sofa"), sofa_trend=(sofa_trends or {}).get(key, {}))
+    trend = (sofa_trends or {}).get(key, {})
+    features = build_all_groups(row, baseline_sofa=current_sofa_at_t(row, trend), sofa_trend=trend)
     if sofa_components is not None:
         features.update(sofa_component_features(sofa_components.get(key)))
     return features

@@ -1,0 +1,103 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.235714,
+        "stays": 495
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.407143,
+        "stays": 855
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.357143,
+        "stays": 750
+      }
+    },
+    "D2": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.240952,
+        "stays": 506
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.410476,
+        "stays": 862
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.348571,
+        "stays": 732
+      }
+    },
+    "D3": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.268571,
+        "stays": 564
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.387619,
+        "stays": 814
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.34381,
+        "stays": 722
+      }
+    },
+    "DEV_POOL": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.24925,
+        "stays": 1994
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.401375,
+        "stays": 3211
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.349375,
+        "stays": 2795
+      }
+    },
+    "LCE": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.249333,
+        "stays": 374
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.406,
+        "stays": 609
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.344667,
+        "stays": 517
+      }
+    },
+    "V1_DEV": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "fraction": 0.252353,
+        "stays": 429
+      },
+      "SYNTHETIC_HF": {
+        "fraction": 0.4,
+        "stays": 680
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "fraction": 0.347647,
+        "stays": 591
+      }
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

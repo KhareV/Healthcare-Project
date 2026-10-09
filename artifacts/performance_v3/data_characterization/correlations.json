@@ -1,0 +1,347 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "DEV_POOL": {
+      "basis": "newest 6h bin of each cutoff row, genuine observations only, pairwise-complete, n>=200",
+      "clinically_motivated_pairs": [
+        {
+          "a": "mean_arterial_pressure",
+          "b": "systolic_blood_pressure",
+          "n_rows": 44661,
+          "pearson_r": 0.512608
+        },
+        {
+          "a": "systolic_blood_pressure",
+          "b": "diastolic_blood_pressure",
+          "n_rows": 46429,
+          "pearson_r": 0.448575
+        },
+        {
+          "a": "pao2",
+          "b": "fio2",
+          "n_rows": 18773,
+          "pearson_r": -0.507818
+        },
+        {
+          "a": "pao2",
+          "b": "oxygen_saturation",
+          "n_rows": 27898,
+          "pearson_r": 0.506276
+        },
+        {
+          "a": "creatinine",
+          "b": "urine_output_volume",
+          "n_rows": 12967,
+          "pearson_r": 0.006103
+        },
+        {
+          "a": "lactate",
+          "b": "mean_arterial_pressure",
+          "n_rows": 21401,
+          "pearson_r": -0.625427
+        },
+        {
+          "a": "heart_rate",
+          "b": "lactate",
+          "n_rows": 22473,
+          "pearson_r": 0.706937
+        },
+        {
+          "a": "respiratory_rate",
+          "b": "oxygen_saturation",
+          "n_rows": 46560,
+          "pearson_r": -0.49276
+        },
+        {
+          "a": "creatinine",
+          "b": "bilirubin_total",
+          "n_rows": 6424,
+          "pearson_r": 0.614872
+        },
+        {
+          "a": "platelet_count",
+          "b": "bilirubin_total",
+          "n_rows": 5890,
+          "pearson_r": -0.723857
+        },
+        {
+          "a": "glasgow_coma_scale",
+          "b": "lactate",
+          "n_rows": 11153,
+          "pearson_r": -0.34954
+        }
+      ],
+      "pair_count_evaluated": 105,
+      "top_abs_pairs": [
+        {
+          "a": "fio2",
+          "b": "oxygen_saturation",
+          "n_rows": 32261,
+          "pearson_r": -0.834092
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "temperature",
+          "n_rows": 13324,
+          "pearson_r": 0.750129
+        },
+        {
+          "a": "platelet_count",
+          "b": "bilirubin_total",
+          "n_rows": 5890,
+          "pearson_r": -0.723857
+        },
+        {
+          "a": "heart_rate",
+          "b": "lactate",
+          "n_rows": 22473,
+          "pearson_r": 0.706937
+        },
+        {
+          "a": "platelet_count",
+          "b": "temperature",
+          "n_rows": 16654,
+          "pearson_r": -0.651573
+        },
+        {
+          "a": "systolic_blood_pressure",
+          "b": "lactate",
+          "n_rows": 22218,
+          "pearson_r": -0.635457
+        },
+        {
+          "a": "mean_arterial_pressure",
+          "b": "lactate",
+          "n_rows": 21401,
+          "pearson_r": -0.625427
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "creatinine",
+          "n_rows": 6424,
+          "pearson_r": 0.614872
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "lactate",
+          "n_rows": 7092,
+          "pearson_r": 0.606927
+        },
+        {
+          "a": "heart_rate",
+          "b": "systolic_blood_pressure",
+          "n_rows": 46952,
+          "pearson_r": -0.576699
+        },
+        {
+          "a": "mean_arterial_pressure",
+          "b": "heart_rate",
+          "n_rows": 45178,
+          "pearson_r": -0.571078
+        },
+        {
+          "a": "pao2",
+          "b": "respiratory_rate",
+          "n_rows": 27169,
+          "pearson_r": -0.562876
+        },
+        {
+          "a": "creatinine",
+          "b": "temperature",
+          "n_rows": 18150,
+          "pearson_r": 0.553742
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "heart_rate",
+          "n_rows": 14861,
+          "pearson_r": 0.551594
+        },
+        {
+          "a": "pao2",
+          "b": "bilirubin_total",
+          "n_rows": 8721,
+          "pearson_r": -0.546545
+        }
+      ]
+    },
+    "LCE": {
+      "basis": "newest 6h bin of each cutoff row, genuine observations only, pairwise-complete, n>=200",
+      "clinically_motivated_pairs": [
+        {
+          "a": "mean_arterial_pressure",
+          "b": "systolic_blood_pressure",
+          "n_rows": 8099,
+          "pearson_r": 0.526174
+        },
+        {
+          "a": "systolic_blood_pressure",
+          "b": "diastolic_blood_pressure",
+          "n_rows": 8438,
+          "pearson_r": 0.462526
+        },
+        {
+          "a": "pao2",
+          "b": "fio2",
+          "n_rows": 3324,
+          "pearson_r": -0.513543
+        },
+        {
+          "a": "pao2",
+          "b": "oxygen_saturation",
+          "n_rows": 5031,
+          "pearson_r": 0.512944
+        },
+        {
+          "a": "creatinine",
+          "b": "urine_output_volume",
+          "n_rows": 2319,
+          "pearson_r": -0.003163
+        },
+        {
+          "a": "lactate",
+          "b": "mean_arterial_pressure",
+          "n_rows": 3862,
+          "pearson_r": -0.635407
+        },
+        {
+          "a": "heart_rate",
+          "b": "lactate",
+          "n_rows": 4038,
+          "pearson_r": 0.726139
+        },
+        {
+          "a": "respiratory_rate",
+          "b": "oxygen_saturation",
+          "n_rows": 8485,
+          "pearson_r": -0.495936
+        },
+        {
+          "a": "creatinine",
+          "b": "bilirubin_total",
+          "n_rows": 1175,
+          "pearson_r": 0.625263
+        },
+        {
+          "a": "platelet_count",
+          "b": "bilirubin_total",
+          "n_rows": 1052,
+          "pearson_r": -0.70931
+        },
+        {
+          "a": "glasgow_coma_scale",
+          "b": "lactate",
+          "n_rows": 1965,
+          "pearson_r": -0.303407
+        }
+      ],
+      "pair_count_evaluated": 105,
+      "top_abs_pairs": [
+        {
+          "a": "fio2",
+          "b": "oxygen_saturation",
+          "n_rows": 5810,
+          "pearson_r": -0.837409
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "temperature",
+          "n_rows": 2405,
+          "pearson_r": 0.761686
+        },
+        {
+          "a": "heart_rate",
+          "b": "lactate",
+          "n_rows": 4038,
+          "pearson_r": 0.726139
+        },
+        {
+          "a": "platelet_count",
+          "b": "bilirubin_total",
+          "n_rows": 1052,
+          "pearson_r": -0.70931
+        },
+        {
+          "a": "platelet_count",
+          "b": "temperature",
+          "n_rows": 2983,
+          "pearson_r": -0.666175
+        },
+        {
+          "a": "systolic_blood_pressure",
+          "b": "lactate",
+          "n_rows": 3979,
+          "pearson_r": -0.659403
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "lactate",
+          "n_rows": 1298,
+          "pearson_r": 0.635956
+        },
+        {
+          "a": "mean_arterial_pressure",
+          "b": "lactate",
+          "n_rows": 3862,
+          "pearson_r": -0.635407
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "creatinine",
+          "n_rows": 1175,
+          "pearson_r": 0.625263
+        },
+        {
+          "a": "heart_rate",
+          "b": "systolic_blood_pressure",
+          "n_rows": 8510,
+          "pearson_r": -0.578475
+        },
+        {
+          "a": "mean_arterial_pressure",
+          "b": "heart_rate",
+          "n_rows": 8215,
+          "pearson_r": -0.576234
+        },
+        {
+          "a": "temperature",
+          "b": "lactate",
+          "n_rows": 3601,
+          "pearson_r": 0.57198
+        },
+        {
+          "a": "pao2",
+          "b": "respiratory_rate",
+          "n_rows": 4859,
+          "pearson_r": -0.567762
+        },
+        {
+          "a": "bilirubin_total",
+          "b": "heart_rate",
+          "n_rows": 2681,
+          "pearson_r": 0.557674
+        },
+        {
+          "a": "pao2",
+          "b": "bilirubin_total",
+          "n_rows": 1572,
+          "pearson_r": -0.553281
+        }
+      ]
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

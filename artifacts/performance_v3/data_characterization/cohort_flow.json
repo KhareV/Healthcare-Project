@@ -1,0 +1,79 @@
+{
+  "artifact_status": "DEVELOPMENT_CHARACTERIZATION_NOT_FINAL_TEST",
+  "cohorts": {
+    "D1": {
+      "icu_time_stays": 2100,
+      "legal_rows": 12951,
+      "organ_support_stays": 1665,
+      "recovery24_stays": 1574,
+      "recovery48_stays": 708,
+      "retained_stays": 2100,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "D2": {
+      "icu_time_stays": 2100,
+      "legal_rows": 12774,
+      "organ_support_stays": 1647,
+      "recovery24_stays": 1535,
+      "recovery48_stays": 681,
+      "retained_stays": 2100,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "D3": {
+      "icu_time_stays": 2100,
+      "legal_rows": 12754,
+      "organ_support_stays": 1636,
+      "recovery24_stays": 1531,
+      "recovery48_stays": 687,
+      "retained_stays": 2100,
+      "stays_with_legal_cutoff": 2100,
+      "subjects_generated": 2100
+    },
+    "DEV_POOL": {
+      "icu_time_stays": 8000,
+      "legal_rows": 48859,
+      "organ_support_stays": 6298,
+      "recovery24_stays": 5912,
+      "recovery48_stays": 2626,
+      "retained_stays": 8000,
+      "stays_with_legal_cutoff": 8000,
+      "subjects_generated": 8000
+    },
+    "LCE": {
+      "icu_time_stays": 1500,
+      "legal_rows": 8909,
+      "organ_support_stays": 1174,
+      "recovery24_stays": 1096,
+      "recovery48_stays": 440,
+      "retained_stays": 1500,
+      "stays_with_legal_cutoff": 1500,
+      "subjects_generated": 1500
+    },
+    "V1_DEV": {
+      "icu_time_stays": 1700,
+      "legal_rows": 10380,
+      "organ_support_stays": 1350,
+      "recovery24_stays": 1272,
+      "recovery48_stays": 550,
+      "retained_stays": 1700,
+      "stays_with_legal_cutoff": 1700,
+      "subjects_generated": 1700
+    }
+  },
+  "excluded_never_read": [
+    "V1_TEST",
+    "V2_FRESH_TEST",
+    "SYN-V3-T"
+  ],
+  "partitions": {
+    "D1": "SYN-V3-D1",
+    "D2": "SYN-V3-D2",
+    "D3": "SYN-V3-D3",
+    "DEV_POOL": "V1 train+validation (1700) + D1+D2+D3",
+    "LCE": "learning-curve evaluation cohort",
+    "V1_DEV": "V1 train+validation"
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b"
+}

@@ -1,0 +1,160 @@
+{
+  "cohorts": {
+    "D1": {
+      "build_commands": [
+        "scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d1_v1.json --output artifacts/performance_v3/cohorts/D1/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D1/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D1/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D1/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D1/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_features.py --processed-manifest artifacts/performance_v3/cohorts/D1/timeline/synthetic_processed_manifest_v1.json --structural-index artifacts/performance_v3/cohorts/D1/cohort/structural_index.jsonl --feature-schema configs/synthetic/feature_schema_v2.json --output artifacts/performance_v3/cohorts/D1/features --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_phase9_final_package.py --cohort-manifest artifacts/performance_v3/cohorts/D1/cohort/synthetic_cohort_manifest_v2.json --processed-manifest artifacts/performance_v3/cohorts/D1/timeline/synthetic_processed_manifest_v1.json --feature-manifest artifacts/performance_v3/cohorts/D1/features/synthetic_feature_input_manifest_v1.json --output artifacts/performance_v3/cohorts/D1/pre_split --generation-timestamp 2026-10-11T00:00:00Z"
+      ],
+      "build_stage_seconds": {
+        "cohort": 14.1,
+        "features": 91.4,
+        "generate": 31.8,
+        "pre_split": 48.9,
+        "timeline": 30.4
+      },
+      "config_ref": "configs/performance_v3/cohorts/d1_v1.json",
+      "config_sha256": "1a2369b48b2ee560de4f6ddb572d2123397a60edc495a3b5d6b0fd61b97c6fc8",
+      "generation_commands": {
+        "cohort": "python3 scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D1/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D1/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "features": null,
+        "pre_split": null,
+        "raw": "python3 scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d1_v1.json --output artifacts/performance_v3/cohorts/D1/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "timeline": "python3 scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D1/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D1/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z"
+      },
+      "manifest_sha256": {
+        "cohort": "0deb0da846b8c831e5c4bb375a7850d59ac7f1fa6f4bda9dec86f6c0c8fad172",
+        "features": "90408d33b890e63739e9caaa86fed3ff16ddfeec774697d0c0305e488b99dc18",
+        "pre_split": "b22d9198bcaa7e4926e56486bb6d7306ff9ea27e4d32a244243339884ee5c9c8",
+        "raw": "2413685110dbb082ec8bc4dabf15b456b3057875a2fcb598399249775f9f758f",
+        "timeline": "1ba8e750c1e6bc1c97da891df73b1e6f4e5b824efc6ba56ef26103b9053c99f5"
+      },
+      "n_subjects": 2100,
+      "namespace": "SYN-V3-D1",
+      "seed": 2734423652,
+      "seed_material": "performance_v3|dev_chunk_1|fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b|2100",
+      "seed_material_sha256": "a2fbfe646f89f5c5daae5f5cf0f6167c551b0c5caa942fb6d018f40feab5d914"
+    },
+    "D2": {
+      "build_commands": [
+        "scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d2_v1.json --output artifacts/performance_v3/cohorts/D2/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D2/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D2/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D2/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D2/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_features.py --processed-manifest artifacts/performance_v3/cohorts/D2/timeline/synthetic_processed_manifest_v1.json --structural-index artifacts/performance_v3/cohorts/D2/cohort/structural_index.jsonl --feature-schema configs/synthetic/feature_schema_v2.json --output artifacts/performance_v3/cohorts/D2/features --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_phase9_final_package.py --cohort-manifest artifacts/performance_v3/cohorts/D2/cohort/synthetic_cohort_manifest_v2.json --processed-manifest artifacts/performance_v3/cohorts/D2/timeline/synthetic_processed_manifest_v1.json --feature-manifest artifacts/performance_v3/cohorts/D2/features/synthetic_feature_input_manifest_v1.json --output artifacts/performance_v3/cohorts/D2/pre_split --generation-timestamp 2026-10-11T00:00:00Z"
+      ],
+      "build_stage_seconds": {
+        "cohort": 13.4,
+        "features": 91.1,
+        "generate": 31.6,
+        "pre_split": 50.0,
+        "timeline": 29.3
+      },
+      "config_ref": "configs/performance_v3/cohorts/d2_v1.json",
+      "config_sha256": "7d8fc712d7022971fd802528c8fb8bc7091e528b7d4ffe2e8bebb807f33ace49",
+      "generation_commands": {
+        "cohort": "python3 scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D2/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D2/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "features": null,
+        "pre_split": null,
+        "raw": "python3 scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d2_v1.json --output artifacts/performance_v3/cohorts/D2/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "timeline": "python3 scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D2/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D2/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z"
+      },
+      "manifest_sha256": {
+        "cohort": "ba7a6f34ffac2988c9cff386cac5f3406c8e820c1abca08dace14f7160722302",
+        "features": "6c9da4d798be89a3024eff4c37e5568b37c2464c36e69e9f6d4ad59f83c3ae19",
+        "pre_split": "f1e1d187307fd1e1e723bc49f8be23feb24f03f774d6ab365365dcd393a8703c",
+        "raw": "207413da729aeecaa4726bb6ac0b30c6cfd42db6201320b6ca7638309bdf8884",
+        "timeline": "3c433d55058b1690ab2ecabd08a3ba03c17ad71bd8b3297916e92ddfe52d4123"
+      },
+      "n_subjects": 2100,
+      "namespace": "SYN-V3-D2",
+      "seed": 1794194598,
+      "seed_material": "performance_v3|dev_chunk_2|fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b|2100",
+      "seed_material_sha256": "6af13ca693fd86d48c241dd0272bd4256dd7518e16addd02d335cf2970ea2f33"
+    },
+    "D3": {
+      "build_commands": [
+        "scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d3_v1.json --output artifacts/performance_v3/cohorts/D3/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D3/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D3/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D3/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D3/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_features.py --processed-manifest artifacts/performance_v3/cohorts/D3/timeline/synthetic_processed_manifest_v1.json --structural-index artifacts/performance_v3/cohorts/D3/cohort/structural_index.jsonl --feature-schema configs/synthetic/feature_schema_v2.json --output artifacts/performance_v3/cohorts/D3/features --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_phase9_final_package.py --cohort-manifest artifacts/performance_v3/cohorts/D3/cohort/synthetic_cohort_manifest_v2.json --processed-manifest artifacts/performance_v3/cohorts/D3/timeline/synthetic_processed_manifest_v1.json --feature-manifest artifacts/performance_v3/cohorts/D3/features/synthetic_feature_input_manifest_v1.json --output artifacts/performance_v3/cohorts/D3/pre_split --generation-timestamp 2026-10-11T00:00:00Z"
+      ],
+      "build_stage_seconds": {
+        "cohort": 14.1,
+        "features": 93.7,
+        "generate": 31.8,
+        "pre_split": 48.9,
+        "timeline": 30.7
+      },
+      "config_ref": "configs/performance_v3/cohorts/d3_v1.json",
+      "config_sha256": "2a3363f327e749f94406eaae9415db2972c6f289a8ad14b66325da733a599d8d",
+      "generation_commands": {
+        "cohort": "python3 scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/D3/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/D3/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "features": null,
+        "pre_split": null,
+        "raw": "python3 scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/d3_v1.json --output artifacts/performance_v3/cohorts/D3/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "timeline": "python3 scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/D3/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/D3/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z"
+      },
+      "manifest_sha256": {
+        "cohort": "6974f08bc22dd07860219608f991bfc7640598f9c63e60fbd2020bff1b79360c",
+        "features": "cbbe43322bc13966b0211bef0288bc77c1fa98dccb45f442e50a008d8b2c05f1",
+        "pre_split": "2ba8c110c77148cedb531e1132ea0b647a897b18f9e4ea05ea8279e45534dc94",
+        "raw": "15e903628fa88ed79d954fcc3eafabf09ab8b88e5ea7b050836f930b2b6fd106",
+        "timeline": "9defe0879c9518500817bad34aeabe454426d11fee2198545a25ebaa267747c9"
+      },
+      "n_subjects": 2100,
+      "namespace": "SYN-V3-D3",
+      "seed": 2960591411,
+      "seed_material": "performance_v3|dev_chunk_3|fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b|2100",
+      "seed_material_sha256": "b0770a33c9ad3a144b6a7285d20d5f1e77f2cc487de3447cf7d444f4842715a5"
+    },
+    "LCE": {
+      "build_commands": [
+        "scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/lce_v1.json --output artifacts/performance_v3/cohorts/LCE/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/LCE/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/LCE/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/LCE/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/LCE/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_synthetic_features.py --processed-manifest artifacts/performance_v3/cohorts/LCE/timeline/synthetic_processed_manifest_v1.json --structural-index artifacts/performance_v3/cohorts/LCE/cohort/structural_index.jsonl --feature-schema configs/synthetic/feature_schema_v2.json --output artifacts/performance_v3/cohorts/LCE/features --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "scripts/build_phase9_final_package.py --cohort-manifest artifacts/performance_v3/cohorts/LCE/cohort/synthetic_cohort_manifest_v2.json --processed-manifest artifacts/performance_v3/cohorts/LCE/timeline/synthetic_processed_manifest_v1.json --feature-manifest artifacts/performance_v3/cohorts/LCE/features/synthetic_feature_input_manifest_v1.json --output artifacts/performance_v3/cohorts/LCE/pre_split --generation-timestamp 2026-10-11T00:00:00Z"
+      ],
+      "build_stage_seconds": {
+        "cohort": 8.1,
+        "features": 60.2,
+        "generate": 19.5,
+        "pre_split": 32.2,
+        "timeline": 19.6
+      },
+      "config_ref": "configs/performance_v3/cohorts/lce_v1.json",
+      "config_sha256": "23c94603a2760224133fc30fbc5fb29d4c70c13364789961f37b8deac20c7ac2",
+      "generation_commands": {
+        "cohort": "python3 scripts/build_synthetic_cohort.py --source-manifest artifacts/performance_v3/cohorts/LCE/raw/synthetic_dataset_manifest_v1.json --config configs/synthetic/cohort_spec_v2.yaml --output artifacts/performance_v3/cohorts/LCE/cohort --mode final --generation-timestamp 2026-10-11T00:00:00Z",
+        "features": null,
+        "pre_split": null,
+        "raw": "python3 scripts/generate_synthetic_dataset.py --config configs/performance_v3/cohorts/lce_v1.json --output artifacts/performance_v3/cohorts/LCE/raw --generation-timestamp 2026-10-11T00:00:00Z",
+        "timeline": "python3 scripts/build_synthetic_timeline.py --cohort-manifest artifacts/performance_v3/cohorts/LCE/cohort/synthetic_cohort_manifest_v2.json --concept-map configs/synthetic/concept_map_v1.json --processed-schema configs/synthetic/processed_schema_v1.json --output artifacts/performance_v3/cohorts/LCE/timeline --mode final --generation-timestamp 2026-10-11T00:00:00Z"
+      },
+      "manifest_sha256": {
+        "cohort": "3bcc708e6c0bd6061b8548b116002c322d07ab1fe80552c732c669963545c930",
+        "features": "b70620b4fb6df2cb1b6b9fb5f126a1b39ac11df52f45d914a448bf088123f7bb",
+        "pre_split": "82aac23d5b4e9d9c0a2336b534842db61e38152ad1dbfd396331cd818d363eea",
+        "raw": "755b3abc2aa872a1678da68f931e87a509ad17d4c5af4c0930d14331b5ddb092",
+        "timeline": "e4e72920da122c7930c7cf8751986c448d7319f36eacb4379ed4cdddc9f844f4"
+      },
+      "n_subjects": 1500,
+      "namespace": "SYN-V3-LCE",
+      "seed": 3733563462,
+      "seed_material": "performance_v3|learning_curve_eval|fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b|1500",
+      "seed_material_sha256": "de89a846d955b8ded51b605c5b50925a8e4f135174d7fd8c2feffe8fdc1499af"
+    }
+  },
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b",
+  "v1_development_subjects": {
+    "dev_manifest_ref": "artifacts/performance_v2/phase3/dev_subject_manifest_v1.json",
+    "dev_manifest_sha256": "86e7613b0d92e12f815bde67d89ec177865b546471e72bb4b6ade873093e55bf",
+    "namespace": "SYN",
+    "seed": 20260921,
+    "source_config": "configs/synthetic/final_benchmark_v1.json"
+  }
+}
