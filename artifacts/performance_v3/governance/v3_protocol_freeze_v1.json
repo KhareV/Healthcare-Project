@@ -1,0 +1,14 @@
+{
+  "artifact_version": "performance_v3_protocol_freeze_v1",
+  "base_commit": "2218cbd",
+  "baseline_verification_sha256": "8c0aa47dec52884d821205761c1710d028f3f1c353ce907acae241c6756b0914",
+  "branch": "healthcare-performance-v3",
+  "pre_phase_inventory_ref": "artifacts/performance_v3/governance/pre_phase_hash_inventory_v1.sha256",
+  "pre_phase_inventory_sha256": "f2c67aefe87980d086b4afb484c2c50674345a80653e241fa5696bf2a2dd414b",
+  "protocol_ref": "configs/performance_v3/scientific_protocol_v1.yaml",
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b",
+  "status": "V3_PROTOCOL_FROZEN_BEFORE_EXPERIMENTS",
+  "test_accessed": false,
+  "v2_final_evaluation_freeze_sha256": "a433c1ee203f6cf9f01b131a2a9a10c73da57097564705ce64d7351c0057b649",
+  "v2_selected_models_sha256": "6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8"
+}

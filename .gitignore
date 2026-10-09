@@ -67,3 +67,8 @@ models/kokoro/*.bin
 # files, synthetic/demo-only by policy, never committed. See
 # src/serving/v2/report_storage.py and docs/product_v2/HEALTH_RECORD_ARCHITECTURE.md.
 runtime/uploads/
+
+# Performance V3 (local, regenerable, large)
+.venv-v3/
+artifacts/performance_v3/cohorts/
+artifacts/performance_v3/cache/

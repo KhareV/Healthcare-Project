@@ -1,0 +1,34 @@
+{
+  "artifact_version": "performance_v3_baseline_verification_v1",
+  "command": "PYTHONPATH=src:tests:. python3 -m pytest -q -p no:cacheprovider tests",
+  "date": "2026-10-10",
+  "immutability_after_baseline": "all 2264 files in pre_phase_hash_inventory_v1.sha256 verified byte-identical",
+  "interpreter": "/usr/bin/python3 (CPython 3.9.6)",
+  "measured_pipeline_scaling": "300-subject cohort: generate 3.4s (30 MB raw), cohort 2s, timeline 3s, features 2s => ~10 s per 300 subjects through features",
+  "note": "Measured on branch healthcare-performance-v3 at base commit 2218cbd before any V3 code existed. Historical summaries quoting 1,289-1,295 or 1,570 passed are superseded by this measured run.",
+  "packages": {
+    "captum": "0.8.0",
+    "catboost": "1.2.10",
+    "lightgbm": "4.6.0",
+    "numpy": "1.26.4",
+    "pandas": "2.3.3",
+    "shap": "0.49.1",
+    "sklearn": "1.6.1",
+    "torch": "2.8.0",
+    "v3_venv": ".venv-v3 (--system-site-packages)",
+    "xgboost": "2.1.4"
+  },
+  "resources": {
+    "cpu": "Apple M5, 10 logical cores",
+    "disk_free_gib_at_start": 129,
+    "ram_bytes": 17179869184,
+    "repo_artifacts_gib": 1.7
+  },
+  "result": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 1576,
+    "skipped": 21,
+    "wall_seconds": 756.49
+  }
+}

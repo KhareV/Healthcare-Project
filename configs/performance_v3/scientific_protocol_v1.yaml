@@ -1,0 +1,219 @@
+# Performance V3 — scientific protocol v1
+# Frozen BEFORE any V3 cohort generation or model experiment. Methodological
+# authority for V3. Changing any value after freeze requires a new protocol
+# version and invalidates every dependent V3 artifact.
+protocol_version: performance_v3_scientific_protocol_v1
+status: FROZEN_BEFORE_V3_EXPERIMENTS
+decision_authority: USER_DELEGATED_AI_PROJECT_DECISION
+branch: healthcare-performance-v3
+base_commit_ref: product-v2@2218cbd
+master_plan_unchanged_definitions: true
+
+research_questions:
+  RQ1: Is the V2 predictive recipe limited by development-set size? (learning curve, fixed dev-evaluation cohort)
+  RQ2: Do cutoff-safe temporal/variability/observation/support/SOFA-component feature families add held-out value beyond the frozen V2 context vectors?
+  RQ3: Do LightGBM, CatBoost, regularised linear models or a bounded GRU, with tuned objectives and stay-balanced training weights, beat the V2 XGBoost recipe on development evidence?
+  RQ4: Which support-probability calibrator (raw, Platt, isotonic, beta) gives the best honest cross-fitted probability quality while preserving ranking?
+  RQ5: On a brand-new sealed cohort, do the frozen V3 models improve on the unmodified frozen V2 models, per task, under a paired stay-cluster bootstrap?
+
+population_and_episode:
+  population: adult cardiac / heart-disease synthetic ICU-like episodes
+  episodes_per_subject: 1
+  generator: accepted frozen generator (src/data/synthetic/*) with configs/synthetic/final_benchmark_v1.json scientific parameters
+  generator_equivalence: every scientific config key (population, calendar, duration, latent, observation, variables, latent_process_path, support_process_path, event_dictionary_path, minimum_accepted_episode_hours) must be byte-identical to configs/performance_v2/fresh_test_cohort_v1.json; only primary_seed, n_subjects, subject_id_namespace, runtime_config_version and provenance metadata may differ
+  event_dictionary: configs/event_dict_v2.yaml
+  generator_modified: false
+
+canonical_definitions_unchanged:
+  prediction_clock: t_k = intime + 24h + 6h*k, k=0..11, t_k <= outtime - 6h
+  lookback: (t-48h, t], eight ordered 6h bins, padding / genuine observation mask / TSLO as in feature_schema_v2
+  recovery: independent raw DeltaSOFA24 and DeltaSOFA48, shared baseline SOFA(t), evaluation unclipped
+  icu_time: log1p((outtime - t) hours), inverse expm1(max(0, pred))
+  organ_support: OFF->ON vasopressor or invasive ventilation initiation in (t, t+24h], censoring per label spec
+  weights: stay-balanced 1/n_i per task
+  bootstrap: stay-cluster percentile, 95%
+
+partitions:
+  historical_reusable_for_development:
+    id: V1_TRAIN_VALIDATION
+    namespace: SYN
+    subjects: 1700
+    source: artifacts/performance_v2/phase3/dev_subject_manifest_v1.json
+    note: V1 train (1400) + validation (300); never consumed by a final test
+  historical_exposed_never_reusable:
+    - {id: V1_TEST, namespace: SYN, subjects: 300, state: FINAL_RUN_COMPLETED}
+    - {id: V2_FRESH_TEST, namespace: SYN-V2, subjects: 1000, state: FINAL_V2_RUN_COMPLETED}
+  new_development_chunks:
+    count: 3
+    subjects_per_chunk: 2100
+    namespaces: [SYN-V3-D1, SYN-V3-D2, SYN-V3-D3]
+    seed_rule: "int(SHA256('performance_v3|dev_chunk_<i>|<protocol_sha256>|2100').hexdigest()[:8], 16)"
+  learning_curve_evaluation_cohort:
+    namespace: SYN-V3-LCE
+    subjects: 1500
+    seed_rule: "int(SHA256('performance_v3|learning_curve_eval|<protocol_sha256>|1500').hexdigest()[:8], 16)"
+    use: learning-curve evaluation ONLY; never in training, selection, calibration or threshold
+  development_pool:
+    subjects: 8000
+    composition: V1_TRAIN_VALIDATION(1700) + 3 new chunks (6300)
+    use: model selection by grouped cross-fitting, final refit
+  sealed_final_test:
+    namespace: SYN-V3-T
+    subjects: 1500
+    seed_rule: "int(SHA256('performance_v3_final_test_v1|SHA256(artifacts/performance_v3/phase3/selected_models_v3.json)|1500').hexdigest()[:8], 16)"
+    generated_after: model freeze (selected_models_v3.json exists and is hashed)
+    states: [SEALED_NOT_ACCESSED, AUTHORIZED_FOR_ONE_FINAL_RUN, FINAL_TEST_ACCESS_CONSUMED, FINAL_RUN_COMPLETED, BLOCKED_ALREADY_CONSUMED]
+  isolation:
+    subject_overlap_allowed: false
+    exact_trajectory_fingerprint_overlap_allowed: false
+    checked_against: [V1 all splits, V2 fresh test, every V3 cohort]
+    clone_groups_assigned_to_single_fold: true
+
+cross_fitting:
+  folds: 5
+  fold_rule: "int(SHA256(version + '||' + subject_id).hexdigest(), 16) mod 5 (same formula as scripts/performance_v2_phase3_part1_2_dev_and_folds.py:crossfit_fold_for_subject, extracted to src/performance_v3/splits.py with a parity test against dev_crossfit_fold_assignment_v1.csv)"
+  version: performance_v3_dev_crossfit_v1
+  group: subject_id (all cutoffs of a stay stay together)
+  early_stopping: inner split = 10% of TRAINING subjects of the fold (grouped); outer fold never used for stopping
+  screening_folds_used: [0, 1, 2]
+
+learning_curve:
+  training_sizes_subjects: [425, 850, 1700, 3800, 5900, 8000]
+  nesting: ordered by SHA256 rank within the development pool; sizes <= 1700 drawn from V1_TRAIN_VALIDATION only
+  repeats: 3 independent seeded subject-subsamples for sizes < 8000; 3 model seeds at 8000
+  model: frozen V2 selected hyperparameters, feature variant, objective and tree count per task; NO new search per point
+  evaluation: LCE cohort, same V2 primary metrics (stay-balanced), grouped bootstrap 500 replicates on repeat 0
+  also_record: [train_seconds, predict_seconds_per_1000_rows, peak_rss_mb, n_eligible_rows, n_unique_stays, support_prevalence, repeat_sd]
+  trend_labels: {strong: ">=3% relative improvement per doubling", marginal: "0.5-3%", plateau: "|change|<0.5%", degrading: "worse by >0.5%"}
+  caveat: development evidence on a reused holdout; never reported as independent validation
+
+candidate_families:
+  boosted: [xgboost, lightgbm, catboost]
+  linear: [ridge_regression, logistic_regression]
+  sequence: [gru]   # reuse src/models/gru.py + performance_v2/gru_training.py; context concatenated to statics
+  lstm: fixed_sensitivity_only_if_gru_is_selected   # one run per task using selected GRU settings, no search
+  excluded: [transformer, tft, tcn]   # only revisited if GRU is within tie tolerance of best tree model
+  hyperparameter_dimensions:
+    boosted: [max_depth/num_leaves, learning_rate, n_estimators(early stopped, cap 1500), subsample, colsample, min_child_weight, reg_alpha, reg_lambda]
+    objective: {recovery: [squarederror, pseudohuber, absoluteerror], icu_time_log1p: [squarederror, pseudohuber, absoluteerror], support: [binary_logistic]}
+    training_weight: [none, stay_balanced_1_over_n]
+    support_class_weight: [none, scale_pos_weight_from_train_prevalence]
+
+feature_families:
+  contract_version: performance_v3_feature_contract_v1
+  extends: configs/performance_v2/feature_contract_v2.json   # never mutates v1/v2 contracts
+  allowed_sources: canonical row only (history_values, observation_mask, tslo_hours, static_features, prediction_time, intime, support state bins, SOFA via the frozen data.synthetic.sofa.sofa_at at cutoffs <= t)
+  forbidden: [outtime, any value after t, labels/eligibility, latent state, episode-level aggregates, generator internals]
+  variants:
+    V3_CTRL:  per-task frozen V2 variant (B_MIN for recovery, B_PLUS_F for ICU, B_FULL for support)
+    V3_B:     B_FULL
+    V3_BF:    B_PLUS_F
+    V3_BC:    B_FULL + group C (per-channel 6/12/24/48h deltas, 12/24/48h slopes, SOFA trend)
+    V3_BD:    B_FULL + group D (windowed mean/min/max/std over 12/24/48h)
+    V3_BE:    B_FULL + group E (observed-fraction summaries)
+    V3_BFS:   B_PLUS_F + SOFA component state at t (six component scores + observed flags from frozen sofa_at; no second SOFA implementation)
+    V3_FULL:  B_PLUS_F + C + D + E (+S if S1 is accepted)
+  every_new_feature_requires: [definition, unit, source, exact window, missing policy, leakage test, train/serve parity test]
+  sequence_models_receive: identical canonical tensor + the same context vector (concatenated to statics)
+
+search_budget:
+  stage_S1_family_screen:
+    families: [xgboost, lightgbm, catboost, linear]
+    configs_per_boosted_family: 10
+    configs_linear: 6
+    cv: 3-fold screening folds
+    feature_variant: V3_CTRL
+  stage_S2_feature_ablation:
+    configs: top-1 config of best boosted family per task from S1
+    variants: [V3_CTRL, V3_B, V3_BF, V3_BC, V3_BD, V3_BE, V3_BFS, V3_FULL]
+    cv: 3-fold screening folds, 2 seeds
+  stage_S3_gru:
+    configs: 8
+    cv: 3-fold screening folds
+    epochs_max: 40
+    patience: 6
+    feature_variant: best of S2
+  stage_S4_focused_search:
+    candidates: top-3 (family, variant) per task from S1-S3
+    configs_per_candidate: 20
+    cv: 5-fold
+  total_wall_clock_cap_hours: 14
+  per_fit_timeout_minutes: 20
+  threads: 8
+  seeds: {search_master: 20261011, model_seeds: [11, 23, 47]}
+  record_every_trial: true
+
+selection:
+  primary_metrics_development:
+    recovery24: stay_balanced_mae_delta_sofa_24
+    recovery48: stay_balanced_mae_delta_sofa_48
+    icu_time: stay_balanced_weighted_median_abs_error_hours_postprocessed
+    organ_support: stay_balanced_auprc_on_RAW_scores
+  independent_per_task: true
+  rule: lowest mean cross-fitted primary metric (highest for AUPRC)
+  tie_tolerance: {regression_relative: 0.005, classification_auprc_absolute: 0.003}
+  tie_break_order: [lower complexity (linear < boosted < gru), lower fold SD, lower predict latency]
+  replacement_of_v2_recipe_requires: beating the V2-recipe refit on the same folds by more than tie tolerance
+  secondary_reported: [rmse, median_ae, auroc, brier, logloss, error_by_cutoff, error_by_delta_sign, fold_sd]
+
+support_calibration_and_threshold:
+  candidates: [none, platt, isotonic, beta]
+  procedure: nested stay-grouped cross-fitting of OOF scores from the selected support model (calibrator fit on k-1 folds of OOF scores, evaluated on fold k)
+  selection_metric: stay_balanced_log_loss
+  tie_tolerance_log_loss: 0.002
+  tie_break_order: [none, platt, beta, isotonic]
+  ranking_note: isotonic may create ties and lower AUPRC; strictly monotone calibrators preserve ranking
+  reported: [brier, log_loss, ece_10_equal_mass_bins, calibration_slope, calibration_intercept, auroc, auprc, tie_fraction]
+  threshold: maximise stay-balanced F1 on cross-fitted OOF calibrated development probabilities; deterministic tie -> lowest threshold
+  frozen_before_test: true
+
+final_refit:
+  population: full development pool (8000 subjects)
+  n_estimators_rule: median best-iteration across selected CV folds * 1.10, rounded up
+  calibrator_and_threshold: fit on full-pool OOF scores per the procedure above
+  preprocessing: train-only (development pool) normalisation / imputation / encoders
+
+control_comparator:
+  id: V2_RECIPE_REFIT_ON_V3_POOL
+  definition: frozen V2 feature variants, hyperparameters, isotonic calibrator and threshold policy refit on the 8000-subject pool
+  purpose: attribute V3-vs-V2 differences to data size vs modelling; secondary comparison only
+  frozen_before_test: true
+
+v2_comparator_contract:
+  models: artifacts/performance_v2/phase3/selected_models_v2.json (sha256 6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8)
+  path: authentic V2 feature construction, preprocessing, frozen isotonic calibrator and threshold; no refit, no recalibration
+  identity_proof: reproduce known V2 outputs on existing authorised fixtures before any test access
+
+final_evaluation:
+  cohort: SYN-V3-T (1500 subjects)
+  one_time: true
+  eligible_row_identity: identical row set for V2, V3 and control comparator; any mismatch = pipeline investigation, never row dropping
+  metrics:
+    recovery: [mae, rmse, median_ae, residual_distribution, error_by_horizon_and_sign]
+    icu_time: [weighted_median_ae_hours, mae, rmse, error_by_remaining_quartile, error_by_cutoff]
+    support: [raw_auroc, raw_auprc, calibrated_auroc, calibrated_auprc, brier, log_loss, precision, recall, specificity, f1_at_frozen_threshold, confusion_matrix, roc_curve, pr_curve, reliability_curve]
+  bootstrap: {type: paired_stay_cluster, replicates: 2000, seed: 20261012, ci_level_reporting: 0.95, ci_level_promotion: 0.9875, same_resamples_for_all_models: true}
+  prespecified_slices: [cutoff_band(early/middle/late), cardiac_subtype, observation_density_tertile, recovery_target_sign, true_remaining_time_quartile, support_positive_vs_negative]
+  exploratory_slices_policy: must be labelled exploratory; may not affect any decision
+
+promotion_policy:
+  unit: per task
+  promote_v3_task_if:
+    primary_metric_paired_difference_favours_v3: true
+    ci_9875_excludes_zero: true
+    support_additional_condition: delta_brier_point_estimate <= 0.003
+  otherwise: retain frozen V2 for that task
+  mixed_bundle_allowed: true   # per-task promotion is pre-authorised; serving compatibility verified before release
+  no_post_test_selection: true
+
+failure_handling:
+  before_access: fix development path, rerun preflight, regenerate nothing in the sealed cohort
+  after_access: preserve incident record; no scientific retry; metrics may be recomputed from saved predictions only
+  result_affecting_defect_after_opening: transparent invalidation, version reset (V3.1), full affected-path rerun on a NEW sealed cohort
+
+negative_result_policy: report every task, including regressions and ties; retain all trials and failed runs
+
+reproducibility:
+  environment: python 3.9.6 system interpreter + .venv-v3 (lightgbm 4.6.0, catboost 1.2.10; xgboost 2.1.4, torch 2.8.0, sklearn 1.6.1 inherited)
+  record: [run_id, seed, config_hash, code_commit, data/feature/preprocessor identities, artifact sha256, wall seconds]
+  large_data_policy: raw cohorts under artifacts/performance_v3/cohorts/ (gitignored) with hashed manifests and regeneration commands
