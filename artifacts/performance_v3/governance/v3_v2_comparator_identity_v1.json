@@ -1,0 +1,8 @@
+{
+  "artifact_version": "performance_v3_v2_comparator_identity_v1",
+  "check": "V2Comparator vs stored V2 phase-4 predictions (read-only)",
+  "max_abs_probability_difference": 0.0,
+  "note": "identity of the unmodified frozen V2 models through the V3 comparator wrapper; exposed cohort read for identity only, no tuning",
+  "rows_compared": 125,
+  "rows_loaded": 200
+}
