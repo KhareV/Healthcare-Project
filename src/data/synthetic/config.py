@@ -32,6 +32,9 @@ FINAL_IDENTITIES = {
     (1794194598, 2100): "SYN-V3-D2",
     (2960591411, 2100): "SYN-V3-D3",
     (3733563462, 1500): "SYN-V3-LCE",
+    # Performance V3 sealed test cohort: seed derived from SHA-256 of the frozen
+    # selected_models_v3.json (registered only after the model freeze).
+    (1875329016, 1500): "SYN-V3-T",
 }
 
 
