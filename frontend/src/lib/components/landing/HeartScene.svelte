@@ -2,6 +2,21 @@
 	import { Canvas, T } from '@threlte/core';
 	import { GLTF } from '@threlte/extras';
 	import { onMount } from 'svelte';
+	import { Box3, Vector3 } from 'three';
+
+	// The heart model's native units are arbitrary (~100 across), so measure
+	// the loaded scene and normalise it to a fixed on-screen size, centred.
+	const TARGET_SIZE = 3.6;
+	let fitScale = 0.04;
+	let fitOffset: [number, number, number] = [0, 0, 0];
+	function fitModel(gltf: { scene: import('three').Object3D }) {
+		const box = new Box3().setFromObject(gltf.scene);
+		const size = box.getSize(new Vector3());
+		const center = box.getCenter(new Vector3());
+		const longest = Math.max(size.x, size.y, size.z) || 1;
+		fitScale = TARGET_SIZE / longest;
+		fitOffset = [-center.x * fitScale, -center.y * fitScale, -center.z * fitScale];
+	}
 
 	// Gentle, continuous rotation for an ultra-premium feel
 	let rotY = 0;
@@ -19,9 +34,9 @@
 	});
 </script>
 
-<div class="watch-scene">
+<div class="heart-scene">
 	<Canvas dpr={[1, 2]}>
-		<!-- Camera positioned so the full watch unibody and straps fit gracefully -->
+		<!-- Camera positioned so the full heart fits gracefully -->
 		<T.PerspectiveCamera makeDefault position={[0, 0.2, 9.8]} fov={32} />
 
 		<!-- Premium Studio Lighting Setup -->
@@ -32,18 +47,20 @@
 		<T.PointLight position={[0, -3, 3]} intensity={2.5} color="#2dd4bf" />
 
 		<!-- Centered and scaled model -->
-		<T.Group rotation={[rotX, rotY, -0.05]} scale={0.50} position={[0, 0, 0]}>
-			<GLTF url="/models/nhm-watch.glb" />
+		<T.Group rotation={[rotX, rotY, -0.05]}>
+			<T.Group scale={fitScale} position={fitOffset}>
+				<GLTF url="/models/human-heart.glb" onload={fitModel} />
+			</T.Group>
 		</T.Group>
 	</Canvas>
 </div>
 
 <style>
-	.watch-scene {
+	.heart-scene {
 		position: absolute;
-		/* Let the watch breathe beyond the device column. The canvas is
-		   intentionally oversized so the straps can cross the surrounding
-		   grid and labels like a physical object in front of the page. */
+		/* Let the heart breathe beyond the device column. The canvas is
+		   intentionally oversized so it can cross the surrounding grid
+		   and labels like a physical object in front of the page. */
 		top: -5%;
 		left: -20%;
 		width: 160%;
@@ -54,7 +71,7 @@
 		overflow: visible;
 	}
 
-	.watch-scene :global(canvas) {
+	.heart-scene :global(canvas) {
 		display: block;
 		width: 100% !important;
 		height: 100% !important;
@@ -63,6 +80,6 @@
 	}
 
 	@media (max-width: 1050px) {
-		.watch-scene { left: -5%; width: 110%; height: 104%; }
+		.heart-scene { left: -5%; width: 110%; height: 104%; }
 	}
 </style>

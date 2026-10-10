@@ -23,7 +23,7 @@
 	// Import the Signature component you provided
 	import { Signature } from "$lib/components/spell/signature";
 
-	import WatchScene from '$lib/components/landing/WatchScene.svelte';
+	import HeartScene from '$lib/components/landing/HeartScene.svelte';
 	import PhysiologicalWaveform from '$lib/components/landing/PhysiologicalWaveform.svelte';
 	import NeuralGraph from '$lib/components/landing/NeuralGraph.svelte';
 	import HardwareStudio from '$lib/components/hardware/HardwareStudio.svelte';
@@ -231,7 +231,7 @@
 					</div>
 
 					<div class="hero__device">
-						<WatchScene />
+						<HeartScene />
 					</div>
 				</div>
 			</div>

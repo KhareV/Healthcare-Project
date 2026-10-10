@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import WatchScene from '$lib/components/landing/WatchScene.svelte';
+	import HeartScene from '$lib/components/landing/HeartScene.svelte';
 	import PhysiologicalWaveform from '$lib/components/landing/PhysiologicalWaveform.svelte';
 
 	interface Subsystem {
@@ -116,7 +116,7 @@
 
 		<!-- 3D Interactive Stage -->
 		<div class="model-canvas-stage">
-			<WatchScene />
+			<HeartScene />
 
 			<!-- Clean Reticle Interactive Pins -->
 			<div class="pins-overlay">
