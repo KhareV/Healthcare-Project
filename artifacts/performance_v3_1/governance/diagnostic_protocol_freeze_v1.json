@@ -1,0 +1,9 @@
+{
+  "artifact_version": "performance_v3_1_diagnostic_protocol_freeze_v1",
+  "base_commit": "54c694e5e5595bcc9e010beb338b853b4df10325",
+  "inventory_ref": "artifacts/performance_v3_1/governance/pre_v3_1_hash_inventory_v1.sha256",
+  "inventory_sha256": "1f0be75a685b7db67a02ec86fdea4dd3f5d65a8447256f4ca80dc5cc0c1941ed",
+  "oracle_results_inspected": false,
+  "protocol_ref": "configs/performance_v3_1/diagnostic_protocol_v1.yaml",
+  "protocol_sha256": "b46863b7e4057d0f84060eb03ab14f71f6ce082eed908d060f0f41dd1819d78f"
+}

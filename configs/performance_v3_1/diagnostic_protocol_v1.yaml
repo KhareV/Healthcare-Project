@@ -1,0 +1,62 @@
+# Performance V3.1 — latent-state feasibility diagnostic protocol v1
+# Frozen BEFORE any oracle result is inspected. All results are DEVELOPMENT_PRIVILEGED_DIAGNOSTIC_ONLY.
+protocol_version: performance_v3_1_diagnostic_protocol_v1
+status: FROZEN_BEFORE_DIAGNOSTIC_RESULTS
+base_branch: healthcare-performance-v3
+base_commit: 54c694e5e5595bcc9e010beb338b853b4df10325
+scope: organ-support initiation only; recovery24, recovery48 and ICU V3 heads remain frozen
+generator: accepted frozen generator; scientific parameters byte-identical to configs/performance_v2/fresh_test_cohort_v1.json
+
+partitions:
+  diag_fit:   {namespace: SYN-V31-DF, n_subjects: 1600, seed_rule: "int(SHA256('performance_v3_1|diag_fit|<protocol_sha256>|1600').hexdigest()[:8],16)", use: fit privileged learners and observed-feature control}
+  diag_eval:  {namespace: SYN-V31-DE, n_subjects: 900,  seed_rule: "int(SHA256('performance_v3_1|diag_eval|<protocol_sha256>|900').hexdigest()[:8],16)",  use: evaluation only, never fitted or tuned on}
+  isolation: [no overlap with V1/V2/V3 development or test cohorts, no exact-trajectory clones, subject-level splits only]
+  oracle_cohorts_are_diagnostic_only: true   # never reused as V3.1 selection data
+
+targets_and_population:
+  label: canonical organ_support_label (OFF->ON qualifying vasopressor or invasive ventilation in (t, t+24h])
+  eligible_rows: canonical organ_support_eligible and non-null label (censored rows excluded)
+  weighting: stay-balanced 1/n_i
+  qualifying_vasopressors: all except dobutamine (configs/event_dict_v2.yaml)
+  qualifying_ventilation: INVASIVE only
+
+references_and_oracles:
+  REFERENCE_V3: unchanged frozen V3 support head (selected_models_v3.json), apply-only, observed cutoff-safe contract
+  OBSERVED_REFIT_CONTROL: xgboost preset below fit on DIAG_FIT using the V3_BE observed feature columns (same learner/budget as oracle learners)
+  ORACLE_A_FIVE_STATE: [z_t (5 latent coords), vasopressor_on_at_t, invasive_vent_on_at_t]
+  ORACLE_B_AUGMENTED: A + [mean(z[t-5..t]) for coords 0,1,2, equilibrium(5), support_propensity, latent drift(5), shock_remaining, current shock pulse(5), hidden support effects (vaso, resp), response multipliers (vaso, resp), per-component ON duration hours, active-agent count, elapsed hours since intime]
+  ORACLE_C_CONDITIONAL_GENERATOR: Monte Carlo P(positive | privileged state at t, eligible), M=200 continuations from the exact internal snapshot at t with a fresh RNG; admission duration conditioned on legal cutoff existence (duration >= elapsed + 6h); onset must precede outtime; censoring per label spec
+  forbidden_in_every_predictor: [realized outtime or remaining duration, duration noise draw, labels, eligibility, recovery24 availability, future observations, future support, future latent states, future shocks, RNG seeds or state]
+  epistemic_status: privileged simulator-state predictors; NOT clinical bounds, NOT exact Bayes ceilings except Oracle C within Monte Carlo and specification error
+
+learners_fixed_presets:
+  logistic: {standardize: train_only, C: 1.0, max_iter: 2000}
+  xgboost: {max_depth: 4, learning_rate: 0.05, n_estimators: 300, subsample: 0.8, colsample_bytree: 0.8, min_child_weight: 5, reg_lambda: 1.0, seed: 11, nthread: 8}
+  hyperparameter_search: none
+
+metrics:
+  primary: stay-balanced AUPRC
+  secondary: [AUROC, Brier, log_loss, prevalence, n_rows, n_stays, reliability_ece_10_equal_mass]
+  uncertainty: paired stay-cluster bootstrap, 2000 replicates, seed 20261101, 95% percentile CI, same resamples for all models
+
+validity_audits_must_pass:
+  - replay_bitwise_identity: replica reproduces original generator states and support rows exactly for every diagnostic subject
+  - truncation_invariance: oracle snapshot at t identical when the replay is truncated at hour t+1
+  - forbidden_token_scan: no predictor name contains outtime|duration|label|eligib|future|recovery|seed|rng
+  - suspicious_score_guard: any oracle AUROC > 0.98 or AUPRC > 0.95 fails closed pending explanation
+  - mc_reliability (Oracle C only): weighted calibration slope in [0.85, 1.15] and ECE <= 0.04 on DIAG_EVAL, otherwise Oracle C is marked INVALID and excluded from the gate
+
+gate_a:
+  rule_version: v1
+  pass_if_all:
+    - ORACLE_B_AUPRC - REFERENCE_V3_AUPRC >= 0.03
+    - lower_bound_95_paired_bootstrap(ORACLE_B_AUPRC - REFERENCE_V3_AUPRC) > 0.01
+    - all validity audits pass
+    - if ORACLE_C is valid: ORACLE_C_AUPRC - REFERENCE_V3_AUPRC >= 0.03 and its 95% lower bound > 0.01
+  otherwise: V3_1_STOPPED_AFTER_DIAGNOSTIC
+  note: engineering heuristic; a privileged gap does not guarantee recoverable information from observed vitals/labs
+
+budget:
+  target_hours: 2
+  hard_limit_hours: 4
+  threads: 8
