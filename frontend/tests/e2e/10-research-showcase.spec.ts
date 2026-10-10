@@ -65,3 +65,15 @@ test('research report and chart source exports contain the saved V3 evidence ide
 	const csv = await fs.readFile(await source.path(), 'utf8');
 	expect(csv.split('\n').length).toBeGreaterThan(2);
 });
+
+test('research charts support keyboard expansion and focus restoration', async ({ page }) => {
+	await page.goto('/cohort');
+	const expand = page.getByRole('button', { name: /Expand Cardiac subtype/i }).first();
+	await expand.focus();
+	await page.keyboard.press('Enter');
+	const dialog = page.getByRole('dialog', { name: /Cardiac subtype.*expanded/i });
+	await expect(dialog).toBeVisible();
+	await page.keyboard.press('Escape');
+	await expect(dialog).toBeHidden();
+	await expect(expand).toBeFocused();
+});

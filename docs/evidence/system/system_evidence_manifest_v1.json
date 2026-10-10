@@ -705,7 +705,7 @@
       "evidence_id": "full_test_report",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/integration/full_test_report_v1.json",
-      "output_sha256": "4dd53abd8307a9a1b2ad2f35558acc829f752a19dd1987e40ae44e3e88343ce2",
+      "output_sha256": "e518076ed5c3ab6a74b9a95c35ba20706fa2340dfe2c3f461a23e15e5e0b3a00",
       "scope": "repository",
       "source_artifacts": [
         {
@@ -3178,7 +3178,7 @@
       "evidence_id": "artifact_compatibility",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/compatibility/artifact_compatibility_report_v1.json",
-      "output_sha256": "de9962212f4853a1e204cd94fc515e39833ad80eec2bbd10ab249f18a4659538",
+      "output_sha256": "c5815edf5eb921c3494eec44304fa32c52e5735b4ec179c944247e89f2ae845c",
       "scope": "synthetic",
       "source_artifacts": [
         {
@@ -3237,7 +3237,7 @@
       "evidence_id": "reproduction",
       "generator": "src/evidence/system.py",
       "output_path": "docs/evidence/system/reproduction/reproduction_audit_v1.json",
-      "output_sha256": "9f777bbf4153f8aba6beb3ca3d3761da0108d0f83d1dbf759fde9ddf6c45fc1e",
+      "output_sha256": "277fc0a056a5985b2b83c22e14e6f9012b0c1f6aecf5495b1166536bede1547a",
       "scope": "repository",
       "source_artifacts": [
         {

@@ -85,6 +85,9 @@
 	}
 	function setExpanded(v: boolean) {
 		if (expanded === v) return;
+		if (v && typeof document !== 'undefined') {
+			lastFocus = document.activeElement as HTMLElement | null;
+		}
 		expanded = v;
 		if (typeof document !== 'undefined') {
 			if (v) {
@@ -96,10 +99,16 @@
 			}
 		}
 		if (v) {
-			lastFocus = document.activeElement as HTMLElement | null;
 			queueMicrotask(() => frame?.querySelector<HTMLElement>('[data-close]')?.focus());
 		} else {
-			lastFocus?.focus();
+			// The expand button is conditionally rendered, so restore focus only
+			// after Svelte has replaced the close button in the DOM.
+			queueMicrotask(() => {
+				const target = lastFocus?.isConnected
+					? lastFocus
+					: frame?.querySelector<HTMLElement>('[data-expand]');
+				target?.focus();
+			});
 		}
 	}
 	onDestroy(() => {
@@ -148,7 +157,7 @@
 					{#if expanded}
 						<button data-close onclick={() => setExpanded(false)} aria-label="Close expanded chart">Close ✕</button>
 					{:else}
-						<button onclick={() => setExpanded(true)} aria-label={`Expand ${title}`}>Expand ⤢</button>
+						<button data-expand onclick={() => setExpanded(true)} aria-label={`Expand ${title}`}>Expand ⤢</button>
 					{/if}
 				</div>
 			</div>

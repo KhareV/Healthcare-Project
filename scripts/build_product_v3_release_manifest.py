@@ -60,6 +60,16 @@ def git(*args: str) -> str:
     return subprocess.check_output(('git', *args), cwd=ROOT, text=True).strip()
 
 
+def material_worktree_changes() -> list[str]:
+    """Return release-relevant changes, excluding the two inventoried local archives.
+
+    The archives predate Phase 2, are intentionally untracked, and are never release
+    inputs. Recording them as a dirty product worktree obscures the state that matters.
+    """
+    ignored = {'?? artifacts.zip', '?? models.zip'}
+    return [line for line in git('status', '--porcelain').splitlines() if line not in ignored]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument('--verify-science', action='store_true', help='read-only full scientific hash audit')
@@ -82,12 +92,15 @@ def main() -> None:
     screenshots = sorted((ROOT / 'docs/evidence/product_v3').glob('*.png'))
     verification = json.loads(args.verification.read_text()) if args.verification else None
     status = 'READY' if verification and verification.get('all_required_passed') is True else 'INTEGRATION_EVIDENCE_PENDING'
+    worktree_changes = material_worktree_changes()
     record = {
         'artifact_version': 'product_v3_release_manifest_v1',
         'kind': 'ENGINEERING_PRODUCT_RELEASE_NOT_SCIENTIFIC_FREEZE',
         'status': status,
         'source_code_commit': git('rev-parse', 'HEAD'),
-        'worktree_dirty_at_generation': bool(git('status', '--porcelain')),
+        'worktree_dirty_at_generation': bool(worktree_changes),
+        'worktree_changes_at_generation': worktree_changes,
+        'ignored_preexisting_untracked_archives': ['artifacts.zip', 'models.zip'],
         'scientific_release': {'v3_1_handoff': reference('artifacts/performance_v3_1/product_handoff.json'),
                                'effective_bundle': reference('artifacts/performance_v3/phase3/selected_models_v3.json'),
                                'v3_final_evaluation_freeze': reference('artifacts/performance_v3/governance/v3_final_evaluation_freeze_v1.json'),
