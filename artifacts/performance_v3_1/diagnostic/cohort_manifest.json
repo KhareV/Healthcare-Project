@@ -1,0 +1,22 @@
+{
+  "DIAG_EVAL": {
+    "eligible_stays": 697,
+    "eligible_support_rows": 3353,
+    "namespace": "SYN-V31-DE",
+    "prevalence_stay_balanced": 0.4225201388759495,
+    "rows": 5368,
+    "seed": 1850882997,
+    "status": "DEVELOPMENT_PRIVILEGED_DIAGNOSTIC_ONLY",
+    "subjects": 900
+  },
+  "DIAG_FIT": {
+    "eligible_stays": 1240,
+    "eligible_support_rows": 6149,
+    "namespace": "SYN-V31-DF",
+    "prevalence_stay_balanced": 0.4355771132988875,
+    "rows": 9560,
+    "seed": 2852083813,
+    "status": "DEVELOPMENT_PRIVILEGED_DIAGNOSTIC_ONLY",
+    "subjects": 1600
+  }
+}

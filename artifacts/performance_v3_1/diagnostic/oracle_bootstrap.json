@@ -1,0 +1,91 @@
+{
+  "comparisons": {
+    "OBSERVED_REFIT_CONTROL_XGB": {
+      "ci95": [
+        -0.05678566292464637,
+        -0.018401621285362952
+      ],
+      "diff_point": -0.037668007285738714,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6222941611887908,
+      "point_reference": 0.6599621684745295
+    },
+    "ORACLE_A_LOGISTIC": {
+      "ci95": [
+        -0.013399555774198062,
+        0.02582222900554391
+      ],
+      "diff_point": 0.007072632148687252,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6670348006232167,
+      "point_reference": 0.6599621684745295
+    },
+    "ORACLE_A_XGBOOST": {
+      "ci95": [
+        -0.02169802357118856,
+        0.020426096290858623
+      ],
+      "diff_point": -0.0005332227363252784,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6594289457382042,
+      "point_reference": 0.6599621684745295
+    },
+    "ORACLE_B_LOGISTIC": {
+      "ci95": [
+        -0.0015770820593256738,
+        0.05197916128573567
+      ],
+      "diff_point": 0.025745385331362836,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6857075538058923,
+      "point_reference": 0.6599621684745295
+    },
+    "ORACLE_B_XGBOOST": {
+      "ci95": [
+        -0.025993029244304744,
+        0.03200727921314541
+      ],
+      "diff_point": 0.003448923623937672,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6634110920984672,
+      "point_reference": 0.6599621684745295
+    },
+    "ORACLE_C_MC": {
+      "ci95": [
+        0.03202777981860488,
+        0.08478109234671621
+      ],
+      "diff_point": 0.05893468997009921,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.7188968584446287,
+      "point_reference": 0.6599621684745295
+    },
+    "REFERENCE_V3_RAW": {
+      "ci95": [
+        0.0,
+        0.0
+      ],
+      "diff_point": 0.0,
+      "n_rows": 3353,
+      "n_stays": 697,
+      "n_valid_joint": 2000,
+      "point_model": 0.6599621684745295,
+      "point_reference": 0.6599621684745295
+    }
+  },
+  "n": 2000,
+  "reference": "REFERENCE_V3",
+  "seed": 20261101
+}

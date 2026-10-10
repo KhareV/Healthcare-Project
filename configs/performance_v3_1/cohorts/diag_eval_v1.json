@@ -1,0 +1,24 @@
+{
+  "accepted_subject_policy": "DETERMINISTIC_REPLACEMENT_UNTIL_900_WITH_AT_LEAST_ONE_LEGAL_CUTOFF",
+  "decision_authority": "USER_DELEGATED_AI_PROJECT_DECISION",
+  "event_dictionary_path": "configs/event_dict_v2.yaml",
+  "inherits": "configs/synthetic/fixtures/phase3_fixture_v1.json",
+  "latent_process_path": "configs/synthetic/latent_process_v1.yaml",
+  "minimum_accepted_episode_hours": 30.0,
+  "mode": "final",
+  "n_subjects": 900,
+  "not_a_new_development_split": false,
+  "primary_seed": 1850882997,
+  "purpose": "PERFORMANCE_V3_1_DIAGNOSTIC_DIAG_EVAL",
+  "runtime_config_version": "performance_v3_1_diag_eval_v1",
+  "scientific_equivalence_note": "All population/calendar/duration/latent/observation/variables parameters, and latent_process_path/support_process_path/event_dictionary_path, are byte-identical to configs/synthetic/final_benchmark_v1.json. Only primary_seed, n_subjects, subject_id_namespace, runtime_config_version, and this provenance metadata differ, per Performance-V2 Phase-3 Part 14/15.",
+  "scope": "AUTHORIZED_FINAL_SYNTHETIC_DATA",
+  "seed_derivation": {
+    "method": "performance_v3_1_cohort_seed_v1",
+    "seed": 1850882997,
+    "seed_material": "performance_v3_1|diag_eval|b46863b7e4057d0f84060eb03ab14f71f6ce082eed908d060f0f41dd1819d78f|900",
+    "seed_material_sha256": "6e523bb5e59fd281333ab8decf26be471019e6e145217d263c0300a6dc8978ee"
+  },
+  "subject_id_namespace": "SYN-V31-DE",
+  "support_process_path": "configs/synthetic/support_process_v1.yaml"
+}

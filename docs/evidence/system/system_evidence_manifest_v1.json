@@ -766,7 +766,7 @@
         },
         {
           "path": "src/data/synthetic/config.py",
-          "sha256": "3ccbc8de4beb0a23436fececd09f0186d59b9a157683368ebaf39873073f8abb"
+          "sha256": "afc1fb7e7b0c5241fc42cd2ad6535918915891f7fd470667dba006ffd132c6d8"
         },
         {
           "path": "src/data/synthetic/generator.py",

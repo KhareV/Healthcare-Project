@@ -1,0 +1,15 @@
+# One bounded verification, declared AFTER seeing the primary diagnostic and BEFORE running it.
+addendum_version: performance_v3_1_diagnostic_verification_addendum_v1
+parent_protocol_sha256: b46863b7e4057d0f84060eb03ab14f71f6ce082eed908d060f0f41dd1819d78f
+trigger: primary diagnostic failed Gate A only on ORACLE_B (gap +0.0257, lower bound -0.0016) while ORACLE_C passed; B learners were fit on 1,600 subjects
+question: is the B shortfall a finite-sample fitting artifact?
+design:
+  fit_cohorts: [DIAG_FIT, V3 development cohorts D1, D2, D3 (6,300 subjects, existing, disjoint from DIAG_EVAL)]
+  evaluation: unchanged DIAG_EVAL rows, labels, REFERENCE_V3 predictions and bootstrap seed
+  learners: unchanged presets (logistic, xgboost); no search
+  informations_sets: ORACLE_B_AUGMENTED unchanged
+decision:
+  rule: unchanged Gate A thresholds (gap >= 0.03 absolute; paired 95% lower bound > 0.01); ORACLE_C requirement unchanged
+  if_pass: Gate A passes, proceed to Work Package B
+  if_fail: V3_1_STOPPED_AFTER_DIAGNOSTIC; no further verification, no rule change
+limit: exactly one run; results published whatever they are

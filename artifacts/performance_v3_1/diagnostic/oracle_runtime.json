@@ -1,0 +1,10 @@
+{
+  "stages": {
+    "replay_verify": 3.3,
+    "snapshots": 5.3,
+    "reference_and_control": 61.1,
+    "privileged_learners": 61.9,
+    "oracle_c_mc": 120.0
+  },
+  "total_seconds": 412.5
+}

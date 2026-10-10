@@ -1,0 +1,20 @@
+REFERENCE_V3                   AUPRC 0.6600 AUROC 0.7422 Brier 0.2021 LL 0.5886
+REFERENCE_V3_RAW               AUPRC 0.6600 AUROC 0.7422 Brier 0.2036 LL 0.5922
+OBSERVED_REFIT_CONTROL_XGB     AUPRC 0.6223 AUROC 0.7207 Brier 0.2114 LL 0.6111
+ORACLE_A_LOGISTIC              AUPRC 0.6670 AUROC 0.7394 Brier 0.2032 LL 0.5909
+ORACLE_A_XGBOOST               AUPRC 0.6594 AUROC 0.7391 Brier 0.2030 LL 0.5893
+ORACLE_B_LOGISTIC              AUPRC 0.6857 AUROC 0.7538 Brier 0.1984 LL 0.5828
+ORACLE_B_XGBOOST               AUPRC 0.6634 AUROC 0.7505 Brier 0.2018 LL 0.5914
+ORACLE_C_MC                    AUPRC 0.7189 AUROC 0.7774 Brier 0.1887 LL 0.5557
+{
+ "best_oracle_b": "ORACLE_B_LOGISTIC",
+ "b_gap": 0.025745385331362836,
+ "b_gap_lb95": -0.0015770820593256738,
+ "c_valid": true,
+ "c_gap": 0.05893468997009921,
+ "c_gap_lb95": 0.03202777981860488,
+ "audits_pass": true,
+ "b_pass": false,
+ "c_pass": true,
+ "passes_gate_a": false
+}

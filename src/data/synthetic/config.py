@@ -35,6 +35,9 @@ FINAL_IDENTITIES = {
     # Performance V3 sealed test cohort: seed derived from SHA-256 of the frozen
     # selected_models_v3.json (registered only after the model freeze).
     (1875329016, 1500): "SYN-V3-T",
+    # Performance V3.1 privileged-diagnostic cohorts (seeds SHA-derived from the frozen diagnostic protocol).
+    (2852083813, 1600): "SYN-V31-DF",
+    (1850882997, 900): "SYN-V31-DE",
 }
 
 

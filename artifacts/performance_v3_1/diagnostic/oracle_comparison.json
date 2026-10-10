@@ -1,0 +1,72 @@
+{
+  "audits": {
+    "forbidden_token_scan": {
+      "flagged_A": [],
+      "flagged_B": []
+    },
+    "mc_reliability": {
+      "ece": 0.02814566548737843,
+      "slope": 1.0469306173287176,
+      "valid": true
+    },
+    "replay_bitwise_identity": {
+      "DIAG_EVAL": {
+        "bitwise_identical": true,
+        "first_mismatch": null,
+        "mismatched": 0,
+        "stays_checked": 900
+      },
+      "DIAG_FIT": {
+        "bitwise_identical": true,
+        "first_mismatch": null,
+        "mismatched": 0,
+        "stays_checked": 1600
+      }
+    },
+    "suspicious_score_guard": {
+      "ORACLE_A_LOGISTIC": {
+        "auprc": 0.6670348006232167,
+        "auroc": 0.7393804018276336,
+        "suspicious": false
+      },
+      "ORACLE_A_XGBOOST": {
+        "auprc": 0.6594289457382042,
+        "auroc": 0.7390548840793607,
+        "suspicious": false
+      },
+      "ORACLE_B_LOGISTIC": {
+        "auprc": 0.6857075538058923,
+        "auroc": 0.753752460402799,
+        "suspicious": false
+      },
+      "ORACLE_B_XGBOOST": {
+        "auprc": 0.6634110920984672,
+        "auroc": 0.7505089987537609,
+        "suspicious": false
+      },
+      "ORACLE_C_MC": {
+        "auprc": 0.7188968584446287,
+        "auroc": 0.7774150103743092,
+        "suspicious": false
+      }
+    },
+    "truncation_invariance": {
+      "checked": 60,
+      "mismatched": 0,
+      "pass": true
+    }
+  },
+  "gate_a": {
+    "audits_pass": true,
+    "b_gap": 0.025745385331362836,
+    "b_gap_lb95": -0.0015770820593256738,
+    "b_pass": false,
+    "best_oracle_b": "ORACLE_B_LOGISTIC",
+    "c_gap": 0.05893468997009921,
+    "c_gap_lb95": 0.03202777981860488,
+    "c_pass": true,
+    "c_valid": true,
+    "passes_gate_a": false
+  },
+  "protocol_sha256": "b46863b7e4057d0f84060eb03ab14f71f6ce082eed908d060f0f41dd1819d78f"
+}
