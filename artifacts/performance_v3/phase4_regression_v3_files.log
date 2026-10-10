@@ -1,0 +1,17 @@
+1s tests/test_performance_v3_audit.py :: 8 passed in 0.09s
+1s tests/test_performance_v3_calibration.py :: 12 passed in 0.86s
+1s tests/test_performance_v3_data_splits.py :: 25 passed in 1.16s
+2s tests/test_performance_v3_explainability.py :: 4 passed, 14 warnings in 1.85s
+26s tests/test_performance_v3_features.py :: 17 passed in 8.01s
+14s tests/test_performance_v3_final_eval.py :: 14 passed, 14 warnings in 13.54s
+1s tests/test_performance_v3_final_models.py :: 13 passed, 13 warnings in 0.93s
+2s tests/test_performance_v3_gru_search.py :: 6 passed in 1.57s
+1s tests/test_performance_v3_learning_curve.py :: 9 passed in 0.70s
+1s tests/test_performance_v3_models.py :: 16 passed, 13 warnings in 0.95s
+1s tests/test_performance_v3_paired_bootstrap.py :: 5 passed in 0.81s
+7s tests/test_performance_v3_research_export.py :: 4 passed, 228 warnings in 6.63s
+0s tests/test_performance_v3_robustness.py :: 5 passed in 0.07s
+1s tests/test_performance_v3_search.py :: 6 passed in 0.77s
+8s tests/test_performance_v3_serving.py :: 14 passed, 14 warnings in 7.59s
+1s tests/test_performance_v3_task_metrics.py :: 7 passed in 0.63s
+0s tests/test_performance_v3_test_access.py :: 10 passed in 0.03s

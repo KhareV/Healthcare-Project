@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f01_subtype_composition.png",
+  "file_sha256": "c55e041d0571648e9d2c1d22b0fe1519d083c9ea2b9b9c3a5f5489e78efd19d3",
+  "format": "png",
+  "id": "f01_subtype_composition",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/subtype_distribution.json",
+      "sha256": "0dfc483ab56d3a8ce7a5e0734107b31dad540b54bb50d7c7f8125cad5223a120"
+    }
+  ],
+  "title": "Cardiac subtype composition"
+}

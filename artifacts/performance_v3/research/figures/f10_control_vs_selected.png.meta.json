@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f10_control_vs_selected.png",
+  "file_sha256": "8b34920ec020ddb052d881bc1adad0205adeba64d0eb90464c4e3927c6d6c125",
+  "format": "png",
+  "id": "f10_control_vs_selected",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Axis truncated for readability; bars are not zero-based.",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/candidate_selection_v1.json",
+      "sha256": "f42903230ddae7889c45c8af752b1d1cde49d1bcabf37fe18e2d1cec41fae95a"
+    }
+  ],
+  "title": "Control vs selected"
+}

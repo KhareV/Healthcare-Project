@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd03_sofa_by_cutoff.csv",
+  "file_sha256": "f63a34d352c5a28df3f74b8147abe622d4677962c131c0a44177c0f4ac9b1c04",
+  "id": "pd03_sofa_by_cutoff",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 12,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/sofa_distributions.json",
+      "sha256": "47741009e08ea25b22f0f08642ddb1469be38377c733672817ff55a67f4364ab"
+    }
+  ],
+  "title": "Baseline SOFA by cutoff index (recovery24-eligible rows)"
+}

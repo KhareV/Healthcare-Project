@@ -1,0 +1,22 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t21_defect_d1.csv",
+  "file_sha256": "6cb7d49f807de8b61753d4099e10739c368e410e7fb59a6f58b6c5395282b05b",
+  "id": "t21_defect_d1",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 10,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/v2_modes_on_lce_v1.json",
+      "sha256": "2b81357450970eedf45ec2fe3f8da4c22eace1d9a9a1539d437fad27dbae8d59"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+      "sha256": "3a510c98cdaf74f107c79cd1081996ff1f6fc4c7d4908135eb9756540d715eac"
+    }
+  ],
+  "title": "Frozen V2 as-evaluated vs as-served, and V3"
+}

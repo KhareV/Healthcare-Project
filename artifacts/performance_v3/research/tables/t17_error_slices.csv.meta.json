@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t17_error_slices.csv",
+  "file_sha256": "5083948172cc6de7ac27033f2d0d502d8843e103dba6e10996c8e573202e4cf2",
+  "id": "t17_error_slices",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 55,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/error_analysis_v1.json",
+      "sha256": "3fd60f9d8f2c5c15c072c96648b77ec852f0dacfb8c16fcd7a65e7721b20f5ae"
+    }
+  ],
+  "title": "Prespecified slice metrics (TEST)"
+}

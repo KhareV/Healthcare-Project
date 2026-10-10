@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f19_shap_global.png",
+  "file_sha256": "62e0da2ac6d8884adfeb1476a73d8dafe072926179c5c4d6f9b335e8466b1cd7",
+  "format": "png",
+  "id": "f19_shap_global",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "TreeSHAP of the raw margin before calibration/postprocess; not a decomposition of the calibrated probability; non-causal.",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/explainability_v1.json",
+      "sha256": "9fbdaf9b471236e2206d452c0f21c9009f0ca5681d692ed51eb155d8a3de2dc0"
+    }
+  ],
+  "title": "SHAP global importance"
+}

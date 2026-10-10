@@ -1,0 +1,38 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t20b_historical_context.csv",
+  "file_sha256": "24e686eb90beab62ca70fea96f9c67a4a8a775ef8eb7733bf01c2ca683bd5080",
+  "id": "t20b_historical_context",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "V1/V2 values copied verbatim from the cited documents; not comparable row-for-row (different cohorts). V2 published values use the V2 offline harness (defect D1).",
+  "rows": 4,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/paired_v2_v3_metrics.json",
+      "sha256": "7dedafe9bfdc2774930123ed695f20ed2cca632aed85d18e73de39c39411506f"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/paired_bootstrap_v1.json",
+      "sha256": "1dc86ba9dd43fa4d2fdec1423320e0b556814489d1b0afbce93eae8ceb94344e"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+      "sha256": "3a510c98cdaf74f107c79cd1081996ff1f6fc4c7d4908135eb9756540d715eac"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/naive_baselines_v1.json",
+      "sha256": "fb5e086a3660ff1661b961eb1b240a93813c5fc8ff76c46849f679340147a4dc"
+    },
+    {
+      "path": "docs/performance_v2/FINAL_V2_TEST_EVALUATION.md",
+      "sha256": "6a79e94a7d37e5505b0bad824b33d480ecbfc15191fbce0c31b0b591c96a0706"
+    },
+    {
+      "path": "docs/vedant/FINAL_TEST_EVALUATION_REVIEW.md",
+      "sha256": "b987e0bec7658bef39cccbdc1ac5553cc30b009a6976499717fae298dfb3c92d"
+    }
+  ],
+  "title": "Historical V1/V2 final-test values (labelled historical; different cohorts and, for V2, defect D1 applies) vs V3 on SYN-V3-T"
+}

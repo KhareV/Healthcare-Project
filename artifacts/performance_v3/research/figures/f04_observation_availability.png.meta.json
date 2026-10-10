@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f04_observation_availability.png",
+  "file_sha256": "6884c400e82774556681dee3319ebae53bb50098fcaf56c3dfac34596d9c61f2",
+  "format": "png",
+  "id": "f04_observation_availability",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/missingness_by_bin.json",
+      "sha256": "c12d9a8a9876a5221222b00c3093e0adca187898369981018b73b5a01cad8063"
+    }
+  ],
+  "title": "Temporal observation availability"
+}

@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd05_feature_missingness.csv",
+  "file_sha256": "51fc8b16360b288817e6c0456104eb321387b2cbbd26f722a2736b8e2318882d",
+  "id": "pd05_feature_missingness",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 21,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/missingness_by_feature.json",
+      "sha256": "9f2b778412dc35f2ce0c6e05f35032fe90cf437abd22d98094b16ba475c8977d"
+    }
+  ],
+  "title": "Feature missingness over non-padded bins"
+}

@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f13_reliability.png",
+  "file_sha256": "8464e6ef13728d51e3184428cf816978587ab6ef4d4183e424b9881f661914d0",
+  "format": "png",
+  "id": "f13_reliability",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "TEST partition.",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/calibration_evidence_v1.json",
+      "sha256": "d187ee3d2adc5b05769773ac4051d4173fc7e7b2d758947fb0ac0d5d4e761b2c"
+    }
+  ],
+  "title": "Reliability diagram"
+}

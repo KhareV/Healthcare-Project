@@ -1,0 +1,577 @@
+{
+  "artifact_version": "performance_v3_research_registry_v1",
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "entries": [
+    {
+      "artifact_ref": "artifacts/performance_v3/phase3/control/bundle_manifest.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "BUNDLE-control-manifest",
+      "metric_definitions": "V2 recipe refit (repaired)",
+      "partition": "development pool refit",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "subjects": 8000
+      },
+      "sha256": "2a30218958833b1b7b75b18b7dd691be9e93567af9a65e217e1dd851b88632cf",
+      "status": "FROZEN_PRETEST"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase3/v3/bundle_manifest.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "BUNDLE-v3-manifest",
+      "metric_definitions": "model bundle with hashes",
+      "partition": "development pool refit",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "subjects": 8000
+      },
+      "sha256": "aaa40b0f741db2410a3d1d047c02adcaeb4ba7df89cf5a022afc100269af3b98",
+      "status": "FROZEN_PRETEST"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/v2_support_discrepancy_check_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "D1-v2-discrepancy-check",
+      "metric_definitions": "identity + structural comparison",
+      "partition": "LCE + structural V2 fresh",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "59edb98c291058874eabb735e4cc349a7aedfdb01c85c47fdc63de590c4c1335",
+      "status": "DEFECT_EVIDENCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/v2_modes_on_lce_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "D1-v2-modes-on-lce",
+      "metric_definitions": "frozen V2 as-evaluated vs as-served",
+      "partition": "LCE (development)",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "rows": 8909
+      },
+      "sha256": "2b81357450970eedf45ec2fe3f8da4c22eace1d9a9a1539d437fad27dbae8d59",
+      "status": "DEFECT_EVIDENCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/cohort_summary.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-cohort-summary",
+      "metric_definitions": "descriptive counts",
+      "partition": "development pool + LCE",
+      "research_question": "RQ1",
+      "sample_sizes": {
+        "lce_subjects": 1500,
+        "pool_subjects": 8000
+      },
+      "sha256": "8c8b9925d301bfa30c0ffb6d28735d10abbddc4640e038a998bb1ad60a3a92ff",
+      "status": "DEVELOPMENT_CHARACTERIZATION"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/generator_equivalence_audit_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-generator-equivalence",
+      "metric_definitions": "scientific config and code identity",
+      "partition": "V3 cohorts",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "c1df92ab5aefec92049bcd03234f49e8df74649a4e2f182da8eb2d6672a8d33d",
+      "status": "AUDIT_PASS"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/missingness_by_feature.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-missingness",
+      "metric_definitions": "missing fraction over non-padded bins",
+      "partition": "development pool",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "9f2b778412dc35f2ce0c6e05f35032fe90cf437abd22d98094b16ba475c8977d",
+      "status": "DEVELOPMENT_CHARACTERIZATION"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/null_pattern_audit_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-null-pattern-audit",
+      "metric_definitions": "elapsed-matched NaN-rate gap vs horizon availability (defect D1)",
+      "partition": "development pool + LCE",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "27edb153772dddf8f438e0d073964b5111454e882ce1d6016d4a7ec5fc247c06",
+      "status": "AUDIT_PASS"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/outcome_prevalence.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-outcome-prevalence",
+      "metric_definitions": "support positive / negative / censored",
+      "partition": "development pool + LCE",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "5f6199659985b30b89e0306590ca8c3f9549a8af5283c5aceff834f40c1917bc",
+      "status": "DEVELOPMENT_CHARACTERIZATION"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/overlap_audit_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-overlap-audit",
+      "metric_definitions": "subject / stay / exact trajectory-fingerprint intersections",
+      "partition": "all cohorts",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "69caf1b3352f48a645ab09dea12bb92f8c6423a006f691fb7cb5420f46dcaaa1",
+      "status": "AUDIT_PASS"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/structural_audit_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-structural-audit",
+      "metric_definitions": "temporal / label structural invariants",
+      "partition": "V3 cohorts",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "4351c489c210cb628e63f78749e00e34051aca174cf685b014872b77b2085b3f",
+      "status": "AUDIT_PASS"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/target_eligibility.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DC-target-eligibility",
+      "metric_definitions": "eligible rows / unique stays per task",
+      "partition": "development pool + LCE",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "fe800b893bf4ce0bb1f9e33bb635eefd632cc29e1dbd49bdc8acd156f39e1a2d",
+      "status": "DEVELOPMENT_CHARACTERIZATION"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/explainability_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DEV-explainability",
+      "metric_definitions": "mean |SHAP| on raw margin",
+      "partition": "LCE 1500-row sample",
+      "research_question": "RQ3",
+      "sample_sizes": {
+        "rows": 1500
+      },
+      "sha256": "9fbdaf9b471236e2206d452c0f21c9009f0ca5681d692ed51eb155d8a3de2dc0",
+      "status": "DEVELOPMENT_EVIDENCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/lce_preview_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DEV-lce-preview",
+      "metric_definitions": "primary metrics, not used for selection",
+      "partition": "LCE (development)",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "f25b6f86f5c5890626cf4abc61ad0340f3b4ee3d78fe921296c7587035a37ca7",
+      "status": "DEVELOPMENT_SANITY_PREVIEW"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/robustness_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "DEV-robustness",
+      "metric_definitions": "primary metrics under perturbation",
+      "partition": "LCE 500-stay subsample",
+      "research_question": "RQ3",
+      "sample_sizes": {
+        "rows": 2859,
+        "stays": 500
+      },
+      "sha256": "2467621870ac9785dd882dd8b2f04e5b03c5451a18ec730ca6f22551b0789c35",
+      "status": "DEVELOPMENT_STRESS_TEST"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/calibration_evidence_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-calibration",
+      "metric_definitions": "reliability, ROC/PR curves, confusion",
+      "partition": "SYN-V3-T sealed test",
+      "research_question": "RQ4",
+      "sample_sizes": {},
+      "sha256": "d187ee3d2adc5b05769773ac4051d4173fc7e7b2d758947fb0ac0d5d4e761b2c",
+      "status": "FINAL_TEST_EVALUATED_ONCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/error_analysis_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-error-analysis",
+      "metric_definitions": "prespecified slices",
+      "partition": "SYN-V3-T sealed test",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "3fd60f9d8f2c5c15c072c96648b77ec852f0dacfb8c16fcd7a65e7721b20f5ae",
+      "status": "FINAL_TEST_EVALUATED_ONCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-metrics",
+      "metric_definitions": "recovery MAE; ICU weighted median AE (h); support calibrated AUPRC/AUROC/Brier; stay-balanced (1/n_i per stay)",
+      "partition": "SYN-V3-T sealed test (1500 subjects)",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "denominators": {
+          "icu_stay_time": 9008,
+          "organ_support": 5703,
+          "recovery24": 5130,
+          "recovery48": 1816
+        }
+      },
+      "sha256": "3a510c98cdaf74f107c79cd1081996ff1f6fc4c7d4908135eb9756540d715eac",
+      "status": "FINAL_TEST_EVALUATED_ONCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/naive_baselines_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-naive-baselines",
+      "metric_definitions": "Master Plan section 19 naive floors (dev constants)",
+      "partition": "SYN-V3-T sealed test",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "fb5e086a3660ff1661b961eb1b240a93813c5fc8ff76c46849f679340147a4dc",
+      "status": "FINAL_TEST_DESCRIPTIVE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/paired_v2_v3_metrics.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-paired",
+      "metric_definitions": "paired stay-cluster bootstrap differences; promotion rule",
+      "partition": "SYN-V3-T sealed test",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "bootstrap": {
+          "ci_levels": [
+            0.95,
+            0.9875
+          ],
+          "n": 2000,
+          "seed": 20261012
+        }
+      },
+      "sha256": "7dedafe9bfdc2774930123ed695f20ed2cca632aed85d18e73de39c39411506f",
+      "status": "FINAL_TEST_EVALUATED_ONCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase4/paired_bootstrap_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FINAL-paired-bootstrap",
+      "metric_definitions": "percentile CIs 95% / 98.75%",
+      "partition": "SYN-V3-T sealed test",
+      "research_question": "RQ5",
+      "sample_sizes": {
+        "replicates": 2000
+      },
+      "sha256": "1dc86ba9dd43fa4d2fdec1423320e0b556814489d1b0afbce93eae8ceb94344e",
+      "status": "FINAL_TEST_EVALUATED_ONCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase3/selected_models_v3.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "FREEZE-selected-models-v3",
+      "metric_definitions": "frozen selection manifest",
+      "partition": "pre-test freeze",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961",
+      "status": "FROZEN_PRETEST"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/governance/v3_protocol_amendment_v1_1_freeze.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "GOV-amendment-freeze",
+      "metric_definitions": "defect D1 amendment",
+      "partition": "governance",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "ec54a5ede69023ab3f41ccc7d19afc490e4dfab7e2536d4e6aefa58309b974f2",
+      "status": "GOVERNANCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/governance/v3_final_evaluation_freeze_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "GOV-final-freeze",
+      "metric_definitions": "final evaluation freeze",
+      "partition": "governance",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "f21b3b6578e3f39dd44b7710ef26242dbad246b98cd75e0b83247b8fbff4ec5e",
+      "status": "GOVERNANCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/governance/v3_model_freeze_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "GOV-model-freeze",
+      "metric_definitions": "pre-test model freeze",
+      "partition": "governance",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "79e50369b7810d71638d217132c8a8ec6f726f2009fdc36ded058b35d5100504",
+      "status": "GOVERNANCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/governance/v3_protocol_freeze_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "GOV-protocol-freeze",
+      "metric_definitions": "protocol hash binding",
+      "partition": "governance",
+      "research_question": "RQ5",
+      "sample_sizes": {},
+      "sha256": "a13de032bc3922575101b567c03180d51cadd5a90d1d7c94131a2dcab8f8377b",
+      "status": "GOVERNANCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_dev_pool.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_dev_pool",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "eb5be4a4ee9e2a5a6fb55fb5285448a9830548c33d9400080b83f198a3e4233d",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_features_D1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_features_D1",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "bc58032f45a9fd4cf74e10d861d49041cfbbb97740cf882f2bd2d8225c89bf82",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_features_D2.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_features_D2",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "f35dbb395303799b9763faa1f3d5cd37a0ad6e1170af907526dfd83b159a8cf4",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_features_D3.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_features_D3",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "d94e280cf1562628fc6f53d240f7a4d22e2bd9756f908fb0ecfa785227544d28",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_features_LCE.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_features_LCE",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "61fb843ff3d3982c182ce7797c0d498b1ef579fadd811cdfc5ee4225377c7207",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/cache/INVALIDATED_preD1_features_V1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_INVALIDATED_preD1_features_V1",
+      "metric_definitions": "feature cache sidecar built before repair (local, gitignored)",
+      "partition": "development (pre-repair cache sidecar)",
+      "research_question": "RQ2",
+      "sample_sizes": {},
+      "sha256": "f1414a7f3bf04bbc5b100a903cb734e9d2d9b482a4d648d0b58f49aa93cf1ed8",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/invalidated_pre_D1/learning_curve_metrics.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_learning_curve",
+      "metric_definitions": "pre-repair learning curve; built on the null-baseline-SOFA feature",
+      "partition": "development (pre-repair)",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "6a5290fb61a916a657d4150593eb71960b4e7d1dbf1d6b98e902be211538743f",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/invalidated_pre_D1/learning_curve_bootstrap.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_learning_curve_bootstrap",
+      "metric_definitions": "pre-repair bootstrap; built on the null-baseline-SOFA feature",
+      "partition": "development (pre-repair)",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "3e096752f3a5141cb11d2a543104b9aa90cfe5f568405b0557bf0db323c18b38",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/invalidated_pre_D1/learning_curve_table.csv",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_learning_curve_table",
+      "metric_definitions": "pre-repair learning curve table; built on the null-baseline-SOFA feature",
+      "partition": "development (pre-repair)",
+      "research_question": "RQ1",
+      "sample_sizes": {},
+      "sha256": "16f3e5d78177a171b044dff2c71c3ca62832ee0dae2c22de99c4ffe539368bc5",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/INVALIDATED_trial_ledger_v1_nullSOFA_leak.jsonl",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "INVALIDATED_D1_ledger",
+      "metric_definitions": "pre-repair search ledger (79 trials); built on the null-baseline-SOFA feature",
+      "partition": "development (pre-repair)",
+      "research_question": "RQ3",
+      "sample_sizes": {},
+      "sha256": "562aa17d12c4c9dc649f0d33d55645ccd79d65a59003dffc98bac067fc6abe96",
+      "status": "INVALIDATED_D1"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/data_characterization/learning_curve_metrics.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "RQ1-learning-curve",
+      "metric_definitions": "task primary metric stay-balanced (1/n_i per stay); 500-replicate stay-cluster bootstrap (repeat 0)",
+      "partition": "train subsets of dev pool; evaluated on LCE",
+      "research_question": "RQ1",
+      "sample_sizes": {
+        "eval_subjects": 1500,
+        "sizes": [
+          425,
+          850,
+          1700,
+          3800,
+          5900,
+          8000
+        ]
+      },
+      "sha256": "89badd3f7695671ef60f4680edc30d19161d4ec5924e1a38054c0bb9c1a7960d",
+      "status": "DEVELOPMENT_EVIDENCE_CORRECTED"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/candidate_selection_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "RQ3-candidate-selection",
+      "metric_definitions": "lowest mean primary; tie tolerance 0.5% (AUPRC 0.003); V2-recipe retention rule",
+      "partition": "5-fold cross-fitting, dev pool",
+      "research_question": "RQ3",
+      "sample_sizes": {
+        "folds": 5
+      },
+      "sha256": "f42903230ddae7889c45c8af752b1d1cde49d1bcabf37fe18e2d1cec41fae95a",
+      "status": "DEVELOPMENT_EVIDENCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/trial_ledger_v1.jsonl",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "RQ3-trial-ledger",
+      "metric_definitions": "recovery MAE; ICU weighted median AE (h); support raw-score AUPRC; all stay-balanced",
+      "partition": "5/3-fold cross-fitting on 8000-subject dev pool",
+      "research_question": "RQ3",
+      "sample_sizes": {
+        "total": 496,
+        "trials_by_stage": {
+          "S0": 4,
+          "S1": 144,
+          "S2": 64,
+          "S3": 32,
+          "S4": 252
+        }
+      },
+      "sha256": "2e62aa34547b23333527cd24509a2721448bfef6dd9deba338894ad94b7cdb67",
+      "status": "DEVELOPMENT_EVIDENCE"
+    },
+    {
+      "artifact_ref": "artifacts/performance_v3/phase2/support_calibration_v1.json",
+      "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+      "experiment_id": "RQ4-support-calibration",
+      "metric_definitions": "stay-balanced log loss, Brier, ECE(10 equal-mass), slope/intercept",
+      "partition": "nested cross-fit OOF scores, dev pool",
+      "research_question": "RQ4",
+      "sample_sizes": {
+        "oof_rows": 31434
+      },
+      "sha256": "edb5dc75a086b577130ab8cbbda4bcf816526822ff9da85b53f6a1dd3c622caa",
+      "status": "DEVELOPMENT_EVIDENCE"
+    }
+  ],
+  "export_version": "performance_v3_research_export_v1",
+  "exports": [
+    "artifacts/performance_v3/research/figures/f01_subtype_composition.png",
+    "artifacts/performance_v3/research/figures/f02_age_duration.png",
+    "artifacts/performance_v3/research/figures/f03_sofa_by_cutoff.png",
+    "artifacts/performance_v3/research/figures/f04_observation_availability.png",
+    "artifacts/performance_v3/research/figures/f05_feature_missingness.png",
+    "artifacts/performance_v3/research/figures/f06_task_eligibility.png",
+    "artifacts/performance_v3/research/figures/f07_learning_curve.png",
+    "artifacts/performance_v3/research/figures/f07_learning_curve.svg",
+    "artifacts/performance_v3/research/figures/f08_model_leaderboard.png",
+    "artifacts/performance_v3/research/figures/f09_feature_ablation.png",
+    "artifacts/performance_v3/research/figures/f10_control_vs_selected.png",
+    "artifacts/performance_v3/research/figures/f11_support_roc.png",
+    "artifacts/performance_v3/research/figures/f12_support_pr.png",
+    "artifacts/performance_v3/research/figures/f12_support_pr.svg",
+    "artifacts/performance_v3/research/figures/f13_reliability.png",
+    "artifacts/performance_v3/research/figures/f14_confusion.png",
+    "artifacts/performance_v3/research/figures/f15_threshold_sensitivity.png",
+    "artifacts/performance_v3/research/figures/f16_residuals.png",
+    "artifacts/performance_v3/research/figures/f17_error_slices.png",
+    "artifacts/performance_v3/research/figures/f18_robustness.png",
+    "artifacts/performance_v3/research/figures/f19_shap_global.png",
+    "artifacts/performance_v3/research/figures/f20_paired_differences.pdf",
+    "artifacts/performance_v3/research/figures/f20_paired_differences.png",
+    "artifacts/performance_v3/research/figures/f20_paired_differences.svg",
+    "artifacts/performance_v3/research/figures/f21_defect_d1_v2_modes.pdf",
+    "artifacts/performance_v3/research/figures/f21_defect_d1_v2_modes.png",
+    "artifacts/performance_v3/research/figures/f21_defect_d1_v2_modes.svg",
+    "artifacts/performance_v3/research/plot_data/pd01_subtype_composition.csv",
+    "artifacts/performance_v3/research/plot_data/pd02_age_duration_quantiles.csv",
+    "artifacts/performance_v3/research/plot_data/pd03_sofa_by_cutoff.csv",
+    "artifacts/performance_v3/research/plot_data/pd04_observed_fraction_by_bin.csv",
+    "artifacts/performance_v3/research/plot_data/pd05_feature_missingness.csv",
+    "artifacts/performance_v3/research/plot_data/pd07_learning_curve.csv",
+    "artifacts/performance_v3/research/plot_data/pd08_leaderboard_all_trials.csv",
+    "artifacts/performance_v3/research/plot_data/pd11_support_roc.csv",
+    "artifacts/performance_v3/research/plot_data/pd12_support_pr.csv",
+    "artifacts/performance_v3/research/plot_data/pd13_reliability.csv",
+    "artifacts/performance_v3/research/plot_data/pd15_threshold_sensitivity.csv",
+    "artifacts/performance_v3/research/plot_data/pd16_residual_histograms.csv",
+    "artifacts/performance_v3/research/tables/t06_task_eligibility.csv",
+    "artifacts/performance_v3/research/tables/t06_task_eligibility.tex",
+    "artifacts/performance_v3/research/tables/t08_leaderboard_best_per_family.csv",
+    "artifacts/performance_v3/research/tables/t08_leaderboard_best_per_family.tex",
+    "artifacts/performance_v3/research/tables/t09_feature_ablation.csv",
+    "artifacts/performance_v3/research/tables/t09_feature_ablation.tex",
+    "artifacts/performance_v3/research/tables/t10_control_vs_selected.csv",
+    "artifacts/performance_v3/research/tables/t10_control_vs_selected.tex",
+    "artifacts/performance_v3/research/tables/t14_confusion_at_frozen_thresholds.csv",
+    "artifacts/performance_v3/research/tables/t14_confusion_at_frozen_thresholds.tex",
+    "artifacts/performance_v3/research/tables/t17_error_slices.csv",
+    "artifacts/performance_v3/research/tables/t18_robustness_deltas.csv",
+    "artifacts/performance_v3/research/tables/t18_robustness_deltas.tex",
+    "artifacts/performance_v3/research/tables/t19_shap_global_top20.csv",
+    "artifacts/performance_v3/research/tables/t20_paired_differences.csv",
+    "artifacts/performance_v3/research/tables/t20_paired_differences.tex",
+    "artifacts/performance_v3/research/tables/t20b_historical_context.csv",
+    "artifacts/performance_v3/research/tables/t20b_historical_context.tex",
+    "artifacts/performance_v3/research/tables/t21_defect_d1.csv",
+    "artifacts/performance_v3/research/tables/t21_defect_d1.tex"
+  ],
+  "model_bundle_id": "performance_v3_v3",
+  "research_questions": {
+    "RQ1": "learning curve / data size",
+    "RQ2": "feature families",
+    "RQ3": "model families and objectives",
+    "RQ4": "support calibration",
+    "RQ5": "sealed-test paired V2 vs V3"
+  },
+  "skipped": [
+    {
+      "id": "f03b_sofa_components",
+      "reason": "component-level SOFA distributions unavailable in characterization artifacts"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+variable,cohort,percentile,value
+Age (years),DEV_POOL,0,18
+Age (years),DEV_POOL,1,18
+Age (years),DEV_POOL,5,21
+Age (years),DEV_POOL,25,36
+Age (years),DEV_POOL,50,54
+Age (years),DEV_POOL,75,72.25
+Age (years),DEV_POOL,95,87
+Age (years),DEV_POOL,99,90
+Age (years),DEV_POOL,100,90
+Age (years),LCE,0,18
+Age (years),LCE,1,18
+Age (years),LCE,5,21
+Age (years),LCE,25,36
+Age (years),LCE,50,54
+Age (years),LCE,75,73
+Age (years),LCE,95,87
+Age (years),LCE,99,90
+Age (years),LCE,100,90
+Episode duration (hours),DEV_POOL,0,30.0037
+Episode duration (hours),DEV_POOL,1,31.0423
+Episode duration (hours),DEV_POOL,5,34.8872
+Episode duration (hours),DEV_POOL,25,47.3327
+Episode duration (hours),DEV_POOL,50,60.744
+Episode duration (hours),DEV_POOL,75,78.4501
+Episode duration (hours),DEV_POOL,95,113
+Episode duration (hours),DEV_POOL,99,132
+Episode duration (hours),DEV_POOL,100,132
+Episode duration (hours),LCE,0,30.0303
+Episode duration (hours),LCE,1,31.2762
+Episode duration (hours),LCE,5,34.9998
+Episode duration (hours),LCE,25,47.0628
+Episode duration (hours),LCE,50,60.14
+Episode duration (hours),LCE,75,75.4217
+Episode duration (hours),LCE,95,110.094
+Episode duration (hours),LCE,99,132
+Episode duration (hours),LCE,100,132

@@ -1,0 +1,19 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t18_robustness_deltas.tex",
+  "file_sha256": "b587c74fa2cf308a554919d179d52fcf360535218f9ff79e6084ef9f1d6de88f",
+  "format": "tex",
+  "id": "t18_robustness_deltas",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Positive = worse for recovery/ICU (error); negative = worse for support (AUPRC).",
+  "rows": 108,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/robustness_v1.json",
+      "sha256": "2467621870ac9785dd882dd8b2f04e5b03c5451a18ec730ca6f22551b0789c35"
+    }
+  ],
+  "title": "Robustness: change vs unperturbed (LCE subsample)"
+}

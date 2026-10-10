@@ -1,0 +1,81 @@
+task,rank,feature,readable,mean_abs_shap
+recovery24,1,B__current_sofa,B__current_sofa,1.006
+recovery24,2,A__bin7__vasopressor_on__value,"vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.406232
+recovery24,3,A__bin7__heart_rate__latest__value,"heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.192541
+recovery24,4,A__bin7__norepinephrine_rate__value,"norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.109751
+recovery24,5,A__bin7__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0722955
+recovery24,6,A__bin6__heart_rate__latest__value,"heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0693814
+recovery24,7,A__bin7__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.047146
+recovery24,8,A__bin7__temperature__latest__value,"temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0452586
+recovery24,9,A__bin7__diastolic_blood_pressure__latest__value,"diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0367694
+recovery24,10,A__bin6__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.033312
+recovery24,11,A__bin7__lactate__latest__value,"lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0329215
+recovery24,12,A__bin4__heart_rate__latest__value,"heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0245889
+recovery24,13,A__bin5__heart_rate__latest__value,"heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",0.02193
+recovery24,14,A__bin6__diastolic_blood_pressure__latest__value,"diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0207497
+recovery24,15,A__bin7__dobutamine_rate__value,"dobutamine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.020214
+recovery24,16,A__bin4__vasopressor_on__value,"vasopressor_on [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.020173
+recovery24,17,A__bin3__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",0.0201047
+recovery24,18,A__bin7__glasgow_coma_scale__latest__tslo,"glasgow_coma_scale__latest [tslo] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0191445
+recovery24,19,A__bin4__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0183648
+recovery24,20,A__bin4__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0149885
+recovery48,1,B__current_sofa,B__current_sofa,1.17077
+recovery48,2,D__heart_rate__latest__mean_48h,D__heart_rate__latest__mean_48h,0.120261
+recovery48,3,D__vasopressor_on__mean_24h,D__vasopressor_on__mean_24h,0.0908877
+recovery48,4,D__diastolic_blood_pressure__latest__mean_48h,D__diastolic_blood_pressure__latest__mean_48h,0.064715
+recovery48,5,D__heart_rate__latest__mean_24h,D__heart_rate__latest__mean_24h,0.0641013
+recovery48,6,D__systolic_blood_pressure__latest__mean_48h,D__systolic_blood_pressure__latest__mean_48h,0.0600462
+recovery48,7,D__heart_rate__latest__max_48h,D__heart_rate__latest__max_48h,0.0570383
+recovery48,8,D__lactate__latest__min_48h,D__lactate__latest__min_48h,0.0560879
+recovery48,9,D__platelet_count__latest__min_48h,D__platelet_count__latest__min_48h,0.0560269
+recovery48,10,A__bin7__heart_rate__latest__value,"heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.042517
+recovery48,11,D__lactate__latest__mean_48h,D__lactate__latest__mean_48h,0.0404013
+recovery48,12,D__mean_arterial_pressure__latest__mean_48h,D__mean_arterial_pressure__latest__mean_48h,0.0376506
+recovery48,13,D__mean_arterial_pressure__latest__min_24h,D__mean_arterial_pressure__latest__min_24h,0.0279536
+recovery48,14,D__lactate__latest__max_48h,D__lactate__latest__max_48h,0.0274639
+recovery48,15,D__temperature__latest__mean_24h,D__temperature__latest__mean_24h,0.0255484
+recovery48,16,D__diastolic_blood_pressure__latest__max_48h,D__diastolic_blood_pressure__latest__max_48h,0.0249922
+recovery48,17,D__mean_arterial_pressure__latest__mean_24h,D__mean_arterial_pressure__latest__mean_24h,0.0249724
+recovery48,18,D__diastolic_blood_pressure__latest__max_24h,D__diastolic_blood_pressure__latest__max_24h,0.0241776
+recovery48,19,D__mean_arterial_pressure__latest__min_48h,D__mean_arterial_pressure__latest__min_48h,0.0239875
+recovery48,20,D__mean_arterial_pressure__latest__min_12h,D__mean_arterial_pressure__latest__min_12h,0.0229121
+icu_stay_time,1,A__bin5__heart_rate__latest__value,"heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",0.0241812
+icu_stay_time,2,A__bin4__heart_rate__latest__value,"heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0197936
+icu_stay_time,3,A__bin6__heart_rate__latest__value,"heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0129109
+icu_stay_time,4,A__bin7__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0129035
+icu_stay_time,5,A__bin7__heart_rate__latest__value,"heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0120589
+icu_stay_time,6,A__bin4__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0119599
+icu_stay_time,7,B__current_sofa,B__current_sofa,0.010997
+icu_stay_time,8,A__bin2__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",0.00995905
+icu_stay_time,9,A__bin2__heart_rate__latest__value,"heart_rate__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",0.00919121
+icu_stay_time,10,A__bin4__pao2__latest__value,"pao2__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.00807172
+icu_stay_time,11,A__bin3__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",0.00792738
+icu_stay_time,12,A__bin4__creatinine__latest__value,"creatinine__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.00740146
+icu_stay_time,13,A__bin7__lactate__latest__value,"lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.00731351
+icu_stay_time,14,A__bin1__heart_rate__latest__value,"heart_rate__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",0.00688409
+icu_stay_time,15,A__bin6__oxygen_saturation__latest__value,"oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.00681845
+icu_stay_time,16,A__bin1__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",0.00637314
+icu_stay_time,17,A__bin4__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.00601713
+icu_stay_time,18,A__bin7__respiratory_rate__latest__value,"respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.00597459
+icu_stay_time,19,A__bin4__temperature__latest__value,"temperature__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.00560457
+icu_stay_time,20,A__bin2__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",0.00512178
+organ_support,1,A__bin7__vasopressor_on__value,"vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.537543
+organ_support,2,A__bin7__heart_rate__latest__value,"heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.156823
+organ_support,3,A__bin7__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0612656
+organ_support,4,A__bin7__temperature__latest__value,"temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0536225
+organ_support,5,A__bin7__oxygen_saturation__latest__value,"oxygen_saturation__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0487501
+organ_support,6,A__bin7__norepinephrine_rate__value,"norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0483744
+organ_support,7,A__bin6__heart_rate__latest__value,"heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.045283
+organ_support,8,A__bin6__systolic_blood_pressure__latest__value,"systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0452098
+organ_support,9,A__bin7__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0448848
+organ_support,10,A__bin7__diastolic_blood_pressure__latest__value,"diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0408725
+organ_support,11,A__bin7__respiratory_rate__latest__value,"respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.0314205
+organ_support,12,A__bin6__temperature__latest__value,"temperature__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0301196
+organ_support,13,A__bin6__oxygen_saturation__latest__value,"oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0272342
+organ_support,14,A__bin4__mean_arterial_pressure__latest__value,"mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0260382
+organ_support,15,A__bin3__heart_rate__latest__value,"heart_rate__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",0.0244009
+organ_support,16,A__bin5__oxygen_saturation__latest__value,"oxygen_saturation__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",0.0226921
+organ_support,17,A__bin4__oxygen_saturation__latest__value,"oxygen_saturation__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",0.0226256
+organ_support,18,A__bin6__diastolic_blood_pressure__latest__value,"diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",0.0225341
+organ_support,19,A__bin5__heart_rate__latest__value,"heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",0.0215792
+organ_support,20,A__bin7__invasive_ventilation_on__value,"invasive_ventilation_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",0.021373

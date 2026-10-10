@@ -1,0 +1,19 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t10_control_vs_selected.tex",
+  "file_sha256": "0b1f61c005a041843f10bfb30493a60b4a4e15adfca589391cd2ba6b97e9f9f1",
+  "format": "tex",
+  "id": "t10_control_vs_selected",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 4,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/candidate_selection_v1.json",
+      "sha256": "f42903230ddae7889c45c8af752b1d1cde49d1bcabf37fe18e2d1cec41fae95a"
+    }
+  ],
+  "title": "V2-recipe control vs S4 winner"
+}

@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd13_reliability.csv",
+  "file_sha256": "35773223947a6b272f3653e37dcd5b2f3d94039408ecbcb037da150c9e88ab7e",
+  "id": "pd13_reliability",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 40,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/calibration_evidence_v1.json",
+      "sha256": "d187ee3d2adc5b05769773ac4051d4173fc7e7b2d758947fb0ac0d5d4e761b2c"
+    }
+  ],
+  "title": "Reliability bins"
+}

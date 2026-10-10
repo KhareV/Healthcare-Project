@@ -1,0 +1,9 @@
+cohort,task,eligible_rows,unique_stays
+DEV_POOL,recovery24,28203,5912
+DEV_POOL,recovery48,10620,2626
+DEV_POOL,icu_time,48859,8000
+DEV_POOL,organ_support,31434,6298
+LCE,recovery24,5004,1096
+LCE,recovery48,1741,440
+LCE,icu_time,8909,1500
+LCE,organ_support,5630,1174

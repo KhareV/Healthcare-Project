@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t19_shap_global_top20.csv",
+  "file_sha256": "741c94dd9202d12a11cbb259df51141a13b5693edfb212758a381b2719469358",
+  "id": "t19_shap_global_top20",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 80,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/explainability_v1.json",
+      "sha256": "9fbdaf9b471236e2206d452c0f21c9009f0ca5681d692ed51eb155d8a3de2dc0"
+    }
+  ],
+  "title": "Global TreeSHAP top-20 per task (raw margin)"
+}

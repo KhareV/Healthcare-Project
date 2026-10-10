@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f16_residuals.png",
+  "file_sha256": "3f06af7384eac841b79ef75ed5de690f69a611e66cd05424b69036eda8cf099b",
+  "format": "png",
+  "id": "f16_residuals",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "TEST partition; tails clipped for display.",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/predictions/test_predictions_v1.jsonl",
+      "sha256": "7ab7000f3513429dcbf986295f90aa2fca6eee6c82aafe85e62c7e6ead6773f1"
+    }
+  ],
+  "title": "Residual distributions"
+}

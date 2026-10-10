@@ -1,0 +1,159 @@
+{
+  "artifact_version": "performance_v3_product_handoff_v1",
+  "control_comparator": {
+    "manifest_ref": "artifacts/performance_v3/phase3/control/bundle_manifest.json",
+    "manifest_sha256": "2a30218958833b1b7b75b18b7dd691be9e93567af9a65e217e1dd851b88632cf"
+  },
+  "data_quality_schema_ref": "configs/prediction_schema_v1.json",
+  "evidence": {
+    "evaluation_freeze": "artifacts/performance_v3/governance/v3_final_evaluation_freeze_v1.json",
+    "figure_index": "docs/performance_v3/FIGURE_AND_TABLE_INDEX.md",
+    "final_evaluation_doc": "docs/performance_v3/FINAL_V3_EVALUATION.md",
+    "final_metrics": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+    "paired": "artifacts/performance_v3/phase4/paired_v2_v3_metrics.json"
+  },
+  "git_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "known_limitations": [
+    "Synthetic data from one generator; no clinical or external validation.",
+    "Absolute skill is modest: ICU time improves ~6.7% over a constant baseline, consistent with the generator's irreducible duration noise.",
+    "Recovery48 V3 vs V2-recipe refit paired CI includes zero; other V3 gains over that control are small.",
+    "TreeSHAP explains the raw margin, not the calibrated probability.",
+    "Learning-curve and robustness results are development evidence; only the sealed test is final evidence.",
+    "V2's historical published ICU/support metrics are inflated by defect D1 and must not be presented as deployed performance."
+  ],
+  "provenance_endpoints_required": [
+    "bundle manifest + per-task model sha256",
+    "protocol + amendment hashes",
+    "calibrator method/params hash",
+    "threshold value",
+    "cohort lineage (generation_lineage.json)",
+    "defect D1 notice",
+    "research registry"
+  ],
+  "recommended_bundle": {
+    "bundle_id": "performance_v3_v3",
+    "calibrator": {
+      "method": "platt",
+      "params_sha256": "f39440b64407e52d8051f15e69403dd0ce2f2ab0408c284c6cde32c02fceb279"
+    },
+    "manifest_ref": "artifacts/performance_v3/phase3/selected_models_v3.json",
+    "manifest_sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961",
+    "tasks": {
+      "icu_stay_time": {
+        "explanation": "tree_shap",
+        "explanation_domain": "RAW_MARGIN_PRE_CALIBRATION (not a decomposition of the calibrated probability)",
+        "family": "xgboost",
+        "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/icu_stay_time/feature_names.json",
+        "feature_names_sha256": "cf097d3960ddd409bbf9dbdfa686fa2df66a5cb93785e36fb191845b844d6145",
+        "feature_variant": "V3_CTRL",
+        "model_ref": "artifacts/performance_v3/phase3/v3/models/icu_stay_time/model_meta.json",
+        "model_sha256": "b8d41da7caa085acb4c9f6b729128d3041ea3e09cf9471e3e64b2adf2c0f1459",
+        "n_estimators": 428,
+        "postprocess": "expm1(clamp_min(raw,0))",
+        "promotion_decision": "PROMOTE_V3",
+        "serve": "V3"
+      },
+      "organ_support": {
+        "explanation": "tree_shap",
+        "explanation_domain": "RAW_MARGIN_PRE_CALIBRATION (not a decomposition of the calibrated probability)",
+        "family": "xgboost",
+        "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/organ_support/feature_names.json",
+        "feature_names_sha256": "246319194d5393d0f96dad26e910fbac481986948bb31f546c23274616e3325a",
+        "feature_variant": "V3_BE",
+        "model_ref": "artifacts/performance_v3/phase3/v3/models/organ_support/model_meta.json",
+        "model_sha256": "46c31ece22df8429f2991db889e16a8c3cacdf431589a57594366a102a8d33c6",
+        "n_estimators": 333,
+        "postprocess": "none",
+        "promotion_decision": "PROMOTE_V3",
+        "serve": "V3"
+      },
+      "recovery24": {
+        "explanation": "tree_shap",
+        "explanation_domain": "RAW_MARGIN_PRE_CALIBRATION (not a decomposition of the calibrated probability)",
+        "family": "xgboost",
+        "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/recovery24/feature_names.json",
+        "feature_names_sha256": "246319194d5393d0f96dad26e910fbac481986948bb31f546c23274616e3325a",
+        "feature_variant": "V3_BE",
+        "model_ref": "artifacts/performance_v3/phase3/v3/models/recovery24/model_meta.json",
+        "model_sha256": "cc1ed1acceb0e3d9e4c396a34270a414c7db3d26cbfec0ab01b6608840aede2a",
+        "n_estimators": 125,
+        "postprocess": "none",
+        "promotion_decision": "PROMOTE_V3",
+        "serve": "V3"
+      },
+      "recovery48": {
+        "explanation": "tree_shap",
+        "explanation_domain": "RAW_MARGIN_PRE_CALIBRATION (not a decomposition of the calibrated probability)",
+        "family": "catboost",
+        "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/recovery48/feature_names.json",
+        "feature_names_sha256": "be8d925af2e30919c0956d683ff365d13a14e079fdc99809ae5606f5a6d43af1",
+        "feature_variant": "V3_BD",
+        "model_ref": "artifacts/performance_v3/phase3/v3/models/recovery48/model_meta.json",
+        "model_sha256": "65b1367bcc117e42972c768b98c6275b7b9075d8ac5dbb1d10466f2e84af3a6e",
+        "n_estimators": 163,
+        "postprocess": "none",
+        "promotion_decision": "PROMOTE_V3",
+        "serve": "V3"
+      }
+    },
+    "threshold": {
+      "comparator": ">=",
+      "value": 0.3021480061849302
+    }
+  },
+  "research_registry": {
+    "ref": "artifacts/performance_v3/research/research_registry_v1.json",
+    "sha256": "0ca26fedb1959137a541277cd39154538d348608356cb0258bfdf88de57bf116"
+  },
+  "response_schema": [
+    "stay_id",
+    "prediction_time",
+    "grid_index",
+    "current_sofa",
+    "recovery24_delta",
+    "recovery48_delta",
+    "recovery24_sofa",
+    "recovery48_sofa",
+    "icu_raw_log_prediction",
+    "icu_remaining_hours",
+    "support_raw_probability",
+    "support_calibrated_probability",
+    "support_threshold",
+    "support_alert",
+    "model_hashes",
+    "bundle_id",
+    "serving_version"
+  ],
+  "safe_demo_data": {
+    "allowed": [
+      "configs/performance_v2/v2_demo_manifest_v1.json (V1 demo stays)",
+      "LCE development cohort (artifacts/performance_v3/cohorts/LCE)",
+      "development pool cohorts D1-D3"
+    ],
+    "forbidden": [
+      "V1 test (namespace SYN, split test)",
+      "V2 fresh test (SYN-V2)",
+      "V3 sealed test (SYN-V3-T)"
+    ]
+  },
+  "serving_adapter": {
+    "caveats": [
+      "predict_stay_at obtains the cutoff-truncated canonical row through the existing V2 serving runtime (V1 demo stays only)",
+      "current_sofa must be frozen sofa_at(t) for every request (defect D1)",
+      "GRU serving / Integrated Gradients are not part of the V3 bundle (all selected families are tree models)"
+    ],
+    "entry_points": [
+      "V3Bundle.load",
+      "V3Bundle.predict_rows",
+      "V3Bundle.predict_stay_at",
+      "V2Comparator.predict_rows"
+    ],
+    "module": "src/performance_v3/serving.py"
+  },
+  "status": "SCIENCE_FROZEN_PHASE_2_READY",
+  "v2_fallback": {
+    "manifest_ref": "artifacts/performance_v2/phase3/selected_models_v2.json",
+    "manifest_sha256": "6fed05f3c71ce648658b2f864e69fa9f80f3ec8538f53a4e370fa8a4eaf176a8",
+    "warning": "Defect D1: served V2 ICU-time/support forecasts are far worse than the published V2 evaluation (see docs/performance_v3/DEFECT_D1.md). Keep only for rollback/comparison."
+  }
+}

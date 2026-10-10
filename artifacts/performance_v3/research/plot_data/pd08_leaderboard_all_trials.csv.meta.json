@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd08_leaderboard_all_trials.csv",
+  "file_sha256": "346fa132212c25554d1d13b55b36a6cd08c4a9b47da9d5c5747eb7d449d4c416",
+  "id": "pd08_leaderboard_all_trials",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 428,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/trial_ledger_v1.jsonl",
+      "sha256": "2e62aa34547b23333527cd24509a2721448bfef6dd9deba338894ad94b7cdb67"
+    }
+  ],
+  "title": "All S1/S3/S4 trials"
+}

@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd12_support_pr.csv",
+  "file_sha256": "b001fd59be7434f4f20c9e22d28e6894129a2b7a0b387f27e28debdf84307ca5",
+  "id": "pd12_support_pr",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "stay-balanced curves from frozen test predictions (TEST)",
+  "rows": 362,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/calibration_evidence_v1.json",
+      "sha256": "d187ee3d2adc5b05769773ac4051d4173fc7e7b2d758947fb0ac0d5d4e761b2c"
+    }
+  ],
+  "title": "Support precision-recall (calibrated scores, sealed V3 test)"
+}

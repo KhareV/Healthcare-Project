@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd04_observed_fraction_by_bin.csv",
+  "file_sha256": "bfef0d7f1c5882837ed2b84766f2c649437e853d3d2a2af2bdd33d454d0ae4f2",
+  "id": "pd04_observed_fraction_by_bin",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 120,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/missingness_by_bin.json",
+      "sha256": "c12d9a8a9876a5221222b00c3093e0adca187898369981018b73b5a01cad8063"
+    }
+  ],
+  "title": "Observed fraction by channel and bin (non-padded rows)"
+}

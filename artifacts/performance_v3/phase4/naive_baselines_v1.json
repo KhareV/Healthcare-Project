@@ -1,0 +1,28 @@
+{
+  "artifact_version": "performance_v3_naive_baselines_v1",
+  "constants_source": "development pool (8000 subjects) only",
+  "icu_constant_log1p_weighted_median": 3.0681806944139134,
+  "support_prevalence_stay_balanced": 0.4219919044823776,
+  "tasks": {
+    "icu_stay_time": {
+      "mae": 13.045187489422077,
+      "rmse": 18.44896048797272,
+      "weighted_median_ae_hours": 9.754494000000006
+    },
+    "organ_support": {
+      "auprc": 0.4074680579821889,
+      "brier": 0.2416487818235747,
+      "prevalence_test_stay_balanced": 0.40746805798219676
+    },
+    "recovery24": {
+      "mae": 1.253882223785805,
+      "median_ae": 1.0,
+      "rmse": 1.8419274802473171
+    },
+    "recovery48": {
+      "mae": 1.632028767985558,
+      "median_ae": 1.0,
+      "rmse": 2.1975569351246644
+    }
+  }
+}

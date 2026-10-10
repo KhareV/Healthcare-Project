@@ -1,0 +1,22 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd07_learning_curve.csv",
+  "file_sha256": "d4b29fd5f08295dbdd7ea35e67dc438142d75c429a5f8a5ff0ce8c2f5e208242",
+  "id": "pd07_learning_curve",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 24,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/learning_curve_table.csv",
+      "sha256": "eadf3ca97696da5d527dd72be410452b1b4335ce8c9ca4de043246d5381943d4"
+    },
+    {
+      "path": "artifacts/performance_v3/data_characterization/learning_curve_metrics.json",
+      "sha256": "89badd3f7695671ef60f4680edc30d19161d4ec5924e1a38054c0bb9c1a7960d"
+    }
+  ],
+  "title": "Corrected learning curve (frozen V2 recipe, LCE)"
+}

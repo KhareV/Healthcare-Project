@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f11_support_roc.png",
+  "file_sha256": "7161039fe8ee793df42d00ba41e0dbe432140a93c95d38bd88bfbe0bab6a461e",
+  "format": "png",
+  "id": "f11_support_roc",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "TEST partition (one-time governed access).",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/calibration_evidence_v1.json",
+      "sha256": "d187ee3d2adc5b05769773ac4051d4173fc7e7b2d758947fb0ac0d5d4e761b2c"
+    }
+  ],
+  "title": "Support ROC (calibrated scores, sealed V3 test)"
+}

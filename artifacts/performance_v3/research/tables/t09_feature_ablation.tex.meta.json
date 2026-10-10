@@ -1,0 +1,19 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t09_feature_ablation.tex",
+  "file_sha256": "051dec8080ff76693ffdcbccc3afb0585576f1704ff8550c3a3c297747ce1356",
+  "format": "tex",
+  "id": "t09_feature_ablation",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 32,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/trial_ledger_v1.jsonl",
+      "sha256": "2e62aa34547b23333527cd24509a2721448bfef6dd9deba338894ad94b7cdb67"
+    }
+  ],
+  "title": "Feature-variant ablation (S2)"
+}

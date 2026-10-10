@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd16_residual_histograms.csv",
+  "file_sha256": "1605f563bf26ab4033cdc9cc5b4c9539d8f2e73e1740ad858b73b3e842a12c3f",
+  "id": "pd16_residual_histograms",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 540,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/predictions/test_predictions_v1.jsonl",
+      "sha256": "7ab7000f3513429dcbf986295f90aa2fca6eee6c82aafe85e62c7e6ead6773f1"
+    }
+  ],
+  "title": "Residual histograms (TEST)"
+}

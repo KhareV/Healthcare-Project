@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t06_task_eligibility.csv",
+  "file_sha256": "b0b373d6746da8a21d5af04f4c7fe221cf5984c977fa6951ad9ba5d74e65481c",
+  "id": "t06_task_eligibility",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 8,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/target_eligibility.json",
+      "sha256": "fe800b893bf4ce0bb1f9e33bb635eefd632cc29e1dbd49bdc8acd156f39e1a2d"
+    }
+  ],
+  "title": "Task eligibility denominators"
+}

@@ -1,0 +1,23 @@
+{
+  "artifact_version": "performance_v3_historical_file_exceptions_v1",
+  "exceptions": [
+    {
+      "after_sha256": "3ccbc8de4beb0a23436fececd09f0186d59b9a157683368ebaf39873073f8abb",
+      "before_sha256": "83cdbefae192422cc9de319a86868a6ac6fb16bee43914f2c3fca64cf5aff12e",
+      "change": "5 additive FINAL_IDENTITIES entries (SYN-V3-D1/D2/D3/LCE/T); no removals; the sanctioned allow-list mechanism documented in the file",
+      "path": "src/data/synthetic/config.py"
+    },
+    {
+      "after_entry_sha256": "3ccbc8de4beb0a23436fececd09f0186d59b9a157683368ebaf39873073f8abb",
+      "before_entry_sha256": "83cdbefae192422cc9de319a86868a6ac6fb16bee43914f2c3fca64cf5aff12e",
+      "change": "single source-hash entry for src/data/synthetic/config.py updated so the system-evidence currency test passes",
+      "path": "docs/evidence/system/system_evidence_manifest_v1.json"
+    }
+  ],
+  "note": "Only two inventoried historical files differ from pre_phase_hash_inventory_v1.sha256 (2264 files); no scientific artifact (data, model, metric, split, freeze, ledger) was modified.",
+  "regression": {
+    "combined_in_one_process": "V3 files hang when run together with torch/OpenMP forking; run per file (see scripts)",
+    "legacy_suite": "1576 passed, 21 skipped, 0 failed (after the listed manifest update; two evidence tests failed before it)",
+    "v3_files_run_individually": "179 passed, 0 failed"
+  }
+}

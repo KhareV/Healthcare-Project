@@ -1,0 +1,22 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f07_learning_curve.png",
+  "file_sha256": "b2dec87f827d018efb19fc81411a36fa61ccb8505b03f9328bc53cc05cdbc973",
+  "format": "png",
+  "id": "f07_learning_curve",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Frozen V2 recipe with repaired current SOFA; development evidence only.",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/learning_curve_table.csv",
+      "sha256": "eadf3ca97696da5d527dd72be410452b1b4335ce8c9ca4de043246d5381943d4"
+    },
+    {
+      "path": "artifacts/performance_v3/data_characterization/learning_curve_metrics.json",
+      "sha256": "89badd3f7695671ef60f4680edc30d19161d4ec5924e1a38054c0bb9c1a7960d"
+    }
+  ],
+  "title": "Learning curves"
+}

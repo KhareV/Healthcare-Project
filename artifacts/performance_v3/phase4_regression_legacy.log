@@ -1,0 +1,154 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+.....................ssss.sssssssssssssss...................ss.......... [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 81%]
+...................F.F.................................................. [ 85%]
+........................................................................ [ 90%]
+........................................................................ [ 94%]
+........................................................................ [ 99%]
+.............                                                            [100%]
+=================================== FAILURES ===================================
+______ test_generated_system_evidence_is_current_indexed_and_orphan_free _______
+
+    def test_generated_system_evidence_is_current_indexed_and_orphan_free():
+>       result = audit(ROOT)
+
+tests/test_system_evidence.py:31: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/Users/Home/Downloads/HealthCareProject')
+
+    def audit(root: Path):
+        root = root.resolve()
+        manifest_path = root / EVIDENCE_ROOT / "system_evidence_manifest_v1.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("manifest_version") != MANIFEST_VERSION:
+            raise EvidenceAuditError("system evidence manifest version mismatch")
+        declared = set()
+        for item in manifest.get("items", ()):
+            if item.get("status") not in ALLOWED_STATUSES or item.get("scope") not in ALLOWED_SCOPES:
+                raise EvidenceAuditError("system evidence status or scope is invalid")
+            output = item.get("output_path")
+            if item["status"] == "BLOCKED" and item["scope"] == "blocked":
+                if output is not None or item.get("output_sha256") is not None or not item.get("blocker"):
+                    raise EvidenceAuditError("blocked evidence has fabricated output or lacks blocker")
+                continue
+            if not isinstance(output, str) or Path(output).is_absolute():
+                raise EvidenceAuditError("system evidence output path is invalid")
+            path = root / output
+            if not path.is_file() or not is_sha256(item.get("output_sha256", "")) or sha256_file(path) != item["output_sha256"]:
+                raise EvidenceAuditError("system evidence output hash mismatch: " + output)
+            for source in item.get("source_artifacts", ()):
+                source_path = root / source.get("path", "")
+                if not source_path.is_file() or sha256_file(source_path) != source.get("sha256"):
+>                   raise EvidenceAuditError("system evidence source hash mismatch: " + str(source.get("path")))
+E                   evidence.audit.EvidenceAuditError: system evidence source hash mismatch: src/data/synthetic/config.py
+
+src/evidence/system.py:500: EvidenceAuditError
+__________________ test_system_evidence_detects_orphan_output __________________
+
+tmp_path = PosixPath('/private/var/folders/jn/5rd8jh716_5dzryg15sbx7340000gn/T/pytest-of-Home/pytest-1499/test_system_evidence_detects_o0')
+
+    def test_system_evidence_detects_orphan_output(tmp_path):
+        _copy_governed_package(tmp_path)
+        orphan = tmp_path / EVIDENCE_ROOT / "dashboard/unindexed.png"
+        orphan.parent.mkdir(parents=True, exist_ok=True)
+        orphan.write_bytes(b"not a screenshot")
+        with pytest.raises(EvidenceAuditError, match="orphan"):
+>           audit(tmp_path)
+
+tests/test_system_evidence.py:56: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+root = PosixPath('/private/var/folders/jn/5rd8jh716_5dzryg15sbx7340000gn/T/pytest-of-Home/pytest-1499/test_system_evidence_detects_o0')
+
+    def audit(root: Path):
+        root = root.resolve()
+        manifest_path = root / EVIDENCE_ROOT / "system_evidence_manifest_v1.json"
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest.get("manifest_version") != MANIFEST_VERSION:
+            raise EvidenceAuditError("system evidence manifest version mismatch")
+        declared = set()
+        for item in manifest.get("items", ()):
+            if item.get("status") not in ALLOWED_STATUSES or item.get("scope") not in ALLOWED_SCOPES:
+                raise EvidenceAuditError("system evidence status or scope is invalid")
+            output = item.get("output_path")
+            if item["status"] == "BLOCKED" and item["scope"] == "blocked":
+                if output is not None or item.get("output_sha256") is not None or not item.get("blocker"):
+                    raise EvidenceAuditError("blocked evidence has fabricated output or lacks blocker")
+                continue
+            if not isinstance(output, str) or Path(output).is_absolute():
+                raise EvidenceAuditError("system evidence output path is invalid")
+            path = root / output
+            if not path.is_file() or not is_sha256(item.get("output_sha256", "")) or sha256_file(path) != item["output_sha256"]:
+                raise EvidenceAuditError("system evidence output hash mismatch: " + output)
+            for source in item.get("source_artifacts", ()):
+                source_path = root / source.get("path", "")
+                if not source_path.is_file() or sha256_file(source_path) != source.get("sha256"):
+>                   raise EvidenceAuditError("system evidence source hash mismatch: " + str(source.get("path")))
+E                   evidence.audit.EvidenceAuditError: system evidence source hash mismatch: src/data/synthetic/config.py
+
+src/evidence/system.py:500: EvidenceAuditError
+
+During handling of the above exception, another exception occurred:
+
+tmp_path = PosixPath('/private/var/folders/jn/5rd8jh716_5dzryg15sbx7340000gn/T/pytest-of-Home/pytest-1499/test_system_evidence_detects_o0')
+
+    def test_system_evidence_detects_orphan_output(tmp_path):
+        _copy_governed_package(tmp_path)
+        orphan = tmp_path / EVIDENCE_ROOT / "dashboard/unindexed.png"
+        orphan.parent.mkdir(parents=True, exist_ok=True)
+        orphan.write_bytes(b"not a screenshot")
+        with pytest.raises(EvidenceAuditError, match="orphan"):
+>           audit(tmp_path)
+E           AssertionError: Regex pattern did not match.
+E            Regex: 'orphan'
+E            Input: 'system evidence source hash mismatch: src/data/synthetic/config.py'
+
+tests/test_system_evidence.py:56: AssertionError
+=============================== warnings summary ===============================
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ============================
+FAILED tests/test_system_evidence.py::test_generated_system_evidence_is_current_indexed_and_orphan_free
+FAILED tests/test_system_evidence.py::test_system_evidence_detects_orphan_output
+2 failed, 1574 passed, 21 skipped, 14 warnings in 812.38s (0:13:32)

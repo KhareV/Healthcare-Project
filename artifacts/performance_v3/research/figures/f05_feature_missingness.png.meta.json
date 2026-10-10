@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f05_feature_missingness.png",
+  "file_sha256": "500d29f454ef0e94d8f667fccad32beaf193d89a42a8afafd7c78b464482cb0c",
+  "format": "png",
+  "id": "f05_feature_missingness",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "grey = support-state channels (always known)",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/missingness_by_feature.json",
+      "sha256": "9f2b778412dc35f2ce0c6e05f35032fe90cf437abd22d98094b16ba475c8977d"
+    }
+  ],
+  "title": "Feature missingness"
+}

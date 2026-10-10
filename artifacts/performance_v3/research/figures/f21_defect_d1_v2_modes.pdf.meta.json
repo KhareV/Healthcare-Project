@@ -1,0 +1,22 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f21_defect_d1_v2_modes.pdf",
+  "file_sha256": "38ff7537e8488ce45fdd25d05920a24a4213b67f52a1d8ff82ca45901727b031",
+  "format": "pdf",
+  "id": "f21_defect_d1_v2_modes",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Recovery tasks are unaffected (eligible rows always have SOFA(t)).",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/v2_modes_on_lce_v1.json",
+      "sha256": "2b81357450970eedf45ec2fe3f8da4c22eace1d9a9a1539d437fad27dbae8d59"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+      "sha256": "3a510c98cdaf74f107c79cd1081996ff1f6fc4c7d4908135eb9756540d715eac"
+    }
+  ],
+  "title": "Defect D1 figure"
+}

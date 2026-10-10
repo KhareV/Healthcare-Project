@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f03_sofa_by_cutoff.png",
+  "file_sha256": "eaf7936b80d3c2a85d7c8449aec9698b25eb4c7709a45cb7e8e8d832f32a2772",
+  "format": "png",
+  "id": "f03_sofa_by_cutoff",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Component scores are not persisted in the pre-split package (stated in sofa_distributions.json).",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/sofa_distributions.json",
+      "sha256": "47741009e08ea25b22f0f08642ddb1469be38377c733672817ff55a67f4364ab"
+    }
+  ],
+  "title": "SOFA by cutoff index"
+}

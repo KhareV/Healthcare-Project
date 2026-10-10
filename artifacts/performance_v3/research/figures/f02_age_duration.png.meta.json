@@ -1,0 +1,22 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f02_age_duration.png",
+  "file_sha256": "169d8c9900ed788694f13edd624287dc17d3cdf3198c5c04db09d74d64112554",
+  "format": "png",
+  "id": "f02_age_duration",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "Only stored percentiles are available (no raw histogram).",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/data_characterization/age_sex_composition.json",
+      "sha256": "9a6fad615a9fc43cf330efcef0631cb7e72a118fe9f7e5c156a8f06ca88024ed"
+    },
+    {
+      "path": "artifacts/performance_v3/data_characterization/episode_duration_summary.json",
+      "sha256": "43238bbb72d13e5186606c3da12ce07f15670de599ea40fedba1c2b57356b65d"
+    }
+  ],
+  "title": "Age and episode-duration quantile curves"
+}

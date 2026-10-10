@@ -1,0 +1,23 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t20_paired_differences.tex",
+  "file_sha256": "019f4280ca26fdc8dafde2e46f2866f6e36aaea46b2688a0bd8743a193f6ba58",
+  "format": "tex",
+  "id": "t20_paired_differences",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 10,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/paired_v2_v3_metrics.json",
+      "sha256": "7dedafe9bfdc2774930123ed695f20ed2cca632aed85d18e73de39c39411506f"
+    },
+    {
+      "path": "artifacts/performance_v3/phase4/paired_bootstrap_v1.json",
+      "sha256": "1dc86ba9dd43fa4d2fdec1423320e0b556814489d1b0afbce93eae8ceb94344e"
+    }
+  ],
+  "title": "Paired V3 vs comparator differences (TEST)"
+}

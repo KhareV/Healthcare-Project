@@ -1,0 +1,18 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/figures/f09_feature_ablation.png",
+  "file_sha256": "65db3b12800ab976a989f5c1728e97968c1c9123eb938bd7f076ad51b7cebcf7",
+  "format": "png",
+  "id": "f09_feature_ablation",
+  "kind": "figure",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/trial_ledger_v1.jsonl",
+      "sha256": "2e62aa34547b23333527cd24509a2721448bfef6dd9deba338894ad94b7cdb67"
+    }
+  ],
+  "title": "Feature-variant ablation"
+}

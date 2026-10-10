@@ -1,0 +1,19 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/tables/t08_leaderboard_best_per_family.tex",
+  "file_sha256": "8da5cbc30a766b95ed3a689086d78e4d003c73f08a47519586f16cf699eb9f78",
+  "format": "tex",
+  "id": "t08_leaderboard_best_per_family",
+  "kind": "table",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 20,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase2/trial_ledger_v1.jsonl",
+      "sha256": "2e62aa34547b23333527cd24509a2721448bfef6dd9deba338894ad94b7cdb67"
+    }
+  ],
+  "title": "Best trial per family and task"
+}

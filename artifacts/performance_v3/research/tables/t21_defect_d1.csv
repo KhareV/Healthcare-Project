@@ -1,0 +1,11 @@
+task,cohort,model,value
+icu_stay_time,LCE (dev),V2_AS_EVALUATED,5.14531
+icu_stay_time,SYN-V3-T (sealed test),V2_AS_EVALUATED,5.29143
+icu_stay_time,LCE (dev),V2_AS_SERVED,18.256
+icu_stay_time,SYN-V3-T (sealed test),V2_AS_SERVED,18.2471
+icu_stay_time,SYN-V3-T (sealed test),V3,9.10112
+organ_support,LCE (dev),V2_AS_EVALUATED,0.732026
+organ_support,SYN-V3-T (sealed test),V2_AS_EVALUATED,0.69303
+organ_support,LCE (dev),V2_AS_SERVED,0.55416
+organ_support,SYN-V3-T (sealed test),V2_AS_SERVED,0.519691
+organ_support,SYN-V3-T (sealed test),V3,0.6238

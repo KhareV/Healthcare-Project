@@ -1,0 +1,26 @@
+{
+  "code_commit": "30fcc6992d2c7192028e8ba5d77277173d1f6bb9",
+  "export_version": "performance_v3_research_export_v1",
+  "file": "artifacts/performance_v3/research/plot_data/pd15_threshold_sensitivity.csv",
+  "file_sha256": "59e2e6fa0cd15eeb61bf6d7624e28de7cf66acae3240169cea4fa340ff3cc783",
+  "id": "pd15_threshold_sensitivity",
+  "kind": "plot_data",
+  "model_bundle_id": "performance_v3_v3",
+  "notes": "",
+  "rows": 152,
+  "sources": [
+    {
+      "path": "artifacts/performance_v3/phase4/predictions/test_predictions_v1.jsonl",
+      "sha256": "7ab7000f3513429dcbf986295f90aa2fca6eee6c82aafe85e62c7e6ead6773f1"
+    },
+    {
+      "path": "artifacts/performance_v3/phase2/support_calibration_v1.json",
+      "sha256": "edb5dc75a086b577130ab8cbbda4bcf816526822ff9da85b53f6a1dd3c622caa"
+    },
+    {
+      "path": "artifacts/performance_v3/cache/support_oof_v1.npz",
+      "sha256": "b4dc46657aa8f658b5bf08a5ef3a1e0899b2013eb8249b0465609ad511474ab2"
+    }
+  ],
+  "title": "Threshold sensitivity"
+}
