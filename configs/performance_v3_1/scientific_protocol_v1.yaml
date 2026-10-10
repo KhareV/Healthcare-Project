@@ -1,0 +1,56 @@
+# Performance V3.1 — candidate-development protocol v1 (support head only). Frozen BEFORE new cohorts or candidates exist.
+protocol_version: performance_v3_1_scientific_protocol_v1
+status: FROZEN_BEFORE_CANDIDATE_DEVELOPMENT
+gate_a_evidence: {primary_diagnostic: artifacts/performance_v3_1/diagnostic/oracle_comparison.json, verification: artifacts/performance_v3_1/diagnostic/oracle_verification_v1.json}
+scope: organ-support risk only; recovery24/recovery48/ICU remain frozen V3 and are never touched
+canonical_definitions: unchanged (grid, 48h/8-bin window, OFF->ON qualifying initiation, censoring, stay-balanced weights)
+leakage_rules: [no latent/RNG/hidden generator state in any feature, no horizon-availability missingness (defect D1), forward-only causal filters over the canonical 8-bin window]
+
+partitions:
+  v3_pool_existing: {subjects: 8000, source: artifacts/performance_v3/cache/dev_pool, note: "frozen V3 was trained here; its scores on these rows are IN-SAMPLE and are never used to fit weights or select"}
+  v31_dev:  {cohorts: [V31_DEV1, V31_DEV2], subjects_each: 2000, seed_rule: "int(SHA256('performance_v3_1|v31_dev<i>|<protocol_sha256>|2000').hexdigest()[:8],16)", use: "extra training data for new candidates; frozen-V3 apply-only scores here are genuinely out-of-sample (V3 never saw them)"}
+  v31_hold: {cohort: V31_HOLD, subjects: 1500, seed_rule: "int(SHA256('performance_v3_1|v31_hold|<protocol_sha256>|1500').hexdigest()[:8],16)", use: "single held-out development decision set for Gate C; never used in fitting, selection, ensembling, calibration or thresholding"}
+  excluded: [DIAG_EVAL (diagnostic only), SYN-V3-T, SYN-V2, V1 test]
+  isolation: no subject or exact-trajectory overlap with any other cohort (audited)
+
+cross_fitting: {folds: 5, version: performance_v3_1_crossfit_v1, rule: "int(SHA256(version+'||'+subject_id)) mod 5", grouped: subject}
+
+feature_families:
+  F0_BASELINE: the exact frozen V3 support column list (V3_BE) from artifacts/performance_v3/phase3/v3/models/organ_support/feature_names.json
+  causal_filters:
+    channels: 15 continuous physiologic channels (pao2, fio2, platelet_count, bilirubin_total, mean_arterial_pressure, glasgow_coma_scale, creatinine, urine_output_volume, heart_rate, systolic_blood_pressure, diastolic_blood_pressure, respiratory_rate, oxygen_saturation, temperature, lactate)
+    ewma: half-lives [6h, 12h, 24h] over observed bins only (mask respected), plus momentum ewma_6h - ewma_24h
+    kalman: scalar local-level filter per channel; process/observation variances by method of moments from adjacent-bin differences on training rows only; outputs filtered mean and variance at t; variance grows with bins since last observation
+    forward_only: true; initialised inside the approved 48h window; never smoothing
+  F1: F0 + EWMA(+momentum)
+  F2: F0 + Kalman
+  F3: F0 + EWMA + Kalman
+
+candidate_search:
+  learner: xgboost (reuse performance_v3.models.fit_predict)
+  configs: [the frozen V3 support config, plus 7 deterministic samples from performance_v3.models.HYPERPARAM_SPACES['xgboost'] seed 20261201 incl. class_weight and weight_mode axes]
+  total_trials: 32 (4 feature sets x 8 configs), 5-fold grouped CV over v3_pool_existing + v31_dev
+  early_stopping: inner 10% of training subjects, grouped
+  selection_metric: stay-balanced AUPRC on raw out-of-fold scores
+  tie_tolerance_auprc: 0.003 ; tie_break: [fewer features, lower fold sd]
+  max_wall_hours: 6
+
+ensemble:
+  members: [frozen V3 support head (apply-only), selected new model]
+  form: p = w*p_new + (1-w)*p_v3 on logit scale averaged ... frozen choice: probability-space convex combination, single scalar w in {0, 0.25, 0.5, 0.75, 1}
+  w_fit: minimise stay-balanced log loss on V31_DEV rows only, using new-model OUT-OF-FOLD scores and frozen-V3 out-of-sample scores
+  no_stacking_on_in_sample_scores: true
+calibration_and_threshold: {methods: [none, platt, isotonic, beta], selection: nested grouped cross-fit log loss on V31_DEV OOF, tie 0.002, order none<platt<beta<isotonic, threshold: stay-balanced F1 maximiser on cross-fitted calibrated V31_DEV probabilities}
+
+gate_c:
+  evaluation: V31_HOLD, one comparison of frozen candidate vs frozen V3 on identical eligible rows
+  require_all:
+    - AUPRC(candidate) - AUPRC(V3) >= 0.015
+    - paired 95% stay-cluster bootstrap lower bound of that difference > 0.0
+    - Brier and log loss not worse than V3 by more than 0.003 / 0.01
+    - stability: difference >= +0.005 in each of 3 subject-disjoint thirds of V31_HOLD
+    - serving parity and cutoff-safety tests pass
+  on_fail: V3_1_STOPPED_AFTER_DEVELOPMENT, no sealed test generated
+
+bootstrap: {replicates: 2000, seed: 20261102}
+resources: {threads: 8, max_candidate_development_hours: 8}

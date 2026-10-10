@@ -1,0 +1,5 @@
+{
+  "protocol_ref": "configs/performance_v3_1/scientific_protocol_v1.yaml",
+  "protocol_sha256": "29556d28bf5dc36b73cdef8f70c171a9146227caa2ab4ebe50c6134fe6ba5257",
+  "candidate_results_inspected": false
+}

@@ -1,0 +1,55 @@
+{
+  "fit_rows": 30908,
+  "fit_subjects": 7900,
+  "gate_a_after_verification": {
+    "audits_pass": true,
+    "b_pass": true,
+    "best": "ORACLE_B_LARGE_XGBOOST",
+    "c_pass": true,
+    "gap": 0.04026409479225568,
+    "lb95": 0.015174729036659108,
+    "passes_gate_a": true
+  },
+  "models": {
+    "ORACLE_B_LARGE_LOGISTIC": {
+      "ci95": [
+        0.007280619307192977,
+        0.061496591927077265
+      ],
+      "diff_vs_reference": 0.03499979429995381,
+      "metrics": {
+        "auprc": 0.6949619627744833,
+        "auroc": 0.7569544857676852,
+        "brier": 0.1966603986517091,
+        "ece": 0.04457726501182167,
+        "intercept": 0.053828319595853553,
+        "log_loss": 0.5783241411652105,
+        "n_rows": 3353,
+        "n_stays": 697,
+        "prevalence": 0.4225201388759495,
+        "slope": 0.9435934251355201
+      }
+    },
+    "ORACLE_B_LARGE_XGBOOST": {
+      "ci95": [
+        0.015174729036659108,
+        0.06422329204349131
+      ],
+      "diff_vs_reference": 0.04026409479225568,
+      "metrics": {
+        "auprc": 0.7002262632667852,
+        "auroc": 0.7647176630815441,
+        "brier": 0.19336999693372334,
+        "ece": 0.024463794892150097,
+        "intercept": 0.05117452059221356,
+        "log_loss": 0.5666537218552691,
+        "n_rows": 3353,
+        "n_stays": 697,
+        "prevalence": 0.4225201388759495,
+        "slope": 0.9749861711242273
+      }
+    }
+  },
+  "seconds": 105.3,
+  "status": "DEVELOPMENT_PRIVILEGED_DIAGNOSTIC_ONLY"
+}
