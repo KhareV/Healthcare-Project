@@ -54,6 +54,8 @@ frontend/.vite/
 frontend/tests/e2e/.auth/
 frontend/playwright-report/
 frontend/test-results/
+frontend/test-artifacts/
+frontend/studio_verify.mjs
 
 # Kokoro narration microservice: isolated Python 3.12 venv (kokoro-onnx needs
 # a newer onnxruntime than the project's pinned Python 3.9) and its

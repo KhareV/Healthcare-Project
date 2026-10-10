@@ -49,7 +49,7 @@
 
 	const signalItems = [
 		{ id: 'recovery24', label: 'REC+24', value: 'ΔSOFA at +24h', meta: 'XGBoost' },
-		{ id: 'recovery48', label: 'REC+48', value: 'ΔSOFA at +48h', meta: 'XGBoost' },
+		{ id: 'recovery48', label: 'REC+48', value: 'ΔSOFA at +48h', meta: 'CatBoost' },
 		{ id: 'icu', label: 'ICU', value: 'Remaining ICU stay time', meta: 'XGBoost' },
 		{ id: 'support', label: 'SUPPORT', value: 'New organ-support risk', meta: 'XGBoost' }
 	];
@@ -57,7 +57,7 @@
 	const timelineData = [
 		{ time: '01', steps: [{ icon: 'S', content: 'Synthetic ICU cohort generation & frozen SOFA labeling' }, { icon: 'E', content: 'Temporal feature engineering across 6h / 48h windows' }] },
 		{ time: '02', steps: [{ icon: 'A', content: 'Gradient-boosted forecasting across four frozen models' }, { icon: 'X', content: 'TreeSHAP attribution for every prediction' }] },
-		{ time: '03', steps: [{ icon: 'G', content: 'Fail-closed governance: one-time fresh-test evaluation' }, { icon: 'V', content: 'PRT V2: retrospective replay, real models' }] }
+		{ time: '03', steps: [{ icon: 'G', content: 'Fail-closed governance: one-time sealed-test evaluation' }, { icon: 'V', content: 'PRT V3: retrospective replay, real models' }] }
 	];
 
 	const federationMarkers = [
@@ -92,7 +92,7 @@
 </script>
 
 <svelte:head>
-	<title>Personalized Patient Recovery Trajectory — Performance V2</title>
+	<title>Personalized Patient Recovery Trajectory — Performance V3</title>
 	<meta name="description" content="Retrospective ICU time-series forecasting: recovery trajectory, remaining ICU stay time, and new organ-support initiation risk, replayed cutoff by cutoff from a synthetic research benchmark." />
 	<meta name="theme-color" content="#030712" />
 	
@@ -113,7 +113,7 @@
 
 		<div class="preloader__inner">
 			<div class="preloader__topline">
-				<span>PRT · V2</span>
+				<span>PRT · V3</span>
 				<span>SYSTEM / 01</span>
 			</div>
 
@@ -174,7 +174,7 @@
 	<nav class="nav">
 		<a class="brand" href="#top" aria-label="Personalized Patient Recovery Trajectory home">
 			<span class="brand__mark">P</span>
-			<span class="brand__name">PRT · V2</span>
+			<span class="brand__name">PRT · V3</span>
 		</a>
 
 		<div class="nav__links">
@@ -201,7 +201,7 @@
 			</div>
 
 			<div class="hero__technical">
-				<span>PRT · V2 / 01</span>
+				<span>PRT · V3 / 01</span>
 				<span>RETROSPECTIVE SEQUENTIAL REPLAY</span>
 				<span>RECOVERY · ICU TIME · SUPPORT RISK</span>
 			</div>
@@ -218,7 +218,7 @@
 								<span>at every cutoff.</span>
 							</h1>
 							<p class="hero__lede">
-								A retrospective ICU time-series research prototype: independent +24h/+48h recovery forecasts, remaining ICU stay time, and calibrated new organ-support initiation risk — recomputed from raw history truncated at each replay cutoff, by four frozen XGBoost models, never a lookup table.
+								A retrospective ICU time-series research prototype: independent +24h/+48h recovery forecasts, remaining ICU stay time, and calibrated new organ-support initiation risk — recomputed from raw history truncated at each replay cutoff, by four frozen gradient-boosted models (XGBoost and CatBoost), never a lookup table.
 							</p>
 							<div class="hero__actions">
 								<a class="button button--light" href="/demo">
@@ -273,7 +273,7 @@
 
 					<div class="problem__intro-copy">
 						<BlurFade inView={true} direction="up" offset={18} delay={0.12} blur="6px" duration={0.7}>
-							<p>A single retrospective prediction, made once and never revisited, treats a ten-day ICU stay as one flat snapshot — discarding every hour of history that arrives afterward. PRT · V2 instead replays each stay cutoff by cutoff, recomputing four independent forecasts from only the history truncated at that exact moment, from the same four frozen gradient-boosted models every time.</p>
+							<p>A single retrospective prediction, made once and never revisited, treats a ten-day ICU stay as one flat snapshot — discarding every hour of history that arrives afterward. PRT · V3 instead replays each stay cutoff by cutoff, recomputing four independent forecasts from only the history truncated at that exact moment, from the same four frozen gradient-boosted models every time.</p>
 						</BlurFade>
 					</div>
 				</div>
@@ -296,7 +296,7 @@
 						<h2>From point prediction to<br /><span>governed sequential replay.</span></h2>
 					</BlurFade>
 					<BlurFade inView={true} direction="up" offset={18} delay={0.12} blur="6px">
-						<p>Each phase of this project builds on the last — synthetic cohort generation, frozen SOFA labeling, gradient-boosted forecasting, TreeSHAP attribution, and a fail-closed one-time fresh-test evaluation — rather than treating any single stage as the whole system.</p>
+						<p>Each phase of this project builds on the last — synthetic cohort generation, frozen SOFA labeling, gradient-boosted forecasting, TreeSHAP attribution, and a fail-closed one-time sealed-test evaluation — rather than treating any single stage as the whole system.</p>
 					</BlurFade>
 				</div>
 				<div class="research__timeline">
@@ -424,7 +424,7 @@
 				<div class="section-kicker section-kicker--dark">07 / GOVERNED, FAIL-CLOSED ACCESS</div>
 				<div class="federation__heading">
 					<h2>Evaluate once.<br /><em>Never retune.</em></h2>
-					<p>The fresh V2 test cohort is sealed behind a one-time access guard: authorized once, consumed once, and never queried again — a fail-closed state machine that makes post-test tuning structurally impossible, not just discouraged.</p>
+					<p>Each final test cohort is sealed behind a one-time access guard: authorized once, consumed once, and never queried again — a fail-closed state machine that makes post-test tuning structurally impossible, not just discouraged.</p>
 				</div>
 
 				<div class="federation__stage">
@@ -506,7 +506,7 @@
 			<Meteors number={26} minDelay={0.15} maxDelay={2.2} minDuration={3} maxDuration={9} angle={215} />
 			<div class="final__grid"></div>
 			<div class="container relative z-10 text-center flex flex-col items-center">
-				<div class="eyebrow eyebrow--teal glow-text mb-6">PRT · V2 / 10</div>
+				<div class="eyebrow eyebrow--teal glow-text mb-6">PRT · V3 / 10</div>
 				
 				<!-- Fixed seeping out of screen by splitting the large text and containing width -->
 				<div class="final__headline">
@@ -536,7 +536,7 @@
 	========================================================= -->
 	<footer class="footer">
 		<div class="footer__brand">
-			<div class="brand"><span class="brand__mark">P</span><span class="brand__name">PRT · V2</span></div>
+			<div class="brand"><span class="brand__mark">P</span><span class="brand__name">PRT · V3</span></div>
 			<p>Personalized Patient Recovery Trajectory</p>
 		</div>
 		<div class="footer__links">

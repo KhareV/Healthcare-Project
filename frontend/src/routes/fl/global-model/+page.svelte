@@ -1,1 +1,0 @@
-<script lang="ts">import SectionPage from '$lib/components/dashboard/SectionPage.svelte';</script><SectionPage eyebrow="20 / FL / GLOBAL MODEL" title="A shared intelligence layer." description="Review the current global model version, performance, and training lineage." endpoint="/fl/global-model" />

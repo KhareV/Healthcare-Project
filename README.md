@@ -1,14 +1,29 @@
 # Personalized Patient Recovery Trajectory
 
-> **Active scope amendment:** the final academic dataset is synthetic and the population domain is adult cardiac/heart-disease. The repeated-cutoff three-task architecture remains unchanged. See [Project Scope v2](docs/governance/project_scope_v2.md). The amendment is a complete draft pending team freeze.
+> **Scientific lineage:** the current product uses the frozen Performance V3 release on an authorized synthetic adult cardiac cohort. The separate [Project Scope v2](docs/governance/project_scope_v2.md) rebuild remained a draft and does not supersede the executed V1/V2/V3 lineage. See [V3 governance](docs/performance_v3/GOVERNANCE_AND_LINEAGE.md).
 
 Retrospective research software for forecasting independent +24/+48-hour SOFA changes, remaining time until the current ICU stay ends, and calibrated new organ-support initiation risk.
 
 > RETROSPECTIVE SEQUENTIAL REPLAY — NOT REAL-TIME CLINICAL PREDICTION OR CLINICAL DECISION SUPPORT
 
-## Performance V2 — final release (start here)
+## Current product: frozen V3 research platform
+
+The [V3.1 product handoff](artifacts/performance_v3_1/product_handoff.json) retains **all four frozen V3 heads**. V3.1's privileged latent-state diagnostic and observed-data candidate are research evidence; neither is deployed. Start the current FastAPI composition root and existing SvelteKit frontend:
+
+```bash
+PYTHONPATH=src:. python3 -m uvicorn api.product_app:app --factory --host 127.0.0.1 --port 8010
+cd frontend && npm install && npm run dev
+```
+
+The product loads the hash-verified [selected V3 bundle](artifacts/performance_v3/phase3/selected_models_v3.json) and fails startup if it cannot load; it never silently falls back to V2. Recovery +24h, remaining ICU time, and new organ-support initiation use XGBoost; recovery +48h uses CatBoost. Organ-support probabilities use the frozen Platt calibrator and threshold. [Defect D1](docs/performance_v3/DEFECT_D1.md) explains why historical V2 offline ICU/support metrics cannot represent deployed V2 performance.
+
+The existing patient replay, Clerk authentication, MongoDB-backed health records, report confirmation, and Copilot remain part of the product. V3 adds [cohort analytics](frontend/src/routes/cohort/+page.svelte), a [model research workbench](frontend/src/routes/research/analytics/+page.svelte), [eight selected development-cohort scenarios](configs/performance_v3_product/showcase_manifest_v1.json), and [research export](frontend/src/routes/reports/+page.svelte). See the [V3 runbook](RUNBOOK.md#current-v3-product) and [product architecture](docs/product_v3/PRODUCT_ARCHITECTURE.md). Scientific evaluations and privileged diagnostics remain distinct from patient-level forecasts.
+
+## Performance V2 — historical product release
 
 Performance V2 is complete: four frozen XGBoost models (recovery +24h, recovery +48h, remaining ICU stay time, 24h new organ-support initiation risk), a one-time fresh-test evaluation, and a real, model-backed demo application. See [Performance V2 final report](docs/performance_v2/FINAL_V2_TEST_EVALUATION.md) for the frozen scientific numbers and [`V2_DEMO_SCRIPT.md`](docs/performance_v2/V2_DEMO_SCRIPT.md) for a guided walkthrough.
+
+The commands in this section reproduce the historical V2 application only. Use the V3 entry point above for the current product; V2's offline ICU and support evaluation is affected by [defect D1](docs/performance_v3/DEFECT_D1.md).
 
 ```bash
 PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --host 127.0.0.1 --port 8010 --factory

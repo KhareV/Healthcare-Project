@@ -1,0 +1,1143 @@
+{
+ "artifact_version": "performance_v3_product_showcase_manifest_v1",
+ "does_not_modify": "configs/performance_v2/v2_demo_manifest_v1.json",
+ "lineage": {
+  "pre_split": "d01fe16f2cdd250a779bfd276b02a187ee49d8c3349be4f6955945bef1a9213f",
+  "sofa_cache_sofa_LCE_json": "ec7816b6d5f56e5575edc76162702483d5acdf290bcaba75dc5044680323097e",
+  "statics": "ded082ea09798def5a59584329d9f038ad6305ab77f3c0a844fcacbe87dc52cb",
+  "structural_index": "ebafb9534fb038723f3c475b40db343b3e32a0423541cb051cdce1355394991e",
+  "support": "79c4c49658dd403129099822ac03d20158f845b65a737dd83e3e0d1593d61b7e",
+  "timeline": "8acd96ed20a30431273cc413019dd4c3a88685a18ef7feddc9ca8443d7e7e1c9"
+ },
+ "n_scenarios": 8,
+ "scenarios": [
+  {
+   "age_years": 21,
+   "analytical_focus": "Falling SOFA with no organ-support start",
+   "category": "improvement",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.845238,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2100-11-09T18:49:41Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.828571,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2100-11-10T00:49:41Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.81746,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2100-11-10T06:49:41Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.823129,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2100-11-10T12:49:41Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.833333,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-10T18:49:41Z",
+     "sofa_t": 0.0
+    }
+   ],
+   "intime": "2100-11-08T18:49:41.000000Z",
+   "key_event": {
+    "description": "Largest SOFA change between consecutive cutoffs (-1).",
+    "hours_since_admission": 30,
+    "type": "largest_sofa_step"
+   },
+   "legal_cutoffs": [
+    "2100-11-09T18:49:41Z",
+    "2100-11-10T00:49:41Z",
+    "2100-11-10T06:49:41Z",
+    "2100-11-10T12:49:41Z",
+    "2100-11-10T18:49:41Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 0.0,
+    "mean_observation_density": 0.829546,
+    "net_sofa_change": -3.0,
+    "qualifying_onsets": [],
+    "selection_score": 35.0
+   },
+   "n_cutoffs": 5,
+   "objective": "Show recovery forecasts when observed severity falls steadily.",
+   "outtime": "2100-11-11T06:18:15.089600Z",
+   "patient_alias": "DEMO-V3-01",
+   "scenario_id": "SCN-01",
+   "selection_rationale": "SOFA(t) falls >=2 first-to-last cutoff, no consecutive rise >1, no qualifying support onset; score = net fall; tie-break sha256(stay_id)",
+   "sex_category": "MALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000370",
+   "subject_id": "SYN-V3-LCE-S-00000370",
+   "subtype": "SYNTHETIC_HF",
+   "title": "Gradual improvement"
+  },
+  {
+   "age_years": 56,
+   "analytical_focus": "Rising SOFA across cutoffs",
+   "category": "deterioration",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.785714,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2108-08-10T05:02:42Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.780952,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2108-08-10T11:02:42Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.793651,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2108-08-10T17:02:42Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.77551,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2108-08-10T23:02:42Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.779762,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-11T05:02:42Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-11T11:02:42Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.761905,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-11T17:02:42Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.767857,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-11T23:02:42Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-12T05:02:42Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.779762,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2108-08-12T11:02:42Z",
+     "sofa_t": 5.0
+    }
+   ],
+   "intime": "2108-08-09T05:02:42.000000Z",
+   "key_event": {
+    "description": "Largest SOFA change between consecutive cutoffs (+3).",
+    "hours_since_admission": 42,
+    "type": "largest_sofa_step"
+   },
+   "legal_cutoffs": [
+    "2108-08-10T05:02:42Z",
+    "2108-08-10T11:02:42Z",
+    "2108-08-10T17:02:42Z",
+    "2108-08-10T23:02:42Z",
+    "2108-08-11T05:02:42Z",
+    "2108-08-11T11:02:42Z",
+    "2108-08-11T17:02:42Z",
+    "2108-08-11T23:02:42Z",
+    "2108-08-12T05:02:42Z",
+    "2108-08-12T11:02:42Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 3.0,
+    "mean_observation_density": 0.779654,
+    "net_sofa_change": 5.0,
+    "qualifying_onsets": [
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 41.0
+     }
+    ],
+    "selection_score": 60.0
+   },
+   "n_cutoffs": 10,
+   "objective": "Show recovery and support-risk forecasts when observed severity rises.",
+   "outtime": "2108-08-12T20:53:23.841600Z",
+   "patient_alias": "DEMO-V3-02",
+   "scenario_id": "SCN-02",
+   "selection_rationale": "SOFA(t) rises >=2 first-to-last cutoff; score = net rise; tie-break sha256(stay_id)",
+   "sex_category": "FEMALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00001017",
+   "subject_id": "SYN-V3-LCE-S-00001017",
+   "subtype": "SYNTHETIC_HF",
+   "title": "Progressive deterioration"
+  },
+  {
+   "age_years": 37,
+   "analytical_focus": "Subtype-specific observed trajectory",
+   "category": "heart_failure",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.821429,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2101-03-06T16:22:17Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.819048,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2101-03-06T22:22:17Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.809524,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2101-03-07T04:22:17Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.809524,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2101-03-07T10:22:17Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.809524,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-07T16:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-07T22:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.785714,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-08T04:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-08T10:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.791667,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-08T16:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.791667,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-08T22:22:17Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 10,
+     "icu_elapsed_hours": 84,
+     "observation_density": 0.791667,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-03-09T04:22:17Z",
+     "sofa_t": 0.0
+    }
+   ],
+   "intime": "2101-03-05T16:22:17.000000Z",
+   "key_event": {
+    "description": "Largest SOFA change between consecutive cutoffs (-3).",
+    "hours_since_admission": 48,
+    "type": "largest_sofa_step"
+   },
+   "legal_cutoffs": [
+    "2101-03-06T16:22:17Z",
+    "2101-03-06T22:22:17Z",
+    "2101-03-07T04:22:17Z",
+    "2101-03-07T10:22:17Z",
+    "2101-03-07T16:22:17Z",
+    "2101-03-07T22:22:17Z",
+    "2101-03-08T04:22:17Z",
+    "2101-03-08T10:22:17Z",
+    "2101-03-08T16:22:17Z",
+    "2101-03-08T22:22:17Z",
+    "2101-03-09T04:22:17Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 0.0,
+    "mean_observation_density": 0.802814,
+    "net_sofa_change": -5.0,
+    "qualifying_onsets": [
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 5.0
+     }
+    ],
+    "selection_score": 85.0
+   },
+   "n_cutoffs": 11,
+   "objective": "Illustrate a hf cardiac-subtype trajectory with a non-flat observed SOFA course.",
+   "outtime": "2101-03-09T15:50:43.274000Z",
+   "patient_alias": "DEMO-V3-03",
+   "scenario_id": "SCN-03",
+   "selection_rationale": "subtype SYNTHETIC_HF, >=6 legal cutoffs, observed SOFA changes between cutoffs; score = min(cutoffs,8)*10+|net SOFA change|; tie-break sha256(stay_id)",
+   "sex_category": "MALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000922",
+   "subject_id": "SYN-V3-LCE-S-00000922",
+   "subtype": "SYNTHETIC_HF",
+   "title": "Heart-failure-like episode"
+  },
+  {
+   "age_years": 77,
+   "analytical_focus": "Subtype-specific observed trajectory",
+   "category": "ischemic",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.857143,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2100-02-12T07:32:43Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.847619,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2100-02-12T13:32:43Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.833333,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2100-02-12T19:32:43Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.823129,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2100-02-13T01:32:43Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.815476,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-13T07:32:43Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-13T13:32:43Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.785714,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-13T19:32:43Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-14T01:32:43Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.779762,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-14T07:32:43Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-14T13:32:43Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 10,
+     "icu_elapsed_hours": 84,
+     "observation_density": 0.785714,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-14T19:32:43Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 11,
+     "icu_elapsed_hours": 90,
+     "observation_density": 0.779762,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-02-15T01:32:43Z",
+     "sofa_t": 0.0
+    }
+   ],
+   "intime": "2100-02-11T07:32:43.000000Z",
+   "key_event": {
+    "description": "Largest SOFA change between consecutive cutoffs (-3).",
+    "hours_since_admission": 60,
+    "type": "largest_sofa_step"
+   },
+   "legal_cutoffs": [
+    "2100-02-12T07:32:43Z",
+    "2100-02-12T13:32:43Z",
+    "2100-02-12T19:32:43Z",
+    "2100-02-13T01:32:43Z",
+    "2100-02-13T07:32:43Z",
+    "2100-02-13T13:32:43Z",
+    "2100-02-13T19:32:43Z",
+    "2100-02-14T01:32:43Z",
+    "2100-02-14T07:32:43Z",
+    "2100-02-14T13:32:43Z",
+    "2100-02-14T19:32:43Z",
+    "2100-02-15T01:32:43Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 0.0,
+    "mean_observation_density": 0.806888,
+    "net_sofa_change": -5.0,
+    "qualifying_onsets": [
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 9.0
+     }
+    ],
+    "selection_score": 85.0
+   },
+   "n_cutoffs": 12,
+   "objective": "Illustrate a ischemic cardiac-subtype trajectory with a non-flat observed SOFA course.",
+   "outtime": "2100-02-15T10:21:16.001200Z",
+   "patient_alias": "DEMO-V3-04",
+   "scenario_id": "SCN-04",
+   "selection_rationale": "subtype SYNTHETIC_ISCHEMIC, >=6 legal cutoffs, observed SOFA changes between cutoffs; score = min(cutoffs,8)*10+|net SOFA change|; tie-break sha256(stay_id)",
+   "sex_category": "MALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000171",
+   "subject_id": "SYN-V3-LCE-S-00000171",
+   "subtype": "SYNTHETIC_ISCHEMIC",
+   "title": "Ischemic episode"
+  },
+  {
+   "age_years": 50,
+   "analytical_focus": "Subtype-specific observed trajectory",
+   "category": "arrhythmia",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.785714,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2100-11-15T12:53:03Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.752381,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2100-11-15T18:53:03Z",
+     "sofa_t": 5.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.761905,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2100-11-16T00:53:03Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.768707,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2100-11-16T06:53:03Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.767857,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-16T12:53:03Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.761905,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-16T18:53:03Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.744048,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-17T00:53:03Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.761905,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-17T06:53:03Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-17T12:53:03Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-17T18:53:03Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 10,
+     "icu_elapsed_hours": 84,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-18T00:53:03Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 11,
+     "icu_elapsed_hours": 90,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2100-11-18T06:53:03Z",
+     "sofa_t": 0.0
+    }
+   ],
+   "intime": "2100-11-14T12:53:03.000000Z",
+   "key_event": {
+    "description": "Largest SOFA change between consecutive cutoffs (-3).",
+    "hours_since_admission": 66,
+    "type": "largest_sofa_step"
+   },
+   "legal_cutoffs": [
+    "2100-11-15T12:53:03Z",
+    "2100-11-15T18:53:03Z",
+    "2100-11-16T00:53:03Z",
+    "2100-11-16T06:53:03Z",
+    "2100-11-16T12:53:03Z",
+    "2100-11-16T18:53:03Z",
+    "2100-11-17T00:53:03Z",
+    "2100-11-17T06:53:03Z",
+    "2100-11-17T12:53:03Z",
+    "2100-11-17T18:53:03Z",
+    "2100-11-18T00:53:03Z",
+    "2100-11-18T06:53:03Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 0.0,
+    "mean_observation_density": 0.773087,
+    "net_sofa_change": -5.0,
+    "qualifying_onsets": [
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 6.0
+     },
+     {
+      "component": "invasive_ventilation",
+      "hours_since_admission": 15.0
+     },
+     {
+      "component": "invasive_ventilation",
+      "hours_since_admission": 28.0
+     },
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 104.0
+     }
+    ],
+    "selection_score": 85.0
+   },
+   "n_cutoffs": 12,
+   "objective": "Illustrate a arrhythmia cardiac-subtype trajectory with a non-flat observed SOFA course.",
+   "outtime": "2100-11-20T00:53:03.000000Z",
+   "patient_alias": "DEMO-V3-05",
+   "scenario_id": "SCN-05",
+   "selection_rationale": "subtype SYNTHETIC_ARRHYTHMIA, >=6 legal cutoffs, observed SOFA changes between cutoffs; score = min(cutoffs,8)*10+|net SOFA change|; tie-break sha256(stay_id)",
+   "sex_category": "FEMALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000374",
+   "subject_id": "SYN-V3-LCE-S-00000374",
+   "subtype": "SYNTHETIC_ARRHYTHMIA",
+   "title": "Arrhythmia-dominant episode"
+  },
+  {
+   "age_years": 63,
+   "analytical_focus": "Support-risk forecast before a qualifying onset",
+   "category": "support_initiation",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.75,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2101-05-17T23:20:06Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.752381,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2101-05-18T05:20:06Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.746032,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2101-05-18T11:20:06Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.741497,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2101-05-18T17:20:06Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.744048,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-18T23:20:06Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.755952,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-19T05:20:06Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.755952,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-19T11:20:06Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.761905,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-19T17:20:06Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-19T23:20:06Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-20T05:20:06Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 10,
+     "icu_elapsed_hours": 84,
+     "observation_density": 0.77381,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-20T11:20:06Z",
+     "sofa_t": 4.0
+    },
+    {
+     "cutoff_index": 11,
+     "icu_elapsed_hours": 90,
+     "observation_density": 0.767857,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2101-05-20T17:20:06Z",
+     "sofa_t": 1.0
+    }
+   ],
+   "intime": "2101-05-16T23:20:06.000000Z",
+   "key_event": {
+    "description": "First qualifying vasopressor onset in the observed record.",
+    "hours_since_admission": 57.0,
+    "type": "support_onset"
+   },
+   "legal_cutoffs": [
+    "2101-05-17T23:20:06Z",
+    "2101-05-18T05:20:06Z",
+    "2101-05-18T11:20:06Z",
+    "2101-05-18T17:20:06Z",
+    "2101-05-18T23:20:06Z",
+    "2101-05-19T05:20:06Z",
+    "2101-05-19T11:20:06Z",
+    "2101-05-19T17:20:06Z",
+    "2101-05-19T23:20:06Z",
+    "2101-05-20T05:20:06Z",
+    "2101-05-20T11:20:06Z",
+    "2101-05-20T17:20:06Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 2.0,
+    "mean_observation_density": 0.758088,
+    "net_sofa_change": 0.0,
+    "qualifying_onsets": [
+     {
+      "component": "vasopressor",
+      "hours_since_admission": 57.0
+     },
+     {
+      "component": "invasive_ventilation",
+      "hours_since_admission": 90.0
+     }
+    ],
+    "selection_score": 12
+   },
+   "n_cutoffs": 12,
+   "objective": "Show how a new qualifying vasopressor or invasive-ventilation start appears in the observed record and in the forecast of its risk.",
+   "outtime": "2101-05-22T01:15:43.009200Z",
+   "patient_alias": "DEMO-V3-06",
+   "scenario_id": "SCN-06",
+   "selection_rationale": "qualifying OFF->ON onset after the second cutoff and before the last; score = number of legal cutoffs; tie-break sha256(stay_id)",
+   "sex_category": "FEMALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000090",
+   "subject_id": "SYN-V3-LCE-S-00000090",
+   "subtype": "SYNTHETIC_ARRHYTHMIA",
+   "title": "New organ-support initiation after stable early course"
+  },
+  {
+   "age_years": 47,
+   "analytical_focus": "Data completeness versus forecast stability",
+   "category": "sparse_observations",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.666667,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2105-04-18T18:02:52Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.666667,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2105-04-19T00:02:52Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.68254,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2105-04-19T06:02:52Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.673469,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2105-04-19T12:02:52Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.690476,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2105-04-19T18:02:52Z",
+     "sofa_t": 0.0
+    }
+   ],
+   "intime": "2105-04-17T18:02:52.000000Z",
+   "key_event": {
+    "description": "Lowest observed-cell density (0.667) at cutoff 0.",
+    "hours_since_admission": 24,
+    "type": "lowest_observation_density"
+   },
+   "legal_cutoffs": [
+    "2105-04-18T18:02:52Z",
+    "2105-04-19T00:02:52Z",
+    "2105-04-19T06:02:52Z",
+    "2105-04-19T12:02:52Z",
+    "2105-04-19T18:02:52Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 0.0,
+    "mean_observation_density": 0.675964,
+    "net_sofa_change": -1.0,
+    "qualifying_onsets": [],
+    "selection_score": -0.6759638
+   },
+   "n_cutoffs": 5,
+   "objective": "Show forecasts and data-quality signals when few measurements are available in the 48 h window.",
+   "outtime": "2105-04-20T03:05:47.690800Z",
+   "patient_alias": "DEMO-V3-07",
+   "scenario_id": "SCN-07",
+   "selection_rationale": "lowest mean observation density among stays with >=5 cutoffs; tie-break sha256(stay_id)",
+   "sex_category": "FEMALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00001311",
+   "subject_id": "SYN-V3-LCE-S-00001311",
+   "subtype": "SYNTHETIC_ISCHEMIC",
+   "title": "Sparse observation history"
+  },
+  {
+   "age_years": 78,
+   "analytical_focus": "Remaining-time forecast over a long course",
+   "category": "long_episode",
+   "cutoff_facts": [
+    {
+     "cutoff_index": 0,
+     "icu_elapsed_hours": 24,
+     "observation_density": 0.797619,
+     "observed_bins": 4,
+     "padding_bins": 4,
+     "prediction_time": "2107-06-03T16:34:00Z",
+     "sofa_t": 0.0
+    },
+    {
+     "cutoff_index": 1,
+     "icu_elapsed_hours": 30,
+     "observation_density": 0.819048,
+     "observed_bins": 5,
+     "padding_bins": 3,
+     "prediction_time": "2107-06-03T22:34:00Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 2,
+     "icu_elapsed_hours": 36,
+     "observation_density": 0.801587,
+     "observed_bins": 6,
+     "padding_bins": 2,
+     "prediction_time": "2107-06-04T04:34:00Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 3,
+     "icu_elapsed_hours": 42,
+     "observation_density": 0.809524,
+     "observed_bins": 7,
+     "padding_bins": 1,
+     "prediction_time": "2107-06-04T10:34:00Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 4,
+     "icu_elapsed_hours": 48,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-04T16:34:00Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 5,
+     "icu_elapsed_hours": 54,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-04T22:34:00Z",
+     "sofa_t": 2.0
+    },
+    {
+     "cutoff_index": 6,
+     "icu_elapsed_hours": 60,
+     "observation_density": 0.815476,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-05T04:34:00Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 7,
+     "icu_elapsed_hours": 66,
+     "observation_density": 0.803571,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-05T10:34:00Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 8,
+     "icu_elapsed_hours": 72,
+     "observation_density": 0.833333,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-05T16:34:00Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 9,
+     "icu_elapsed_hours": 78,
+     "observation_density": 0.809524,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-05T22:34:00Z",
+     "sofa_t": 1.0
+    },
+    {
+     "cutoff_index": 10,
+     "icu_elapsed_hours": 84,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-06T04:34:00Z",
+     "sofa_t": 3.0
+    },
+    {
+     "cutoff_index": 11,
+     "icu_elapsed_hours": 90,
+     "observation_density": 0.797619,
+     "observed_bins": 8,
+     "padding_bins": 0,
+     "prediction_time": "2107-06-06T10:34:00Z",
+     "sofa_t": 3.0
+    }
+   ],
+   "intime": "2107-06-02T16:34:00.000000Z",
+   "key_event": {
+    "description": "Episode ends at hour 103.3 after 12 legal cutoffs.",
+    "hours_since_admission": 103.2559,
+    "type": "episode_end"
+   },
+   "legal_cutoffs": [
+    "2107-06-03T16:34:00Z",
+    "2107-06-03T22:34:00Z",
+    "2107-06-04T04:34:00Z",
+    "2107-06-04T10:34:00Z",
+    "2107-06-04T16:34:00Z",
+    "2107-06-04T22:34:00Z",
+    "2107-06-05T04:34:00Z",
+    "2107-06-05T10:34:00Z",
+    "2107-06-05T16:34:00Z",
+    "2107-06-05T22:34:00Z",
+    "2107-06-06T04:34:00Z",
+    "2107-06-06T10:34:00Z"
+   ],
+   "measured_criteria": {
+    "max_consecutive_rise": 2.0,
+    "mean_observation_density": 0.807672,
+    "net_sofa_change": 3.0,
+    "qualifying_onsets": [
+     {
+      "component": "invasive_ventilation",
+      "hours_since_admission": 68.0
+     }
+    ],
+    "selection_score": 12
+   },
+   "n_cutoffs": 12,
+   "objective": "Show how remaining-time and risk forecasts evolve across many legal cutoffs.",
+   "outtime": "2107-06-06T23:49:21.376800Z",
+   "patient_alias": "DEMO-V3-08",
+   "scenario_id": "SCN-08",
+   "selection_rationale": "legal cutoffs >= 9; score = number of cutoffs; tie-break sha256(stay_id)",
+   "sex_category": "FEMALE",
+   "source_cohort": "LCE",
+   "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+   "stay_id": "SYN-V3-LCE-E-00000300",
+   "subject_id": "SYN-V3-LCE-S-00000300",
+   "subtype": "SYNTHETIC_ISCHEMIC",
+   "title": "Long ICU-like episode"
+  }
+ ],
+ "selection_policy": {
+  "cutoff_source": "data.timestamps.generate_prediction_rows_for_stay (recomputed and asserted equal)",
+  "excluded": "V1 corpus incl. V1 test split, V2 fresh test, V3 sealed test, other development cohorts, custom records",
+  "independent_of_model_performance": true,
+  "min_legal_cutoffs": 5,
+  "population": "LCE: held-out development evaluation cohort; never used for V3 training, selection or any sealed final test",
+  "sofa_source": "frozen sofa_at(t) via artifacts/performance_v3/cache/sofa_LCE.json trends['t'] (observed state, not a prediction)",
+  "tie_break": "sha256(stay_id) ascending"
+ },
+ "source_cohort": "LCE",
+ "status": "RESEARCH_DEMO_DEVELOPMENT_COHORT_NOT_TRAINING_NOT_FINAL_TEST",
+ "substitutions": []
+}

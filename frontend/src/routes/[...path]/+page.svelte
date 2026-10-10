@@ -4,17 +4,17 @@
 	import { error as httpError } from '@sveltejs/kit';
 
 	const route = $derived(page.url.pathname);
-	if (route) throw httpError(404, `No NHM route exists at ${route}`);
+	if (route) throw httpError(404, `No route exists at ${route}`);
 </script>
 
 <svelte:head>
-	<title>{page.url.pathname.slice(1).replaceAll('/', ' / ').toUpperCase()} | NHM</title>
+	<title>{page.url.pathname.slice(1).replaceAll('/', ' / ').toUpperCase()} | Personalized Patient Recovery Trajectory</title>
 </svelte:head>
 
 <DashboardShell>
 <main class="compatibility-shell">
-	<div class="technical-line"><span>NHM / ROUTE NOT FOUND</span><span>STATUS / 404</span></div>
-	<section><div class="eyebrow">NO SUCH WORKBENCH SURFACE</div><h2>{page.url.pathname}</h2><p>This route is not part of the active NHM system. Return to the monitor or use the navigation to choose a supported workspace.</p><a href="/monitor">Return to monitor ↗</a></section>
+	<div class="technical-line"><span>PRT / ROUTE NOT FOUND</span><span>STATUS / 404</span></div>
+	<section><div class="eyebrow">NO SUCH PAGE</div><h2>{page.url.pathname}</h2><p>This route is not part of the active product. Return to the overview or use the navigation to choose a supported workspace.</p><a href="/overview">Return to overview ↗</a></section>
 </main>
 </DashboardShell>
 

@@ -8,21 +8,27 @@
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
 	import RadarPlot from '$lib/components/dashboard/RadarPlot.svelte';
 	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
-	import { api, type AIRecommendation, type DemoSubject, type PredictionResponse } from '$lib/services/api';
+	import { api, type AIRecommendation } from '$lib/services/api';
+	import ModelBadge from '$lib/components/patient/ModelBadge.svelte';
+	import ShapPanel from '$lib/components/patient/ShapPanel.svelte';
+	import { patientContext as ctx } from '$lib/stores/patient-context.svelte';
+	import { authToken } from '$lib/stores/auth-token.svelte';
+	import { untrack } from 'svelte';
 	import { Sparkles, BrainCircuit, Volume2, VolumeX, Loader2 } from '@lucide/svelte';
 
 	const TASK_TITLES: Record<string, string> = {
 		recovery24: 'Recovery +24h', recovery48: 'Recovery +48h', icu_stay_time: 'Remaining ICU stay time', organ_support: 'Organ support (raw margin)'
 	};
 
-	let subjects = $state<DemoSubject[]>([]);
-	let stayId = $state('');
-	let cutoffIndex = $state(0);
-	let prediction = $state<PredictionResponse | null>(null);
 	let recommendation = $state<AIRecommendation | null>(null);
-	let loadingPrediction = $state(true);
 	let loadingAI = $state(false);
-	let error = $state('');
+	let shapTask = $state<'recovery24' | 'recovery48' | 'icu_stay_time' | 'organ_support'>('organ_support');
+	const subjects = $derived(ctx.subjects);
+	const stayId = $derived(ctx.stayId);
+	const cutoffIndex = $derived(ctx.cutoffIndex);
+	const prediction = $derived(ctx.prediction);
+	const loadingPrediction = $derived(ctx.loading || ctx.loadingSubjects);
+	const error = $derived(ctx.error);
 
 	let audioEl: HTMLAudioElement | null = $state(null);
 	let narrateLoading = $state(false);
@@ -68,8 +74,8 @@
 		}
 	}
 
-	const subject = $derived(subjects.find((s) => s.stay_id === stayId) ?? null);
-	const cutoffs = $derived(subject?.legal_cutoffs ?? []);
+	const subject = $derived(ctx.subject);
+	const cutoffs = $derived(ctx.cutoffs);
 
 	function contribFeatures(items: { label: string; attribution: number }[]) {
 		return items.map((i) => ({ name: i.label, value: i.attribution }));
@@ -89,27 +95,13 @@
 		};
 	});
 
-	async function load() {
-		if (!subject) return;
-		loadingPrediction = true;
-		error = '';
-		try {
-			prediction = await api.predict(stayId, cutoffs[cutoffIndex]);
-		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Prediction failed';
-			prediction = null;
-		} finally {
-			loadingPrediction = false;
-		}
-	}
-
 	async function askAI() {
 		if (!subject) return;
 		loadingAI = true;
 		recommendation = null;
 		resetNarration();
 		try {
-			recommendation = await api.aiRecommendation(stayId, cutoffs[cutoffIndex]);
+			recommendation = await api.aiRecommendation(ctx.stayId, cutoffs[cutoffIndex]);
 		} catch (cause) {
 			recommendation = { status: 'UNAVAILABLE', summary: null, model: 'unknown', disclaimer: '', error: cause instanceof Error ? cause.message : 'request failed' };
 		} finally {
@@ -117,34 +109,39 @@
 		}
 	}
 
-	function selectStay(id: string) {
-		stayId = id;
-		cutoffIndex = 0;
+	async function selectStay(id: string) {
 		recommendation = null;
 		resetNarration();
-		goto(`?stay_id=${id}&cutoff=0`, { replaceState: true, noScroll: true });
-		void load();
+		await ctx.select(id, 0);
+		void goto(ctx.urlQuery(), { replaceState: true, noScroll: true });
 	}
-	function setCutoff(index: number) {
-		cutoffIndex = Math.max(0, Math.min(cutoffs.length - 1, index));
+	async function setCutoff(index: number) {
 		recommendation = null;
 		resetNarration();
-		goto(`?stay_id=${stayId}&cutoff=${cutoffIndex}`, { replaceState: true, noScroll: true });
-		void load();
+		await ctx.setCutoff(index);
+		void goto(ctx.urlQuery(), { replaceState: true, noScroll: true });
 	}
 
-	onMount(async () => {
-		try {
-			const result = await api.demoSubjects();
-			subjects = result.demo_subjects;
-			const params = page.url.searchParams;
-			const requested = params.get('stay_id');
-			stayId = requested && subjects.some((s) => s.stay_id === requested) ? requested : subjects[0]?.stay_id ?? '';
-			cutoffIndex = Number(params.get('cutoff') ?? 0) || 0;
-			await load();
-		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Could not load demo subjects';
-		}
+	async function init() {
+		await ctx.ensureSubjects(ctx.subjects.length === 0);
+		const { stay, cutoff } = ctx.parseUrl(page.url.searchParams);
+		if (stay) await ctx.ensureCustom(stay);
+		const requested = stay && ctx.subjects.some((s) => s.stay_id === stay) ? stay : null;
+		if (requested && (requested !== ctx.stayId || cutoff !== ctx.cutoffIndex)) await ctx.select(requested, cutoff);
+		else if (!ctx.stayId && ctx.subjects[0]) await ctx.select(ctx.subjects[0].stay_id, 0);
+		else if (!ctx.prediction) await ctx.load();
+	}
+
+	onMount(() => {
+		void init();
+	});
+	let lastToken: string | null | undefined = undefined;
+	$effect(() => {
+		const token = authToken.value;
+		untrack(() => {
+			if (lastToken !== undefined && token !== lastToken && ctx.ensureOwner()) void init();
+			lastToken = token;
+		});
 	});
 
 	onDestroy(() => {
@@ -154,16 +151,17 @@
 
 <svelte:head><title>AI Insight + Explainability | Personalized Patient Recovery Trajectory</title></svelte:head>
 
-<WorkbenchPage eyebrow="04 / AI INSIGHT + EXPLAINABILITY" title="Make the forecast legible, then let a model narrate it." description="TreeSHAP decomposes each frozen XGBoost output feature-by-feature; a separate LLM (Groq-hosted openai/gpt-oss-120b) turns those numbers into a plain-language research note — generated only after prediction, never influencing it.">
+<WorkbenchPage eyebrow="04 / AI INSIGHT + EXPLAINABILITY" title="Make the forecast legible, then let a model narrate it." description="TreeSHAP decomposes each frozen V3 tree-ensemble output (XGBoost; CatBoost for the +48h recovery head) feature-by-feature; a separate LLM (Groq-hosted openai/gpt-oss-120b) turns those numbers into a plain-language research note — generated only after prediction, never influencing it.">
 	{#if error}<div class="error">{error}</div>{/if}
 	{#if subjects.length}
 		<div class="controls">
 			<select value={stayId} onchange={(e) => selectStay((e.target as HTMLSelectElement).value)}>
-				{#each subjects as s}<option value={s.stay_id}>{s.subject_id} — {s.cardiac_condition_group.replace('SYNTHETIC_', '')}</option>{/each}
+				{#each subjects as s}<option value={s.stay_id}>{s.patient_alias ?? s.subject_id} — {s.cardiac_condition_group.replace('SYNTHETIC_', '')}</option>{/each}
 			</select>
 			<select value={cutoffIndex} onchange={(e) => setCutoff(Number((e.target as HTMLSelectElement).value))}>
 				{#each cutoffs as c, i}<option value={i}>t{i} — {c.slice(0, 16).replace('T', ' ')}</option>{/each}
 			</select>
+			<ModelBadge bundle={prediction?.model_bundle} versions={prediction?.versions} />
 		</div>
 	{/if}
 
@@ -226,14 +224,16 @@
 			</Panel>
 		</div>
 
-		<div class="grid two">
+		<ShapPanel {prediction} computed={ctx.computed} cutoffIndex={ctx.cutoffIndex} bind:task={shapTask} />
+
+		<div class="grid two overview-grid">
 			{#each Object.entries(prediction.explanations) as [task, explanation]}
 				<Panel eyebrow={`TREESHAP / ${task.toUpperCase()}`} title={TASK_TITLES[task]} note={explanation.diagnostics.additivity_check_passed ? 'ADDITIVITY OK' : 'ADDITIVITY FAILED'}>
 					<div class="shap-cols">
 						<div><span class="col-label pos">Increased the output</span><BarContrib features={contribFeatures(explanation.top_positive_contributors)} maxAbs={Math.max(0.05, ...explanation.top_positive_contributors.map((i) => Math.abs(i.attribution)), ...explanation.top_negative_contributors.map((i) => Math.abs(i.attribution)))} height={160} /></div>
 						<div><span class="col-label neg">Decreased the output</span><BarContrib features={contribFeatures(explanation.top_negative_contributors)} maxAbs={Math.max(0.05, ...explanation.top_positive_contributors.map((i) => Math.abs(i.attribution)), ...explanation.top_negative_contributors.map((i) => Math.abs(i.attribution)))} height={160} /></div>
 					</div>
-					{#if task === 'organ_support'}<p class="note">Explains the raw XGBoost margin, before isotonic calibration — calibration is a non-additive transform and is not decomposed here.</p>{/if}
+					{#if task === 'organ_support'}<p class="note">Explains the raw model margin (log-odds), before Platt calibration — calibration is a separate monotone transform and is not decomposed here.</p>{/if}
 				</Panel>
 			{/each}
 		</div>
@@ -269,6 +269,7 @@
 	.metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 8px; }
 	.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
 	.attribution-overview { margin-bottom: 8px; }
+	.overview-grid { margin-top: 8px; }
 	.radar-row { display: flex; justify-content: center; padding: 6px 0 2px; }
 	.dq-gauge-row { display: flex; align-items: center; gap: 22px; }
 	.dq-gauge-row dl { flex: 1; display: grid; gap: 10px; margin: 0; }

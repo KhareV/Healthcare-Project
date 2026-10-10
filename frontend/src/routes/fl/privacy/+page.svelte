@@ -1,1 +1,0 @@
-<script lang="ts">import SectionPage from '$lib/components/dashboard/SectionPage.svelte';</script><SectionPage eyebrow="22 / FL / PRIVACY" title="Privacy is architecture." description="Make local processing, update exchange, and privacy boundaries visible in the system itself." endpoint="/fl/status" />

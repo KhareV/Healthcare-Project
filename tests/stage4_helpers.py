@@ -18,7 +18,13 @@ def copy_repository(tmp_path: Path) -> Path:
     working tree."""
 
     dest = tmp_path / "repo"
-    shutil.copytree(ROOT, dest, ignore=shutil.ignore_patterns(".git"))
+    # The serving fixtures need source/config/model artifacts, not the SvelteKit
+    # dependency tree or browser outputs. Keep local read-only data links as links
+    # so an isolated product checkout does not duplicate gigabytes of cohorts.
+    shutil.copytree(
+        ROOT, dest, symlinks=True,
+        ignore=shutil.ignore_patterns(".git", ".venv*", "node_modules", "test-results", "playwright-report", "build"),
+    )
     return dest
 
 

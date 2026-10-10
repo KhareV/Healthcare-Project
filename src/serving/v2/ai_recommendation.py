@@ -41,7 +41,7 @@ patient, and this is NOT a real-time clinical tool.
 You will be given: the current severity score, two independent short-horizon severity \
 forecasts, a remaining-stay-time forecast, a calibrated risk score for a support-escalation \
 event with a frozen decision threshold, each forecast's top statistical contributors (from \
-TreeSHAP, on a synthetic XGBoost model), and a note on data completeness.
+TreeSHAP, on the raw output of a gradient-boosted tree model), and a note on data completeness.
 
 Write a concise research-style summary (strictly 4-6 sentences, plain prose, no headings, no \
 bullet lists) for a technical demo audience, synthesizing what the numbers say and which \
@@ -111,7 +111,17 @@ Remaining ICU stay-time forecast: {icu['remaining_hours']:.1f} hours; {contribut
 
 New organ-support initiation risk (next 24h, calibrated): {support['probability_24h']*100:.1f}% (raw model score {support['raw_probability']*100:.1f}%), frozen decision threshold {support['threshold']*100:.1f}%, currently {'ABOVE' if support['alert'] else 'BELOW'} threshold; {contributors_for('organ_support')}
 
-Data completeness for this cutoff: {completeness}."""
+Data completeness for this cutoff: {completeness}.{_provenance_line(prediction.get('model_bundle'))}"""
+
+
+def _provenance_line(bundle) -> str:
+    """V3 grounding: names the serving release and the attribution domain. Empty for legacy payloads."""
+
+    if not bundle:
+        return ""
+    return (f"\n\nModel release: {bundle.get('release', 'unknown')} ({bundle.get('bundle_id', 'unknown bundle')}); the forecasts come from the frozen "
+            "selected models of this release. Contributors are TreeSHAP attributions of each model's raw output (before ICU hour conversion and "
+            "before probability calibration); they are statistical, not causal.")
 
 
 def generate_recommendation(*, prediction: Mapping[str, object], api_key: Optional[str] = None, model: Optional[str] = None, timeout_seconds: float = 12.0) -> AIRecommendationResult:
@@ -160,8 +170,8 @@ def generate_recommendation(*, prediction: Mapping[str, object], api_key: Option
 # ---------------------------------------------------------------------------
 
 
-def load_trajectory_copilot_prompt() -> str:
-    return _PROMPT_PATH.read_text(encoding="utf-8")
+def load_trajectory_copilot_prompt(path: Optional[Path] = None) -> str:
+    return (path or _PROMPT_PATH).read_text(encoding="utf-8")
 
 
 def _format_deltas(current: Mapping[str, object], previous: Optional[Mapping[str, object]]) -> str:
@@ -244,12 +254,14 @@ What changed since the previous replay cutoff:
 
 Data completeness for this cutoff: {completeness}
 
+Model release: {context.get('model_release', 'not stated')}
+
 System limitations to keep in mind: {"; ".join(limitations) if limitations else "synthetic research benchmark, retrospective replay, not clinically validated"}
 
 {task_ask}"""
 
 
-def generate_assistant_response(*, context: Mapping[str, object], question: Optional[str] = None, api_key: Optional[str] = None, model: Optional[str] = None, timeout_seconds: float = 15.0) -> AIRecommendationResult:
+def generate_assistant_response(*, context: Mapping[str, object], question: Optional[str] = None, api_key: Optional[str] = None, model: Optional[str] = None, timeout_seconds: float = 15.0, prompt_path: Optional[Path] = None) -> AIRecommendationResult:
     key = api_key if api_key is not None else os.environ.get("GROQ_API_KEY")
     chosen_model = model or os.environ.get("GROQ_MODEL", DEFAULT_MODEL)
 
@@ -259,7 +271,7 @@ def generate_assistant_response(*, context: Mapping[str, object], question: Opti
     payload = {
         "model": chosen_model,
         "messages": [
-            {"role": "system", "content": load_trajectory_copilot_prompt()},
+            {"role": "system", "content": load_trajectory_copilot_prompt(prompt_path)},
             {"role": "user", "content": build_assistant_user_prompt(context=context, question=question)},
         ],
         "temperature": 0.3,

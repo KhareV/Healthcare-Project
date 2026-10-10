@@ -1,134 +1,128 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import WorkbenchPage from '$lib/components/dashboard/WorkbenchPage.svelte';
+	import ResearchPage from '$lib/components/research-pages/ResearchPage.svelte';
+	import DataTable from '$lib/components/research-pages/DataTable.svelte';
 	import MetricTile from '$lib/components/dashboard/MetricTile.svelte';
 	import Panel from '$lib/components/dashboard/Panel.svelte';
-	import GaugeRing from '$lib/components/dashboard/GaugeRing.svelte';
-	import { api } from '$lib/services/api';
+	import { ChartFrame, BarChart } from '$lib/components/research';
+	import { BUNDLE_STYLE } from '$lib/research/palette';
+	import { fmtNum, fmtCI, fmtInt, shortHash } from '$lib/research/format';
+	import { researchApi, errorText, taskLabel, type Row } from '$lib/services/research';
 
-	type Performance = {
-		final_metrics: any;
-		bootstrap: any;
-		naive_comparison: any;
-		calibration_evidence: any;
-		generalization_comparison: any;
-		v1_historical_test: { recovery24_mae: number; recovery48_mae: number; icu_median_ae_hours: number; support_calibrated_auprc: number };
-	};
-
-	let data = $state<Performance | null>(null);
+	let summary = $state<Row | null>(null);
+	let prov = $state<Row | null>(null);
+	let paired = $state<Row | null>(null);
 	let error = $state('');
 
 	onMount(async () => {
 		try {
-			data = (await api.performance()) as Performance;
+			[summary, prov, paired] = await Promise.all([researchApi.summary(), researchApi.provenance(), researchApi.dataset('paired_differences')]);
 		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Could not load the frozen Phase-4 evaluation artifacts';
+			error = errorText(cause);
 		}
 	});
 
-	function ci(entry: any) {
-		return `[${entry.ci_lower.toFixed(4)}, ${entry.ci_upper.toFixed(4)}]`;
+	const H = $derived(summary?.headline ?? {});
+	const rows = $derived<Row[]>(summary?.comparison?.rows ?? []);
+	const bundleKeys = ['V3', 'V2_AS_SERVED', 'V2_AS_EVALUATED', 'CONTROL'] as const;
+
+	function cell(row: Row, key: string) {
+		const v = row[key];
+		if (typeof v !== 'number') return '—';
+		const ci = row[`${key}_ci95`];
+		return ci ? `${fmtNum(v, 3)} ${fmtCI(ci[0], ci[1], 3)}` : fmtNum(v, 3);
 	}
+	function improvement(row: Row, key: string): number | null {
+		const v = row[key], n = row.naive;
+		if (typeof v !== 'number' || typeof n !== 'number' || n === 0) return null;
+		return (row.lower_is_better ? (n - v) / n : (v - n) / n) * 100;
+	}
+	const improvementGroups = $derived(
+		rows.map((r) => ({
+			label: `${taskLabel(r.task)} (${r.metric})`,
+			values: (['V3', 'V2_AS_SERVED', 'CONTROL'] as const)
+				.map((k) => ({ series: BUNDLE_STYLE[k].label, value: improvement(r, k) as number }))
+				.filter((x) => x.value !== null)
+		}))
+	);
+	const barColors = { [BUNDLE_STYLE.V3.label]: BUNDLE_STYLE.V3.color, [BUNDLE_STYLE.V2_AS_SERVED.label]: BUNDLE_STYLE.V2_AS_SERVED.color, [BUNDLE_STYLE.CONTROL.label]: BUNDLE_STYLE.CONTROL.color };
+
+	const icuRow = $derived(rows.find((r) => r.task === 'icu_stay_time'));
+	const icuEqualsControl = $derived(!!icuRow && Math.abs(icuRow.V3 - icuRow.CONTROL) < 1e-9);
+	const r48ctrl = $derived<Row | undefined>(paired?.data?.rows?.find((r: Row) => r.task === 'recovery48' && r.metric === 'mae' && r.comparison === 'V3_vs_CONTROL'));
+	const r48notEstablished = $derived(!!r48ctrl && r48ctrl.ci9875_lo <= 0 && r48ctrl.ci9875_hi >= 0);
+	const tasks = $derived<Row>(prov?.data?.tasks ?? {});
+	const finalProv = $derived({ status: 'FINAL' as const, bundle: 'V3', partition: summary?.partition, n_rows: H.icu_weighted_median_ae_hours?.n_rows ?? null, n_stays: H.icu_weighted_median_ae_hours?.n_stays ?? null, metric: 'stay-balanced primary metrics, 95% paired stay-cluster bootstrap', source: summary?.source_artifacts?.[0]?.path, sha256: summary?.source_artifacts?.[0]?.sha256, ci_method: `${summary?.ci_method?.n ?? 'unreported'} replicates, seed ${summary?.ci_method?.seed ?? 'unreported'}` });
 </script>
 
-<svelte:head><title>Model Performance | Personalized Patient Recovery Trajectory</title></svelte:head>
+<svelte:head><title>Model Research | Personalized Patient Recovery Trajectory</title></svelte:head>
 
-<WorkbenchPage eyebrow="03 / MODEL PERFORMANCE" title="The final, one-time fresh-test evaluation." description="Every number on this page is read directly from the frozen Phase-4 artifacts. No inference runs on this page.">
-	{#if error}
-		<div class="error">{error}</div>
-	{:else if !data}
-		<div class="loading">Loading frozen evaluation artifacts…</div>
-	{:else}
-		<div class="meta">
-			<span>SOURCE / artifacts/performance_v2/phase4/*</span>
-			<span>BOOTSTRAP / B={data.bootstrap.config.n_bootstrap} · SEED={data.bootstrap.config.seed}</span>
-			<span>STATUS / ONE-TIME FRESH-TEST EVALUATION, FROZEN</span>
+<ResearchPage eyebrow="03 / MODEL RESEARCH" title="The corrected V3 release, with its evidence." description="Every number is read from frozen artifacts and carries its evidence status. V3 is the final scientific evaluation; V2 results are shown only with their defect-D1 limitation." legend loading={!summary && !error} {error}>
+	{#if summary}
+		<div class="rmeta"><span>PARTITION / {summary.partition}</span><span>BUNDLE / V3 · {prov?.data?.bundle_id}</span><span>CI / {summary.ci_method?.n} STAY-CLUSTER BOOTSTRAP REPLICATES</span><span>STATUS / FINAL SEALED TEST (ONE ACCESS)</span></div>
+
+		<div class="rtiles">
+			<MetricTile label="Recovery +24h MAE" value={fmtNum(H.recovery24_mae?.value, 4)} unit="SOFA pts" detail={`95% CI ${fmtCI(H.recovery24_mae?.ci95?.[0], H.recovery24_mae?.ci95?.[1], 4)} · ${fmtInt(H.recovery24_mae?.n_rows)} rows / ${fmtInt(H.recovery24_mae?.n_stays)} stays`} tone="teal" />
+			<MetricTile label="Recovery +48h MAE" value={fmtNum(H.recovery48_mae?.value, 4)} unit="SOFA pts" detail={`95% CI ${fmtCI(H.recovery48_mae?.ci95?.[0], H.recovery48_mae?.ci95?.[1], 4)} · ${fmtInt(H.recovery48_mae?.n_rows)} rows / ${fmtInt(H.recovery48_mae?.n_stays)} stays`} tone="teal" />
+			<MetricTile label="ICU weighted median AE" value={fmtNum(H.icu_weighted_median_ae_hours?.value, 3)} unit="h" detail={`95% CI ${fmtCI(H.icu_weighted_median_ae_hours?.ci95?.[0], H.icu_weighted_median_ae_hours?.ci95?.[1], 3)} · ${fmtInt(H.icu_weighted_median_ae_hours?.n_stays)} stays`} tone="cyan" />
+			<MetricTile label="Support AUROC (calibrated)" value={fmtNum(H.support_calibrated_auroc?.value, 4)} detail={`${fmtInt(H.support_calibrated_auroc?.n_rows)} rows / ${fmtInt(H.support_calibrated_auroc?.n_stays)} stays`} tone="amber" />
+			<MetricTile label="Support AUPRC (calibrated)" value={fmtNum(H.support_calibrated_auprc?.value, 4)} detail={`95% CI ${fmtCI(H.support_calibrated_auprc?.ci95?.[0], H.support_calibrated_auprc?.ci95?.[1], 4)} · prevalence-dependent`} tone="amber" />
+			<MetricTile label="Support Brier (calibrated)" value={fmtNum(H.support_calibrated_brier?.value, 4)} detail="squared probability error" tone="amber" />
+			<MetricTile label="Support F1 at frozen threshold" value={fmtNum(H.support_f1_at_frozen_threshold?.value, 4)} detail={`threshold ${H.support_f1_at_frozen_threshold?.threshold}`} tone="amber" />
+			<MetricTile label="Frozen alert threshold" value={fmtNum(H.support_f1_at_frozen_threshold?.threshold, 4)} detail={`${summary.calibrator} · fixed before test`} tone="rose" />
 		</div>
 
-		<div class="metrics">
-			<MetricTile label="Recovery +24 MAE" value={data.final_metrics.recovery24.mae.toFixed(4)} detail={`95% CI ${ci(data.bootstrap.recovery24.mae)}`} tone="teal" />
-			<MetricTile label="Recovery +48 MAE" value={data.final_metrics.recovery48.mae.toFixed(4)} detail={`95% CI ${ci(data.bootstrap.recovery48.mae)}`} tone="teal" />
-			<MetricTile label="ICU median AE" value={data.final_metrics.icu_stay_time.median_absolute_error.toFixed(4)} unit="h" detail={`95% CI ${ci(data.bootstrap.icu_stay_time.median_absolute_error)}`} tone="cyan" />
-			<MetricTile label="Support calibrated AUPRC" value={data.final_metrics.organ_support_calibrated.auprc.toFixed(4)} detail={`95% CI ${ci(data.bootstrap.organ_support_calibrated.auprc)}`} tone="amber" />
-		</div>
-
-		<div class="grid two">
-			<Panel eyebrow="RECOVERY / VS NAIVE" title="MAE vs. zero-delta naive baseline" note="STAY-BALANCED">
-				<div class="bars">
-					<div class="bar-row"><span>+24h model</span><i style={`width:${(data.final_metrics.recovery24.mae / data.naive_comparison.recovery24.naive_mae) * 100}%`}></i><b>{data.final_metrics.recovery24.mae.toFixed(3)}</b></div>
-					<div class="bar-row naive"><span>+24h naive</span><i style="width:100%"></i><b>{data.naive_comparison.recovery24.naive_mae.toFixed(3)}</b></div>
-					<div class="bar-row"><span>+48h model</span><i style={`width:${(data.final_metrics.recovery48.mae / data.naive_comparison.recovery48.naive_mae) * 100}%`}></i><b>{data.final_metrics.recovery48.mae.toFixed(3)}</b></div>
-					<div class="bar-row naive"><span>+48h naive</span><i style="width:100%"></i><b>{data.naive_comparison.recovery48.naive_mae.toFixed(3)}</b></div>
-				</div>
-				<p class="caption">+{(data.naive_comparison.recovery24.relative_improvement * 100).toFixed(1)}% / +{(data.naive_comparison.recovery48.relative_improvement * 100).toFixed(1)}% improvement over naive (lower MAE is better).</p>
-			</Panel>
-			<Panel eyebrow="ICU / VS NAIVE" title="Median AE vs. DEV-median naive baseline" note="STAY-BALANCED">
-				<div class="bars">
-					<div class="bar-row"><span>model</span><i style={`width:${(data.final_metrics.icu_stay_time.median_absolute_error / data.naive_comparison.icu_stay_time.naive_median_ae) * 100}%`}></i><b>{data.final_metrics.icu_stay_time.median_absolute_error.toFixed(2)}h</b></div>
-					<div class="bar-row naive"><span>naive</span><i style="width:100%"></i><b>{data.naive_comparison.icu_stay_time.naive_median_ae.toFixed(2)}h</b></div>
-				</div>
-				<p class="caption">+{(data.naive_comparison.icu_stay_time.relative_improvement * 100).toFixed(1)}% improvement over the DEV stay-balanced median-hours baseline.</p>
-			</Panel>
-		</div>
-
-		<Panel eyebrow="ORGAN SUPPORT / FULL METRICS" title="Raw vs. calibrated discrimination" note="FROZEN THRESHOLD 0.3978">
-			<div class="support-grid">
-				<div class="gauges">
-					<GaugeRing value={Math.round(data.final_metrics.organ_support_raw.auprc * 100)} label="RAW AUPRC" color="#94a3b8" size={100} />
-					<GaugeRing value={Math.round(data.final_metrics.organ_support_calibrated.auprc * 100)} label="CAL. AUPRC" color="#2bb8b0" size={100} />
-					<GaugeRing value={Math.round(data.final_metrics.organ_support_calibrated.f1 * 100)} label="F1 @ THRESH." color="#0ea5e9" size={100} />
-					<GaugeRing value={Math.round(data.naive_comparison.organ_support.relative_improvement * 100)} label="VS NAIVE" color="#fbbf24" size={100} />
-				</div>
-				<table>
-					<tbody>
-						<tr><td>Raw AUROC</td><td>{data.final_metrics.organ_support_raw.auroc.toFixed(4)}</td><td>Raw Brier</td><td>{data.final_metrics.organ_support_raw.brier.toFixed(4)}</td></tr>
-						<tr><td>Calibrated AUROC</td><td>{data.final_metrics.organ_support_calibrated.auroc.toFixed(4)}</td><td>Calibrated Brier</td><td>{data.final_metrics.organ_support_calibrated.brier.toFixed(4)}</td></tr>
-						<tr><td>Precision</td><td>{data.final_metrics.organ_support_calibrated.precision.toFixed(4)}</td><td>Recall / sensitivity</td><td>{data.final_metrics.organ_support_calibrated.sensitivity.toFixed(4)}</td></tr>
-						<tr><td>Specificity</td><td>{data.final_metrics.organ_support_calibrated.specificity.toFixed(4)}</td><td>Naive AUPRC</td><td>{data.naive_comparison.organ_support.naive_auprc.toFixed(4)}</td></tr>
-					</tbody>
-				</table>
-			</div>
-			<p class="caption">Calibrated AUPRC ({data.final_metrics.organ_support_calibrated.auprc.toFixed(4)}) is below raw AUPRC ({data.final_metrics.organ_support_raw.auprc.toFixed(4)}) — isotonic regression is monotonic non-decreasing, so this reflects tie-resolution loss, not a ranking reversal.</p>
+		<Panel eyebrow="BUNDLE MATRIX" title="Five-way comparison on the sealed V3 test" note="STAY-BALANCED">
+			<DataTable
+				caption="Lower is better for MAE / hours; higher is better for AUPRC. Values with 95% CI. 'Naive' is the Master-Plan floor."
+				columns={[
+					{ key: 'label', label: 'Task / metric' },
+					{ key: 'naive', label: 'Naive', align: 'right', fmt: (_v, r) => fmtNum(r.naive, 3) },
+					{ key: 'V3', label: 'V3 (selected)', align: 'right', fmt: (_v, r) => cell(r, 'V3') },
+					{ key: 'V2_AS_SERVED', label: 'V2 as served · operational', align: 'right', fmt: (_v, r) => cell(r, 'V2_AS_SERVED') },
+					{ key: 'CONTROL', label: 'V2-recipe control · method', align: 'right', fmt: (_v, r) => cell(r, 'CONTROL') },
+					{ key: 'V2_AS_EVALUATED', label: 'V2 as evaluated ▲ D1', align: 'right', fmt: (_v, r) => cell(r, 'V2_AS_EVALUATED') }
+				]}
+				rows={rows.map((r) => ({ ...r, label: `${taskLabel(r.task)} — ${r.metric} (${r.unit})` }))}
+			/>
+			<p class="rnote warn" style="margin-top:12px"><b>▲ V2 as evaluated</b> is the original offline harness containing defect D1 (the missingness of current SOFA leaked whether a stay ended within 24 h). It is historical and is not a valid estimate of served V2 behaviour. See the Defect D1 tab.</p>
 		</Panel>
 
-		<Panel eyebrow="BENCHMARK V1 → V2" title="Historical comparison across independent cohorts" note="NOT PAIRED STATISTICAL TESTING">
-			<table class="compare">
-				<thead><tr><th>Task</th><th>v1 final-test (historical)</th><th>v2 fresh-test</th></tr></thead>
-				<tbody>
-					<tr><td>Recovery24 MAE</td><td>{data.v1_historical_test.recovery24_mae.toFixed(4)}</td><td>{data.final_metrics.recovery24.mae.toFixed(4)}</td></tr>
-					<tr><td>Recovery48 MAE</td><td>{data.v1_historical_test.recovery48_mae.toFixed(4)}</td><td>{data.final_metrics.recovery48.mae.toFixed(4)}</td></tr>
-					<tr><td>ICU median AE (h)</td><td>{data.v1_historical_test.icu_median_ae_hours.toFixed(4)}</td><td>{data.final_metrics.icu_stay_time.median_absolute_error.toFixed(4)}</td></tr>
-					<tr><td>Support calibrated AUPRC</td><td>{data.v1_historical_test.support_calibrated_auprc.toFixed(4)}</td><td>{data.final_metrics.organ_support_calibrated.auprc.toFixed(4)}</td></tr>
-				</tbody>
-			</table>
-			<p class="caption">{data.generalization_comparison.interpretation === 'descriptive_only_no_retraining' ? 'Descriptive only — no retraining occurred in response to either comparison.' : ''} v1 and v2 used different independent final-test cohorts (different generator seed and subject namespace).</p>
+		<div class="rgrid two">
+			<ChartFrame title="Improvement over the naive floor" subtitle="Relative improvement (%) of each bundle versus the naive baseline, per task" provenance={finalProv} data={improvementGroups.flatMap((g) => g.values.map((v) => ({ task_metric: g.label, bundle: v.series, improvement_pct: v.value })))} units="% improvement vs naive" empty={!improvementGroups.length}>
+				<BarChart groups={improvementGroups} colors={barColors} orientation="horizontal" unit="%" valueFormat={(v) => `${v.toFixed(1)}%`} height={300} ariaLabel="Relative improvement over naive by bundle" />
+			</ChartFrame>
+			<Panel eyebrow="HONEST READING" title="What the evidence does and does not show">
+				<div class="rgrid">
+					<p class="rnote"><b>Operational comparison.</b> V3 versus V2 as served is a comparison against what the deployed V2 runtime would have produced on the same rows; part of V3's advantage is the correction of a training/evaluation mismatch (defect D1), not only a better model.</p>
+					{#if icuEqualsControl}<p class="rnote amber"><b>ICU time:</b> V3 equals the repaired V2-recipe control — the pre-registered rule retained the V2 recipe because no candidate beat it beyond tolerance.</p>{/if}
+					{#if r48notEstablished}<p class="rnote amber"><b>Recovery +48h:</b> the advantage over the repaired control is not established at the stricter 98.75% paired interval ({fmtCI(r48ctrl?.ci9875_lo, r48ctrl?.ci9875_hi, 3)}).</p>{/if}
+					<p class="rnote"><b>Population uncertainty.</b> Intervals describe aggregate performance across stays, not individual-patient prediction intervals. AUPRC is prevalence dependent; calibrated and raw scores are reported separately.</p>
+				</div>
+			</Panel>
+		</div>
+
+		<Panel eyebrow="PROVENANCE" title="Served V3 bundle" note={String(prov?.data?.status ?? '')}>
+			<div class="rgrid">
+				<DataTable
+					columns={[
+						{ key: 'task', label: 'Task', fmt: (v) => taskLabel(String(v)) },
+						{ key: 'family', label: 'Family' },
+						{ key: 'feature_variant', label: 'Feature variant' },
+						{ key: 'n_estimators', label: 'Trees', align: 'right' },
+						{ key: 'model_sha256', label: 'Model SHA-256', fmt: (v) => shortHash(String(v), 16) }
+					]}
+					rows={Object.entries(tasks).map(([task, t]: [string, any]) => ({ task, ...t }))}
+				/>
+				<dl class="kv">
+					<dt>bundle</dt><dd>{prov?.data?.bundle_id} (selected_models_v3 {shortHash(prov?.data?.file_sha256?.selected_models_v3, 16)})</dd>
+					<dt>calibrator</dt><dd>{prov?.data?.calibrator?.method} · params {shortHash(prov?.data?.calibrator?.params_sha256, 16)}</dd>
+					<dt>threshold</dt><dd>{prov?.data?.threshold?.comparator} {prov?.data?.threshold?.value}</dd>
+					<dt>protocol / amendment</dt><dd>{shortHash(prov?.data?.file_sha256?.protocol_v1, 12)} / {shortHash(prov?.data?.file_sha256?.protocol_amendment_v1_1, 12)}</dd>
+					<dt>evaluation freeze</dt><dd>{shortHash(prov?.data?.file_sha256?.evaluation_freeze, 16)}</dd>
+					<dt>research registry</dt><dd>{shortHash(prov?.data?.file_sha256?.research_registry, 16)}</dd>
+				</dl>
+			</div>
 		</Panel>
 	{/if}
-</WorkbenchPage>
-
-<style>
-	.loading, .error { padding: 20px 0; color: #64748b; font: 10px 'JetBrains Mono', monospace; letter-spacing: .1em; }
-	.error { color: #fecdd3; }
-	.meta { display: flex; flex-wrap: wrap; gap: 24px; padding: 12px 0; border-block: 1px solid rgba(148,163,184,.14); color: #64748b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .1em; margin-bottom: 16px; }
-	.metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 8px; }
-	.grid.two { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 0; }
-	.bars { display: grid; gap: 10px; }
-	.bar-row { display: grid; grid-template-columns: 90px 1fr 60px; align-items: center; gap: 10px; }
-	.bar-row span { color: #94a3b8; font: 9px 'JetBrains Mono', monospace; }
-	.bar-row i { display: block; height: 8px; border-radius: 2px; background: #2bb8b0; box-shadow: 0 0 6px #2bb8b040; }
-	.bar-row.naive i { background: #64748b; box-shadow: none; }
-	.bar-row b { color: #dce9e8; font: 10px 'JetBrains Mono', monospace; text-align: right; }
-	.caption { padding-top: 14px; margin: 14px 0 0; border-top: 1px solid rgba(148,163,184,.12); color: #71829a; font-size: 10px; line-height: 1.6; }
-	.support-grid { display: grid; grid-template-columns: auto 1fr; gap: 24px; align-items: center; }
-	.gauges { display: flex; flex-wrap: wrap; gap: 14px; }
-	.support-grid table, .compare { width: 100%; border-collapse: collapse; font-size: 11px; }
-	.support-grid td { padding: 8px; color: #cbd5e1; border-bottom: 1px solid rgba(148,163,184,.1); font: 10px 'JetBrains Mono', monospace; }
-	.support-grid td:nth-child(odd) { color: #64748b; }
-	.compare th { text-align: left; padding: 8px; color: #64748b; font: 8px 'JetBrains Mono', monospace; letter-spacing: .08em; border-bottom: 1px solid rgba(148,163,184,.16); }
-	.compare td { padding: 8px; color: #cbd5e1; border-bottom: 1px solid rgba(148,163,184,.08); font: 10px 'JetBrains Mono', monospace; }
-	@media (max-width: 900px) {
-		.metrics { grid-template-columns: repeat(2, 1fr); }
-		.grid.two { grid-template-columns: 1fr; }
-		.support-grid { grid-template-columns: 1fr; }
-	}
-</style>
+</ResearchPage>

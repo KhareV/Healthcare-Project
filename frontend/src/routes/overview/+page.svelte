@@ -9,14 +9,23 @@
 
 	let demoCount = $state<number | null>(null);
 	let apiReady = $state<boolean | null>(null);
+	let health = $state<Awaited<ReturnType<typeof api.health>> | null>(null);
+	let v3Ready = $state<boolean | null>(null);
+
+	function setHealth(h: Awaited<ReturnType<typeof api.health>>) {
+		health = h;
+		v3Ready = h.release === 'V3' && h.ready;
+	}
 
 	onMount(async () => {
 		try {
 			const [health, demo] = await Promise.all([api.health(), api.demoSubjects()]);
 			apiReady = health.ready;
+			setHealth(health);
 			demoCount = demo.demo_subjects.length;
 		} catch {
 			apiReady = false;
+			v3Ready = false;
 		}
 	});
 </script>
@@ -24,6 +33,9 @@
 <svelte:head><title>Overview | Personalized Patient Recovery Trajectory</title></svelte:head>
 
 <WorkbenchPage eyebrow="00 / PROJECT OVERVIEW" title="Personalized Patient Recovery Trajectory." description="Time-series forecasting of recovery, remaining ICU stay time, and new organ-support initiation risk — from a fixed 48-hour history window, recomputed at every sequential replay cutoff.">
+	{#if v3Ready === false}
+		<div class="failsafe" role="alert" data-testid="v3-unavailable"><b>V3 forecasting model unavailable — forecasts are disabled.</b> The product never falls back to an earlier model; check the API log and the V3 bundle hashes.</div>
+	{/if}
 	{#if authFlag.enabled}
 		{#await import('$lib/components/dashboard/WorkspaceGreeting.svelte') then { default: WorkspaceGreeting }}<WorkspaceGreeting />{/await}
 	{/if}
@@ -35,14 +47,14 @@
 		<a class="source-card active" href="/patients/custom">
 			<PencilLine size={18} /><strong>Enter My Own Record</strong><span>Type in vitals & labs and forecast them through the real frozen models</span>
 		</a>
-		<div class="source-card soon">
-			<PlugZap size={18} /><strong>Connect EHR Sandbox</strong><span>Advanced / sandbox — coming in a follow-up release</span><em>SOON</em>
-		</div>
+		<a class="source-card active" href="/demo">
+			<PlugZap size={18} /><strong>Scenario Studio</strong><span>Guided, evidence-grounded patient scenarios with live V3 inference at every cutoff</span>
+		</a>
 	</div>
 
 	<div class="metrics">
 		<MetricTile label="Lookback window" value="48" unit="h" detail="EIGHT 6-HOUR BINS" />
-		<MetricTile label="Model family" value="XGBoost" detail="ALL 4 FINAL V2 TASKS" tone="cyan" />
+		<MetricTile label="Serving release" value={health ? health.release ?? "—" : "—"} detail="XGBOOST ×3 · CATBOOST ×1" tone="cyan" />
 		<MetricTile label="Demo cohort" value={demoCount ?? '—'} detail="DEV / TRAIN SUBJECTS ONLY" tone="teal" />
 		<MetricTile label="Serving API" value={apiReady === null ? 'CHECKING' : apiReady ? 'READY' : 'OFFLINE'} detail="MODEL-BACKED" tone={apiReady ? 'teal' : 'amber'} />
 	</div>
@@ -57,25 +69,26 @@
 			<a href="/trends">Open Forecast Details →</a>
 		</Panel>
 		<Panel eyebrow="OUTPUT 03" title="New organ-support initiation risk" note="24H, CALIBRATED">
-			<p>Raw XGBoost probability → isotonic calibration → frozen decision threshold. Vasopressor or invasive ventilation, OFF→ON only.</p>
+			<p>Raw XGBoost probability → Platt calibration → frozen decision threshold (0.302). Vasopressor or invasive ventilation, OFF→ON only.</p>
 			<a href="/ai/insights">Open Explainability →</a>
 		</Panel>
 	</div>
 
 	<Panel eyebrow="METHOD" title="Retrospective sequential replay, not real-time prediction">
-		<p class="method">At each of the demo cohort's legal historical cutoffs, the API recomputes every forecast from raw event-time history truncated strictly at that cutoff — the same canonical timestamp generator, feature builder, and frozen Phase-3 XGBoost models used throughout Performance-V2. The fresh V2 test cohort used for the final scientific evaluation is a fully sealed, separate population and is structurally unreachable from this application.</p>
+		<p class="method">At each of the demo cohort's legal historical cutoffs, the API recomputes every forecast from raw event-time history truncated strictly at that cutoff — the same canonical timestamp generator, feature builder, and frozen V3 models (XGBoost ×3, CatBoost ×1). The cohort used for the final V3 scientific evaluation is a fully sealed, separate population and is structurally unreachable from this application.</p>
 		<div class="links">
 			<a href="/patients">Patient Replay</a>
 			<a href="/trends">Forecast Details</a>
-			<a href="/research/analytics">Model Performance</a>
+			<a href="/research/analytics">Model Research</a>
 			<a href="/ai/insights">AI + Explainability</a>
 			<a href="/system/data">Data Quality &amp; Provenance</a>
-			<a href="/demo">Guided demo</a>
+			<a href="/demo">Scenario Studio</a>
 		</div>
 	</Panel>
 </WorkbenchPage>
 
 <style>
+	.failsafe { margin-bottom: 16px; padding: 12px 14px; border: 1px solid rgba(251,113,133,.45); background: rgba(251,113,133,.08); color: #fecdd3; font-size: 12px; }
 	.source-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px; }
 	.source-card { position: relative; display: flex; flex-direction: column; align-items: flex-start; gap: 6px; padding: 16px; border: 1px solid rgba(148,163,184,.16); background: #080e1d; color: #94a3b8; text-decoration: none; }
 	.source-card strong { color: #eef7f6; font: 600 12px 'Space Grotesk', sans-serif; }

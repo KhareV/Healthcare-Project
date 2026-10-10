@@ -4,54 +4,49 @@
 	import { goto } from '$app/navigation';
 	import WorkbenchPage from '$lib/components/dashboard/WorkbenchPage.svelte';
 	import Panel from '$lib/components/dashboard/Panel.svelte';
-	import { api, type DemoSubject, type PredictionResponse } from '$lib/services/api';
+	import { api, type PredictionResponse } from '$lib/services/api';
+	import ModelBadge from '$lib/components/patient/ModelBadge.svelte';
+	import { patientContext as ctx } from '$lib/stores/patient-context.svelte';
+	import { authToken } from '$lib/stores/auth-token.svelte';
+	import { untrack } from 'svelte';
 
-	let subjects = $state<DemoSubject[]>([]);
-	let stayId = $state('');
-	let cutoffIndex = $state(0);
-	let prediction = $state<PredictionResponse | null>(null);
-	let loading = $state(true);
-	let error = $state('');
+	const subjects = $derived(ctx.subjects);
+	const stayId = $derived(ctx.stayId);
+	const cutoffIndex = $derived(ctx.cutoffIndex);
+	const prediction = $derived<PredictionResponse | null>(ctx.prediction);
+	const loading = $derived(ctx.loading || ctx.loadingSubjects);
+	const error = $derived(ctx.error);
+	const cutoffs = $derived(ctx.cutoffs);
+	const tasks = $derived(prediction?.model_bundle?.tasks);
 
-	const subject = $derived(subjects.find((s) => s.stay_id === stayId) ?? null);
-	const cutoffs = $derived(subject?.legal_cutoffs ?? []);
-
-	async function load() {
-		if (!subject) return;
-		loading = true;
-		error = '';
-		try {
-			prediction = await api.predict(stayId, cutoffs[cutoffIndex]);
-		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Prediction failed';
-		} finally {
-			loading = false;
-		}
+	async function selectStay(id: string) {
+		await ctx.select(id, 0);
+		void goto(ctx.urlQuery(), { replaceState: true, noScroll: true });
 	}
-	function selectStay(id: string) {
-		stayId = id;
-		cutoffIndex = 0;
-		goto(`?stay_id=${id}&cutoff=0`, { replaceState: true, noScroll: true });
-		void load();
+	async function setCutoff(index: number) {
+		await ctx.setCutoff(index);
+		void goto(ctx.urlQuery(), { replaceState: true, noScroll: true });
 	}
-	function setCutoff(index: number) {
-		cutoffIndex = Math.max(0, Math.min(cutoffs.length - 1, index));
-		goto(`?stay_id=${stayId}&cutoff=${cutoffIndex}`, { replaceState: true, noScroll: true });
-		void load();
+	async function init() {
+		await ctx.ensureSubjects(ctx.subjects.length === 0);
+		const { stay, cutoff } = ctx.parseUrl(page.url.searchParams);
+		if (stay) await ctx.ensureCustom(stay);
+		const requested = stay && ctx.subjects.some((s) => s.stay_id === stay) ? stay : null;
+		if (requested && (requested !== ctx.stayId || cutoff !== ctx.cutoffIndex)) await ctx.select(requested, cutoff);
+		else if (!ctx.stayId && ctx.subjects[0]) await ctx.select(ctx.subjects[0].stay_id, 0);
+		else if (!ctx.prediction) await ctx.load();
 	}
+	let lastToken: string | null | undefined = undefined;
+	$effect(() => {
+		const token = authToken.value;
+		untrack(() => {
+			if (lastToken !== undefined && token !== lastToken && ctx.ensureOwner()) void init();
+			lastToken = token;
+		});
+	});
 
-	onMount(async () => {
-		try {
-			const result = await api.demoSubjects();
-			subjects = result.demo_subjects;
-			const params = page.url.searchParams;
-			const requested = params.get('stay_id');
-			stayId = requested && subjects.some((s) => s.stay_id === requested) ? requested : subjects[0]?.stay_id ?? '';
-			cutoffIndex = Number(params.get('cutoff') ?? 0) || 0;
-			await load();
-		} catch (cause) {
-			error = cause instanceof Error ? cause.message : 'Could not load demo subjects';
-		}
+	onMount(() => {
+		void init();
 	});
 </script>
 
@@ -62,11 +57,12 @@
 	{#if subjects.length}
 		<div class="controls">
 			<select value={stayId} onchange={(e) => selectStay((e.target as HTMLSelectElement).value)}>
-				{#each subjects as s}<option value={s.stay_id}>{s.subject_id}</option>{/each}
+				{#each subjects as s}<option value={s.stay_id}>{s.patient_alias ?? s.subject_id}</option>{/each}
 			</select>
 			<select value={cutoffIndex} onchange={(e) => setCutoff(Number((e.target as HTMLSelectElement).value))}>
 				{#each cutoffs as c, i}<option value={i}>t{i} — {c.slice(0, 16).replace('T', ' ')}</option>{/each}
 			</select>
+			<ModelBadge bundle={prediction?.model_bundle} versions={prediction?.versions} />
 		</div>
 	{/if}
 
@@ -81,7 +77,8 @@
 					<div><dt>Δ48 (raw)</dt><dd>{prediction.recovery.delta_48h.toFixed(4)}</dd></div>
 					<div><dt>Reconstructed +24h</dt><dd>clip({prediction.current_sofa.toFixed(1)} + {prediction.recovery.delta_24h.toFixed(2)}, 0, 24) = <b>{prediction.recovery.sofa_hat_24h.toFixed(2)}</b></dd></div>
 					<div><dt>Reconstructed +48h</dt><dd>clip({prediction.current_sofa.toFixed(1)} + {prediction.recovery.delta_48h.toFixed(2)}, 0, 24) = <b>{prediction.recovery.sofa_hat_48h.toFixed(2)}</b></dd></div>
-					<div><dt>Feature variant</dt><dd>B_MIN (both horizons)</dd></div>
+					<div><dt>Model (+24h)</dt><dd>{tasks?.recovery24?.family} · {tasks?.recovery24?.feature_variant}</dd></div>
+					<div><dt>Model (+48h)</dt><dd>{tasks?.recovery48?.family} · {tasks?.recovery48?.feature_variant}</dd></div>
 				</dl>
 				<p class="note">The two horizons are computed independently from the same baseline — +48h is never derived from the +24h output.</p>
 			</Panel>
@@ -91,7 +88,7 @@
 					<div><dt>Human-readable</dt><dd>{Math.floor(prediction.icu_stay_time.remaining_hours / 24)}d {(prediction.icu_stay_time.remaining_hours % 24).toFixed(1)}h</dd></div>
 					<div><dt>Raw log1p prediction</dt><dd>{prediction.icu_stay_time.raw_log_prediction.toFixed(4)}</dd></div>
 					<div><dt>Postprocess</dt><dd>expm1(clamp_min(raw, 0))</dd></div>
-					<div><dt>Feature variant</dt><dd>B_PLUS_F</dd></div>
+					<div><dt>Model</dt><dd>{tasks?.icu_stay_time?.family} · {tasks?.icu_stay_time?.feature_variant}</dd></div>
 				</dl>
 			</Panel>
 			<Panel eyebrow="SUPPORT" title="Raw vs. calibrated probability">
@@ -100,9 +97,10 @@
 					<div><dt>Calibrated probability</dt><dd><b>{prediction.organ_support.probability_24h.toFixed(4)}</b></dd></div>
 					<div><dt>Frozen threshold</dt><dd>{prediction.organ_support.threshold.toFixed(6)}</dd></div>
 					<div><dt>Current alert state</dt><dd class={prediction.organ_support.alert ? 'alert-above' : 'alert-below'}>{prediction.organ_support.alert ? 'ABOVE THRESHOLD' : 'BELOW THRESHOLD'}</dd></div>
-					<div><dt>Feature variant</dt><dd>B_FULL</dd></div>
+					<div><dt>Model</dt><dd>{tasks?.organ_support?.family} · {tasks?.organ_support?.feature_variant}</dd></div>
+					<div><dt>Calibration</dt><dd>{prediction.model_bundle?.calibrator?.method ?? '—'} (fit on development data only)</dd></div>
 				</dl>
-				<p class="note">Raw XGBoost score and calibrated serving probability are always shown separately — never presented as identical.</p>
+				<p class="note">Raw model score and calibrated serving probability are always shown separately — never presented as identical.</p>
 			</Panel>
 		</div>
 	{/if}

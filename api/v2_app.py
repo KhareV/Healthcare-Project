@@ -29,6 +29,7 @@ from serving.v2.report_storage import (
     ALLOWED_REPORT_MIME_TYPES, MAX_REPORT_SIZE_BYTES, LocalReportStorage, ReportStorageError, sanitize_filename,
 )
 from serving.v2.runtime import IllegalCutoffError, V2ServingError, V2ServingRuntime
+from serving.v3.runtime import V3ServingError
 
 logger = logging.getLogger("api.v2")
 
@@ -148,7 +149,23 @@ def _explanation_payload(runtime: V2ServingRuntime, task: str, matrix, feature_n
     }
 
 
-def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, prediction_time: str, persistence: Optional[MongoPersistence] = None) -> dict:
+def _persist_run(runtime, persistence, stay_id: str, prediction_time: str, snapshot: dict, **version_fields) -> None:
+    owner = runtime.ephemeral_owner(stay_id)
+    if owner is not None and persistence is not None and persistence.enabled:
+        # Only custom records get a persisted prediction-history trail (demo patients are described by
+        # frozen manifests). A write failure here must never break the response itself.
+        try:
+            persistence.save_prediction_run(owner_user_id=owner, stay_id=stay_id, prediction_time=prediction_time, snapshot=snapshot, **version_fields)
+        except Exception:  # noqa: BLE001
+            logger.warning("failed to persist prediction run for %s @ %s", stay_id, prediction_time)
+
+
+def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, prediction_time: str, persistence: Optional[MongoPersistence] = None, backend=None) -> dict:
+    if backend is not None:
+        payload, snapshot = backend.build_payload(stay_id, prediction_time)
+        _persist_run(runtime, persistence, stay_id, prediction_time, snapshot,
+                     bundle_id=payload["model_bundle"]["bundle_id"], release=payload["release"], data_revision=payload["data_revision"])
+        return payload
     prediction = runtime.predict(stay_id, prediction_time)
     explanations = {
         task: _explanation_payload(runtime, task, prediction.matrices[task], prediction.feature_names[task])
@@ -221,20 +238,45 @@ def _build_prediction_payload(runtime: V2ServingRuntime, stay_id: str, predictio
     return payload
 
 
-def build_v2_app(root: Path) -> FastAPI:
+def build_v2_app(root: Path, backend=None) -> FastAPI:
+    """`backend=None` keeps the historical V2 behaviour exactly. A backend (serving.v3.backend.V3Backend)
+    swaps in the corrected V3 runtime, payloads, metadata and performance views; there is NO fallback
+    from a failed V3 backend to V2."""
+
     root = Path(root).resolve()
-    runtime = V2ServingRuntime(root)
+    runtime = backend.runtime if backend is not None else V2ServingRuntime(root)
     demo_aliases = _load_demo_patient_aliases(root)
     authenticator = ClerkAuthenticator(publishable_key=os.environ.get("PUBLIC_CLERK_PUBLISHABLE_KEY"))
     persistence = MongoPersistence(uri=os.environ.get("MONGODB_URI"))
     report_storage = LocalReportStorage(root / "runtime" / "uploads")
-    app = FastAPI(title="Performance-V2 Retrospective Replay API")
+    app = FastAPI(title=("Performance-V3 Retrospective Replay API" if backend is not None else "Performance-V2 Retrospective Replay API"))
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    def _payload(stay_id: str, prediction_time: str) -> dict:
+        return _build_prediction_payload(runtime, stay_id, prediction_time, persistence=persistence, backend=backend)
+
+    def _annotate_runs(runs, owner_user_id: str):
+        """Adds model-version labels' staleness: a run is stale when the encounter's raw history changed
+        (e.g. confirmed report measurements) after it was computed. Never deletes or rewrites history."""
+
+        current: dict = {}
+        annotated = []
+        for run in runs:
+            sid = run.get("stay_id")
+            if sid not in current:
+                try:
+                    rehydrate_if_needed(runtime, persistence, sid)
+                except Exception:  # noqa: BLE001
+                    pass
+                current[sid] = runtime.data_revision(sid) if runtime.ephemeral_owner(sid) == owner_user_id else None
+            rev, now = run.get("data_revision"), current[sid]
+            annotated.append({**run, "current_data_revision": now, "stale": (bool(rev != now) if (rev and now) else None)})
+        return annotated
 
     def _authenticate(authorization: Optional[str]) -> str:
         """Verified Clerk user id, or the fixed local-dev owner id if this
@@ -276,7 +318,7 @@ def build_v2_app(root: Path) -> FastAPI:
 
     @app.get("/health")
     def health():
-        return {
+        payload = {
             "status": "ok",
             "ready": True,
             "mode": "RETROSPECTIVE_SEQUENTIAL_REPLAY",
@@ -285,9 +327,14 @@ def build_v2_app(root: Path) -> FastAPI:
             "auth_mode": "clerk_verified" if authenticator.configured else "local_dev_no_auth",
             "persistence_mode": "mongodb" if persistence.enabled else "in_memory_only",
         }
+        if backend is not None:
+            payload.update(backend.health_extras())
+        return payload
 
     @app.get("/model-metadata")
     def model_metadata():
+        if backend is not None:
+            return backend.model_metadata()
         return {
             "schema_version": "v2_prediction_response_v1",
             "model_versions": {
@@ -304,11 +351,13 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.post("/predict")
     def predict(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
         _authorize_custom_stay(request.stay_id, authorization)
-        return _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
+        return _payload(request.stay_id, request.prediction_time)
 
     @app.get("/demo-subjects")
     def demo_subjects():
         manifest = load_demo_manifest(root)
+        if backend is not None:
+            return backend.demo_subjects(manifest, demo_aliases)
         subjects = [
             {**subject, "patient_alias": demo_aliases.get(subject["stay_id"], {}).get("patient_alias", subject["stay_id"])}
             for subject in manifest["demo_subjects"]
@@ -375,7 +424,7 @@ def build_v2_app(root: Path) -> FastAPI:
             raise UnknownDemoStayError("unknown custom record")
         if not persistence.enabled:
             return {"stay_id": stay_id, "predictions": [], "note": "persistence is not configured; prediction history is unavailable"}
-        return {"stay_id": stay_id, "predictions": persistence.list_prediction_runs(owner_user_id=owner, stay_id=stay_id)}
+        return {"stay_id": stay_id, "predictions": _annotate_runs(persistence.list_prediction_runs(owner_user_id=owner, stay_id=stay_id), owner)}
 
     # ---------------------------------------------------------------------
     # My Health Record: patient profile, conditions, encounters/observations/
@@ -498,7 +547,7 @@ def build_v2_app(root: Path) -> FastAPI:
         owner_user_id = _authenticate(authorization)
         if not persistence.enabled:
             return {"predictions": [], "note": "persistence is not configured"}
-        return {"predictions": persistence.list_prediction_runs(owner_user_id=owner_user_id)}
+        return {"predictions": _annotate_runs(persistence.list_prediction_runs(owner_user_id=owner_user_id), owner_user_id)}
 
     @app.post("/health-record/reports")
     async def upload_report(
@@ -644,7 +693,11 @@ def build_v2_app(root: Path) -> FastAPI:
         candidates_by_id = {c["candidate_id"]: c for c in record.get("candidate_measurements", [])}
         new_observations = []
         confirmed_ids = []
+        seen_candidate_ids = set()
         for item in request.confirmations:
+            if item.candidate_id in seen_candidate_ids:
+                raise HTTPException(status_code=422, detail="duplicate candidate_id in confirmation request")
+            seen_candidate_ids.add(item.candidate_id)
             candidate = candidates_by_id.get(item.candidate_id)
             if candidate is None:
                 raise HTTPException(status_code=404, detail=f"unknown candidate_id: {item.candidate_id!r}")
@@ -690,7 +743,11 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.get("/performance")
     def performance():
         """Reads the frozen, one-time Phase-4 fresh-test evaluation artifacts
-        directly. Triggers no inference of any kind."""
+        directly. Triggers no inference of any kind. With a V3 backend this serves the V3
+        sealed-test evaluation (V2 evaluation artifacts are never served as current)."""
+
+        if backend is not None:
+            return backend.performance()
 
         def _read(relative: str):
             return json.loads((root / relative).read_text(encoding="utf-8"))
@@ -741,7 +798,7 @@ def build_v2_app(root: Path) -> FastAPI:
     @app.post("/ai/recommendation")
     def ai_recommendation(request: PredictRequest, authorization: Optional[str] = Header(default=None)):
         _authorize_custom_stay(request.stay_id, authorization)
-        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
+        prediction = _payload(request.stay_id, request.prediction_time)
         result = generate_recommendation(prediction=prediction)
         return result.as_dict()
 
@@ -802,6 +859,7 @@ def build_v2_app(root: Path) -> FastAPI:
                 "support": contributors_for("organ_support"),
             },
             "data_quality": prediction.get("data_quality", {}),
+            "model_release": (f"{backend.release} ({backend.bundle_info['bundle_id']})" if backend is not None else "V2 (historical)"),
             "system_limitations": [
                 "synthetic research benchmark",
                 "retrospective replay, not real-time",
@@ -820,17 +878,17 @@ def build_v2_app(root: Path) -> FastAPI:
         from the exact same _build_prediction_payload call)."""
 
         _authorize_custom_stay(request.stay_id, authorization)
-        prediction = _build_prediction_payload(runtime, request.stay_id, request.prediction_time, persistence=persistence)
+        prediction = _payload(request.stay_id, request.prediction_time)
         context = _assistant_context(prediction)
 
         if request.previous_prediction_time:
             try:
-                previous_prediction = _build_prediction_payload(runtime, request.stay_id, request.previous_prediction_time, persistence=persistence)
+                previous_prediction = _payload(request.stay_id, request.previous_prediction_time)
                 context["previous_cutoff"] = _assistant_state(previous_prediction)
             except (IllegalCutoffError, UnknownDemoStayError):
                 pass  # ignore an invalid previous cutoff rather than failing the whole request
 
-        result = generate_assistant_response(context=context, question=request.question)
+        result = generate_assistant_response(context=context, question=request.question, prompt_path=(backend.copilot_prompt_path if backend is not None else None))
         return result.as_dict()
 
     @app.exception_handler(UnknownDemoStayError)
@@ -846,6 +904,11 @@ def build_v2_app(root: Path) -> FastAPI:
         logger.error("V2 serving artifact error")
         return JSONResponse(status_code=503, content={"detail": "serving artifacts unavailable"})
 
+    @app.exception_handler(V3ServingError)
+    def _v3_serving_error(_request, _exc):
+        logger.error("V3 serving artifact error")
+        return JSONResponse(status_code=503, content={"detail": "serving artifacts unavailable"})
+
     @app.exception_handler(Exception)
     def _unhandled(_request, exc: Exception):
         # Full traceback server-side only -- the client response never
@@ -856,7 +919,36 @@ def build_v2_app(root: Path) -> FastAPI:
 
     app.state.v2_runtime = runtime
     app.state.v2_persistence = persistence
+    app.state.backend = backend
+    if backend is not None:
+        _mount_optional_modules(app, root, runtime)
     return app
+
+
+def _module_file_exists(name: str) -> bool:
+    import importlib.util
+
+    try:
+        return importlib.util.find_spec(name) is not None
+    except (ImportError, ValueError):
+        return False
+
+
+def _mount_optional_modules(app: FastAPI, root: Path, runtime) -> None:
+    """Research/showcase routers are optional siblings; skipped only when the module file is absent."""
+
+    import importlib
+
+    if _module_file_exists("api.research_router"):
+        app.include_router(importlib.import_module("api.research_router").build_research_router(root))
+    else:
+        logger.info("research router module not present; /research/* not mounted")
+    if _module_file_exists("serving.v3.showcase"):
+        importlib.import_module("serving.v3.showcase").register_showcase(runtime, root)
+    else:
+        logger.info("showcase module not present; scenarios not registered")
+    if _module_file_exists("api.showcase_router"):
+        app.include_router(importlib.import_module("api.showcase_router").build_showcase_router(root, runtime))
 
 
 def app() -> FastAPI:

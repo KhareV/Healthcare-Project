@@ -21,7 +21,7 @@ if (fs.existsSync(envTestPath)) {
 }
 
 // Browser verification for the current SvelteKit UI. Runs against the real
-// V2 API (port 8010) and the real Vite dev server (port 5173) — no mocked
+// V3 product API (api.product_app, port 8010) and the real Vite dev server (port 5173) — no mocked
 // backend. Authentication uses a dedicated Clerk test account (created via
 // Clerk's Backend API for this purpose, never the developer's own account)
 // signing in through the real Clerk widget — not a bypass — so this proves
@@ -51,7 +51,7 @@ export default defineConfig({
 	webServer: [
 		{
 			command:
-				'cd .. && PYTHONPATH=src:. python3 -m uvicorn api.v2_app:app --factory --host 127.0.0.1 --port 8010',
+				'cd .. && PY=$([ -x .venv-v3/bin/python ] && echo .venv-v3/bin/python || echo python3) && PYTHONPATH=src:. $PY -m uvicorn api.product_app:app --factory --host 127.0.0.1 --port 8010',
 			url: 'http://127.0.0.1:8010/health',
 			reuseExistingServer: true,
 			timeout: 60_000

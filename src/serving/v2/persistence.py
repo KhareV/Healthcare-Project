@@ -106,6 +106,24 @@ def _without_mongo_id(doc: Mapping[str, object]) -> dict:
     return doc
 
 
+LEGACY_BUNDLE_ID = "performance_v2_frozen"
+
+
+def normalize_prediction_run(doc: Mapping[str, object]) -> dict:
+    """Backward-compatible read view: documents written before model-bundle versioning are labelled
+    as the historical V2 release and flagged legacy; they are never presented as V3."""
+
+    row = dict(doc)
+    if not row.get("bundle_id"):
+        row["bundle_id"] = LEGACY_BUNDLE_ID
+        row["release"] = row.get("release") or "V2"
+        row["legacy"] = True
+    else:
+        row.setdefault("release", "V3")
+        row["legacy"] = False
+    return row
+
+
 def _new_id(prefix: str) -> str:
     return f"{prefix}-{secrets.token_hex(8).upper()}"
 
@@ -130,8 +148,14 @@ class MongoPersistence:
             db.conditions.create_index([("owner_user_id", ASCENDING), ("status", ASCENDING)])
             db.encounters.create_index([("owner_user_id", ASCENDING), ("stay_id", ASCENDING)], unique=True)
             db.encounters.create_index([("owner_user_id", ASCENDING), ("patient_id", ASCENDING)])
+            # Prediction runs are versioned by model bundle: the legacy (owner, stay, time) unique
+            # index would make a V3 run collide with a historical V2 run for the same cutoff.
+            try:
+                db.prediction_runs.drop_index("owner_user_id_1_stay_id_1_prediction_time_1")
+            except PyMongoError:
+                pass
             db.prediction_runs.create_index(
-                [("owner_user_id", ASCENDING), ("stay_id", ASCENDING), ("prediction_time", ASCENDING)], unique=True
+                [("owner_user_id", ASCENDING), ("stay_id", ASCENDING), ("prediction_time", ASCENDING), ("bundle_id", ASCENDING), ("data_revision", ASCENDING)], unique=True
             )
             db.reports.create_index([("owner_user_id", ASCENDING), ("report_id", ASCENDING)], unique=True)
             db.reports.create_index([("owner_user_id", ASCENDING), ("patient_id", ASCENDING)])
@@ -409,10 +433,26 @@ class MongoPersistence:
     # -- prediction-run snapshots ------------------------------------------
 
     @_retrying
-    def save_prediction_run(self, *, owner_user_id: str, stay_id: str, prediction_time: str, snapshot: Mapping[str, object]) -> None:
+    def save_prediction_run(
+        self, *, owner_user_id: str, stay_id: str, prediction_time: str, snapshot: Mapping[str, object],
+        bundle_id: Optional[str] = None, release: Optional[str] = None, data_revision: Optional[str] = None,
+    ) -> None:
+        """Upsert one prediction snapshot. Identity is (owner, stay, cutoff, bundle, data_revision): the same
+        cutoff scored by a different model bundle, or after the encounter's raw history changed, is a NEW
+        entry and never overwrites an earlier release or a now-stale forecast. Without a bundle_id the call
+        addresses legacy (pre-versioning, V2) documents only."""
+
+        key = {"owner_user_id": owner_user_id, "stay_id": stay_id, "prediction_time": prediction_time}
+        extra: dict = {}
+        if bundle_id is None:
+            key["bundle_id"] = {"$exists": False}
+        else:
+            key["bundle_id"] = bundle_id
+            key["data_revision"] = data_revision
+            extra = {"bundle_id": bundle_id, "release": release, "data_revision": data_revision}
         self._db.prediction_runs.update_one(
-            {"owner_user_id": owner_user_id, "stay_id": stay_id, "prediction_time": prediction_time},
-            {"$set": {**snapshot, "updated_at": _utcnow_iso()}, "$setOnInsert": {"created_at": _utcnow_iso()}},
+            key,
+            {"$set": {**snapshot, **extra, "updated_at": _utcnow_iso()}, "$setOnInsert": {"created_at": _utcnow_iso()}},
             upsert=True,
         )
 
@@ -422,7 +462,9 @@ class MongoPersistence:
         if stay_id is not None:
             query["stay_id"] = stay_id
         docs = list(self._db.prediction_runs.find(query).sort("prediction_time", 1))
-        return [_without_mongo_id(d) for d in docs]
+        runs = [normalize_prediction_run(_without_mongo_id(d)) for d in docs]
+        runs.sort(key=lambda r: (r.get("prediction_time") or "", r.get("release") or ""))
+        return runs
 
     # -- reports (metadata only; binary content is in report_storage) ------
 
@@ -506,7 +548,7 @@ class MongoPersistence:
 
         self._db.encounters.update_one(
             {"owner_user_id": owner_user_id, "stay_id": stay_id},
-            {"$push": {"observations": {"$each": list(observations)}}, "$set": {"updated_at": _utcnow_iso()}},
+            {"$push": {"observations": {"$each": list(observations)}}, "$inc": {"data_revision_counter": 1}, "$set": {"updated_at": _utcnow_iso()}},
         )
 
     # -- audit events --------------------------------------------------

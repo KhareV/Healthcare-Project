@@ -6,7 +6,7 @@ test('workspace home shows demo-patient and custom-record entry points', async (
 	await page.goto('/overview');
 	await expect(page.getByText('Explore Demo Patients')).toBeVisible();
 	await expect(page.getByText('Enter My Own Record')).toBeVisible();
-	await expect(page.getByText('Connect EHR Sandbox')).toBeVisible();
+	await expect(page.getByText('Scenario Studio').first()).toBeVisible();
 	await page.screenshot({ path: path.join(SHOT_DIR, '04_workspace.png'), fullPage: true });
 });
 
@@ -19,7 +19,7 @@ test('demo-patient list renders three aliased patients', async ({ page }) => {
 
 test('patient replay: prediction cards render and cutoff navigation advances the forecast', async ({ page }) => {
 	await page.goto('/patients');
-	await expect(page.getByText('Current SOFA')).toBeVisible({ timeout: 15_000 });
+	await expect(page.getByText('Current SOFA', { exact: true })).toBeVisible({ timeout: 15_000 });
 	await expect(page.getByText('Predicted SOFA +24h')).toBeVisible();
 	await expect(page.getByText('Remaining ICU stay time')).toBeVisible();
 	await expect(page.getByText('New organ-support risk (24h)')).toBeVisible();

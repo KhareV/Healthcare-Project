@@ -1,6 +1,62 @@
 # Operational Runbook
 
-## V2 final release demo application
+## Current V3 product
+
+The effective release is the four-head V3 bundle selected by
+`artifacts/performance_v3_1/product_handoff.json`. The V3.1 candidate and
+privileged oracles must never be served. The product entry point verifies
+the frozen bundle at startup and fails closed if it is unavailable.
+
+From the repository root, in an environment with the declared Python
+dependencies including `xgboost`, `catboost`, `shap`, FastAPI and uvicorn:
+
+```bash
+PYTHONPATH=src:. python3 -m uvicorn api.product_app:app --factory --host 127.0.0.1 --port 8010
+```
+
+In another terminal:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Open `http://localhost:5173/`. The frontend proxies `/api/*` to port 8010.
+`GET /health` should report the current V3 bundle. The backend deliberately
+has no automatic V2 serving fallback. Use `GET /model-metadata` to inspect
+families, feature variants, model hashes, Platt calibration and the frozen
+support threshold. Missing `MONGODB_URI` disables durable health records;
+missing `GROQ_API_KEY` disables report analysis and Copilot commentary but
+does not alter numerical forecasts.
+
+Explore a development-only scenario at `/demo`, step through legal cutoffs
+at `/patients`, inspect saved aggregate evidence at `/cohort` and
+`/research/analytics`, and download verified figure and table sources at
+`/reports`. A custom encounter can be entered through `/patients/custom`.
+For a PDF report, upload and analyze it in `/health-record`, inspect
+candidate values, then explicitly confirm chosen values with an encounter
+and an hour since admission. A newly confirmed observation affects only
+cutoffs at or after that event time. Historical prediction runs remain
+versioned and are labeled stale when their source data revision changes.
+
+For verification, run the backend regression with `PYTHONPATH=src:tests:.`
+and `python3 -m pytest -q`; run `npm run check`, `npm run build`, and
+`npm run test:e2e` inside `frontend/`. The V3 scientific test files can
+require a per-file process because of the documented Torch/OpenMP interaction.
+Verify immutable artifacts with:
+
+```bash
+python3 scripts/build_product_v3_release_manifest.py --verify-science
+```
+
+See [product architecture](docs/product_v3/PRODUCT_ARCHITECTURE.md),
+[demo guide](docs/product_v3/FINAL_DEMO_GUIDE.md), and
+[research evidence index](docs/product_v3/FIGURE_AND_TABLE_INDEX.md).
+Historical V2 offline ICU and support metrics contain defect D1 and must
+be labeled as compromised, not used as current serving performance.
+
+## V2 final release demo application (historical)
 
 This section is self-contained: it does not require reading the historical
 Benchmark-v1 sections below, and needs no developer-specific local paths.

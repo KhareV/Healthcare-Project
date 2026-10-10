@@ -93,38 +93,29 @@ class V2Prediction:
     feature_names: Mapping[str, Tuple[str, ...]]
 
 
-class V2ServingRuntime:
-    """One process-lifetime, hash-verified V2 serving runtime."""
+@dataclass(frozen=True)
+class CanonicalContext:
+    subject_id: str
+    row: Mapping[str, object]
+    intime: datetime
+    outtime: datetime
+    grid_index: int
+    icu_elapsed_hours: int
+    current_sofa: float
+
+
+class CanonicalHistoryRuntime:
+    """Model-free canonical-history store: raw events/supports, the single
+    cutoff-aware feature builder, the frozen current-SOFA provider,
+    ephemeral/demo stay registration and legal-cutoff resolution.
+
+    Holds NO model, performs NO inference. Both the frozen V2 runtime and the
+    V3 product runtime build on it, so cutoff truncation, feature
+    construction and SOFA(t) scoring have exactly one implementation.
+    """
 
     def __init__(self, root: Path):
         self.root = Path(root).resolve()
-
-        self.model_hashes = {task: sha256_file(self.root / TASK_MODEL_FILE[task]) for task in TASK_VARIANT}
-        expected_model_hashes = {
-            "recovery24": "b355c26339271f0b84c123eb46cfb61c8df0cc9c9c6fcfcbb86c29047d10ad3c",
-            "recovery48": "5dda6bb0830428b44b3a7cf554dc7f6d2adc278c7b218045d1df8ff960f6c701",
-            "icu_stay_time": "918c81eef86bd89e91e02bb06c254774375f3f2371c4f3c5200c270dea24f7e6",
-            "organ_support": "2fa653a0d2c644d8a1de806146f8e8cba46df87e6bd037868122276b4a440671",
-        }
-        if self.model_hashes != expected_model_hashes:
-            raise V2ServingError("V2 model file hash mismatch: refusing to serve")
-
-        self.models = {}
-        for task in TASK_VARIANT:
-            model = xgb.XGBClassifier() if task == "organ_support" else xgb.XGBRegressor()
-            model.load_model(str(self.root / TASK_MODEL_FILE[task]))
-            self.models[task] = model
-
-        self.group_a_names = {task: reconstruct_group_a_names(self.root, task) for task in TASK_VARIANT}
-        self.normalizations = {variant: load_frozen_normalization(self.root, variant) for variant in set(TASK_VARIANT.values())}
-
-        calibrator_payload = json.loads((self.root / "artifacts/performance_v2/phase3/calibration/isotonic_support_v2.json").read_text())
-        self.calibration_knots = calibrator_payload["calibration_knots"]
-
-        threshold_payload = json.loads((self.root / "artifacts/performance_v2/phase3/thresholds/support_threshold_v2.json").read_text())
-        if abs(threshold_payload["threshold_value"] - THRESHOLD_VALUE) > 1e-12:
-            raise V2ServingError("support threshold value mismatch: refusing to serve")
-
         self.feature_builder = self._build_feature_builder()
         self.sofa_provider = self._build_sofa_provider()
 
@@ -150,6 +141,9 @@ class V2ServingRuntime:
         # dict), which is the intended "ephemeral" behavior for this
         # demo-scale feature.
         self._ephemeral_manifest: dict = {}
+        # Approved, non-owner demo stays registered after process start (V3 showcase
+        # scenarios). Disjoint from the ephemeral/custom namespace; never owner-bound.
+        self._demo_extra: dict = {}
 
     def register_ephemeral_stay(self, *, stay_id: str, subject_id: str, statics_row: Mapping[str, object], events: list, legal_cutoffs: Tuple[str, ...], owner_user_id: str) -> None:
         """Register a session-only, non-persisted synthetic stay so the
@@ -302,15 +296,46 @@ class V2ServingRuntime:
         ephemeral = self._ephemeral_manifest.get(stay_id)
         if ephemeral is not None:
             return tuple(ephemeral["legal_cutoffs"])
-        entry = guard_demo_stay(self.root, stay_id)
+        entry = self.demo_entry(stay_id)
         return tuple(entry["legal_cutoffs"])
 
-    def predict(self, stay_id: str, prediction_time: str) -> V2Prediction:
+
+    def register_demo_stay(self, *, stay_id: str, subject_id: str, statics_row: Mapping[str, object], events: list,
+                           support_rows: list, legal_cutoffs: Tuple[str, ...]) -> None:
+        """Register an approved demo stay (additive showcase scenario). Uses the same
+        store wiring as ephemeral registration but is globally servable like the
+        frozen demo subjects and carries no owner."""
+
+        self.register_ephemeral_stay(stay_id=stay_id, subject_id=subject_id, statics_row=statics_row, events=events,
+                                     legal_cutoffs=legal_cutoffs, owner_user_id="__demo__")
+        self._ephemeral_manifest.pop(stay_id, None)
+        if support_rows:
+            self.register_ephemeral_support(stay_id=stay_id, support_rows=support_rows)
+        self._demo_extra[stay_id] = {"stay_id": stay_id, "subject_id": subject_id, "legal_cutoffs": list(legal_cutoffs)}
+
+    def demo_entry(self, stay_id: str) -> Mapping[str, object]:
+        extra = self._demo_extra.get(stay_id)
+        if extra is not None:
+            return extra
+        return guard_demo_stay(self.root, stay_id)
+
+    def data_revision(self, stay_id: str) -> str:
+        """Content hash of the raw history held for a stay (events + support rows)."""
+
+        events = sorted((str(e.get("event_id", "")), str(e.get("event_time", "")), str(e.get("canonical_concept", "")), repr(e.get("value_numeric"))) for e in self._events_by_stay.get(stay_id, ()))
+        supports = sorted((str(r.get("support_event_id", "")), str(r.get("interval_start", "")), str(r.get("interval_end", "")), repr(r.get("rate_value"))) for r in self._supports_by_stay.get(stay_id, ()))
+        return hashlib.sha256(json.dumps([events, supports], separators=(",", ":")).encode()).hexdigest()[:16]
+
+    def canonical_row(self, stay_id: str, prediction_time: str) -> "CanonicalContext":
+        """Authorize the stay, validate the cutoff, truncate legally, build the canonical
+        row and score SOFA(t). No model is loaded or run. SOFA(t) is computed for EVERY legal
+        cutoff (defect D1: never derived from label availability)."""
+
         ephemeral = self._ephemeral_manifest.get(stay_id)
         if ephemeral is not None:
             subject_id = ephemeral["subject_id"]
         else:
-            entry = guard_demo_stay(self.root, stay_id)  # UnknownDemoStayError on anything else, incl. fresh-test subjects
+            entry = self.demo_entry(stay_id)  # UnknownDemoStayError on anything else, incl. sealed-test subjects
             subject_id = entry["subject_id"]
         legal = self.legal_cutoffs(stay_id)
         if prediction_time not in legal:
@@ -346,6 +371,49 @@ class V2ServingRuntime:
             "hours_since_first_eligible_cutoff": float(icu_elapsed_hours) - 24.0,
             "baseline_sofa": current_sofa,
         }
+        return CanonicalContext(subject_id=subject_id, row=row, intime=intime, outtime=outtime, grid_index=int(grid_index),
+                                icu_elapsed_hours=int(icu_elapsed_hours), current_sofa=current_sofa)
+
+
+
+class V2ServingRuntime(CanonicalHistoryRuntime):
+    """One process-lifetime, hash-verified V2 serving runtime (historical; never the product default)."""
+
+    def __init__(self, root: Path):
+        self.root = Path(root).resolve()
+
+        self.model_hashes = {task: sha256_file(self.root / TASK_MODEL_FILE[task]) for task in TASK_VARIANT}
+        expected_model_hashes = {
+            "recovery24": "b355c26339271f0b84c123eb46cfb61c8df0cc9c9c6fcfcbb86c29047d10ad3c",
+            "recovery48": "5dda6bb0830428b44b3a7cf554dc7f6d2adc278c7b218045d1df8ff960f6c701",
+            "icu_stay_time": "918c81eef86bd89e91e02bb06c254774375f3f2371c4f3c5200c270dea24f7e6",
+            "organ_support": "2fa653a0d2c644d8a1de806146f8e8cba46df87e6bd037868122276b4a440671",
+        }
+        if self.model_hashes != expected_model_hashes:
+            raise V2ServingError("V2 model file hash mismatch: refusing to serve")
+
+        self.models = {}
+        for task in TASK_VARIANT:
+            model = xgb.XGBClassifier() if task == "organ_support" else xgb.XGBRegressor()
+            model.load_model(str(self.root / TASK_MODEL_FILE[task]))
+            self.models[task] = model
+
+        self.group_a_names = {task: reconstruct_group_a_names(self.root, task) for task in TASK_VARIANT}
+        self.normalizations = {variant: load_frozen_normalization(self.root, variant) for variant in set(TASK_VARIANT.values())}
+
+        calibrator_payload = json.loads((self.root / "artifacts/performance_v2/phase3/calibration/isotonic_support_v2.json").read_text())
+        self.calibration_knots = calibrator_payload["calibration_knots"]
+
+        threshold_payload = json.loads((self.root / "artifacts/performance_v2/phase3/thresholds/support_threshold_v2.json").read_text())
+        if abs(threshold_payload["threshold_value"] - THRESHOLD_VALUE) > 1e-12:
+            raise V2ServingError("support threshold value mismatch: refusing to serve")
+
+        CanonicalHistoryRuntime.__init__(self, root)
+
+    def predict(self, stay_id: str, prediction_time: str) -> V2Prediction:
+        ctx = self.canonical_row(stay_id, prediction_time)
+        row, current_sofa = ctx.row, ctx.current_sofa
+        grid_index, icu_elapsed_hours = ctx.grid_index, ctx.icu_elapsed_hours
 
         matrices = {}
         feature_names = {}

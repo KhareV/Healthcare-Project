@@ -3,4 +3,4 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export const SHOT_DIR = path.resolve(__dirname, '../../../docs/evidence/product_v2');
+export const SHOT_DIR = path.resolve(__dirname, '../../../docs/evidence/product_v3');

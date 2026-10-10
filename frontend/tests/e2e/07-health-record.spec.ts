@@ -16,7 +16,7 @@ test('My Health Record: overview, profile edit, conditions, encounters, vitals, 
 	await expect(page.getByText('DATA READINESS')).toBeVisible({ timeout: 20_000 });
 	await page.getByRole('button', { name: /open in patient replay/i }).click();
 	await page.waitForURL(/\/patients\?stay_id=CUSTOM-/, { timeout: 15_000 });
-	await expect(page.getByText('Current SOFA')).toBeVisible({ timeout: 15_000 });
+	await expect(page.getByText('Current SOFA', { exact: true })).toBeVisible({ timeout: 15_000 });
 
 	await page.goto('/health-record');
 	await expect(page.getByText('One consolidated, longitudinal research record.')).toBeVisible({ timeout: 15_000 });

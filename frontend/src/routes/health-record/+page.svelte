@@ -61,6 +61,7 @@
 	let confirmEncounterId = $state('');
 	let confirmHours = $state<number | null>(6);
 	let confirming = $state(false);
+	let reforecastStayId = $state('');
 
 	const encounterAlias = $derived(new Map(encounters.map((e) => [e.stay_id, e.patient_alias])));
 	const conceptOptions = $derived([...new Set(observations.map((o) => o.concept))].sort());
@@ -260,6 +261,7 @@
 			const confirmations = [...selectedCandidateIds].map((candidate_id) => ({ candidate_id, hours_since_admission: confirmHours as number }));
 			await api.healthRecord.confirmReportMeasurements(report.report_id, { encounter_id: confirmEncounterId, confirmations });
 			selectedCandidateIds = new Set();
+			reforecastStayId = confirmEncounterId;
 			await refreshAll();
 			expandedReportId = report.report_id;
 		} catch (cause) {
@@ -537,12 +539,15 @@
 		{/if}
 
 		{#if activeTab === 'predictions'}
+			{#if reforecastStayId}
+				<div class="notice notice--reforecast">Measurements were added to this encounter. Earlier forecasts for it are now marked <b>stale</b> and are kept for history only — <a href={`/patients?stay_id=${encodeURIComponent(reforecastStayId)}&cutoff=0`}>re-run the forecast in Patient Replay</a> to compute a fresh V3 prediction from the updated record.</div>
+			{/if}
 			<Panel eyebrow="PREDICTION HISTORY" title="Forecasts across every cutoff you've replayed" note="DERIVED EVIDENCE — REPLAY ALWAYS RECOMPUTES THROUGH THE FROZEN MODEL PIPELINE">
 				{#if predictions.length}
 					<div class="rows">
-						<div class="row row--predictions row--head"><span>Encounter</span><span>Cutoff</span><span>SOFA</span><span>+24h</span><span>+48h</span><span>Remaining ICU</span><span>Support risk</span></div>
-						{#each predictions as p (p.stay_id + p.prediction_time)}
-							<div class="row row--predictions">
+						<div class="row row--predictions row--head"><span>Encounter</span><span>Cutoff</span><span>SOFA</span><span>+24h</span><span>+48h</span><span>Remaining ICU</span><span>Support risk</span><span>Model</span></div>
+						{#each predictions as p (p.stay_id + '|' + p.prediction_time + '|' + (p.bundle_id ?? 'legacy'))}
+							<div class="row row--predictions" class:row--stale={p.stale} class:row--legacy={p.legacy || (p.release ?? 'V2') !== 'V3'}>
 								<span class="dim">{encounterAlias.get(p.stay_id) ?? p.stay_id}</span>
 								<span>{p.prediction_time.slice(11, 16)}</span>
 								<span>{p.current_sofa.toFixed(1)}</span>
@@ -550,6 +555,15 @@
 								<span>{p.predicted_sofa_48h.toFixed(1)}</span>
 								<span>{p.remaining_icu_hours.toFixed(0)}h</span>
 								<span class:alert={p.support_alert}>{(p.support_calibrated_probability * 100).toFixed(0)}%</span>
+								<span class="model-cell">
+									{#if p.release === 'V3' && !p.legacy}
+										<b class="badge badge--v3" title={p.bundle_id ?? ''}>V3</b>
+									{:else}
+										<b class="badge badge--legacy" title="Stored before the V3 release; produced by the frozen V2 pipeline (known defect D1 — not comparable to V3).">LEGACY V2</b>
+									{/if}
+									{#if p.data_revision}<small title="Encounter data revision at forecast time">rev {String(p.data_revision).slice(0, 7)}</small>{/if}
+									{#if p.stale}<em class="stale" title="The encounter changed after this forecast was stored.">stale — encounter changed after this forecast</em>{/if}
+								</span>
 							</div>
 						{/each}
 					</div>
@@ -613,7 +627,15 @@
 	.row--encounters { grid-template-columns: 1.6fr 1fr 1fr 1.2fr auto; }
 	.row--vitals { grid-template-columns: .6fr 1.2fr .8fr 1fr; }
 	.row--support-hist { grid-template-columns: 1fr 1fr .8fr .8fr 1fr; }
-	.row--predictions { grid-template-columns: 1.2fr .7fr .6fr .6fr .6fr 1fr .8fr; }
+	.row--predictions { grid-template-columns: 1.1fr .6fr .5fr .5fr .5fr .9fr .7fr 1.6fr; }
+	.row--stale { opacity: .72; }
+	.row--legacy { border-left: 2px solid rgba(251,191,36,.55); }
+	.model-cell { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+	.model-cell small { color: #64748b; font: 8px 'JetBrains Mono', monospace; }
+	.badge { padding: 2px 6px; border: 1px solid rgba(43,184,176,.5); color: #2bb8b0; font: 700 8px 'JetBrains Mono', monospace; letter-spacing: .08em; }
+	.badge--legacy { border-color: rgba(251,191,36,.5); color: #fbbf24; }
+	.stale { color: #fbbf24; font: normal 9px Inter, sans-serif; }
+	.notice--reforecast a { color: #fde68a; }
 	.row--predictions .alert { color: #fb7185; font-weight: 600; }
 
 	.filters { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }

@@ -556,13 +556,13 @@ def append_observations_to_encounter(
     for offset, event in enumerate(new_events):
         event["event_id"] = f"{stay_id}-EV-{existing_count + offset:04d}"
 
-    runtime.append_ephemeral_events(stay_id=stay_id, events=new_events)
-
     if persistence is not None and persistence.enabled:
-        try:
-            persistence.append_encounter_observations(owner_user_id=owner_user_id, stay_id=stay_id, observations=list(observations))
-        except Exception:  # noqa: BLE001
-            logger.warning("failed to persist appended observations for %s; runtime already updated in-memory", stay_id)
+        # Persist before changing the live feature/SOFA stores. If MongoDB rejects
+        # the append, the next prediction must not use a measurement that would
+        # disappear on restart.
+        persistence.append_encounter_observations(owner_user_id=owner_user_id, stay_id=stay_id, observations=list(observations))
+
+    runtime.append_ephemeral_events(stay_id=stay_id, events=new_events)
 
     entry = runtime.ephemeral_entry(stay_id)
     support_rows = runtime._supports_by_stay.get(stay_id, [])
