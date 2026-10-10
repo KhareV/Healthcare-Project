@@ -1,0 +1,120 @@
+{
+  "artifact_version": "performance_v3_v2_modes_on_lce_v1",
+  "cohort": "LCE (development)",
+  "fraction_rows_null_baseline_sofa": 0.43832079919182854,
+  "modes": {
+    "V2_AS_EVALUATED": {
+      "all_eligible_rows": {
+        "icu_stay_time": {
+          "mae": 7.395497278929841,
+          "n_examples": 8909.0,
+          "n_rows": 8909,
+          "n_stays": 1500,
+          "rmse": 11.721009183253166,
+          "weighted_median_ae_hours": 5.1453061156625175
+        },
+        "organ_support": {
+          "cal_auprc": 0.7320258154820384,
+          "cal_auroc": 0.8084079750420854,
+          "n_positive_rows": 2476.0,
+          "n_rows": 5630,
+          "n_stays": 1174,
+          "raw_auprc": 0.7811353514282016,
+          "raw_auroc": 0.8171397125618967
+        },
+        "recovery24": {
+          "mae": 1.057783535845869,
+          "median_ae": 0.7957494854927063,
+          "n_examples": 5004.0,
+          "n_rows": 5004,
+          "n_stays": 1096,
+          "rmse": 1.3814266606618661
+        },
+        "recovery48": {
+          "mae": 1.3635280796171227,
+          "median_ae": 1.2385355234146118,
+          "n_examples": 1741.0,
+          "n_rows": 1741,
+          "n_stays": 440,
+          "rmse": 1.6545141502836616
+        }
+      },
+      "clean_subset_nonnull_baseline": {
+        "icu_stay_time": {
+          "mae": 10.087988904455827,
+          "n_examples": 5004.0,
+          "n_rows": 5004,
+          "n_stays": 1096,
+          "rmse": 14.464622240564706,
+          "weighted_median_ae_hours": 7.624876568436619
+        },
+        "organ_support": {
+          "cal_auprc": 0.4676707313938129,
+          "cal_auroc": 0.6917697622054441,
+          "n_positive_rows": 1706.0,
+          "n_rows": 4860,
+          "n_stays": 1089,
+          "raw_auprc": 0.4963450392556692,
+          "raw_auroc": 0.6956056242553585
+        }
+      }
+    },
+    "V2_AS_SERVED": {
+      "all_eligible_rows": {
+        "icu_stay_time": {
+          "mae": 17.653365596799496,
+          "n_examples": 8909.0,
+          "n_rows": 8909,
+          "n_stays": 1500,
+          "rmse": 20.369952492466567,
+          "weighted_median_ae_hours": 18.255953102458577
+        },
+        "organ_support": {
+          "cal_auprc": 0.5541603482493455,
+          "cal_auroc": 0.6884953968512358,
+          "n_positive_rows": 2476.0,
+          "n_rows": 5630,
+          "n_stays": 1174,
+          "raw_auprc": 0.5776395646945615,
+          "raw_auroc": 0.6914639207611358
+        },
+        "recovery24": {
+          "mae": 1.057783535845869,
+          "median_ae": 0.7957494854927063,
+          "n_examples": 5004.0,
+          "n_rows": 5004,
+          "n_stays": 1096,
+          "rmse": 1.3814266606618661
+        },
+        "recovery48": {
+          "mae": 1.3635280796171227,
+          "median_ae": 1.2385355234146118,
+          "n_examples": 1741.0,
+          "n_rows": 1741,
+          "n_stays": 440,
+          "rmse": 1.6545141502836616
+        }
+      },
+      "clean_subset_nonnull_baseline": {
+        "icu_stay_time": {
+          "mae": 10.087988904455827,
+          "n_examples": 5004.0,
+          "n_rows": 5004,
+          "n_stays": 1096,
+          "rmse": 14.464622240564706,
+          "weighted_median_ae_hours": 7.624876568436619
+        },
+        "organ_support": {
+          "cal_auprc": 0.4676707313938129,
+          "cal_auroc": 0.6917697622054441,
+          "n_positive_rows": 1706.0,
+          "n_rows": 4860,
+          "n_stays": 1089,
+          "raw_auprc": 0.4963450392556692,
+          "raw_auroc": 0.6956056242553585
+        }
+      }
+    }
+  },
+  "rows": 8909
+}

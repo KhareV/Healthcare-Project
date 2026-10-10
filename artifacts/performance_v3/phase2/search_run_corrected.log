@@ -1,0 +1,289 @@
+pool rows=48859 subjects=8000 | LCE rows=8909 subjects=1500
+recovery24     size=  425 rep=0 primary=1.1209 train=1.071s
+recovery24     size=  425 rep=1 primary=1.1312 train=1.018s
+recovery24     size=  425 rep=2 primary=1.1163 train=0.951s
+recovery24     size=  850 rep=0 primary=1.0838 train=1.361s
+recovery24     size=  850 rep=1 primary=1.1080 train=1.371s
+recovery24     size=  850 rep=2 primary=1.0897 train=1.322s
+recovery24     size= 1700 rep=0 primary=1.0604 train=1.858s
+recovery24     size= 1700 rep=1 primary=1.0597 train=2.023s
+recovery24     size= 1700 rep=2 primary=1.0610 train=2.058s
+recovery24     size= 3800 rep=0 primary=1.0369 train=2.85s
+recovery24     size= 3800 rep=1 primary=1.0356 train=2.662s
+recovery24     size= 3800 rep=2 primary=1.0340 train=2.893s
+recovery24     size= 5900 rep=0 primary=1.0327 train=3.382s
+recovery24     size= 5900 rep=1 primary=1.0314 train=3.256s
+recovery24     size= 5900 rep=2 primary=1.0317 train=3.289s
+recovery24     size= 8000 rep=0 primary=1.0273 train=4.338s
+recovery24     size= 8000 rep=1 primary=1.0291 train=4.571s
+recovery24     size= 8000 rep=2 primary=1.0290 train=3.978s
+recovery48     size=  425 rep=0 primary=1.4453 train=0.399s
+recovery48     size=  425 rep=1 primary=1.4377 train=0.381s
+recovery48     size=  425 rep=2 primary=1.4441 train=0.354s
+recovery48     size=  850 rep=0 primary=1.3831 train=0.579s
+recovery48     size=  850 rep=1 primary=1.4038 train=0.527s
+recovery48     size=  850 rep=2 primary=1.3907 train=0.499s
+recovery48     size= 1700 rep=0 primary=1.3697 train=0.741s
+recovery48     size= 1700 rep=1 primary=1.3662 train=0.969s
+recovery48     size= 1700 rep=2 primary=1.3661 train=0.923s
+recovery48     size= 3800 rep=0 primary=1.3690 train=1.361s
+recovery48     size= 3800 rep=1 primary=1.3565 train=1.883s
+recovery48     size= 3800 rep=2 primary=1.3550 train=1.641s
+recovery48     size= 5900 rep=0 primary=1.3492 train=1.916s
+recovery48     size= 5900 rep=1 primary=1.3506 train=1.619s
+recovery48     size= 5900 rep=2 primary=1.3550 train=1.67s
+recovery48     size= 8000 rep=0 primary=1.3470 train=1.862s
+recovery48     size= 8000 rep=1 primary=1.3475 train=1.928s
+recovery48     size= 8000 rep=2 primary=1.3459 train=2.006s
+icu_stay_time  size=  425 rep=0 primary=9.3477 train=1.023s
+icu_stay_time  size=  425 rep=1 primary=9.6138 train=0.51s
+icu_stay_time  size=  425 rep=2 primary=9.4218 train=0.735s
+icu_stay_time  size=  850 rep=0 primary=9.0927 train=1.201s
+icu_stay_time  size=  850 rep=1 primary=9.2951 train=1.047s
+icu_stay_time  size=  850 rep=2 primary=9.1728 train=1.203s
+icu_stay_time  size= 1700 rep=0 primary=9.2638 train=1.645s
+icu_stay_time  size= 1700 rep=1 primary=9.2341 train=1.608s
+icu_stay_time  size= 1700 rep=2 primary=9.1961 train=1.652s
+icu_stay_time  size= 3800 rep=0 primary=9.0703 train=2.949s
+icu_stay_time  size= 3800 rep=1 primary=9.0808 train=2.892s
+icu_stay_time  size= 3800 rep=2 primary=9.1084 train=2.882s
+icu_stay_time  size= 5900 rep=0 primary=9.0388 train=4.429s
+icu_stay_time  size= 5900 rep=1 primary=9.1085 train=3.628s
+icu_stay_time  size= 5900 rep=2 primary=9.0991 train=3.943s
+icu_stay_time  size= 8000 rep=0 primary=9.0874 train=5.095s
+icu_stay_time  size= 8000 rep=1 primary=9.0901 train=4.284s
+icu_stay_time  size= 8000 rep=2 primary=9.0684 train=5.132s
+organ_support  size=  425 rep=0 primary=0.6407 train=0.339s
+organ_support  size=  425 rep=1 primary=0.6399 train=0.312s
+organ_support  size=  425 rep=2 primary=0.6248 train=0.297s
+organ_support  size=  850 rep=0 primary=0.6407 train=0.378s
+organ_support  size=  850 rep=1 primary=0.6429 train=0.379s
+organ_support  size=  850 rep=2 primary=0.6482 train=0.367s
+organ_support  size= 1700 rep=0 primary=0.6469 train=0.481s
+organ_support  size= 1700 rep=1 primary=0.6478 train=0.481s
+organ_support  size= 1700 rep=2 primary=0.6448 train=0.478s
+organ_support  size= 3800 rep=0 primary=0.6534 train=0.664s
+organ_support  size= 3800 rep=1 primary=0.6554 train=0.646s
+organ_support  size= 3800 rep=2 primary=0.6514 train=0.65s
+organ_support  size= 5900 rep=0 primary=0.6521 train=0.818s
+organ_support  size= 5900 rep=1 primary=0.6541 train=0.794s
+organ_support  size= 5900 rep=2 primary=0.6547 train=0.799s
+organ_support  size= 8000 rep=0 primary=0.6560 train=0.967s
+organ_support  size= 8000 rep=1 primary=0.6575 train=0.917s
+organ_support  size= 8000 rep=2 primary=0.6550 train=0.939s
+done 273 s
+cache rows=48859 cols=981 include_s=True
+S0 recovery24 ok 1.0304718142033875
+S0 recovery48 ok 1.3348650516484015
+S0 icu_stay_time ok 9.196298978833033
+S0 organ_support ok 0.6580888052534399
+cache rows=48859 cols=981 include_s=True
+S1 recovery24 xgboost 606ed2d177f8bad7 ok 1.0746 4.77s
+S1 recovery24 xgboost abfca034aeea0644 ok 1.0397 2.35s
+S1 recovery24 xgboost f2d19b586fdc7bc7 ok 1.0064 18.75s
+S1 recovery24 xgboost 8ae0279653a6ebb2 ok 1.08 3.76s
+S1 recovery24 xgboost d1a62d9daebc59b2 ok 1.0285 9.47s
+S1 recovery24 xgboost 32af0ebd85052aa9 ok 1.0201 15.49s
+S1 recovery24 xgboost 540079f12e5d90fe ok 1.0694 4.99s
+S1 recovery24 xgboost f7783151067000b6 ok 1.0454 3.24s
+S1 recovery24 xgboost fdc3f71c14d94084 ok 1.0119 37.39s
+S1 recovery24 xgboost 68e9a621ba155999 ok 1.0742 13.69s
+S1 recovery24 lightgbm 3cda7b6267a9a860 ok 1.0726 2.84s
+S1 recovery24 lightgbm 21e89f97c1fe5cd9 ok 1.0393 3.54s
+S1 recovery24 lightgbm 1a42530554c1cdcf ok 1.0211 4.82s
+S1 recovery24 lightgbm 4ddff2f1e1555f31 ok 1.0684 25.85s
+S1 recovery24 lightgbm bc4b1538a3b76c4f ok 1.0199 13.57s
+S1 recovery24 lightgbm 940f4eab840c9e3e ok 1.0164 11.75s
+S1 recovery24 lightgbm a6b7a209203a7d93 ok 1.0718 6.03s
+S1 recovery24 lightgbm e078f0f69e5c4fcf ok 1.0309 14.64s
+S1 recovery24 lightgbm 4e230ec408dd396f ok 1.0094 14.13s
+S1 recovery24 lightgbm 12f4969b939ed310 ok 1.0926 4.9s
+S1 recovery24 catboost 761c267bb75fea26 ok 1.0737 5.89s
+S1 recovery24 catboost 624a19cdb20c3fcd ok 1.0294 6.01s
+S1 recovery24 catboost 657302eeb93762ca ok 1.0139 16.53s
+S1 recovery24 catboost 295824528e7a3b7a ok 1.075 7.66s
+S1 recovery24 catboost 706594b3b25a1cdc ok 1.0248 36.32s
+S1 recovery24 catboost fbd06e95a04c7c74 ok 1.0145 10.44s
+S1 recovery24 catboost a7a2d9993529dd0e ok 1.0728 10.27s
+S1 recovery24 catboost b62b5b1716239d01 ok 1.0509 3.53s
+S1 recovery24 catboost 8e8e1e2afbd72237 ok 1.0075 52.94s
+S1 recovery24 catboost 66c0efea0f56fa06 ok 1.073 58.73s
+S1 recovery24 ridge a4182885811dff9d ok 1.1195 3.21s
+S1 recovery24 ridge ac0cac97f2115cfe ok 1.1154 3.31s
+S1 recovery24 ridge 35c748b728431633 ok 1.1176 2.95s
+S1 recovery24 ridge 981f9917625e160f ok 1.1144 3.03s
+S1 recovery24 ridge 99f7726ba5882f12 ok 1.1195 3.03s
+S1 recovery24 ridge 070a38ca05c651fc ok 1.113 2.98s
+S1 recovery48 xgboost f27df9c6f40f6d12 ok 1.3577 3.14s
+S1 recovery48 xgboost 038dbcd5dd0d823c ok 1.324 7.97s
+S1 recovery48 xgboost 33a4ba843d69a886 ok 1.3107 3.5s
+S1 recovery48 xgboost 60d2c41644048700 ok 1.3658 1.72s
+S1 recovery48 xgboost 2408711c13e527b6 ok 1.3365 1.58s
+S1 recovery48 xgboost 68e641d4f5af160a ok 1.3346 4.32s
+S1 recovery48 xgboost 86ff51d70ee8ed96 ok 1.3527 9.13s
+S1 recovery48 xgboost b5d326fc294a953a ok 1.3407 1.6s
+S1 recovery48 xgboost a7364c7b3e7b9706 ok 1.3169 2.58s
+S1 recovery48 xgboost bc5c2419b0a83cac ok 1.3658 2.28s
+S1 recovery48 lightgbm 03c8171dff0cb2d4 ok 1.353 4.39s
+S1 recovery48 lightgbm 8088f4fba63daee8 ok 1.3302 11.27s
+S1 recovery48 lightgbm 9b1760f61985fa79 ok 1.3193 5.7s
+S1 recovery48 lightgbm d9cd7e4e536fd70f ok 1.3534 5.27s
+S1 recovery48 lightgbm 165ab68421222f7c ok 1.3333 4.74s
+S1 recovery48 lightgbm 1cafeeea9b500520 ok 1.3338 3.85s
+S1 recovery48 lightgbm 7b2a6e2196c696ce ok 1.3571 4.0s
+S1 recovery48 lightgbm 60a4e1e533ecbfa4 ok 1.3318 3.4s
+S1 recovery48 lightgbm 9a22cd59a8b7fbc9 ok 1.3126 4.19s
+S1 recovery48 lightgbm f4eb50ad9ed83cbc ok 1.3537 4.55s
+S1 recovery48 catboost b58b1411afe565e4 ok 1.3529 19.15s
+S1 recovery48 catboost fca56724dc569247 ok 1.3248 15.12s
+S1 recovery48 catboost 30ed77163404f4af ok 1.3099 3.36s
+S1 recovery48 catboost 122ffc7552fc4b41 ok 1.3568 17.9s
+S1 recovery48 catboost 0e4ca0cd48d7adc4 ok 1.3169 5.56s
+S1 recovery48 catboost 293de978b1f090af ok 1.3192 4.29s
+S1 recovery48 catboost 446cb9804f922f9b ok 1.3564 4.85s
+S1 recovery48 catboost cd63686c4c20d008 ok 1.3295 2.3s
+S1 recovery48 catboost a3d6af680ad77c1e ok 1.3188 32.0s
+S1 recovery48 catboost 8f838d43de732713 ok 1.3579 16.41s
+S1 recovery48 ridge 58f9b1ede7829d1c ok 1.374 1.78s
+S1 recovery48 ridge aea861e04feecf2f ok 1.3785 1.89s
+S1 recovery48 ridge 7f8893e6579bc2e8 ok 1.3732 1.92s
+S1 recovery48 ridge 5c611f45261ed61d ok 1.3702 1.8s
+S1 recovery48 ridge ef454a20af81dd55 ok 1.3741 1.9s
+S1 recovery48 ridge 9ff6c988eea1ce9f ok 1.3791 1.83s
+S1 icu_stay_time xgboost e442d088380d4cb9 ok 12.5091 6.4s
+S1 icu_stay_time xgboost 7ca6eb87efef0068 ok 302053908870.9841 1.31s
+S1 icu_stay_time xgboost 485082740407cca7 ok 13.0393 8.07s
+S1 icu_stay_time xgboost f9e7913dd985d7de ok 9.4398 6.5s
+S1 icu_stay_time xgboost aa602ffe98e007dd ok 112226802441182.48 1.27s
+S1 icu_stay_time xgboost d2ce927bd3f223af ok 9.2268 5.76s
+S1 icu_stay_time xgboost 8c65a6a95c0d957f ok 12.5441 7.71s
+S1 icu_stay_time xgboost 271214aea9b45ff2 ok 302053908870.9841 1.32s
+S1 icu_stay_time xgboost 7c3f35e618a2e845 ok 13.0563 3.58s
+S1 icu_stay_time xgboost 84ed7e17e03e30ad ok 9.5464 2.45s
+S1 icu_stay_time lightgbm 5d141900727cb28e ok 12.5254 26.58s
+S1 icu_stay_time lightgbm 07e97ad0348b90a2 ok 9.4391 4.51s
+S1 icu_stay_time lightgbm f62276d6c48a7385 ok 12.9906 6.62s
+S1 icu_stay_time lightgbm 1798a53ca4d4944a ok 9.5627 2.59s
+S1 icu_stay_time lightgbm 414d196cb1258dde ok 12.6946 10.58s
+S1 icu_stay_time lightgbm 6129eacb50fffe35 ok 9.3392 4.47s
+S1 icu_stay_time lightgbm d64df9b35dbf5ce8 ok 12.5448 27.54s
+S1 icu_stay_time lightgbm d6985f51a79adcb3 ok 9.3959 14.18s
+S1 icu_stay_time lightgbm 112720437aeb40fb ok 13.0097 9.74s
+S1 icu_stay_time lightgbm 09ccc7d37c003591 ok 9.4308 8.1s
+S1 icu_stay_time catboost 13bc6ffe867511b1 ok 12.7008 6.29s
+S1 icu_stay_time catboost 038b5af079670d05 ok 17.8871 25.15s
+S1 icu_stay_time catboost 6c5e3541c1e3a3df ok 13.1766 8.39s
+S1 icu_stay_time catboost ee6d2e43df3cccc1 ok 9.4866 7.22s
+S1 icu_stay_time catboost c1a42d56f116d787 ok 20.572 41.15s
+S1 icu_stay_time catboost 928f9aec7103ac8d ok 10.4668 3.27s
+S1 icu_stay_time catboost 432d3857d2109dfe ok 12.6462 16.31s
+S1 icu_stay_time catboost 4087ec08cee1ef0c ok 18.5946 21.32s
+S1 icu_stay_time catboost 60b53df9aa357e98 ok 13.1273 4.77s
+S1 icu_stay_time catboost 43bcc6d7cdeb93ca ok 9.3917 6.24s
+S1 icu_stay_time ridge 4d3dda1ee6e323d1 ok 12.9658 4.23s
+S1 icu_stay_time ridge 4875d1b49d776f9b ok 9.49 4.67s
+S1 icu_stay_time ridge 1f46ff277369e8fa ok 12.9663 4.38s
+S1 icu_stay_time ridge 9c7c339f43bfb681 ok 9.488 4.49s
+S1 icu_stay_time ridge 2db499c435b6c9f8 ok 12.9659 4.15s
+S1 icu_stay_time ridge 09de9c1769604cae ok 9.4895 4.56s
+S1 organ_support xgboost 02012dcadf9b6b8b ok 0.6704 1.82s
+S1 organ_support xgboost 02d011cdcb6746c5 ok 0.6773 6.43s
+S1 organ_support xgboost e1377fc81f9ad42b ok 0.6758 14.83s
+S1 organ_support xgboost 6505009894af5b67 ok 0.6735 26.66s
+S1 organ_support xgboost 88b191436f8910fe ok 0.6711 7.27s
+S1 organ_support xgboost 5974af9554d2a3bd ok 0.6741 4.82s
+S1 organ_support xgboost 5a14852776fc5895 ok 0.6782 6.5s
+S1 organ_support xgboost a3b97494653611da ok 0.6764 8.8s
+S1 organ_support xgboost 2fa58b6837a497ed ok 0.6753 9.92s
+S1 organ_support xgboost c6b6cbc1a5ea691f ok 0.6761 10.98s
+S1 organ_support lightgbm b3716b4f91341548 ok 0.675 4.24s
+S1 organ_support lightgbm 64d742e86857fef3 ok 0.6644 3.37s
+S1 organ_support lightgbm a24d4bbd363c25a6 ok 0.6773 8.37s
+S1 organ_support lightgbm 42852d5f4b2a974e ok 0.6745 22.4s
+S1 organ_support lightgbm 5df05cabea3d6897 ok 0.6761 22.85s
+S1 organ_support lightgbm 80b43d223f2459a5 ok 0.6742 8.42s
+S1 organ_support lightgbm afb64f59acd8d9cf ok 0.6748 3.08s
+S1 organ_support lightgbm d1f215e2bf003c48 ok 0.6737 5.17s
+S1 organ_support lightgbm d9084727d4382177 ok 0.6763 3.28s
+S1 organ_support lightgbm e915c3116632273b ok 0.6743 4.42s
+S1 organ_support catboost 119debfd09877a96 ok 0.6733 66.31s
+S1 organ_support catboost 23cc4a75a1f6653d ok 0.6736 8.32s
+S1 organ_support catboost 53b2aa7eed062e1e ok 0.6687 4.11s
+S1 organ_support catboost 4bc148970504dc25 ok 0.668 15.98s
+S1 organ_support catboost 153276c40cbc0360 ok 0.6698 5.97s
+S1 organ_support catboost fd1418ff32808a9e ok 0.6727 10.36s
+S1 organ_support catboost 84dba5d8f5446fa4 ok 0.6701 8.52s
+S1 organ_support catboost a99ecd0b30aa0975 ok 0.6716 9.51s
+S1 organ_support catboost 03937c29218834f9 ok 0.6715 38.89s
+S1 organ_support catboost 256f0febfcb4a683 ok 0.6731 4.19s
+S1 organ_support logistic 5555a39fd47db0ed ok 0.6654 7.5s
+S1 organ_support logistic 75a36c41cd048679 ok 0.6619 8.43s
+S1 organ_support logistic 87e08bb411df0582 ok 0.667 3.71s
+S1 organ_support logistic 7f4f110def8b4666 ok 0.6629 2.63s
+S1 organ_support logistic 4a6fef56dfc40cca ok 0.6655 7.96s
+S1 organ_support logistic 40c5ca285035b595 ok 0.6618 8.95s
+cache rows=48859 cols=981 include_s=True
+S2 recovery24 V3_CTRL 11 ok 1.0064 20.51s
+S2 recovery24 V3_CTRL 23 ok 1.0077 23.68s
+S2 recovery24 V3_B 11 ok 1.0086 21.4s
+S2 recovery24 V3_B 23 ok 1.009 19.86s
+S2 recovery24 V3_BF 11 ok 1.0111 19.65s
+S2 recovery24 V3_BF 23 ok 1.012 20.79s
+S2 recovery24 V3_BC 11 ok 1.0178 31.99s
+S2 recovery24 V3_BC 23 ok 1.0203 29.61s
+S2 recovery24 V3_BD 11 ok 1.0046 26.95s
+S2 recovery24 V3_BD 23 ok 1.0043 30.34s
+S2 recovery24 V3_BE 11 ok 1.0102 19.43s
+S2 recovery24 V3_BE 23 ok 1.0064 23.3s
+S2 recovery24 V3_BFS 11 ok 1.0102 21.04s
+S2 recovery24 V3_BFS 23 ok 1.0117 23.52s
+S2 recovery24 V3_FULL 11 ok 1.0112 42.61s
+S2 recovery24 V3_FULL 23 ok 1.0117 33.4s
+S2 recovery48 V3_CTRL 11 ok 1.3099 3.46s
+S2 recovery48 V3_CTRL 23 ok 1.3111 4.51s
+S2 recovery48 V3_B 11 ok 1.309 4.27s
+S2 recovery48 V3_B 23 ok 1.3119 2.96s
+S2 recovery48 V3_BF 11 ok 1.319 3.46s
+S2 recovery48 V3_BF 23 ok 1.3182 4.23s
+S2 recovery48 V3_BC 11 ok 1.3097 5.3s
+S2 recovery48 V3_BC 23 ok 1.3121 4.05s
+S2 recovery48 V3_BD 11 ok 1.3032 4.59s
+S2 recovery48 V3_BD 23 ok 1.3032 4.35s
+S2 recovery48 V3_BE 11 ok 1.3151 3.59s
+S2 recovery48 V3_BE 23 ok 1.3128 4.31s
+S2 recovery48 V3_BFS 11 ok 1.3107 3.6s
+S2 recovery48 V3_BFS 23 ok 1.3125 3.53s
+S2 recovery48 V3_FULL 11 ok 1.3061 5.4s
+S2 recovery48 V3_FULL 23 ok 1.3019 6.57s
+S2 icu_stay_time V3_CTRL 11 ok 9.2268 5.75s
+S2 icu_stay_time V3_CTRL 23 ok 9.2623 6.13s
+S2 icu_stay_time V3_B 11 ok 9.3049 5.5s
+S2 icu_stay_time V3_B 23 ok 9.2512 5.65s
+S2 icu_stay_time V3_BF 11 ok 9.2268 5.8s
+S2 icu_stay_time V3_BF 23 ok 9.2623 6.2s
+S2 icu_stay_time V3_BC 11 ok 9.2638 7.89s
+S2 icu_stay_time V3_BC 23 ok 9.3226 8.0s
+S2 icu_stay_time V3_BD 11 ok 9.2538 9.73s
+S2 icu_stay_time V3_BD 23 ok 9.2552 7.75s
+S2 icu_stay_time V3_BE 11 ok 9.3137 6.91s
+S2 icu_stay_time V3_BE 23 ok 9.2652 6.81s
+S2 icu_stay_time V3_BFS 11 ok 9.2372 5.01s
+S2 icu_stay_time V3_BFS 23 ok 9.2749 5.07s
+S2 icu_stay_time V3_FULL 11 ok 9.3102 10.38s
+S2 icu_stay_time V3_FULL 23 ok 9.2665 9.98s
+S2 organ_support V3_CTRL 11 ok 0.6782 6.52s
+S2 organ_support V3_CTRL 23 ok 0.6778 6.04s
+S2 organ_support V3_B 11 ok 0.6782 6.51s
+S2 organ_support V3_B 23 ok 0.6778 6.01s
+S2 organ_support V3_BF 11 ok 0.6778 6.75s
+S2 organ_support V3_BF 23 ok 0.678 6.19s
+S2 organ_support V3_BC 11 ok 0.6771 7.43s
+S2 organ_support V3_BC 23 ok 0.6775 8.48s
+S2 organ_support V3_BD 11 ok 0.6786 8.21s
+S2 organ_support V3_BD 23 ok 0.6792 8.9s
+S2 organ_support V3_BE 11 ok 0.6782 6.18s
+S2 organ_support V3_BE 23 ok 0.6768 6.72s
+S2 organ_support V3_BFS 11 ok 0.6778 6.45s
+S2 organ_support V3_BFS 23 ok 0.6769 5.83s
+S2 organ_support V3_FULL 11 ok 0.6793 11.02s
+S2 organ_support V3_FULL 23 ok 0.6783 10.96s
