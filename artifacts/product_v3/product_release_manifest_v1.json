@@ -1,0 +1,259 @@
+{
+  "artifact_version": "product_v3_release_manifest_v1",
+  "documentation": [
+    {
+      "path": "README.md",
+      "sha256": "b4816b93c93eeaab320d6a6d99e001a6a9d8654344db2713aa58bb5abfface73"
+    },
+    {
+      "path": "RUNBOOK.md",
+      "sha256": "7ae2ee862bb5a3ea00e2f8346ebdfc8c1b04562dabab10d29803546a036aff9e"
+    },
+    {
+      "path": "docs/product_v3/PRODUCT_ARCHITECTURE.md",
+      "sha256": "b964fc27c7418a25005f2792d4dcd90158994c9f9c9598074cfd9a10fc1b0050"
+    },
+    {
+      "path": "docs/product_v3/FINAL_DEMO_GUIDE.md",
+      "sha256": "d9e7a4cbd14734b276518053580d37bd0d9d8fc5a20b8ba0825f249998e60a33"
+    },
+    {
+      "path": "docs/product_v3/FIGURE_AND_TABLE_INDEX.md",
+      "sha256": "bca3021cadc3a77f859e060e25427d774008fac33c434dbfb59a61b4013655fc"
+    },
+    {
+      "path": "docs/product_v3/LIMITATIONS.md",
+      "sha256": "0a814a670ae32a29d5eba0fbd68f4122110d21a8298aa0a9a4f541f8feafd7a7"
+    }
+  ],
+  "kind": "ENGINEERING_PRODUCT_RELEASE_NOT_SCIENTIFIC_FREEZE",
+  "product": {
+    "api_entry_point": "api.product_app:app --factory",
+    "chart_export_version": "performance_v3_research_export_v1",
+    "frontend_version": "0.1.0",
+    "patient_record_schema": "encounter_v2",
+    "prediction_history_identity": "owner+encounter+cutoff+bundle+data_revision",
+    "prediction_schema_version": "v3_prediction_response_v1",
+    "report_intelligence_version": "report_intelligence_v1",
+    "research_export_count": 59,
+    "research_registry": {
+      "path": "artifacts/performance_v3/research/research_registry_v1.json",
+      "sha256": "0ca26fedb1959137a541277cd39154538d348608356cb0258bfdf88de57bf116"
+    },
+    "screenshot_evidence": [
+      {
+        "path": "docs/evidence/product_v3/01_landing.png",
+        "sha256": "6369b0bbdfa7b06907a73d51fccd3078f949ead3b1cd03cb3adc25a0ecfdb4f6"
+      },
+      {
+        "path": "docs/evidence/product_v3/02_sign_in.png",
+        "sha256": "428da608fb2fc6c7479c5e89f4b7bf3e5f51c6570639f2f3766aa99d2f1c1918"
+      },
+      {
+        "path": "docs/evidence/product_v3/03_onboarding_welcome.png",
+        "sha256": "66bf520ac4c5db6e3900f2dea1c2deecdad023c95ec53d211acd9e674d56b499"
+      },
+      {
+        "path": "docs/evidence/product_v3/04_workspace.png",
+        "sha256": "3c814b6b1be4685f3aeff4eb0acd260180143b0d5a76ac6eed99a65b34f58cef"
+      },
+      {
+        "path": "docs/evidence/product_v3/05_demo_patient_replay.png",
+        "sha256": "4fea406b5a8485125bf565dea07e9cde7d6b720ea62fbc2a51bbbcbe2e0adb37"
+      },
+      {
+        "path": "docs/evidence/product_v3/06_recovery_trajectory.png",
+        "sha256": "5b4b9cd544aa192b03ed46530840bdc7afc6a341cb3dd42c222fc8db0946adb5"
+      },
+      {
+        "path": "docs/evidence/product_v3/07_custom_record_entry.png",
+        "sha256": "9154e194988bbc680c1c2e9886aeb51d1c89e49dbf5ebdc83f49fa029cc9b7d3"
+      },
+      {
+        "path": "docs/evidence/product_v3/08_custom_record_readiness.png",
+        "sha256": "8c038f2a6f963517cd6773ea03c0ccc5e8c91a914841ee4647ebb59b266b43af"
+      },
+      {
+        "path": "docs/evidence/product_v3/09_custom_record_prediction.png",
+        "sha256": "f031441c24ad774aa0307207e80dc09fa77e6390cf68e60f5d9e95df4d671f3a"
+      },
+      {
+        "path": "docs/evidence/product_v3/10_explainability.png",
+        "sha256": "b471b9a9ef18492ad40fa3c52913ccf6a99f4ca2740c5c4ff658444e4ae1b229"
+      },
+      {
+        "path": "docs/evidence/product_v3/11_trajectory_copilot.png",
+        "sha256": "0150c5fc4d6659dda0f81686d6bf3c7cd61a26fb2bdcbf6493d228b28eb03be5"
+      },
+      {
+        "path": "docs/evidence/product_v3/12_model_performance.png",
+        "sha256": "803fae16d567b28d684fd8434017d4a2f9b02d4dd89a6d7299f1c7d4daf7bd06"
+      },
+      {
+        "path": "docs/evidence/product_v3/13_data_provenance.png",
+        "sha256": "4b162efe82430d7ceee527647da3ff8d5ea2fd034f13b125f590408bcd629121"
+      },
+      {
+        "path": "docs/evidence/product_v3/14_health_record_overview.png",
+        "sha256": "56edf20c99420d2b96c45e9610417a8a1302c50e1ef184c0d3f40f5f4770d9e7"
+      },
+      {
+        "path": "docs/evidence/product_v3/15_health_record_conditions.png",
+        "sha256": "cb0550b4b7543beba87b139807626ec2bc7ce5a3e9efd46d7a89c72deae8c61b"
+      },
+      {
+        "path": "docs/evidence/product_v3/16_health_record_vitals.png",
+        "sha256": "9f7d1ae0920e98dbba3a5569c394ec497d119482d09a22cfdcdfd6955ea361a8"
+      },
+      {
+        "path": "docs/evidence/product_v3/17_health_record_reports.png",
+        "sha256": "23f866f5a282fec8f1bf73fb146838188d4ed25ff12309474a1e942460e3d733"
+      },
+      {
+        "path": "docs/evidence/product_v3/18_health_record_predictions.png",
+        "sha256": "308b551c016c5c94b4e34e7ec15beb910033c816842e498a2d8b6cc8b1eef09d"
+      },
+      {
+        "path": "docs/evidence/product_v3/19_report_analysis_candidates.png",
+        "sha256": "c77f10b5ebe8fb7a5b875a6ea48ab1388761914113a08318a65d16dee948adf9"
+      },
+      {
+        "path": "docs/evidence/product_v3/20_report_measurements_confirmed.png",
+        "sha256": "82b458adca6c7b5d72bf043b723cefae287696b65bef29f1f0e269f2b28386f3"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_cohort_desktop.png",
+        "sha256": "ec402d7b9384556023887775fe3b0fa708c09d6b910994d4da52b285773c9f36"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_cohort_mobile.png",
+        "sha256": "2b0250fd47f09f3ae78abd3f601e73a95df5a6ff1bb25aeccd7133b396824581"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_cohort_tablet.png",
+        "sha256": "c700533f77fea8872d0aa78d8f34f3a1799032ddcf89e3c7f77572251b9b3285"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_latent_diagnostic_desktop.png",
+        "sha256": "33c63f1a4f023b1befd67f90e89c9b875fb80a771b1222e291b243d4647c7952"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_latent_diagnostic_mobile.png",
+        "sha256": "baf3db855deea86fc3127e7775a0de2b2c3bc8af24d13cdc803ae49c17549d8a"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_latent_diagnostic_tablet.png",
+        "sha256": "9608460526f5b0b39241996edc5587718c86bc1bfd0d294e8c8dcf99e9b1bebd"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_model_research_desktop.png",
+        "sha256": "6f4663e95b61870193bb92efc4d9414de3fb3e010a807cee1792b59558e3aa5a"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_model_research_mobile.png",
+        "sha256": "ee4c653df242453d4c2b32bb2b292be3530ce971f50634a0fa63b3474db83909"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_model_research_tablet.png",
+        "sha256": "60294f5fe7039d74f9e054a7439e463a83fc8a296bbf0b191b7e7d358c9a5179"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_scenario_studio_desktop.png",
+        "sha256": "f393aae37482963c1e7d31038a61dfe4df4eeda19552046b24e99731b0b3d283"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_scenario_studio_mobile.png",
+        "sha256": "cdce6adb3852b26622dbd4766956c54c462519af4074f17a82c7375f0ca67c98"
+      },
+      {
+        "path": "docs/evidence/product_v3/v3_scenario_studio_tablet.png",
+        "sha256": "c192cd195063820bf1b89aa39e9ebdbdf0e2e159e7138047916ddd164e4e22b6"
+      }
+    ],
+    "serving_version": "performance_v3_serving_v1",
+    "showcase_manifest": {
+      "path": "configs/performance_v3_product/showcase_manifest_v1.json",
+      "sha256": "43d2fe6316a6bcb2abeb0abf266c47f78acbf9af4430b2c9bddda5f7fb1527f5"
+    }
+  },
+  "release_builder_final_test_reinference_performed": false,
+  "scientific_immutability": {
+    "files_checked": 563,
+    "inventory_sha256": "a2e874d38848fe416c6e00de1758fbd06de9a76d058911a2e0bc42339d09c915",
+    "mismatches": [],
+    "selected_models_v3_sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961",
+    "status": "PASS",
+    "v3_final_test_ledger_state": "FINAL_RUN_COMPLETED"
+  },
+  "scientific_release": {
+    "effective_bundle": {
+      "path": "artifacts/performance_v3/phase3/selected_models_v3.json",
+      "sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961"
+    },
+    "v3_1_candidate_served": false,
+    "v3_1_handoff": {
+      "path": "artifacts/performance_v3_1/product_handoff.json",
+      "sha256": "02f8078bb23144818b6156270a49d2829c5ef1ab241e4bf2d335af7bd67c26ef"
+    },
+    "v3_final_evaluation_freeze": {
+      "path": "artifacts/performance_v3/governance/v3_final_evaluation_freeze_v1.json",
+      "sha256": "f21b3b6578e3f39dd44b7710ef26242dbad246b98cd75e0b83247b8fbff4ec5e"
+    },
+    "v3_final_metrics": {
+      "path": "artifacts/performance_v3/phase4/final_metrics_v3.json",
+      "sha256": "3a510c98cdaf74f107c79cd1081996ff1f6fc4c7d4908135eb9756540d715eac"
+    },
+    "v3_test_access_ledger": {
+      "path": "artifacts/performance_v3/governance/v3_final_test_access_state.json",
+      "sha256": "d17bf71faf12604542d121b5eb64fc7b29619f452dc1ef2fc5eff65b8b64bf0f"
+    }
+  },
+  "source_code_commit": "1ebc30f3fae45a27a668da494065bad35518576d",
+  "status": "READY",
+  "verification": {
+    "all_required_passed": true,
+    "backend_regression": {
+      "deselected": 6,
+      "deselected_reason": "unavailable sealed bulk V2 cohort (historical comparator test), superseded pre-product inventory assertion, stale system-evidence checks; none reopen a sealed test",
+      "failed": 0,
+      "passed": 1772,
+      "skipped": 26
+    },
+    "frontend": {
+      "production_build": "PASS",
+      "svelte_check_errors": 0,
+      "svelte_check_warnings": 111
+    },
+    "live_mongodb_and_report_intelligence": {
+      "failed": 0,
+      "passed": 23
+    },
+    "playwright_e2e": {
+      "api": "real V3 API, real Clerk test sign-in",
+      "failed": 0,
+      "passed": 29
+    },
+    "recorded_from": "Phase 2 integration runs on healthcare-final-product-v3 (isolated checkout, same commit content as 83295b9/1ebc30f)",
+    "scenarios_replayed_with_real_v3_inference": 8,
+    "scientific_inventory": "563/563 frozen files unchanged (scripts/build_product_v3_release_manifest.py --verify-science)",
+    "screenshots": "docs/evidence/product_v3 (desktop/tablet/mobile; no horizontal overflow asserted)",
+    "v3_1_tests": {
+      "deselected": 1,
+      "failed": 0,
+      "passed": 8,
+      "skipped": 4
+    },
+    "v3_scientific_test_files_isolated_runner": {
+      "deselected": 1,
+      "failed": 0,
+      "note": "run one file per process (torch/OpenMP); V3 comparator test needing sealed V2 bulk data excluded",
+      "passed": 173,
+      "skipped": 1
+    },
+    "v3_serving_targeted": {
+      "failed": 0,
+      "passed": 42
+    }
+  },
+  "worktree_dirty_at_generation": true
+}
