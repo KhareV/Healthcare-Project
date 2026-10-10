@@ -1,0 +1,397 @@
+pool rows=48859
+S3 recovery24 V3_BD b2ed3d06111da407 ok 1.1926 43.4s 0.37s/epoch
+S3 recovery24 V3_BD 88cfe9a89553c818 ok 1.179 82.32s 0.97s/epoch
+S3 recovery24 V3_BD a2759d6d32a9d989 ok 1.2355 61.12s 0.62s/epoch
+S3 recovery24 V3_BD 5b57ba2a9411a02d ok 1.1778 39.0s 0.62s/epoch
+S3 recovery24 V3_BD edd3a7271ec80a65 ok 1.2641 32.8s 0.61s/epoch
+S3 recovery24 V3_BD c9699996219b77cc ok 1.1135 105.81s 0.96s/epoch
+S3 recovery24 V3_BD 74d1cca44e6be49e ok 1.1471 129.56s 1.39s/epoch
+S3 recovery24 V3_BD 6634c638a23b26a7 ok 1.2791 64.05s 0.95s/epoch
+S3 recovery48 V3_BD 13de14771a9f1799 ok 1.6001 16.98s 0.23s/epoch
+S3 recovery48 V3_BD 76e5b46f3b67889b ok 1.4646 27.43s 0.51s/epoch
+S3 recovery48 V3_BD 5dc07ecd59c8d34b ok 1.4558 33.61s 0.51s/epoch
+S3 recovery48 V3_BD b2e5ab4445031477 ok 1.4992 25.9s 0.22s/epoch
+S3 recovery48 V3_BD 2e4e5b1ad35b9182 ok 1.4478 24.05s 0.29s/epoch
+S3 recovery48 V3_BD 582ac699d0d8dca5 ok 1.6101 19.62s 0.51s/epoch
+S3 recovery48 V3_BD b881d600f23a7857 ok 1.4393 13.23s 0.21s/epoch
+S3 recovery48 V3_BD dedade505a92ea14 ok 1.4495 16.68s 0.36s/epoch
+S3 icu_stay_time V3_CTRL ef257b7d057255f3 ok 14.3323 114.94s 1.33s/epoch
+S3 icu_stay_time V3_CTRL 4b9ac98e5b195542 ok 13.8137 59.35s 1.34s/epoch
+S3 icu_stay_time V3_CTRL 358759e9cb9e8533 ok 13.7298 61.11s 2.52s/epoch
+S3 icu_stay_time V3_CTRL 8e9b7248d3792405 ok 13.3407 62.71s 1.69s/epoch
+S3 icu_stay_time V3_CTRL 2a065ebf1e71588e ok 13.7284 27.81s 1.10s/epoch
+S3 icu_stay_time V3_CTRL 2bd5ff235cf63992 ok 13.9763 74.12s 1.84s/epoch
+S3 icu_stay_time V3_CTRL da6b0aa7b19501fa ok 14.2638 53.51s 1.36s/epoch
+S3 icu_stay_time V3_CTRL e7da3a8282c0dcc7 ok 13.8285 87.97s 2.65s/epoch
+S3 organ_support V3_BD ea67486c09f57ce1 ok 0.502 33.35s 1.27s/epoch
+S3 organ_support V3_BD 6a5ffdd3a027ac4b ok 0.556 46.21s 0.68s/epoch
+S3 organ_support V3_BD f39f976e452812c5 ok 0.572 65.43s 1.11s/epoch
+S3 organ_support V3_BD fc1e3f62e4c5006f ok 0.567 68.55s 1.20s/epoch
+S3 organ_support V3_BD 5cb5d96ec00be333 ok 0.621 140.6s 1.71s/epoch
+S3 organ_support V3_BD caa85d8d099971bb ok 0.5566 79.01s 1.19s/epoch
+S3 organ_support V3_BD 119cc26268d5672f ok 0.6128 81.84s 0.84s/epoch
+S3 organ_support V3_BD b6416140d06acf7d ok 0.5225 30.2s 0.43s/epoch
+cache rows=48859 cols=981 include_s=True
+S4 recovery24 xgboost V3_BD f2d19b586fdc7bc7 ok 1.016 46.32s
+S4 recovery24 xgboost V3_BD 6ea1aa0d688a0846 ok 1.074 53.1s
+S4 recovery24 xgboost V3_BD e10a008dfa8780e4 ok 1.0434 9.38s
+S4 recovery24 xgboost V3_BD 1f70d22d71f71d64 ok 1.0159 17.67s
+S4 recovery24 xgboost V3_BD 117f1283901dc0c8 ok 1.082 18.36s
+S4 recovery24 xgboost V3_BD eb38b81230a44973 ok 1.0403 63.63s
+S4 recovery24 xgboost V3_BD 31aa51fa56a75ddf ok 1.0205 38.19s
+S4 recovery24 xgboost V3_BD 9bf55e30dcb81199 ok 1.0741 40.39s
+S4 recovery24 xgboost V3_BD 9b9817884f4bd4a1 ok 1.0377 10.97s
+S4 recovery24 xgboost V3_BD c0d132af63e36be5 ok 1.0296 91.3s
+S4 recovery24 xgboost V3_BD 4b93b463951f457d ok 1.074 64.98s
+S4 recovery24 xgboost V3_BD 9f22c7aa886692b8 ok 1.0406 37.86s
+S4 recovery24 xgboost V3_BD 82322aeae5c12f8e ok 1.0235 21.87s
+S4 recovery24 xgboost V3_BD ccdaa765f1a65113 ok 1.0747 30.4s
+S4 recovery24 xgboost V3_BD 21cc4e0c3e696bad ok 1.0524 10.3s
+S4 recovery24 xgboost V3_BD 2b4ab5420acd27f0 ok 1.0283 7.88s
+S4 recovery24 xgboost V3_BD 78e86a26a17c816d ok 1.0766 13.17s
+S4 recovery24 xgboost V3_BD e27256469b6be629 ok 1.0386 50.57s
+S4 recovery24 xgboost V3_BD 264bf921acabb489 ok 1.0388 6.1s
+S4 recovery24 xgboost V3_BD 5f6f10f6bda27f29 ok 1.0791 11.57s
+S4 recovery24 xgboost V3_BD 8a72d09d5b46266d ok 1.0425 12.49s
+S4 recovery24 xgboost V3_CTRL f2d19b586fdc7bc7 ok 1.0166 37.31s
+S4 recovery24 xgboost V3_CTRL 6ea1aa0d688a0846 ok 1.0781 31.95s
+S4 recovery24 xgboost V3_CTRL e10a008dfa8780e4 ok 1.0519 5.55s
+S4 recovery24 xgboost V3_CTRL 1f70d22d71f71d64 ok 1.0212 10.06s
+S4 recovery24 xgboost V3_CTRL 117f1283901dc0c8 ok 1.0828 10.3s
+S4 recovery24 xgboost V3_CTRL eb38b81230a44973 ok 1.0345 37.56s
+S4 recovery24 xgboost V3_CTRL 31aa51fa56a75ddf ok 1.0226 27.22s
+S4 recovery24 xgboost V3_CTRL 9bf55e30dcb81199 ok 1.0769 29.58s
+S4 recovery24 xgboost V3_CTRL 9b9817884f4bd4a1 ok 1.0379 6.54s
+S4 recovery24 xgboost V3_CTRL c0d132af63e36be5 ok 1.0266 55.97s
+S4 recovery24 xgboost V3_CTRL 4b93b463951f457d ok 1.072 41.83s
+S4 recovery24 xgboost V3_CTRL 9f22c7aa886692b8 ok 1.0435 28.22s
+S4 recovery24 xgboost V3_CTRL 82322aeae5c12f8e ok 1.028 14.5s
+S4 recovery24 xgboost V3_CTRL ccdaa765f1a65113 ok 1.0734 21.03s
+S4 recovery24 xgboost V3_CTRL 21cc4e0c3e696bad ok 1.0604 6.44s
+S4 recovery24 xgboost V3_CTRL 2b4ab5420acd27f0 ok 1.036 5.75s
+S4 recovery24 xgboost V3_CTRL 78e86a26a17c816d ok 1.0768 7.18s
+S4 recovery24 xgboost V3_CTRL e27256469b6be629 ok 1.037 34.93s
+S4 recovery24 xgboost V3_CTRL 264bf921acabb489 ok 1.0482 4.79s
+S4 recovery24 xgboost V3_CTRL 5f6f10f6bda27f29 ok 1.0856 7.82s
+S4 recovery24 xgboost V3_CTRL 8a72d09d5b46266d ok 1.0464 8.89s
+S4 recovery24 xgboost V3_BE f2d19b586fdc7bc7 ok 1.0193 36.99s
+S4 recovery24 xgboost V3_BE 6ea1aa0d688a0846 ok 1.0791 31.06s
+S4 recovery24 xgboost V3_BE e10a008dfa8780e4 ok 1.052 5.9s
+S4 recovery24 xgboost V3_BE 1f70d22d71f71d64 ok 1.019 10.66s
+S4 recovery24 xgboost V3_BE 117f1283901dc0c8 ok 1.0804 10.45s
+S4 recovery24 xgboost V3_BE eb38b81230a44973 ok 1.0361 38.25s
+S4 recovery24 xgboost V3_BE 31aa51fa56a75ddf ok 1.0227 33.89s
+S4 recovery24 xgboost V3_BE 9bf55e30dcb81199 ok 1.0777 30.46s
+S4 recovery24 xgboost V3_BE 9b9817884f4bd4a1 ok 1.0379 6.82s
+S4 recovery24 xgboost V3_BE c0d132af63e36be5 ok 1.0264 60.99s
+S4 recovery24 xgboost V3_BE 4b93b463951f457d ok 1.0724 39.93s
+S4 recovery24 xgboost V3_BE 9f22c7aa886692b8 ok 1.0449 27.24s
+S4 recovery24 xgboost V3_BE 82322aeae5c12f8e ok 1.0301 12.06s
+S4 recovery24 xgboost V3_BE ccdaa765f1a65113 ok 1.0726 18.55s
+S4 recovery24 xgboost V3_BE 21cc4e0c3e696bad ok 1.0566 6.66s
+S4 recovery24 xgboost V3_BE 2b4ab5420acd27f0 ok 1.0332 6.54s
+S4 recovery24 xgboost V3_BE 78e86a26a17c816d ok 1.0751 7.45s
+S4 recovery24 xgboost V3_BE e27256469b6be629 ok 1.0382 33.17s
+S4 recovery24 xgboost V3_BE 264bf921acabb489 ok 1.0467 4.77s
+S4 recovery24 xgboost V3_BE 5f6f10f6bda27f29 ok 1.0826 7.9s
+S4 recovery24 xgboost V3_BE 8a72d09d5b46266d ok 1.0444 8.27s
+S4 recovery48 catboost V3_FULL 30ed77163404f4af ok 1.3193 9.62s
+S4 recovery48 catboost V3_FULL fb34f14373a3e444 ok 1.3615 36.58s
+S4 recovery48 catboost V3_FULL e0fb2dbfc9602e56 ok 1.3312 58.7s
+S4 recovery48 catboost V3_FULL 3b41ed1ee324ebda ok 1.3258 143.43s
+S4 recovery48 catboost V3_FULL 1fe847659587b3b1 ok 1.3612 8.25s
+S4 recovery48 catboost V3_FULL ea0d0fab48cad2a2 ok 1.3233 37.36s
+S4 recovery48 catboost V3_FULL 4eaa535dcd602d20 ok 1.3228 62.34s
+S4 recovery48 catboost V3_FULL d3f35a6035c4438a ok 1.3643 9.31s
+S4 recovery48 catboost V3_FULL 176692b37cf77043 ok 1.3616 41.17s
+S4 recovery48 catboost V3_FULL 225d0b45dbbb0391 ok 1.3223 49.53s
+S4 recovery48 catboost V3_FULL 77a3f7ce24397bad ok 1.3568 54.45s
+S4 recovery48 catboost V3_FULL 43cc9513dcd6d8cf ok 1.3186 16.49s
+S4 recovery48 catboost V3_FULL 8652e1dbaaa4b04e ok 1.3378 43.57s
+S4 recovery48 catboost V3_FULL f398329427c309e6 ok 1.3591 124.4s
+S4 recovery48 catboost V3_FULL 76d10deb0c5bed8d ok 1.3315 54.58s
+S4 recovery48 catboost V3_FULL 8a72a42ffae3e360 ok 1.3217 45.44s
+S4 recovery48 catboost V3_FULL c6966b774494f3b5 ok 1.3544 62.81s
+S4 recovery48 catboost V3_FULL 7a39943d6ce0f247 ok 1.3271 21.15s
+S4 recovery48 catboost V3_FULL b73dea5469884e2e ok 1.3332 40.77s
+S4 recovery48 catboost V3_FULL e0ec7d01147288c9 ok 1.3569 76.71s
+S4 recovery48 catboost V3_FULL 2a38b6a02ece4fe3 ok 1.3239 31.72s
+S4 recovery48 catboost V3_BD 30ed77163404f4af ok 1.3173 7.56s
+S4 recovery48 catboost V3_BD fb34f14373a3e444 ok 1.3588 29.48s
+S4 recovery48 catboost V3_BD e0fb2dbfc9602e56 ok 1.3344 47.71s
+S4 recovery48 catboost V3_BD 3b41ed1ee324ebda ok 1.332 123.34s
+S4 recovery48 catboost V3_BD 1fe847659587b3b1 ok 1.3617 7.62s
+S4 recovery48 catboost V3_BD ea0d0fab48cad2a2 ok 1.3219 36.9s
+S4 recovery48 catboost V3_BD 4eaa535dcd602d20 ok 1.325 52.92s
+S4 recovery48 catboost V3_BD d3f35a6035c4438a ok 1.3649 8.66s
+S4 recovery48 catboost V3_BD 176692b37cf77043 ok 1.3511 32.91s
+S4 recovery48 catboost V3_BD 225d0b45dbbb0391 ok 1.3314 33.01s
+S4 recovery48 catboost V3_BD 77a3f7ce24397bad ok 1.3557 42.84s
+S4 recovery48 catboost V3_BD 43cc9513dcd6d8cf ok 1.3209 14.42s
+S4 recovery48 catboost V3_BD 8652e1dbaaa4b04e ok 1.3417 39.07s
+S4 recovery48 catboost V3_BD f398329427c309e6 ok 1.3575 84.15s
+S4 recovery48 catboost V3_BD 76d10deb0c5bed8d ok 1.3313 42.58s
+S4 recovery48 catboost V3_BD 8a72a42ffae3e360 ok 1.3274 37.34s
+S4 recovery48 catboost V3_BD c6966b774494f3b5 ok 1.3571 51.51s
+S4 recovery48 catboost V3_BD 7a39943d6ce0f247 ok 1.3224 15.01s
+S4 recovery48 catboost V3_BD b73dea5469884e2e ok 1.3493 40.0s
+S4 recovery48 catboost V3_BD e0ec7d01147288c9 ok 1.3555 66.43s
+S4 recovery48 catboost V3_BD 2a38b6a02ece4fe3 ok 1.3221 24.07s
+S4 recovery48 catboost V3_B 30ed77163404f4af ok 1.3271 6.25s
+S4 recovery48 catboost V3_B fb34f14373a3e444 ok 1.3691 19.52s
+S4 recovery48 catboost V3_B e0fb2dbfc9602e56 ok 1.3465 36.07s
+S4 recovery48 catboost V3_B 3b41ed1ee324ebda ok 1.3383 89.67s
+S4 recovery48 catboost V3_B 1fe847659587b3b1 ok 1.3727 5.54s
+S4 recovery48 catboost V3_B ea0d0fab48cad2a2 ok 1.3303 26.64s
+S4 recovery48 catboost V3_B 4eaa535dcd602d20 ok 1.3405 29.98s
+S4 recovery48 catboost V3_B d3f35a6035c4438a ok 1.3777 6.15s
+S4 recovery48 catboost V3_B 176692b37cf77043 ok 1.3585 15.73s
+S4 recovery48 catboost V3_B 225d0b45dbbb0391 ok 1.3317 26.97s
+S4 recovery48 catboost V3_B 77a3f7ce24397bad ok 1.3737 23.36s
+S4 recovery48 catboost V3_B 43cc9513dcd6d8cf ok 1.3281 12.03s
+S4 recovery48 catboost V3_B 8652e1dbaaa4b04e ok 1.35 23.53s
+S4 recovery48 catboost V3_B f398329427c309e6 ok 1.3684 62.0s
+S4 recovery48 catboost V3_B 76d10deb0c5bed8d ok 1.3421 28.31s
+S4 recovery48 catboost V3_B 8a72a42ffae3e360 ok 1.3329 25.35s
+S4 recovery48 catboost V3_B c6966b774494f3b5 ok 1.3719 32.62s
+S4 recovery48 catboost V3_B 7a39943d6ce0f247 ok 1.3329 12.67s
+S4 recovery48 catboost V3_B b73dea5469884e2e ok 1.3623 21.6s
+S4 recovery48 catboost V3_B e0ec7d01147288c9 ok 1.366 50.62s
+S4 recovery48 catboost V3_B 2a38b6a02ece4fe3 ok 1.3396 15.49s
+S4 icu_stay_time xgboost V3_CTRL d2ce927bd3f223af ok 9.1679 9.56s
+S4 icu_stay_time xgboost V3_CTRL 781677185ff95c00 ok 12.4826 15.57s
+S4 icu_stay_time xgboost V3_CTRL 136ec2a39859f20c ok 298708749594.6912 2.2s
+S4 icu_stay_time xgboost V3_CTRL 50cbf93c1361dee7 ok 12.9504 27.01s
+S4 icu_stay_time xgboost V3_CTRL e2896b1d4295725f ok 9.5244 6.75s
+S4 icu_stay_time xgboost V3_CTRL 997afef719a2c562 ok 109697400069536.0 2.21s
+S4 icu_stay_time xgboost V3_CTRL 05eac4d87ff9dc61 ok 9.1852 27.52s
+S4 icu_stay_time xgboost V3_CTRL d349ff218ba93578 ok 12.4961 5.57s
+S4 icu_stay_time xgboost V3_CTRL 4c962452d9148c32 ok 298708749594.6912 2.21s
+S4 icu_stay_time xgboost V3_CTRL 09ab47f3ce310562 ok 12.8871 35.06s
+S4 icu_stay_time xgboost V3_CTRL fcd2f6d23c78cc1b ok 9.5187 7.56s
+S4 icu_stay_time xgboost V3_CTRL b7f6d342e41584bc ok 109697400069536.0 2.2s
+S4 icu_stay_time xgboost V3_CTRL c812917e04e71526 ok 9.2632 8.36s
+S4 icu_stay_time xgboost V3_CTRL 03fb2703e13a520f ok 12.4582 35.18s
+S4 icu_stay_time xgboost V3_CTRL feb4e9ffac3933ae ok 298708749594.6912 2.22s
+S4 icu_stay_time xgboost V3_CTRL 63174a815de41344 ok 12.9546 7.93s
+S4 icu_stay_time xgboost V3_CTRL 66c407c2ac5f0797 ok 9.5477 10.32s
+S4 icu_stay_time xgboost V3_CTRL 041f05e07e6c0178 ok 109697400069536.0 2.19s
+S4 icu_stay_time xgboost V3_CTRL 94d56729513e7780 ok 9.1935 25.15s
+S4 icu_stay_time xgboost V3_CTRL f628b14f1d1bd477 ok 12.4613 7.51s
+S4 icu_stay_time xgboost V3_CTRL ffa4e6140653e9a5 ok 298708749594.6912 2.24s
+S4 icu_stay_time xgboost V3_BF d2ce927bd3f223af ok 9.1679 9.78s
+S4 icu_stay_time xgboost V3_BF 781677185ff95c00 ok 12.4826 15.82s
+S4 icu_stay_time xgboost V3_BF 136ec2a39859f20c ok 298708749594.6912 2.23s
+S4 icu_stay_time xgboost V3_BF 50cbf93c1361dee7 ok 12.9504 27.28s
+S4 icu_stay_time xgboost V3_BF e2896b1d4295725f ok 9.5244 6.68s
+S4 icu_stay_time xgboost V3_BF 997afef719a2c562 ok 109697400069536.0 2.21s
+S4 icu_stay_time xgboost V3_BF 05eac4d87ff9dc61 ok 9.1852 27.45s
+S4 icu_stay_time xgboost V3_BF d349ff218ba93578 ok 12.4961 5.54s
+S4 icu_stay_time xgboost V3_BF 4c962452d9148c32 ok 298708749594.6912 2.22s
+S4 icu_stay_time xgboost V3_BF 09ab47f3ce310562 ok 12.8871 34.96s
+S4 icu_stay_time xgboost V3_BF fcd2f6d23c78cc1b ok 9.5187 7.51s
+S4 icu_stay_time xgboost V3_BF b7f6d342e41584bc ok 109697400069536.0 2.2s
+S4 icu_stay_time xgboost V3_BF c812917e04e71526 ok 9.2632 8.29s
+S4 icu_stay_time xgboost V3_BF 03fb2703e13a520f ok 12.4582 35.2s
+S4 icu_stay_time xgboost V3_BF feb4e9ffac3933ae ok 298708749594.6912 2.24s
+S4 icu_stay_time xgboost V3_BF 63174a815de41344 ok 12.9546 8.03s
+S4 icu_stay_time xgboost V3_BF 66c407c2ac5f0797 ok 9.5477 10.3s
+S4 icu_stay_time xgboost V3_BF 041f05e07e6c0178 ok 109697400069536.0 2.2s
+S4 icu_stay_time xgboost V3_BF 94d56729513e7780 ok 9.1935 25.14s
+S4 icu_stay_time xgboost V3_BF f628b14f1d1bd477 ok 12.4613 7.5s
+S4 icu_stay_time xgboost V3_BF ffa4e6140653e9a5 ok 298708749594.6912 2.25s
+S4 icu_stay_time xgboost V3_BFS d2ce927bd3f223af ok 9.2053 8.85s
+S4 icu_stay_time xgboost V3_BFS 781677185ff95c00 ok 12.4922 17.07s
+S4 icu_stay_time xgboost V3_BFS 136ec2a39859f20c ok 298708749594.6912 2.28s
+S4 icu_stay_time xgboost V3_BFS 50cbf93c1361dee7 ok 12.9654 24.0s
+S4 icu_stay_time xgboost V3_BFS e2896b1d4295725f ok 9.5202 6.66s
+S4 icu_stay_time xgboost V3_BFS 997afef719a2c562 ok 109697400069536.0 2.23s
+S4 icu_stay_time xgboost V3_BFS 05eac4d87ff9dc61 ok 9.1744 26.7s
+S4 icu_stay_time xgboost V3_BFS d349ff218ba93578 ok 12.5253 6.36s
+S4 icu_stay_time xgboost V3_BFS 4c962452d9148c32 ok 298708749594.6912 2.26s
+S4 icu_stay_time xgboost V3_BFS 09ab47f3ce310562 ok 12.8966 34.12s
+S4 icu_stay_time xgboost V3_BFS fcd2f6d23c78cc1b ok 9.5204 8.25s
+S4 icu_stay_time xgboost V3_BFS b7f6d342e41584bc ok 109697400069536.0 2.24s
+S4 icu_stay_time xgboost V3_BFS c812917e04e71526 ok 9.2551 8.34s
+S4 icu_stay_time xgboost V3_BFS 03fb2703e13a520f ok 12.453 32.47s
+S4 icu_stay_time xgboost V3_BFS feb4e9ffac3933ae ok 298708749594.6912 2.24s
+S4 icu_stay_time xgboost V3_BFS 63174a815de41344 ok 12.9728 7.23s
+S4 icu_stay_time xgboost V3_BFS 66c407c2ac5f0797 ok 9.5298 10.51s
+S4 icu_stay_time xgboost V3_BFS 041f05e07e6c0178 ok 109697400069536.0 2.24s
+S4 icu_stay_time xgboost V3_BFS 94d56729513e7780 ok 9.2194 27.07s
+S4 icu_stay_time xgboost V3_BFS f628b14f1d1bd477 ok 12.4781 7.57s
+S4 icu_stay_time xgboost V3_BFS ffa4e6140653e9a5 ok 298708749594.6912 2.28s
+S4 organ_support xgboost V3_FULL 5a14852776fc5895 ok 0.6633 20.04s
+S4 organ_support xgboost V3_FULL 66137ccdbb7b9a18 ok 0.6623 71.73s
+S4 organ_support xgboost V3_FULL 899bb5a084a225b8 ok 0.6525 10.0s
+S4 organ_support xgboost V3_FULL c791d557fe32afd1 ok 0.6577 15.52s
+S4 organ_support xgboost V3_FULL 84faa92c90bf3b3b ok 0.6621 49.72s
+S4 organ_support xgboost V3_FULL 3be04aed7ead4c36 ok 0.6575 12.25s
+S4 organ_support xgboost V3_FULL e7c1b0cc0dc9aef2 ok 0.6629 36.25s
+S4 organ_support xgboost V3_FULL 1f1601e11ff80f12 ok 0.6628 51.03s
+S4 organ_support xgboost V3_FULL df2198f33efa427b ok 0.6617 62.25s
+S4 organ_support xgboost V3_FULL 89f60ba2dd4c9557 ok 0.6635 53.43s
+S4 organ_support xgboost V3_FULL 4696b9fa8bab87a9 ok 0.6542 10.1s
+S4 organ_support xgboost V3_FULL ed4064606176c098 ok 0.6598 53.92s
+S4 organ_support xgboost V3_FULL 1b4c7b33bae1b7ec ok 0.665 34.48s
+S4 organ_support xgboost V3_FULL afb2033d3cea2c4a ok 0.6636 24.91s
+S4 organ_support xgboost V3_FULL ffe0c1b2f94ad99d ok 0.655 10.09s
+S4 organ_support xgboost V3_FULL 54ee586f814db6a6 ok 0.6612 46.44s
+S4 organ_support xgboost V3_FULL dacccd1a0e33c1f5 ok 0.6628 29.09s
+S4 organ_support xgboost V3_FULL 7958ce48244dab43 ok 0.6633 21.58s
+S4 organ_support xgboost V3_FULL 2ae1f293f7f587c9 ok 0.6625 65.81s
+S4 organ_support xgboost V3_FULL 982361d0b06b7c3f ok 0.6602 14.18s
+S4 organ_support xgboost V3_FULL 074c05d82148215a ok 0.659 10.99s
+S4 organ_support xgboost V3_BD 5a14852776fc5895 ok 0.6628 15.91s
+S4 organ_support xgboost V3_BD 66137ccdbb7b9a18 ok 0.6618 49.85s
+S4 organ_support xgboost V3_BD 899bb5a084a225b8 ok 0.657 7.08s
+S4 organ_support xgboost V3_BD c791d557fe32afd1 ok 0.6564 12.09s
+S4 organ_support xgboost V3_BD 84faa92c90bf3b3b ok 0.6606 39.91s
+S4 organ_support xgboost V3_BD 3be04aed7ead4c36 ok 0.657 10.97s
+S4 organ_support xgboost V3_BD e7c1b0cc0dc9aef2 ok 0.6623 30.51s
+S4 organ_support xgboost V3_BD 1f1601e11ff80f12 ok 0.6631 39.15s
+S4 organ_support xgboost V3_BD df2198f33efa427b ok 0.6619 44.55s
+S4 organ_support xgboost V3_BD 89f60ba2dd4c9557 ok 0.6629 41.47s
+S4 organ_support xgboost V3_BD 4696b9fa8bab87a9 ok 0.6501 8.28s
+S4 organ_support xgboost V3_BD ed4064606176c098 ok 0.6623 40.19s
+S4 organ_support xgboost V3_BD 1b4c7b33bae1b7ec ok 0.6628 27.77s
+S4 organ_support xgboost V3_BD afb2033d3cea2c4a ok 0.664 18.01s
+S4 organ_support xgboost V3_BD ffe0c1b2f94ad99d ok 0.6544 8.46s
+S4 organ_support xgboost V3_BD 54ee586f814db6a6 ok 0.6602 30.31s
+S4 organ_support xgboost V3_BD dacccd1a0e33c1f5 ok 0.6631 21.93s
+S4 organ_support xgboost V3_BD 7958ce48244dab43 ok 0.6631 15.7s
+S4 organ_support xgboost V3_BD 2ae1f293f7f587c9 ok 0.6615 48.5s
+S4 organ_support xgboost V3_BD 982361d0b06b7c3f ok 0.6612 11.76s
+S4 organ_support xgboost V3_BD 074c05d82148215a ok 0.6577 8.8s
+S4 organ_support xgboost V3_BE 5a14852776fc5895 ok 0.6629 12.18s
+S4 organ_support xgboost V3_BE 66137ccdbb7b9a18 ok 0.6627 34.24s
+S4 organ_support xgboost V3_BE 899bb5a084a225b8 ok 0.6553 4.49s
+S4 organ_support xgboost V3_BE c791d557fe32afd1 ok 0.6587 7.92s
+S4 organ_support xgboost V3_BE 84faa92c90bf3b3b ok 0.6603 27.55s
+S4 organ_support xgboost V3_BE 3be04aed7ead4c36 ok 0.659 6.27s
+S4 organ_support xgboost V3_BE e7c1b0cc0dc9aef2 ok 0.6613 19.44s
+S4 organ_support xgboost V3_BE 1f1601e11ff80f12 ok 0.6626 29.3s
+S4 organ_support xgboost V3_BE df2198f33efa427b ok 0.6627 27.41s
+S4 organ_support xgboost V3_BE 89f60ba2dd4c9557 ok 0.6629 31.12s
+S4 organ_support xgboost V3_BE 4696b9fa8bab87a9 ok 0.6497 5.11s
+S4 organ_support xgboost V3_BE ed4064606176c098 ok 0.6605 33.02s
+S4 organ_support xgboost V3_BE 1b4c7b33bae1b7ec ok 0.6637 15.98s
+S4 organ_support xgboost V3_BE afb2033d3cea2c4a ok 0.6636 11.23s
+S4 organ_support xgboost V3_BE ffe0c1b2f94ad99d ok 0.6512 5.35s
+S4 organ_support xgboost V3_BE 54ee586f814db6a6 ok 0.6621 24.6s
+S4 organ_support xgboost V3_BE dacccd1a0e33c1f5 ok 0.6614 16.37s
+S4 organ_support xgboost V3_BE 7958ce48244dab43 ok 0.6626 11.09s
+S4 organ_support xgboost V3_BE 2ae1f293f7f587c9 ok 0.6616 28.32s
+S4 organ_support xgboost V3_BE 982361d0b06b7c3f ok 0.6593 7.62s
+S4 organ_support xgboost V3_BE 074c05d82148215a ok 0.6578 4.88s
+{
+ "rule": "lowest mean primary; tie tolerance relative 0.5% (AUPRC abs 0.003) -> complexity -> fold sd",
+ "tasks": {
+  "recovery24": {
+   "winner": {
+    "trial_id": "S4|recovery24|xgboost|V3_BE|1f70d22d71f71d64|s11|f01234",
+    "family": "xgboost",
+    "variant": "V3_BE",
+    "config": {
+     "colsample_bytree": 0.8766636795880611,
+     "config_hash": "1f70d22d71f71d64",
+     "early_stopping_rounds": 50,
+     "family": "xgboost",
+     "gamma": 3.1588033816153422,
+     "learning_rate": 0.06847124646565844,
+     "max_depth": 5,
+     "min_child_weight": 10,
+     "n_estimators": 1500,
+     "objective": "absoluteerror",
+     "reg_alpha": 0.19413668479402513,
+     "reg_lambda": 0.43579417029335565,
+     "subsample": 0.9157195369064657,
+     "task": "recovery24",
+     "weight_mode": "none"
+    },
+    "primary_mean": 1.0190212367298574,
+    "primary_sd": 0.0221577852560075,
+    "per_fold_primary": [
+     1.0265850552611466,
+     1.0165406296294464,
+     0.9916268629034085,
+     1.0514036797585928,
+     1.0089499560966924
+    ],
+    "best_iterations": [
+     120,
+     196,
+     102,
+     113,
+     112
+    ],
+    "secondary_means": {
+     "mae": 1.0190212367298574,
+     "median_ae": 0.7603333532810211,
+     "rmse": 1.406681568070885
+    }
+   },
+   "best_raw": {
+    "trial_id": "S4|recovery24|xgboost|V3_BD|1f70d22d71f71d64|s11|f01234",
+    "primary_mean": 1.015851374601725
+   },
+   "tie_group_size": 6,
+   "tolerance": 0.005079256873008625,
+   "v2_recipe_control": {
+    "primary_mean": 1.0304718142033875,
+    "primary_sd": 0.021971347812480835
+   },
+   "beats_v2_recipe_beyond_tolerance": true
+  },
+  "recovery48": {
+   "winner": {
+    "trial_id": "S4|recovery48|catboost|V3_BD|30ed77163404f4af|s11|f01234",
+    "family": "catboost",
+    "variant": "V3_BD",
+    "config": {
+     "colsample_bytree": 0.7432911445414877,
+     "config_hash": "30ed77163404f4af",
+     "depth": 4,
+     "early_stopping_rounds": 50,
+     "family": "catboost",
+     "l2_leaf_reg": 15.081953686255927,
+     "learning_rate": 0.06621969456459814,
+     "n_estimators": 1500,
+     "objective": "absoluteerror",
+     "subsample": 0.8942923465974113,
+     "task": "recovery48",
+     "weight_mode": "none"
+    },
+    "primary_mean": 1.3173464860041664,
+    "primary_sd": 0.03342874534523237,
+    "per_fold_primary": [
+     1.3413694170231463,
+     1.2677136748615103,
+     1.3003987344394925,
+     1.3495019882509598,
+     1.3277486154457234
+    ],
+    "best_iterations": [
+     128,
+     148,
+     192,
+     221,
+     114
+    ],
+    "secondary_means": {
+     "mae": 1.3173464860041664,
+     "median_ae": 1.0718680319030471,
+     "rmse": 1.65777065964322
+    }
+   },
+   "best_raw": {
+    "trial_id": "S4|recovery48|catboost|V3_BD|30ed77163404f4af|s11|f01234",
+    "primary_mean": 1.3173464860041664
+   },
+   "tie_group_size": 12,
+   "tolerance": 0.006586732430020832,
+   "v2_recipe_control": {
+    "primary_mean": 1.3348650516484015,
+    "primary_sd": 0.04028679914518659
+   },
+   "beats_v2_recipe_beyond_tolerance":

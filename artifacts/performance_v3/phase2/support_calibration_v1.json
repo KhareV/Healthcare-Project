@@ -1,0 +1,166 @@
+{
+  "artifact_version": "performance_v3_support_calibration_v1",
+  "candidate": {
+    "config": {
+      "class_weight": "scale_pos_weight",
+      "colsample_bytree": 0.8518373959921394,
+      "config_hash": "1b4c7b33bae1b7ec",
+      "early_stopping_rounds": 50,
+      "family": "xgboost",
+      "gamma": 3.5355326099632176,
+      "learning_rate": 0.01652111156212436,
+      "max_depth": 5,
+      "min_child_weight": 5,
+      "n_estimators": 1500,
+      "objective": "binary",
+      "reg_alpha": 0.0004511670771228076,
+      "reg_lambda": 1.8073583123204269,
+      "subsample": 0.6052021268037671,
+      "task": "organ_support",
+      "weight_mode": "stay_balanced"
+    },
+    "family": "xgboost",
+    "variant": "V3_BE"
+  },
+  "chosen_calibrator": "platt",
+  "frozen_calibrator": {
+    "intercept": -0.2570422361242667,
+    "method": "platt",
+    "slope": 1.0556798067236133,
+    "version": "performance_v3_calibration_v1"
+  },
+  "methods": {
+    "beta": {
+      "auprc_heldout": 0.6613811694632804,
+      "auroc_heldout": 0.7398093295555664,
+      "metrics": {
+        "auprc": 0.6613811694632804,
+        "auroc": 0.7398093295555664,
+        "brier": 0.20258765388483724,
+        "calibration_intercept": -0.0020514157547299617,
+        "calibration_slope": 0.9925699312125882,
+        "ece_10_equal_mass": 0.01141141158832823,
+        "log_loss": 0.5895442501872105,
+        "tie_fraction": 0.00022268880829678928
+      },
+      "ties_fraction": 0.00022268880829678928
+    },
+    "isotonic": {
+      "auprc_heldout": 0.6557866635757195,
+      "auroc_heldout": 0.7374954640275707,
+      "metrics": {
+        "auprc": 0.6557866635757195,
+        "auroc": 0.7374954640275707,
+        "brier": 0.20298495578744818,
+        "calibration_intercept": -0.010695087851651656,
+        "calibration_slope": 0.956849139673481,
+        "ece_10_equal_mass": 0.008845542986246801,
+        "log_loss": 0.592389922676979,
+        "tie_fraction": 0.9902335051218426
+      },
+      "ties_fraction": 0.9902335051218426
+    },
+    "none": {
+      "auprc_heldout": 0.6632302610367508,
+      "auroc_heldout": 0.7407051844343494,
+      "metrics": {
+        "auprc": 0.6632302610367508,
+        "auroc": 0.7407051844343494,
+        "brier": 0.2052287016601557,
+        "calibration_intercept": -0.2570422361242667,
+        "calibration_slope": 1.0556798067236133,
+        "ece_10_equal_mass": 0.053048829001640464,
+        "log_loss": 0.595694310578226,
+        "tie_fraction": 0.0010816313545841671
+      },
+      "ties_fraction": 0.0010816313545841671
+    },
+    "platt": {
+      "auprc_heldout": 0.6624612118741062,
+      "auroc_heldout": 0.7400790447443861,
+      "metrics": {
+        "auprc": 0.6624612118741062,
+        "auroc": 0.7400790447443861,
+        "brier": 0.20248972571918342,
+        "calibration_intercept": -0.00121671096778668,
+        "calibration_slope": 0.9950373420325774,
+        "ece_10_equal_mass": 0.01212366862704984,
+        "log_loss": 0.5892877035181897,
+        "tie_fraction": 0.00022268880829678928
+      },
+      "ties_fraction": 0.00022268880829678928
+    }
+  },
+  "nested_audit": [
+    {
+      "fold": 0,
+      "n_eval": 5907,
+      "n_fit": 25527,
+      "row_overlap": 0,
+      "subject_overlap": 0
+    },
+    {
+      "fold": 1,
+      "n_eval": 6445,
+      "n_fit": 24989,
+      "row_overlap": 0,
+      "subject_overlap": 0
+    },
+    {
+      "fold": 2,
+      "n_eval": 6128,
+      "n_fit": 25306,
+      "row_overlap": 0,
+      "subject_overlap": 0
+    },
+    {
+      "fold": 3,
+      "n_eval": 6407,
+      "n_fit": 25027,
+      "row_overlap": 0,
+      "subject_overlap": 0
+    },
+    {
+      "fold": 4,
+      "n_eval": 6547,
+      "n_fit": 24887,
+      "row_overlap": 0,
+      "subject_overlap": 0
+    }
+  ],
+  "oof_raw": {
+    "auprc": 0.6632302610367508,
+    "auroc": 0.7407051844343494,
+    "best_iterations": [
+      302,
+      568,
+      291,
+      378,
+      225
+    ],
+    "n_rows": 31434,
+    "n_stays": 6298,
+    "oof_sha256": "da68cafbb4b618e42e0ff5b9dd3f322bf6c6591523d20f6fccbb7757e718edbf",
+    "per_fold_auprc": [
+      0.6664732254052887,
+      0.6859633521458481,
+      0.6799568358883807,
+      0.6415893070464515,
+      0.6445904243365808
+    ]
+  },
+  "selection_rule": "lowest nested cross-fitted stay-balanced log loss; tie tolerance 0.002; order none<platt<beta<isotonic",
+  "stage": "development_only_no_test_access",
+  "threshold": {
+    "comparator": ">=",
+    "f1": 0.6593654555883952,
+    "threshold": 0.3021480061849302,
+    "tie_break": "lowest threshold",
+    "weighted_confusion": {
+      "FN": 380.4291125541125,
+      "FP": 1972.496212121212,
+      "TN": 1667.7987734487735,
+      "TP": 2277.275901875902
+    }
+  }
+}

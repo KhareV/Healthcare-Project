@@ -65,7 +65,12 @@ def main() -> None:
     if args.kind == "v3":
         selection = json.loads((PHASE2 / "candidate_selection_v1.json").read_text())
         for task in S.TASKS:
-            win = selection["tasks"][task]["winner"]
+            info = selection["tasks"][task]
+            if not info["beats_v2_recipe_beyond_tolerance"]:
+                v2cfg, _ = v2_recipe(task)  # pre-registered rule: V2 recipe retained (refit, repaired features)
+                plan[task] = ("xgboost", "V3_CTRL", v2cfg, int(v2cfg["n_estimators"]))
+                continue
+            win = info["winner"]
             cfg = dict(win["config"])
             n_est = 0 if win["family"] in ("ridge", "logistic") else n_estimators_rule(win["best_iterations"])
             plan[task] = (win["family"], win["variant"], cfg, n_est)

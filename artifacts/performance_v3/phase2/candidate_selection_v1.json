@@ -1,0 +1,228 @@
+{
+  "rule": "lowest mean primary; tie tolerance relative 0.5% (AUPRC abs 0.003) -> complexity -> fold sd",
+  "tasks": {
+    "icu_stay_time": {
+      "beats_v2_recipe_beyond_tolerance": false,
+      "best_raw": {
+        "primary_mean": 9.167932664604741,
+        "trial_id": "S4|icu_stay_time|xgboost|V3_CTRL|d2ce927bd3f223af|s11|f01234"
+      },
+      "tie_group_size": 8,
+      "tolerance": 0.04583966332302371,
+      "v2_recipe_control": {
+        "primary_mean": 9.196298978833033,
+        "primary_sd": 0.09273422155149014
+      },
+      "winner": {
+        "best_iterations": [
+          46,
+          58,
+          47,
+          61,
+          93
+        ],
+        "config": {
+          "colsample_bytree": 0.7748650831910859,
+          "config_hash": "d2ce927bd3f223af",
+          "early_stopping_rounds": 50,
+          "family": "xgboost",
+          "gamma": 2.0307965950435043,
+          "learning_rate": 0.05538874346810046,
+          "max_depth": 5,
+          "min_child_weight": 9,
+          "n_estimators": 1500,
+          "objective": "absoluteerror",
+          "reg_alpha": 1.2129325168928632e-05,
+          "reg_lambda": 4.711171949199796,
+          "subsample": 0.6678927112824116,
+          "task": "icu_stay_time",
+          "weight_mode": "stay_balanced"
+        },
+        "family": "xgboost",
+        "per_fold_primary": [
+          9.279121156043383,
+          9.178512137912776,
+          9.25381687216236,
+          9.162398066582568,
+          9.152420857418988
+        ],
+        "primary_mean": 9.205253818024016,
+        "primary_sd": 0.05735374544523352,
+        "secondary_means": {
+          "mae": 13.017735347810255,
+          "rmse": 18.63940602815648,
+          "weighted_median_ae_hours": 9.205253818024016
+        },
+        "trial_id": "S4|icu_stay_time|xgboost|V3_BFS|d2ce927bd3f223af|s11|f01234",
+        "variant": "V3_BFS"
+      }
+    },
+    "organ_support": {
+      "beats_v2_recipe_beyond_tolerance": true,
+      "best_raw": {
+        "primary_mean": 0.6650306670358732,
+        "trial_id": "S4|organ_support|xgboost|V3_FULL|1b4c7b33bae1b7ec|s11|f01234"
+      },
+      "tie_group_size": 29,
+      "tolerance": 0.003,
+      "v2_recipe_control": {
+        "primary_mean": 0.6580888052534399,
+        "primary_sd": 0.017589271309960734
+      },
+      "winner": {
+        "best_iterations": [
+          302,
+          568,
+          291,
+          378,
+          225
+        ],
+        "config": {
+          "class_weight": "scale_pos_weight",
+          "colsample_bytree": 0.8518373959921394,
+          "config_hash": "1b4c7b33bae1b7ec",
+          "early_stopping_rounds": 50,
+          "family": "xgboost",
+          "gamma": 3.5355326099632176,
+          "learning_rate": 0.01652111156212436,
+          "max_depth": 5,
+          "min_child_weight": 5,
+          "n_estimators": 1500,
+          "objective": "binary",
+          "reg_alpha": 0.0004511670771228076,
+          "reg_lambda": 1.8073583123204269,
+          "subsample": 0.6052021268037671,
+          "task": "organ_support",
+          "weight_mode": "stay_balanced"
+        },
+        "family": "xgboost",
+        "per_fold_primary": [
+          0.6664732254052887,
+          0.6859633521458481,
+          0.6799568358883807,
+          0.6415893070464515,
+          0.6445904243365808
+        ],
+        "primary_mean": 0.6637146289645101,
+        "primary_sd": 0.020135105511949504,
+        "secondary_means": {
+          "auprc": 0.6637146289645101,
+          "auroc": 0.741383633187062,
+          "brier": 0.20517833472032648,
+          "log_loss": 0.5955780281124837
+        },
+        "trial_id": "S4|organ_support|xgboost|V3_BE|1b4c7b33bae1b7ec|s11|f01234",
+        "variant": "V3_BE"
+      }
+    },
+    "recovery24": {
+      "beats_v2_recipe_beyond_tolerance": true,
+      "best_raw": {
+        "primary_mean": 1.015851374601725,
+        "trial_id": "S4|recovery24|xgboost|V3_BD|1f70d22d71f71d64|s11|f01234"
+      },
+      "tie_group_size": 6,
+      "tolerance": 0.005079256873008625,
+      "v2_recipe_control": {
+        "primary_mean": 1.0304718142033875,
+        "primary_sd": 0.021971347812480835
+      },
+      "winner": {
+        "best_iterations": [
+          120,
+          196,
+          102,
+          113,
+          112
+        ],
+        "config": {
+          "colsample_bytree": 0.8766636795880611,
+          "config_hash": "1f70d22d71f71d64",
+          "early_stopping_rounds": 50,
+          "family": "xgboost",
+          "gamma": 3.1588033816153422,
+          "learning_rate": 0.06847124646565844,
+          "max_depth": 5,
+          "min_child_weight": 10,
+          "n_estimators": 1500,
+          "objective": "absoluteerror",
+          "reg_alpha": 0.19413668479402513,
+          "reg_lambda": 0.43579417029335565,
+          "subsample": 0.9157195369064657,
+          "task": "recovery24",
+          "weight_mode": "none"
+        },
+        "family": "xgboost",
+        "per_fold_primary": [
+          1.0265850552611466,
+          1.0165406296294464,
+          0.9916268629034085,
+          1.0514036797585928,
+          1.0089499560966924
+        ],
+        "primary_mean": 1.0190212367298574,
+        "primary_sd": 0.0221577852560075,
+        "secondary_means": {
+          "mae": 1.0190212367298574,
+          "median_ae": 0.7603333532810211,
+          "rmse": 1.406681568070885
+        },
+        "trial_id": "S4|recovery24|xgboost|V3_BE|1f70d22d71f71d64|s11|f01234",
+        "variant": "V3_BE"
+      }
+    },
+    "recovery48": {
+      "beats_v2_recipe_beyond_tolerance": true,
+      "best_raw": {
+        "primary_mean": 1.3173464860041664,
+        "trial_id": "S4|recovery48|catboost|V3_BD|30ed77163404f4af|s11|f01234"
+      },
+      "tie_group_size": 12,
+      "tolerance": 0.006586732430020832,
+      "v2_recipe_control": {
+        "primary_mean": 1.3348650516484015,
+        "primary_sd": 0.04028679914518659
+      },
+      "winner": {
+        "best_iterations": [
+          128,
+          148,
+          192,
+          221,
+          114
+        ],
+        "config": {
+          "colsample_bytree": 0.7432911445414877,
+          "config_hash": "30ed77163404f4af",
+          "depth": 4,
+          "early_stopping_rounds": 50,
+          "family": "catboost",
+          "l2_leaf_reg": 15.081953686255927,
+          "learning_rate": 0.06621969456459814,
+          "n_estimators": 1500,
+          "objective": "absoluteerror",
+          "subsample": 0.8942923465974113,
+          "task": "recovery48",
+          "weight_mode": "none"
+        },
+        "family": "catboost",
+        "per_fold_primary": [
+          1.3413694170231463,
+          1.2677136748615103,
+          1.3003987344394925,
+          1.3495019882509598,
+          1.3277486154457234
+        ],
+        "primary_mean": 1.3173464860041664,
+        "primary_sd": 0.03342874534523237,
+        "secondary_means": {
+          "mae": 1.3173464860041664,
+          "median_ae": 1.0718680319030471,
+          "rmse": 1.65777065964322
+        },
+        "trial_id": "S4|recovery48|catboost|V3_BD|30ed77163404f4af|s11|f01234",
+        "variant": "V3_BD"
+      }
+    }
+  }
+}

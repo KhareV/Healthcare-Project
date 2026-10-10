@@ -1,0 +1,92 @@
+{
+  "amendment_sha256": "4988b23163c3565923c1b87324a7a7176113af8e0d800ef4b8104cecb239bc30",
+  "artifact_version": "performance_v3_selected_models_v1",
+  "bundle_id": "performance_v3_v3",
+  "calibrator": {
+    "method": "platt",
+    "params": {
+      "intercept": -0.2570422361242667,
+      "method": "platt",
+      "slope": 1.0556798067236133,
+      "version": "performance_v3_calibration_v1"
+    },
+    "sha256": "f39440b64407e52d8051f15e69403dd0ce2f2ab0408c284c6cde32c02fceb279"
+  },
+  "code_commit": "ac79e5cacf4577f740d6c9aeac5f48c263272351",
+  "development_pool": {
+    "cache_matrix_sha256": "36e7efff7b38639aed85f318465fcf5b1bce547f730aa3d9088c284f19ca91bd",
+    "cache_ref": "artifacts/performance_v3/cache/dev_pool",
+    "subjects": 8000
+  },
+  "fit_wall_seconds": 10.5,
+  "kind": "v3",
+  "protocol_sha256": "fc1cd8bc7178764ea247ef5aa3131056176064b9d787b6ef8555b13d2fdea27b",
+  "seed": 11,
+  "status": "DEVELOPMENT_REFIT_PRE_FREEZE",
+  "tasks": {
+    "icu_stay_time": {
+      "config_hash": "v2recipe-icu_stay_time",
+      "family": "xgboost",
+      "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/icu_stay_time/feature_names.json",
+      "feature_names_sha256": "cf097d3960ddd409bbf9dbdfa686fa2df66a5cb93785e36fb191845b844d6145",
+      "feature_variant": "V3_CTRL",
+      "model_ref": "artifacts/performance_v3/phase3/v3/models/icu_stay_time/model_meta.json",
+      "model_sha256": "b8d41da7caa085acb4c9f6b729128d3041ea3e09cf9471e3e64b2adf2c0f1459",
+      "n_estimators": 428,
+      "n_features": 522,
+      "names_sha256": "44066a302bfc65b605d45355c03fb37a916017f6c25b60c237a46a5dcb0eca8d",
+      "postprocess": "expm1(clamp_min(raw,0))",
+      "training_rows": 48859,
+      "training_stays": 8000
+    },
+    "organ_support": {
+      "config_hash": "1b4c7b33bae1b7ec",
+      "family": "xgboost",
+      "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/organ_support/feature_names.json",
+      "feature_names_sha256": "246319194d5393d0f96dad26e910fbac481986948bb31f546c23274616e3325a",
+      "feature_variant": "V3_BE",
+      "model_ref": "artifacts/performance_v3/phase3/v3/models/organ_support/model_meta.json",
+      "model_sha256": "46c31ece22df8429f2991db889e16a8c3cacdf431589a57594366a102a8d33c6",
+      "n_estimators": 333,
+      "n_features": 557,
+      "names_sha256": "0af3f559c5d0ac77a2ed53ab793c7f8cd10a8124b14b675592712911158a60cc",
+      "postprocess": "none",
+      "training_rows": 31434,
+      "training_stays": 6298
+    },
+    "recovery24": {
+      "config_hash": "1f70d22d71f71d64",
+      "family": "xgboost",
+      "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/recovery24/feature_names.json",
+      "feature_names_sha256": "246319194d5393d0f96dad26e910fbac481986948bb31f546c23274616e3325a",
+      "feature_variant": "V3_BE",
+      "model_ref": "artifacts/performance_v3/phase3/v3/models/recovery24/model_meta.json",
+      "model_sha256": "cc1ed1acceb0e3d9e4c396a34270a414c7db3d26cbfec0ab01b6608840aede2a",
+      "n_estimators": 125,
+      "n_features": 557,
+      "names_sha256": "0af3f559c5d0ac77a2ed53ab793c7f8cd10a8124b14b675592712911158a60cc",
+      "postprocess": "none",
+      "training_rows": 28203,
+      "training_stays": 5912
+    },
+    "recovery48": {
+      "config_hash": "30ed77163404f4af",
+      "family": "catboost",
+      "feature_names_ref": "artifacts/performance_v3/phase3/v3/models/recovery48/feature_names.json",
+      "feature_names_sha256": "be8d925af2e30919c0956d683ff365d13a14e079fdc99809ae5606f5a6d43af1",
+      "feature_variant": "V3_BD",
+      "model_ref": "artifacts/performance_v3/phase3/v3/models/recovery48/model_meta.json",
+      "model_sha256": "65b1367bcc117e42972c768b98c6275b7b9075d8ac5dbb1d10466f2e84af3a6e",
+      "n_estimators": 163,
+      "n_features": 766,
+      "names_sha256": "c613f0e3a9975224576dc210b4ff32ef3299df528961058c41b0aeb35f9708e2",
+      "postprocess": "none",
+      "training_rows": 10620,
+      "training_stays": 2626
+    }
+  },
+  "threshold": {
+    "comparator": ">=",
+    "value": 0.3021480061849302
+  }
+}

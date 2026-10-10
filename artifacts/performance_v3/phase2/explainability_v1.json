@@ -1,0 +1,2399 @@
+{
+  "additivity_max_abs_error_overall": 5.448382125905482e-06,
+  "artifact_version": "performance_v3_explainability_v1",
+  "figures": [
+    "artifacts/performance_v3/phase2/figures/shap_recovery24_global.png",
+    "artifacts/performance_v3/phase2/figures/shap_recovery48_global.png",
+    "artifacts/performance_v3/phase2/figures/shap_icu_stay_time_global.png",
+    "artifacts/performance_v3/phase2/figures/shap_organ_support_global.png"
+  ],
+  "interpretation_wording": "contributed to the prediction",
+  "note": "TreeSHAP of the raw margin before calibration/postprocess; not a decomposition of the calibrated probability; non-causal.",
+  "output_domain": "RAW_MARGIN_PRE_CALIBRATION_NOT_CALIBRATED_PROBABILITY",
+  "sample": {
+    "cohort": "LCE",
+    "rows": 1500,
+    "seed": 11
+  },
+  "stage": "development_only_LCE",
+  "tasks": {
+    "icu_stay_time": {
+      "additivity_max_abs_error": 5.448382125905482e-06,
+      "additivity_passed": true,
+      "base_value": 3.0687947273254395,
+      "family": "xgboost",
+      "forbidden_token_feature_names": [],
+      "global_top20": [
+        {
+          "feature": "A__bin5__heart_rate__latest__value",
+          "mean_abs_shap": 0.024181166974794905,
+          "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__heart_rate__latest__value",
+          "mean_abs_shap": 0.01979364733840339,
+          "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__heart_rate__latest__value",
+          "mean_abs_shap": 0.012910947766106498,
+          "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.012903516507945217,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__heart_rate__latest__value",
+          "mean_abs_shap": 0.012058931927070565,
+          "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.011959949084790424,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "B__current_sofa",
+          "mean_abs_shap": 0.010997022358225271,
+          "readable": "B__current_sofa"
+        },
+        {
+          "feature": "A__bin2__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.009959048147313297,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin2__heart_rate__latest__value",
+          "mean_abs_shap": 0.009191212089596472,
+          "readable": "heart_rate__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__pao2__latest__value",
+          "mean_abs_shap": 0.008071719053931399,
+          "readable": "pao2__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin3__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.007927380624018649,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__creatinine__latest__value",
+          "mean_abs_shap": 0.007401456307986033,
+          "readable": "creatinine__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__lactate__latest__value",
+          "mean_abs_shap": 0.007313512529224681,
+          "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin1__heart_rate__latest__value",
+          "mean_abs_shap": 0.006884091502157389,
+          "readable": "heart_rate__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__oxygen_saturation__latest__value",
+          "mean_abs_shap": 0.006818453162579923,
+          "readable": "oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin1__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.0063731417217253086,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.006017134093150768,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__respiratory_rate__latest__value",
+          "mean_abs_shap": 0.005974589882522196,
+          "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__temperature__latest__value",
+          "mean_abs_shap": 0.005604565264142972,
+          "readable": "temperature__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin2__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.005121780775977337,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)"
+        }
+      ],
+      "local": [
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 3.3291907775228538,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "A__bin4__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.026201240718364716,
+              "statement": "A__bin4__creatinine__latest__value contributed to the prediction (raw-margin shift +0.0262)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.022745732218027115,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0227)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.018597910180687904,
+              "statement": "A__bin4__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0186)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01816481724381447,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift +0.0182)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.015204091556370258,
+              "statement": "A__bin4__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0152)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.014202645979821682,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0142)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin2__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.013243713416159153,
+              "statement": "A__bin2__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0132)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.013178868219256401,
+              "statement": "A__bin7__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.0132)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.013147322461009026,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0131)"
+            },
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 0.01141695398837328,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +0.0114)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 5,
+          "raw_margin": 3.1528955727949324,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "A__bin4__urine_output_volume__sum__value",
+              "readable": "urine_output_volume__sum [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03472444415092468,
+              "statement": "A__bin4__urine_output_volume__sum__value contributed to the prediction (raw-margin shift +0.0347)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01815694384276867,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0182)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.015818800777196884,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0158)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__pao2__latest__value",
+              "readable": "pao2__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.015278194099664688,
+              "statement": "A__bin4__pao2__latest__value contributed to the prediction (raw-margin shift +0.0153)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.01267086248844862,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0127)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.012234763242304325,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0122)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.011058522388339043,
+              "statement": "A__bin7__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.0111)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.008878628723323345,
+              "statement": "A__bin4__creatinine__latest__value contributed to the prediction (raw-margin shift +0.0089)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -0.008830619044601917,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -0.0088)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__urine_output_volume__sum__value",
+              "readable": "urine_output_volume__sum [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.007944270968437195,
+              "statement": "A__bin5__urine_output_volume__sum__value contributed to the prediction (raw-margin shift +0.0079)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 3.2794889444130604,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.048529282212257385,
+              "statement": "A__bin6__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0485)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.032814618200063705,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0328)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.029376687481999397,
+              "statement": "A__bin4__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0294)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__pao2__latest__value",
+              "readable": "pao2__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.026993030682206154,
+              "statement": "A__bin4__pao2__latest__value contributed to the prediction (raw-margin shift +0.0270)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.021126501262187958,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0211)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.0200200155377388,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0200)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.017481323331594467,
+              "statement": "A__bin4__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0175)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin3__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.012421836145222187,
+              "statement": "A__bin3__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0124)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.012326084077358246,
+              "statement": "A__bin6__creatinine__latest__value contributed to the prediction (raw-margin shift +0.0123)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.009989026933908463,
+              "statement": "A__bin4__temperature__latest__value contributed to the prediction (raw-margin shift +0.0100)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": 3.1905475241915155,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.024222493171691895,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0242)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01918528787791729,
+              "statement": "A__bin4__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0192)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin1__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.018940472975373268,
+              "statement": "A__bin1__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0189)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01505897007882595,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0151)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.014077813364565372,
+              "statement": "A__bin4__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0141)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01206921599805355,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift +0.0121)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.01059393398463726,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0106)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin2__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.009152318350970745,
+              "statement": "A__bin2__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0092)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin0__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 0 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.008609163574874401,
+              "statement": "A__bin0__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0086)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin1__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.008489121682941914,
+              "statement": "A__bin1__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0085)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 2.950371216847998,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "A__bin4__pao2__latest__value",
+              "readable": "pao2__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04482588917016983,
+              "statement": "A__bin4__pao2__latest__value contributed to the prediction (raw-margin shift +0.0448)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.03655320778489113,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0366)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.03473050519824028,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift -0.0347)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.03169046714901924,
+              "statement": "A__bin4__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0317)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.024790510535240173,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0248)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.024151340126991272,
+              "statement": "A__bin7__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.0242)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.022970661520957947,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0230)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.019674204289913177,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0197)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.019442768767476082,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0194)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.016851356253027916,
+              "statement": "A__bin4__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0169)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": 2.884570094864557,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.03267225623130798,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift -0.0327)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.021161912009119987,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0212)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin2__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 2 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.01620490662753582,
+              "statement": "A__bin2__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0162)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.014088309369981289,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0141)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin3__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.012778239324688911,
+              "statement": "A__bin3__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0128)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.011967935599386692,
+              "statement": "A__bin6__creatinine__latest__value contributed to the prediction (raw-margin shift -0.0120)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.010744838044047356,
+              "statement": "A__bin4__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0107)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin1__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.009442608803510666,
+              "statement": "A__bin1__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0094)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.008727931417524815,
+              "statement": "A__bin4__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0087)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin0__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 0 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.00858771800994873,
+              "statement": "A__bin0__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0086)"
+            }
+          ],
+          "which": "last_cutoff"
+        }
+      ],
+      "n_features": 522,
+      "route": "tree_shap"
+    },
+    "organ_support": {
+      "additivity_max_abs_error": 2.0066472643520683e-06,
+      "additivity_passed": true,
+      "base_value": -0.044063933193683624,
+      "family": "xgboost",
+      "forbidden_token_feature_names": [],
+      "global_top20": [
+        {
+          "feature": "A__bin7__vasopressor_on__value",
+          "mean_abs_shap": 0.5375432904313008,
+          "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__heart_rate__latest__value",
+          "mean_abs_shap": 0.1568231482844567,
+          "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.06126562329463195,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__temperature__latest__value",
+          "mean_abs_shap": 0.0536225073695144,
+          "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__oxygen_saturation__latest__value",
+          "mean_abs_shap": 0.0487500983972374,
+          "readable": "oxygen_saturation__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__norepinephrine_rate__value",
+          "mean_abs_shap": 0.04837443974839213,
+          "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__heart_rate__latest__value",
+          "mean_abs_shap": 0.04528303978337014,
+          "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.04520979516279476,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.0448847839901573,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.04087246107046182,
+          "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__respiratory_rate__latest__value",
+          "mean_abs_shap": 0.03142047293887784,
+          "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__temperature__latest__value",
+          "mean_abs_shap": 0.03011956187429314,
+          "readable": "temperature__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__oxygen_saturation__latest__value",
+          "mean_abs_shap": 0.0272342489788983,
+          "readable": "oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.026038158404262504,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin3__heart_rate__latest__value",
+          "mean_abs_shap": 0.02440092508950814,
+          "readable": "heart_rate__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin5__oxygen_saturation__latest__value",
+          "mean_abs_shap": 0.0226920706345821,
+          "readable": "oxygen_saturation__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__oxygen_saturation__latest__value",
+          "mean_abs_shap": 0.02262558152937951,
+          "readable": "oxygen_saturation__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__diastolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.02253409479982899,
+          "readable": "diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin5__heart_rate__latest__value",
+          "mean_abs_shap": 0.021579234808372955,
+          "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__invasive_ventilation_on__value",
+          "mean_abs_shap": 0.02137303332767139,
+          "readable": "invasive_ventilation_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        }
+      ],
+      "local": [
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -1.3623553571051161,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -1.256169080734253,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -1.2562)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.1996854692697525,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.1997)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__invasive_ventilation_on__value",
+              "readable": "invasive_ventilation_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.14991164207458496,
+              "statement": "A__bin7__invasive_ventilation_on__value contributed to the prediction (raw-margin shift -0.1499)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.14369484782218933,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.1437)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.07394909113645554,
+              "statement": "A__bin7__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift +0.0739)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.05201612785458565,
+              "statement": "A__bin6__temperature__latest__value contributed to the prediction (raw-margin shift +0.0520)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04799479618668556,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0480)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__bilirubin_total__latest__tslo",
+              "readable": "bilirubin_total__latest [tslo] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.035552315413951874,
+              "statement": "A__bin7__bilirubin_total__latest__tslo contributed to the prediction (raw-margin shift +0.0356)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.034122832119464874,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0341)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03351064398884773,
+              "statement": "A__bin4__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift +0.0335)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 5,
+          "raw_margin": 0.8201414701252361,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.30970707535743713,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.3097)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.10199430584907532,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.1020)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.08138799667358398,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0814)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06995796412229538,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0700)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.05611323565244675,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0561)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04885871708393097,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift +0.0489)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04415920376777649,
+              "statement": "A__bin6__temperature__latest__value contributed to the prediction (raw-margin shift +0.0442)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin3__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04295966401696205,
+              "statement": "A__bin3__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0430)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.03476245701313019,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0348)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.034244488924741745,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0342)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -1.6017493069011834,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -1.482967495918274,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -1.4830)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.13183020055294037,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.1318)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.11616744846105576,
+              "statement": "A__bin7__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.1162)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__epinephrine_rate__value",
+              "readable": "epinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.1058386042714119,
+              "statement": "A__bin7__epinephrine_rate__value contributed to the prediction (raw-margin shift -0.1058)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.09817592054605484,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0982)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.05256136506795883,
+              "statement": "A__bin6__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0526)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__systolic_blood_pressure__latest__tslo",
+              "readable": "systolic_blood_pressure__latest [tslo] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.052034515887498856,
+              "statement": "A__bin5__systolic_blood_pressure__latest__tslo contributed to the prediction (raw-margin shift +0.0520)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04961799085140228,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0496)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03588087111711502,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0359)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.0330105684697628,
+              "statement": "A__bin5__creatinine__latest__value contributed to the prediction (raw-margin shift -0.0330)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": -1.492798034196312,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -1.442421793937683,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -1.4424)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.23477713763713837,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.2348)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.14749650657176971,
+              "statement": "A__bin7__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.1475)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.09204059839248657,
+              "statement": "A__bin5__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0920)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.08348074555397034,
+              "statement": "A__bin7__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0835)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.07481714338064194,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0748)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06349648535251617,
+              "statement": "A__bin4__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0635)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.05348329618573189,
+              "statement": "A__bin6__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift -0.0535)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.04456000775098801,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift -0.0446)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__creatinine__latest__value",
+              "readable": "creatinine__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.036189235746860504,
+              "statement": "A__bin5__creatinine__latest__value contributed to the prediction (raw-margin shift +0.0362)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -0.8884410815953743,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.29729941487312317,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.2973)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__invasive_ventilation_on__value",
+              "readable": "invasive_ventilation_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.17811644077301025,
+              "statement": "A__bin7__invasive_ventilation_on__value contributed to the prediction (raw-margin shift -0.1781)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.13770122826099396,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.1377)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.11509789526462555,
+              "statement": "A__bin7__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.1151)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.11269611120223999,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.1127)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.07687825709581375,
+              "statement": "A__bin5__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0769)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__oxygen_saturation__latest__value",
+              "readable": "oxygen_saturation__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.06905975937843323,
+              "statement": "A__bin5__oxygen_saturation__latest__value contributed to the prediction (raw-margin shift +0.0691)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06134537234902382,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0613)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.059476155787706375,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0595)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.057783063501119614,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift -0.0578)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": -0.5585649227832619,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.27518346905708313,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.2752)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.17720383405685425,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.1772)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.11470435559749603,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.1147)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.09355191141366959,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0936)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.07788918167352676,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0779)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.07178229838609695,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift -0.0718)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06597260385751724,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0660)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.053699854761362076,
+              "statement": "A__bin6__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0537)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin4__respiratory_rate__latest__value",
+              "readable": "respiratory_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.041009385138750076,
+              "statement": "A__bin4__respiratory_rate__latest__value contributed to the prediction (raw-margin shift +0.0410)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin5__systolic_blood_pressure__latest__tslo",
+              "readable": "systolic_blood_pressure__latest [tslo] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03456837311387062,
+              "statement": "A__bin5__systolic_blood_pressure__latest__tslo contributed to the prediction (raw-margin shift +0.0346)"
+            }
+          ],
+          "which": "last_cutoff"
+        }
+      ],
+      "n_features": 557,
+      "route": "tree_shap"
+    },
+    "recovery24": {
+      "additivity_max_abs_error": 1.9277335923106875e-06,
+      "additivity_passed": true,
+      "base_value": -0.0837540477514267,
+      "family": "xgboost",
+      "forbidden_token_feature_names": [],
+      "global_top20": [
+        {
+          "feature": "B__current_sofa",
+          "mean_abs_shap": 1.0060015516327694,
+          "readable": "B__current_sofa"
+        },
+        {
+          "feature": "A__bin7__vasopressor_on__value",
+          "mean_abs_shap": 0.40623236348728337,
+          "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__heart_rate__latest__value",
+          "mean_abs_shap": 0.19254148756105374,
+          "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__norepinephrine_rate__value",
+          "mean_abs_shap": 0.10975102609592674,
+          "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.0722954728164453,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__heart_rate__latest__value",
+          "mean_abs_shap": 0.06938140994512106,
+          "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.04714602907158405,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__temperature__latest__value",
+          "mean_abs_shap": 0.04525857710222287,
+          "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.0367694075877298,
+          "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.03331195226452352,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__lactate__latest__value",
+          "mean_abs_shap": 0.032921453726878096,
+          "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__heart_rate__latest__value",
+          "mean_abs_shap": 0.024588858885525647,
+          "readable": "heart_rate__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin5__heart_rate__latest__value",
+          "mean_abs_shap": 0.021930021308930008,
+          "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin6__diastolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.020749720423210723,
+          "readable": "diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__dobutamine_rate__value",
+          "mean_abs_shap": 0.02021396352769807,
+          "readable": "dobutamine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__vasopressor_on__value",
+          "mean_abs_shap": 0.02017303862174352,
+          "readable": "vasopressor_on [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin3__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.020104742795631562,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 3 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin7__glasgow_coma_scale__latest__tslo",
+          "mean_abs_shap": 0.019144472021444623,
+          "readable": "glasgow_coma_scale__latest [tslo] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__mean_arterial_pressure__latest__value",
+          "mean_abs_shap": 0.018364794493484927,
+          "readable": "mean_arterial_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "A__bin4__systolic_blood_pressure__latest__value",
+          "mean_abs_shap": 0.014988476703872341,
+          "readable": "systolic_blood_pressure__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)"
+        }
+      ],
+      "local": [
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -0.17646366722146922,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -1.1398460865020752,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -1.1398)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.47385871410369873,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.4739)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.2469232827425003,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift +0.2469)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.17557039856910706,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.1756)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.053377121686935425,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0534)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03815218806266785,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0382)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.033664848655462265,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0337)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.022232312709093094,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift -0.0222)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.02079358696937561,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0208)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin4__platelet_count__latest__value",
+              "readable": "platelet_count__latest [value] @ bin 4 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.019391870126128197,
+              "statement": "A__bin4__platelet_count__latest__value contributed to the prediction (raw-margin shift -0.0194)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 5,
+          "raw_margin": 0.6383338777163772,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 0.8816603422164917,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +0.8817)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.27100464701652527,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -0.2710)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.14244547486305237,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.1424)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.06891448050737381,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0689)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06879720836877823,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.0688)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.06689337641000748,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0669)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin2__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 2 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.050160445272922516,
+              "statement": "A__bin2__norepinephrine_rate__value contributed to the prediction (raw-margin shift +0.0502)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.04984486848115921,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0498)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin1__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 1 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.034175027161836624,
+              "statement": "A__bin1__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0342)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.031147930771112442,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0311)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 0.6215228207543078,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -0.6167349219322205,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -0.6167)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.4863814115524292,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.4864)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.2510768175125122,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift +0.2511)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.16106633841991425,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.1611)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.06899251788854599,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0690)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.057810571044683456,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift +0.0578)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.05338411033153534,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift +0.0534)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.04548526555299759,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0455)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.040722232311964035,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0407)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.030954260379076004,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0310)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": -0.8097941483274553,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -1.3421903848648071,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -1.3422)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.38587555289268494,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift +0.3859)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.12684588134288788,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.1268)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__dobutamine_rate__value",
+              "readable": "dobutamine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.12312258034944534,
+              "statement": "A__bin7__dobutamine_rate__value contributed to the prediction (raw-margin shift +0.1231)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.11067745834589005,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.1107)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.05254743620753288,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0525)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.044334810227155685,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift -0.0443)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.038115937262773514,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift +0.0381)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin0__platelet_count__latest__value",
+              "readable": "platelet_count__latest [value] @ bin 0 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03531642630696297,
+              "statement": "A__bin0__platelet_count__latest__value contributed to the prediction (raw-margin shift +0.0353)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.028621455654501915,
+              "statement": "A__bin5__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.0286)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -0.09199647159766755,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 1.0144785642623901,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +1.0145)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.349285751581192,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -0.3493)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.21295492351055145,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.2130)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.07013693451881409,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.0701)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06314264982938766,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0631)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06103713437914848,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift -0.0610)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.05617557093501091,
+              "statement": "A__bin7__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0562)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__mean_arterial_pressure__latest__value",
+              "readable": "mean_arterial_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.04458891227841377,
+              "statement": "A__bin7__mean_arterial_pressure__latest__value contributed to the prediction (raw-margin shift -0.0446)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.030929654836654663,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0309)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin5__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 5 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.026277249678969383,
+              "statement": "A__bin5__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0263)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": -0.13567080748225635,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 1.0828535556793213,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +1.0829)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__vasopressor_on__value",
+              "readable": "vasopressor_on [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.34406980872154236,
+              "statement": "A__bin7__vasopressor_on__value contributed to the prediction (raw-margin shift -0.3441)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.16783270239830017,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.1678)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.11389895528554916,
+              "statement": "A__bin7__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.1139)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.09898794442415237,
+              "statement": "A__bin6__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0990)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__norepinephrine_rate__value",
+              "readable": "norepinephrine_rate [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.06679406017065048,
+              "statement": "A__bin7__norepinephrine_rate__value contributed to the prediction (raw-margin shift -0.0668)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__lactate__latest__value",
+              "readable": "lactate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.060307811945676804,
+              "statement": "A__bin7__lactate__latest__value contributed to the prediction (raw-margin shift -0.0603)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__temperature__latest__value",
+              "readable": "temperature__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.039328910410404205,
+              "statement": "A__bin7__temperature__latest__value contributed to the prediction (raw-margin shift -0.0393)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__diastolic_blood_pressure__latest__value",
+              "readable": "diastolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.027209654450416565,
+              "statement": "A__bin6__diastolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0272)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin6__systolic_blood_pressure__latest__value",
+              "readable": "systolic_blood_pressure__latest [value] @ bin 6 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.02707511931657791,
+              "statement": "A__bin6__systolic_blood_pressure__latest__value contributed to the prediction (raw-margin shift -0.0271)"
+            }
+          ],
+          "which": "last_cutoff"
+        }
+      ],
+      "n_features": 557,
+      "route": "tree_shap"
+    },
+    "recovery48": {
+      "additivity_max_abs_error": 4.884981308350689e-15,
+      "additivity_passed": true,
+      "base_value": 0.22639612060899067,
+      "family": "catboost",
+      "forbidden_token_feature_names": [],
+      "global_top20": [
+        {
+          "feature": "B__current_sofa",
+          "mean_abs_shap": 1.1707738272486843,
+          "readable": "B__current_sofa"
+        },
+        {
+          "feature": "D__heart_rate__latest__mean_48h",
+          "mean_abs_shap": 0.12026132631009226,
+          "readable": "D__heart_rate__latest__mean_48h"
+        },
+        {
+          "feature": "D__vasopressor_on__mean_24h",
+          "mean_abs_shap": 0.09088766045323968,
+          "readable": "D__vasopressor_on__mean_24h"
+        },
+        {
+          "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+          "mean_abs_shap": 0.0647150252198706,
+          "readable": "D__diastolic_blood_pressure__latest__mean_48h"
+        },
+        {
+          "feature": "D__heart_rate__latest__mean_24h",
+          "mean_abs_shap": 0.06410128129394921,
+          "readable": "D__heart_rate__latest__mean_24h"
+        },
+        {
+          "feature": "D__systolic_blood_pressure__latest__mean_48h",
+          "mean_abs_shap": 0.06004621942041338,
+          "readable": "D__systolic_blood_pressure__latest__mean_48h"
+        },
+        {
+          "feature": "D__heart_rate__latest__max_48h",
+          "mean_abs_shap": 0.05703826654938268,
+          "readable": "D__heart_rate__latest__max_48h"
+        },
+        {
+          "feature": "D__lactate__latest__min_48h",
+          "mean_abs_shap": 0.0560879463118785,
+          "readable": "D__lactate__latest__min_48h"
+        },
+        {
+          "feature": "D__platelet_count__latest__min_48h",
+          "mean_abs_shap": 0.0560268773460535,
+          "readable": "D__platelet_count__latest__min_48h"
+        },
+        {
+          "feature": "A__bin7__heart_rate__latest__value",
+          "mean_abs_shap": 0.04251695513192022,
+          "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)"
+        },
+        {
+          "feature": "D__lactate__latest__mean_48h",
+          "mean_abs_shap": 0.040401291346200865,
+          "readable": "D__lactate__latest__mean_48h"
+        },
+        {
+          "feature": "D__mean_arterial_pressure__latest__mean_48h",
+          "mean_abs_shap": 0.037650637377098936,
+          "readable": "D__mean_arterial_pressure__latest__mean_48h"
+        },
+        {
+          "feature": "D__mean_arterial_pressure__latest__min_24h",
+          "mean_abs_shap": 0.02795363299598016,
+          "readable": "D__mean_arterial_pressure__latest__min_24h"
+        },
+        {
+          "feature": "D__lactate__latest__max_48h",
+          "mean_abs_shap": 0.02746391619323283,
+          "readable": "D__lactate__latest__max_48h"
+        },
+        {
+          "feature": "D__temperature__latest__mean_24h",
+          "mean_abs_shap": 0.02554836335804656,
+          "readable": "D__temperature__latest__mean_24h"
+        },
+        {
+          "feature": "D__diastolic_blood_pressure__latest__max_48h",
+          "mean_abs_shap": 0.02499215659199677,
+          "readable": "D__diastolic_blood_pressure__latest__max_48h"
+        },
+        {
+          "feature": "D__mean_arterial_pressure__latest__mean_24h",
+          "mean_abs_shap": 0.02497239743559317,
+          "readable": "D__mean_arterial_pressure__latest__mean_24h"
+        },
+        {
+          "feature": "D__diastolic_blood_pressure__latest__max_24h",
+          "mean_abs_shap": 0.024177584168852483,
+          "readable": "D__diastolic_blood_pressure__latest__max_24h"
+        },
+        {
+          "feature": "D__mean_arterial_pressure__latest__min_48h",
+          "mean_abs_shap": 0.02398754830296158,
+          "readable": "D__mean_arterial_pressure__latest__min_48h"
+        },
+        {
+          "feature": "D__mean_arterial_pressure__latest__min_12h",
+          "mean_abs_shap": 0.02291207771720622,
+          "readable": "D__mean_arterial_pressure__latest__min_12h"
+        }
+      ],
+      "local": [
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": -0.853357324515333,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -1.466989935734311,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -1.4670)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": -0.11765750981145104,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift -0.1177)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_24h",
+              "readable": "D__heart_rate__latest__mean_24h",
+              "shap": 0.06936556865728474,
+              "statement": "D__heart_rate__latest__mean_24h contributed to the prediction (raw-margin shift +0.0694)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": 0.05587624118054808,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift +0.0559)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__systolic_blood_pressure__latest__mean_48h",
+              "readable": "D__systolic_blood_pressure__latest__mean_48h",
+              "shap": 0.05330646684737812,
+              "statement": "D__systolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0533)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": 0.04284453145504951,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0428)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__platelet_count__latest__min_48h",
+              "readable": "D__platelet_count__latest__min_48h",
+              "shap": 0.03794805646868316,
+              "statement": "D__platelet_count__latest__min_48h contributed to the prediction (raw-margin shift +0.0379)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__lactate__latest__mean_48h",
+              "readable": "D__lactate__latest__mean_48h",
+              "shap": -0.02527028490522544,
+              "statement": "D__lactate__latest__mean_48h contributed to the prediction (raw-margin shift -0.0253)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__pao2__latest__max_48h",
+              "readable": "D__pao2__latest__max_48h",
+              "shap": 0.023754927035317414,
+              "statement": "D__pao2__latest__max_48h contributed to the prediction (raw-margin shift +0.0238)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__mean_arterial_pressure__latest__min_24h",
+              "readable": "D__mean_arterial_pressure__latest__min_24h",
+              "shap": 0.022812024213530242,
+              "statement": "D__mean_arterial_pressure__latest__min_24h contributed to the prediction (raw-margin shift +0.0228)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 5,
+          "raw_margin": 1.849008947548983,
+          "stay_id": "SYN-V3-LCE-E-00000001",
+          "subtype": "SYNTHETIC_HF",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 1.3155022355687191,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +1.3155)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": 0.07923653977105521,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift +0.0792)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": 0.07147257583591596,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0715)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": 0.06415970531222746,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift +0.0642)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__temperature__latest__mean_24h",
+              "readable": "D__temperature__latest__mean_24h",
+              "shap": 0.05409489145113722,
+              "statement": "D__temperature__latest__mean_24h contributed to the prediction (raw-margin shift +0.0541)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__lactate__latest__min_48h",
+              "readable": "D__lactate__latest__min_48h",
+              "shap": -0.05093876904848178,
+              "statement": "D__lactate__latest__min_48h contributed to the prediction (raw-margin shift -0.0509)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__mean_arterial_pressure__latest__min_48h",
+              "readable": "D__mean_arterial_pressure__latest__min_48h",
+              "shap": -0.04436403074837308,
+              "statement": "D__mean_arterial_pressure__latest__min_48h contributed to the prediction (raw-margin shift -0.0444)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__lactate__latest__mean_48h",
+              "readable": "D__lactate__latest__mean_48h",
+              "shap": -0.035268631738554934,
+              "statement": "D__lactate__latest__mean_48h contributed to the prediction (raw-margin shift -0.0353)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__temperature__latest__min_48h",
+              "readable": "D__temperature__latest__min_48h",
+              "shap": 0.03184494960299843,
+              "statement": "D__temperature__latest__min_48h contributed to the prediction (raw-margin shift +0.0318)"
+            },
+            {
+              "direction": "raised",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": 0.03174244429661171,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift +0.0317)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 0.122848215250833,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -0.8420778297794999,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -0.8421)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": 0.12438993597889769,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift +0.1244)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": -0.08644716862609374,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift -0.0864)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_24h",
+              "readable": "D__heart_rate__latest__mean_24h",
+              "shap": 0.057121345532277344,
+              "statement": "D__heart_rate__latest__mean_24h contributed to the prediction (raw-margin shift +0.0571)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__systolic_blood_pressure__latest__mean_48h",
+              "readable": "D__systolic_blood_pressure__latest__mean_48h",
+              "shap": 0.050490938524930196,
+              "statement": "D__systolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0505)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__max_48h",
+              "readable": "D__heart_rate__latest__max_48h",
+              "shap": 0.04969315592162565,
+              "statement": "D__heart_rate__latest__max_48h contributed to the prediction (raw-margin shift +0.0497)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__mean_arterial_pressure__latest__mean_48h",
+              "readable": "D__mean_arterial_pressure__latest__mean_48h",
+              "shap": 0.049454278238982324,
+              "statement": "D__mean_arterial_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0495)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__lactate__latest__min_48h",
+              "readable": "D__lactate__latest__min_48h",
+              "shap": 0.047250311310314715,
+              "statement": "D__lactate__latest__min_48h contributed to the prediction (raw-margin shift +0.0473)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__lactate__latest__mean_48h",
+              "readable": "D__lactate__latest__mean_48h",
+              "shap": 0.04254276471330192,
+              "statement": "D__lactate__latest__mean_48h contributed to the prediction (raw-margin shift +0.0425)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": 0.03928033536795979,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0393)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": -1.0711185794211975,
+          "stay_id": "SYN-V3-LCE-E-00000002",
+          "subtype": "SYNTHETIC_ISCHEMIC",
+          "top10": [
+            {
+              "direction": "lowered",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": -1.4286888306838812,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift -1.4287)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": 0.12751200851136799,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift +0.1275)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": -0.0995096895305031,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift -0.0995)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__max_48h",
+              "readable": "D__heart_rate__latest__max_48h",
+              "shap": 0.06301975611146551,
+              "statement": "D__heart_rate__latest__max_48h contributed to the prediction (raw-margin shift +0.0630)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__heart_rate__latest__mean_24h",
+              "readable": "D__heart_rate__latest__mean_24h",
+              "shap": 0.057276559140409425,
+              "statement": "D__heart_rate__latest__mean_24h contributed to the prediction (raw-margin shift +0.0573)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__systolic_blood_pressure__latest__mean_48h",
+              "readable": "D__systolic_blood_pressure__latest__mean_48h",
+              "shap": 0.05534259124551929,
+              "statement": "D__systolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0553)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__mean_arterial_pressure__latest__mean_48h",
+              "readable": "D__mean_arterial_pressure__latest__mean_48h",
+              "shap": 0.04904260925631596,
+              "statement": "D__mean_arterial_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0490)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": 0.044218404930950035,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift +0.0442)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__lactate__latest__mean_48h",
+              "readable": "D__lactate__latest__mean_48h",
+              "shap": 0.042346361889518465,
+              "statement": "D__lactate__latest__mean_48h contributed to the prediction (raw-margin shift +0.0423)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__platelet_count__latest__min_48h",
+              "readable": "D__platelet_count__latest__min_48h",
+              "shap": 0.037428958347690826,
+              "statement": "D__platelet_count__latest__min_48h contributed to the prediction (raw-margin shift +0.0374)"
+            }
+          ],
+          "which": "last_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 0,
+          "raw_margin": 0.03876953723730997,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 1.2230328335994465,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +1.2230)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": -0.20254876570829183,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift -0.2025)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__mean_24h",
+              "readable": "D__heart_rate__latest__mean_24h",
+              "shap": -0.10467066292146265,
+              "statement": "D__heart_rate__latest__mean_24h contributed to the prediction (raw-margin shift -0.1047)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__platelet_count__latest__min_48h",
+              "readable": "D__platelet_count__latest__min_48h",
+              "shap": -0.10424226269638785,
+              "statement": "D__platelet_count__latest__min_48h contributed to the prediction (raw-margin shift -0.1042)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__systolic_blood_pressure__latest__mean_48h",
+              "readable": "D__systolic_blood_pressure__latest__mean_48h",
+              "shap": -0.09257766234484976,
+              "statement": "D__systolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift -0.0926)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": -0.09036986923655806,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift -0.0904)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__max_48h",
+              "readable": "D__heart_rate__latest__max_48h",
+              "shap": -0.08890585676931873,
+              "statement": "D__heart_rate__latest__max_48h contributed to the prediction (raw-margin shift -0.0889)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.08070771838403185,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0807)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": 0.07753657625140167,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift +0.0775)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__lactate__latest__min_48h",
+              "readable": "D__lactate__latest__min_48h",
+              "shap": -0.07406129639889206,
+              "statement": "D__lactate__latest__min_48h contributed to the prediction (raw-margin shift -0.0741)"
+            }
+          ],
+          "which": "first_cutoff"
+        },
+        {
+          "additivity_passed": true,
+          "grid_index": 4,
+          "raw_margin": 0.059121519619769414,
+          "stay_id": "SYN-V3-LCE-E-00000015",
+          "subtype": "SYNTHETIC_ARRHYTHMIA",
+          "top10": [
+            {
+              "direction": "raised",
+              "feature": "B__current_sofa",
+              "readable": "B__current_sofa",
+              "shap": 1.236923835498809,
+              "statement": "B__current_sofa contributed to the prediction (raw-margin shift +1.2369)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__mean_48h",
+              "readable": "D__heart_rate__latest__mean_48h",
+              "shap": -0.22405547609613286,
+              "statement": "D__heart_rate__latest__mean_48h contributed to the prediction (raw-margin shift -0.2241)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__systolic_blood_pressure__latest__mean_48h",
+              "readable": "D__systolic_blood_pressure__latest__mean_48h",
+              "shap": -0.12085127605831222,
+              "statement": "D__systolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift -0.1209)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__mean_24h",
+              "readable": "D__heart_rate__latest__mean_24h",
+              "shap": -0.10533635352804764,
+              "statement": "D__heart_rate__latest__mean_24h contributed to the prediction (raw-margin shift -0.1053)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__heart_rate__latest__max_48h",
+              "readable": "D__heart_rate__latest__max_48h",
+              "shap": -0.08385718071553155,
+              "statement": "D__heart_rate__latest__max_48h contributed to the prediction (raw-margin shift -0.0839)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__diastolic_blood_pressure__latest__mean_48h",
+              "readable": "D__diastolic_blood_pressure__latest__mean_48h",
+              "shap": -0.08135879999948309,
+              "statement": "D__diastolic_blood_pressure__latest__mean_48h contributed to the prediction (raw-margin shift -0.0814)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "A__bin7__heart_rate__latest__value",
+              "readable": "heart_rate__latest [value] @ bin 7 (0=oldest, 7=newest 6h bin)",
+              "shap": -0.08063134570637173,
+              "statement": "A__bin7__heart_rate__latest__value contributed to the prediction (raw-margin shift -0.0806)"
+            },
+            {
+              "direction": "raised",
+              "feature": "D__vasopressor_on__mean_24h",
+              "readable": "D__vasopressor_on__mean_24h",
+              "shap": 0.07801360693522341,
+              "statement": "D__vasopressor_on__mean_24h contributed to the prediction (raw-margin shift +0.0780)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__mean_arterial_pressure__latest__mean_48h",
+              "readable": "D__mean_arterial_pressure__latest__mean_48h",
+              "shap": -0.06877232130651154,
+              "statement": "D__mean_arterial_pressure__latest__mean_48h contributed to the prediction (raw-margin shift -0.0688)"
+            },
+            {
+              "direction": "lowered",
+              "feature": "D__mean_arterial_pressure__latest__mean_24h",
+              "readable": "D__mean_arterial_pressure__latest__mean_24h",
+              "shap": -0.0684921165545567,
+              "statement": "D__mean_arterial_pressure__latest__mean_24h contributed to the prediction (raw-margin shift -0.0685)"
+            }
+          ],
+          "which": "last_cutoff"
+        }
+      ],
+      "n_features": 766,
+      "route": "tree_shap"
+    }
+  },
+  "v2_control_routes": {
+    "icu_stay_time": "tree_shap",
+    "organ_support": "tree_shap",
+    "recovery24": "tree_shap",
+    "recovery48": "tree_shap"
+  }
+}

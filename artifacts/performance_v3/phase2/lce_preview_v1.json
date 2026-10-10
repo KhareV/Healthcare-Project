@@ -1,0 +1,146 @@
+{
+  "cohort": "LCE (development, not used in selection)",
+  "models": {
+    "CONTROL": {
+      "icu_stay_time": {
+        "mae": 12.44476340226123,
+        "n_examples": 8909.0,
+        "n_rows": 8909,
+        "n_stays": 1500,
+        "rmse": 17.70577106645129,
+        "weighted_median_ae_hours": 9.074929389792997
+      },
+      "organ_support": {
+        "cal_auprc": 0.6478167263205172,
+        "cal_auroc": 0.733330199431152,
+        "n_positive_rows": 2476.0,
+        "n_rows": 5630,
+        "n_stays": 1174,
+        "raw_auprc": 0.6562959929467896,
+        "raw_auroc": 0.7343341903305203
+      },
+      "recovery24": {
+        "mae": 1.0287920361378915,
+        "median_ae": 0.7460718750953674,
+        "n_examples": 5004.0,
+        "n_rows": 5004,
+        "n_stays": 1096,
+        "rmse": 1.3707320620735812
+      },
+      "recovery48": {
+        "mae": 1.3433604136769557,
+        "median_ae": 1.2003660202026367,
+        "n_examples": 1741.0,
+        "n_rows": 1741,
+        "n_stays": 440,
+        "rmse": 1.6348709764039384
+      }
+    },
+    "V2_AS_EVALUATED": {
+      "icu_stay_time": {
+        "mae": 7.395497278929841,
+        "n_examples": 8909.0,
+        "n_rows": 8909,
+        "n_stays": 1500,
+        "rmse": 11.721009183253166,
+        "weighted_median_ae_hours": 5.1453061156625175
+      },
+      "organ_support": {
+        "cal_auprc": 0.7320258154820384,
+        "cal_auroc": 0.8084079750420854,
+        "n_positive_rows": 2476.0,
+        "n_rows": 5630,
+        "n_stays": 1174,
+        "raw_auprc": 0.7811353514282016,
+        "raw_auroc": 0.8171397125618967
+      },
+      "recovery24": {
+        "mae": 1.057783535845869,
+        "median_ae": 0.7957494854927063,
+        "n_examples": 5004.0,
+        "n_rows": 5004,
+        "n_stays": 1096,
+        "rmse": 1.3814266606618661
+      },
+      "recovery48": {
+        "mae": 1.3635280796171227,
+        "median_ae": 1.2385355234146118,
+        "n_examples": 1741.0,
+        "n_rows": 1741,
+        "n_stays": 440,
+        "rmse": 1.6545141502836616
+      }
+    },
+    "V2_AS_SERVED": {
+      "icu_stay_time": {
+        "mae": 17.653365596799496,
+        "n_examples": 8909.0,
+        "n_rows": 8909,
+        "n_stays": 1500,
+        "rmse": 20.369952492466567,
+        "weighted_median_ae_hours": 18.255953102458577
+      },
+      "organ_support": {
+        "cal_auprc": 0.5541603482493455,
+        "cal_auroc": 0.6884953968512358,
+        "n_positive_rows": 2476.0,
+        "n_rows": 5630,
+        "n_stays": 1174,
+        "raw_auprc": 0.5776395646945615,
+        "raw_auroc": 0.6914639207611358
+      },
+      "recovery24": {
+        "mae": 1.057783535845869,
+        "median_ae": 0.7957494854927063,
+        "n_examples": 5004.0,
+        "n_rows": 5004,
+        "n_stays": 1096,
+        "rmse": 1.3814266606618661
+      },
+      "recovery48": {
+        "mae": 1.3635280796171227,
+        "median_ae": 1.2385355234146118,
+        "n_examples": 1741.0,
+        "n_rows": 1741,
+        "n_stays": 440,
+        "rmse": 1.6545141502836616
+      }
+    },
+    "V3": {
+      "icu_stay_time": {
+        "mae": 12.44476340226123,
+        "n_examples": 8909.0,
+        "n_rows": 8909,
+        "n_stays": 1500,
+        "rmse": 17.70577106645129,
+        "weighted_median_ae_hours": 9.074929389792997
+      },
+      "organ_support": {
+        "cal_auprc": 0.6587521143484386,
+        "cal_auroc": 0.7345854027339473,
+        "n_positive_rows": 2476.0,
+        "n_rows": 5630,
+        "n_stays": 1174,
+        "raw_auprc": 0.6587521143484386,
+        "raw_auroc": 0.7345854027339473
+      },
+      "recovery24": {
+        "mae": 1.0109091538541877,
+        "median_ae": 0.7248646020889282,
+        "n_examples": 5004.0,
+        "n_rows": 5004,
+        "n_stays": 1096,
+        "rmse": 1.4169524378073866
+      },
+      "recovery48": {
+        "mae": 1.3093919799914837,
+        "median_ae": 1.068514046315423,
+        "n_examples": 1741.0,
+        "n_rows": 1741,
+        "n_stays": 440,
+        "rmse": 1.643078754102867
+      }
+    }
+  },
+  "rows": 8909
+}

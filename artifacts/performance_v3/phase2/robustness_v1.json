@@ -1,0 +1,1729 @@
+{
+  "artifact_version": "performance_v3_robustness_v1",
+  "cohort": "LCE (development), stay-subsample",
+  "limitation": "SOFA(t)/trend/components from the frozen scorer on the unperturbed record are not re-derived under perturbation",
+  "n_rows": 2859,
+  "n_stays": 500,
+  "scenarios": {
+    "extra_padding_oldest_1": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.02842532156579125,
+          "organ_support": -0.001648997594409396,
+          "recovery24": 0.00016669831640014898,
+          "recovery48": 9.032900145178324e-05
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": 0.018926023520059232,
+          "organ_support": -0.001239357774966865,
+          "recovery24": 0.0015861197255626625,
+          "recovery48": -0.00012634069523409508
+        },
+        "V3": {
+          "icu_stay_time": 0.02842532156579125,
+          "organ_support": -0.0003156891355975411,
+          "recovery24": 0.0004314247294128215,
+          "recovery48": 0.0030012526738838474
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.06350433461467,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.293277179205724,
+            "weighted_median_ae_hours": 8.742999604525597
+          },
+          "organ_support": {
+            "auprc": 0.6619283922614561,
+            "auroc": 0.7444769944158122,
+            "brier": 0.21603718580419112,
+            "calibrated_brier": 0.20114169061402665,
+            "log_loss": 0.6224109942894162,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0303426765837012,
+            "median_ae": 0.7595463395118713,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3792181304491427
+          },
+          "recovery48": {
+            "mae": 1.2840688535000295,
+            "median_ae": 1.0605233907699585,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5796712276262392
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.83748765184249,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.422727960942673,
+            "weighted_median_ae_hours": 18.565388813802258
+          },
+          "organ_support": {
+            "auprc": 0.5786564643900433,
+            "auroc": 0.7025725555480542,
+            "brier": 0.22465351406318557,
+            "calibrated_brier": 0.24199720105734948,
+            "log_loss": 0.6401002288293026,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0691964717761595,
+            "median_ae": 0.8359525203704834,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4100321669190872
+          },
+          "recovery48": {
+            "mae": 1.2679152594089078,
+            "median_ae": 1.1052193641662598,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.567226570872257
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.06350433461467,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.293277179205724,
+            "weighted_median_ae_hours": 8.742999604525597
+          },
+          "organ_support": {
+            "auprc": 0.6648898291111431,
+            "auroc": 0.7421732765612031,
+            "brier": 0.20285676907231823,
+            "calibrated_brier": 0.20118246380958413,
+            "log_loss": 0.5889885831694374,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0023466703808859,
+            "median_ae": 0.7454027831554413,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4118812737612654
+          },
+          "recovery48": {
+            "mae": 1.2411373846297444,
+            "median_ae": 0.9673689251194753,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.580647130130328
+          }
+        }
+      },
+      "spec": {
+        "k": 1,
+        "kind": "padding",
+        "name": "extra_padding_oldest_1"
+      }
+    },
+    "extra_padding_oldest_2": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.185877074766168,
+          "organ_support": -0.002648198916748168,
+          "recovery24": -0.0015729897957237338,
+          "recovery48": 0.0008705358647782546
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": 0.06374137073807873,
+          "organ_support": -0.002161951205330248,
+          "recovery24": 0.0011694475734709275,
+          "recovery48": 2.5812880377618086e-05
+        },
+        "V3": {
+          "icu_stay_time": 0.185877074766168,
+          "organ_support": -0.0009066626404403699,
+          "recovery24": -0.00017740027432977534,
+          "recovery48": 0.005089534027904685
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.107535088180661,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.248139579914614,
+            "weighted_median_ae_hours": 8.900451357725974
+          },
+          "organ_support": {
+            "auprc": 0.6609291909391173,
+            "auroc": 0.7448223109356737,
+            "brier": 0.21627176426117806,
+            "calibrated_brier": 0.20129977346844047,
+            "log_loss": 0.6228765418569862,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0286029884715773,
+            "median_ae": 0.7582678347826004,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3799104552822206
+          },
+          "recovery48": {
+            "mae": 1.284849060363356,
+            "median_ae": 1.0605233907699585,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5802010149073227
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.870650930479318,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.455911402763807,
+            "weighted_median_ae_hours": 18.610204161020278
+          },
+          "organ_support": {
+            "auprc": 0.5777338709596799,
+            "auroc": 0.7025049754972577,
+            "brier": 0.22471572058597114,
+            "calibrated_brier": 0.24218581183427865,
+            "log_loss": 0.6402164248904187,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0687797996240678,
+            "median_ae": 0.8366215080022812,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4103180932066044
+          },
+          "recovery48": {
+            "mae": 1.2680674129845195,
+            "median_ae": 1.0840333104133606,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5679656968314282
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.107535088180661,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.248139579914614,
+            "weighted_median_ae_hours": 8.900451357725974
+          },
+          "organ_support": {
+            "auprc": 0.6642988556063003,
+            "auroc": 0.7428399885543949,
+            "brier": 0.20217080814877963,
+            "calibrated_brier": 0.2011178504237562,
+            "log_loss": 0.5875872739245682,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0017378453771433,
+            "median_ae": 0.7452773451805115,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4121862835011945
+          },
+          "recovery48": {
+            "mae": 1.2432256659837653,
+            "median_ae": 0.9837923410211693,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.583123277077522
+          }
+        }
+      },
+      "spec": {
+        "k": 2,
+        "kind": "padding",
+        "name": "extra_padding_oldest_2"
+      }
+    },
+    "extra_padding_oldest_3": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.38856526520959633,
+          "organ_support": -0.002898091988686735,
+          "recovery24": -0.003138030661859359,
+          "recovery48": 0.002035535215861417
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": 0.26421693428973825,
+          "organ_support": -0.0014189846275736162,
+          "recovery24": -0.00014793780188293582,
+          "recovery48": -0.0010181778223565807
+        },
+        "V3": {
+          "icu_stay_time": 0.38856526520959633,
+          "organ_support": -0.003033683603994919,
+          "recovery24": -0.0007596776894758239,
+          "recovery48": 0.010617860462313056
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.230208263335165,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.193318336075606,
+            "weighted_median_ae_hours": 9.103139548169402
+          },
+          "organ_support": {
+            "auprc": 0.6606792978671787,
+            "auroc": 0.7456677700838228,
+            "brier": 0.21636690077473916,
+            "calibrated_brier": 0.20146853197248527,
+            "log_loss": 0.6230283604256904,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0270379476054416,
+            "median_ae": 0.7476164102554321,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3801736641792393
+          },
+          "recovery48": {
+            "mae": 1.2860140597144392,
+            "median_ae": 1.0605233907699585,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5813799839619973
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.98655867151333,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.570657145882326,
+            "weighted_median_ae_hours": 18.810679724571937
+          },
+          "organ_support": {
+            "auprc": 0.5784768375374365,
+            "auroc": 0.7039644388628615,
+            "brier": 0.22460091880354074,
+            "calibrated_brier": 0.24214650155763529,
+            "log_loss": 0.6399532709394145,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.067462414248714,
+            "median_ae": 0.8264458179473877,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4113966622159786
+          },
+          "recovery48": {
+            "mae": 1.2670234222817853,
+            "median_ae": 1.0557430982589722,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5703896840079137
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.230208263335165,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.193318336075606,
+            "weighted_median_ae_hours": 9.103139548169402
+          },
+          "organ_support": {
+            "auprc": 0.6621718346427458,
+            "auroc": 0.7432358758318989,
+            "brier": 0.20154631501852316,
+            "calibrated_brier": 0.20164204778381659,
+            "log_loss": 0.5863394441365064,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0011555679619972,
+            "median_ae": 0.745771050453186,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4124548675895097
+          },
+          "recovery48": {
+            "mae": 1.2487539924181736,
+            "median_ae": 0.9559923387052693,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5890236211395925
+          }
+        }
+      },
+      "spec": {
+        "k": 3,
+        "kind": "padding",
+        "name": "extra_padding_oldest_3"
+      }
+    },
+    "noise_10pct": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.0970728248210797,
+          "organ_support": -0.04282713019959983,
+          "recovery24": 0.048257531327313696,
+          "recovery48": 0.04810059612107498
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": -0.06028265621860385,
+          "organ_support": -0.05016717287700967,
+          "recovery24": 0.0307582229327108,
+          "recovery48": 0.07452747374518331
+        },
+        "V3": {
+          "icu_stay_time": 0.0970728248210797,
+          "organ_support": -0.02963979078911616,
+          "recovery24": 0.05362838678698578,
+          "recovery48": 0.03864569708463628
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.155585253332973,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.55540195018194,
+            "weighted_median_ae_hours": 8.811647107780885
+          },
+          "organ_support": {
+            "auprc": 0.6207502596562656,
+            "auroc": 0.7088523510762099,
+            "brier": 0.22323523653857438,
+            "calibrated_brier": 0.21168453295417744,
+            "log_loss": 0.6378980824234255,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0784335095946147,
+            "median_ae": 0.846583902835846,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3991547861469726
+          },
+          "recovery48": {
+            "mae": 1.3320791206196527,
+            "median_ae": 1.204128384590149,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5881164037707947
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.71741950161912,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.323379583673564,
+            "weighted_median_ae_hours": 18.486180134063595
+          },
+          "organ_support": {
+            "auprc": 0.5297286492880005,
+            "auroc": 0.6440742585775876,
+            "brier": 0.23430527703571702,
+            "calibrated_brier": 0.24821667113704096,
+            "log_loss": 0.6609273133845424,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0983685749833076,
+            "median_ae": 0.8510546088218689,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4225452834726917
+          },
+          "recovery48": {
+            "mae": 1.3425690738493252,
+            "median_ae": 1.242464542388916,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.6001364762692292
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.155585253332973,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.55540195018194,
+            "weighted_median_ae_hours": 8.811647107780885
+          },
+          "organ_support": {
+            "auprc": 0.6355657274576245,
+            "auroc": 0.7185747829573131,
+            "brier": 0.21442763631993395,
+            "calibrated_brier": 0.20897493049572782,
+            "log_loss": 0.6161018709936914,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0555436324384588,
+            "median_ae": 0.8277803212404251,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.409007028664969
+          },
+          "recovery48": {
+            "mae": 1.2767818290404969,
+            "median_ae": 1.0778366939230235,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.569951051621706
+          }
+        }
+      },
+      "spec": {
+        "kind": "noise",
+        "name": "noise_10pct",
+        "sd": 0.1
+      }
+    },
+    "noise_20pct": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.07540537607770403,
+          "organ_support": -0.07245406019614631,
+          "recovery24": 0.08780178062150168,
+          "recovery48": 0.1238354016807135
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": -0.14656792130688956,
+          "organ_support": -0.06859011908315149,
+          "recovery24": 0.07567009805777802,
+          "recovery48": 0.11129669751292282
+        },
+        "V3": {
+          "icu_stay_time": 0.07540537607770403,
+          "organ_support": -0.0650040492545032,
+          "recovery24": 0.11799020454633058,
+          "recovery48": 0.12851929653195016
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.252827938401166,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.71702699368313,
+            "weighted_median_ae_hours": 8.78997965903751
+          },
+          "organ_support": {
+            "auprc": 0.5911233296597191,
+            "auroc": 0.695536192997698,
+            "brier": 0.22616564367468345,
+            "calibrated_brier": 0.21728964764751021,
+            "log_loss": 0.6441385640389551,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.1179777588888027,
+            "median_ae": 0.906829833984375,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.426889243369967
+          },
+          "recovery48": {
+            "mae": 1.4078139261792912,
+            "median_ae": 1.3314324617385864,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.6284890844917097
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.723643823610796,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.347912848243634,
+            "weighted_median_ae_hours": 18.39989486897531
+          },
+          "organ_support": {
+            "auprc": 0.5113057030818586,
+            "auroc": 0.6256795926665906,
+            "brier": 0.23760198868805277,
+            "calibrated_brier": 0.2516671360448427,
+            "log_loss": 0.6678808890388711,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.1432804501083749,
+            "median_ae": 0.8949779272079468,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.463305117466743
+          },
+          "recovery48": {
+            "mae": 1.3793382976170647,
+            "median_ae": 1.301434576511383,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.63230197262765
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.252827938401166,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.71702699368313,
+            "weighted_median_ae_hours": 8.78997965903751
+          },
+          "organ_support": {
+            "auprc": 0.6002014689922375,
+            "auroc": 0.6998999108836284,
+            "brier": 0.22142770068002743,
+            "calibrated_brier": 0.21498201177570178,
+            "log_loss": 0.6324104488365093,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.1199054501978036,
+            "median_ae": 0.9256915375590324,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4332978722631446
+          },
+          "recovery48": {
+            "mae": 1.3666554284878107,
+            "median_ae": 1.2517069169687312,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.6316599292037781
+          }
+        }
+      },
+      "spec": {
+        "kind": "noise",
+        "name": "noise_20pct",
+        "sd": 0.2
+      }
+    },
+    "noise_5pct": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.056407881927835746,
+          "organ_support": -0.014969994825823507,
+          "recovery24": 0.02420624988232767,
+          "recovery48": 0.02802432998926374
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": -0.19390466145543428,
+          "organ_support": -0.02807175759088132,
+          "recovery24": 0.025912881198745463,
+          "recovery48": 0.0438880401419286
+        },
+        "V3": {
+          "icu_stay_time": 0.056407881927835746,
+          "organ_support": -0.00974683585598346,
+          "recovery24": 0.04641536714692207,
+          "recovery48": 0.009149014056833105
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.079012188955131,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.45437644277788,
+            "weighted_median_ae_hours": 8.770982164887641
+          },
+          "organ_support": {
+            "auprc": 0.6486073950300419,
+            "auroc": 0.7381287641708687,
+            "brier": 0.21907423644877438,
+            "calibrated_brier": 0.2032865619307692,
+            "log_loss": 0.6291811336368809,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0543822281496287,
+            "median_ae": 0.7891058474779129,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3929787772447677
+          },
+          "recovery48": {
+            "mae": 1.3120028544878415,
+            "median_ae": 1.1060465574264526,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5864292628725518
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.676250993191324,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.281852688465225,
+            "weighted_median_ae_hours": 18.352558128826765
+          },
+          "organ_support": {
+            "auprc": 0.5518240645741288,
+            "auroc": 0.6730112180434309,
+            "brier": 0.23070838438412394,
+            "calibrated_brier": 0.2426161855064962,
+            "log_loss": 0.6533295111013577,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0935232332493423,
+            "median_ae": 0.8317321687936783,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4265333048719548
+          },
+          "recovery48": {
+            "mae": 1.3119296402460705,
+            "median_ae": 1.1523386240005493,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.59092121740447
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.079012188955131,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.45437644277788,
+            "weighted_median_ae_hours": 8.770982164887641
+          },
+          "organ_support": {
+            "auprc": 0.6554586823907572,
+            "auroc": 0.7374733379795158,
+            "brier": 0.20838127569350107,
+            "calibrated_brier": 0.20329301822402415,
+            "log_loss": 0.6025279073845299,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0483306127983951,
+            "median_ae": 0.7826321125030518,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4325428968247655
+          },
+          "recovery48": {
+            "mae": 1.2472851460126937,
+            "median_ae": 1.0225219315166805,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.572244141426694
+          }
+        }
+      },
+      "spec": {
+        "kind": "noise",
+        "name": "noise_5pct",
+        "sd": 0.05
+      }
+    },
+    "outage_labs": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": -0.15110138240242144,
+          "organ_support": -0.0025902864056998043,
+          "recovery24": 0.010424932611260429,
+          "recovery48": 0.025036181075433595
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": 0.04482073172156831,
+          "organ_support": -0.0028771528095274945,
+          "recovery24": 0.01747246917973766,
+          "recovery48": 0.022630931767189777
+        },
+        "V3": {
+          "icu_stay_time": -0.15110138240242144,
+          "organ_support": 0.0024677745817203167,
+          "recovery24": 0.0017041550498859692,
+          "recovery48": 0.018836914879778455
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.06586703684325,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.487310464037563,
+            "weighted_median_ae_hours": 8.563472900557384
+          },
+          "organ_support": {
+            "auprc": 0.6609871034501656,
+            "auroc": 0.7427746995373877,
+            "brier": 0.21607926552493675,
+            "calibrated_brier": 0.20145832304453165,
+            "log_loss": 0.6225815309357199,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0406009108785614,
+            "median_ae": 0.7951873540878296,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.3794699463501288
+          },
+          "recovery48": {
+            "mae": 1.3090147055740113,
+            "median_ae": 1.0999197959899902,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5998255768434386
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.80160475802987,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.38937333576778,
+            "weighted_median_ae_hours": 18.591283522003767
+          },
+          "organ_support": {
+            "auprc": 0.5770186693554826,
+            "auroc": 0.7029171183993589,
+            "brier": 0.225755462227915,
+            "calibrated_brier": 0.24101415436356582,
+            "log_loss": 0.6425630911522455,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0850828212303345,
+            "median_ae": 0.8496765792369843,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4042938576682438
+          },
+          "recovery48": {
+            "mae": 1.2906725318713317,
+            "median_ae": 1.1256544589996338,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5911858483834602
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.06586703684325,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.487310464037563,
+            "weighted_median_ae_hours": 8.563472900557384
+          },
+          "organ_support": {
+            "auprc": 0.667673292828461,
+            "auroc": 0.7443504199679492,
+            "brier": 0.20231362924487303,
+            "calibrated_brier": 0.2006304396016331,
+            "log_loss": 0.5882878055261173,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.003619400701359,
+            "median_ae": 0.7401079535484314,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4120408661011754
+          },
+          "recovery48": {
+            "mae": 1.256973046835639,
+            "median_ae": 1.0502525765830457,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5542515956801901
+          }
+        }
+      },
+      "spec": {
+        "group": "labs",
+        "kind": "outage",
+        "name": "outage_labs"
+      }
+    },
+    "outage_vitals": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.5769426681502612,
+          "organ_support": -0.06666640217887387,
+          "recovery24": 0.09830083567914794,
+          "recovery48": 0.07534884515507745
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": -1.025909167256934,
+          "organ_support": -0.04472218818055773,
+          "recovery24": 0.13460042996050947,
+          "recovery48": 0.11653276951552138
+        },
+        "V3": {
+          "icu_stay_time": 0.5769426681502612,
+          "organ_support": -0.05866203883921717,
+          "recovery24": 0.11797004163121261,
+          "recovery48": 0.22644814076112518
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.296610614226559,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.577152439257713,
+            "weighted_median_ae_hours": 9.291516951110067
+          },
+          "organ_support": {
+            "auprc": 0.5969109876769916,
+            "auroc": 0.7042430917719027,
+            "brier": 0.2275812862607835,
+            "calibrated_brier": 0.21815893895080835,
+            "log_loss": 0.646166890686072,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.128476813946449,
+            "median_ae": 0.766784280538559,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.550403191131062
+          },
+          "recovery48": {
+            "mae": 1.3593273696536552,
+            "median_ae": 1.1475059390068054,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.6672349439715686
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.104702631117426,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 19.819927069728465,
+            "weighted_median_ae_hours": 17.520553623025265
+          },
+          "organ_support": {
+            "auprc": 0.5351736339844524,
+            "auroc": 0.6616847544424862,
+            "brier": 0.2348156230033308,
+            "calibrated_brier": 0.2512472323789145,
+            "log_loss": 0.6616308326630969,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.2022107820111063,
+            "median_ae": 0.8497495055198669,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.6616735597494752
+          },
+          "recovery48": {
+            "mae": 1.3845743696196633,
+            "median_ae": 1.1344217509031296,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.7404741122458922
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.296610614226559,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.577152439257713,
+            "weighted_median_ae_hours": 9.291516951110067
+          },
+          "organ_support": {
+            "auprc": 0.6065434794075235,
+            "auroc": 0.6936646753050082,
+            "brier": 0.21712000454724256,
+            "calibrated_brier": 0.21745789575562371,
+            "log_loss": 0.620588035545564,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.1198852872826857,
+            "median_ae": 0.7692503929138184,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.5309345536285943
+          },
+          "recovery48": {
+            "mae": 1.4645842727169858,
+            "median_ae": 1.4853261287332242,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.6290553219438162
+          }
+        }
+      },
+      "spec": {
+        "group": "vitals",
+        "kind": "outage",
+        "name": "outage_vitals"
+      }
+    },
+    "unperturbed": {
+      "delta_vs_unperturbed": {
+        "CONTROL": {
+          "icu_stay_time": 0.0,
+          "organ_support": 0.0,
+          "recovery24": 0.0,
+          "recovery48": 0.0
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": 0.0,
+          "organ_support": 0.0,
+          "recovery24": 0.0,
+          "recovery48": 0.0
+        },
+        "V3": {
+          "icu_stay_time": 0.0,
+          "organ_support": 0.0,
+          "recovery24": 0.0,
+          "recovery48": 0.0
+        }
+      },
+      "models": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.05298393511016,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.32039351087453,
+            "weighted_median_ae_hours": 8.714574282959806
+          },
+          "organ_support": {
+            "auprc": 0.6635773898558655,
+            "auroc": 0.7447242557101224,
+            "brier": 0.2157556829622871,
+            "calibrated_brier": 0.20078828103095492,
+            "log_loss": 0.6218406169777815,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.030175978267301,
+            "median_ae": 0.7607003897428513,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.378705443544239
+          },
+          "recovery48": {
+            "mae": 1.2839785244985777,
+            "median_ae": 1.0605233907699585,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5795833252655573
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.824982807245,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 20.41081282501758,
+            "weighted_median_ae_hours": 18.5464627902822
+          },
+          "organ_support": {
+            "auprc": 0.5798958221650101,
+            "auroc": 0.7033020657742316,
+            "brier": 0.2244511546185702,
+            "calibrated_brier": 0.2413234981762465,
+            "log_loss": 0.6396851829161442,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.0676103520505968,
+            "median_ae": 0.8301939517259598,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.4079284678942596
+          },
+          "recovery48": {
+            "mae": 1.268041600104142,
+            "median_ae": 1.1052193641662598,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5672850988345237
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.05298393511016,
+            "n_rows": 2859,
+            "n_stays": 500,
+            "rmse": 17.32039351087453,
+            "weighted_median_ae_hours": 8.714574282959806
+          },
+          "organ_support": {
+            "auprc": 0.6652055182467407,
+            "auroc": 0.7421751586639996,
+            "brier": 0.20301529689643155,
+            "calibrated_brier": 0.2011564541821582,
+            "log_loss": 0.5893147994682861,
+            "n_rows": 1770,
+            "n_stays": 373
+          },
+          "recovery24": {
+            "mae": 1.001915245651473,
+            "median_ae": 0.7452773451805115,
+            "n_rows": 1557,
+            "n_stays": 345,
+            "rmse": 1.411109161490672
+          },
+          "recovery48": {
+            "mae": 1.2381361319558606,
+            "median_ae": 0.9580498603407985,
+            "n_rows": 543,
+            "n_stays": 138,
+            "rmse": 1.5777834707709224
+          }
+        }
+      },
+      "spec": {
+        "kind": "none",
+        "name": "unperturbed"
+      }
+    }
+  },
+  "seed": 20261013,
+  "strata": {
+    "cardiac_subtype": {
+      "SYNTHETIC_ARRHYTHMIA": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.64412260911377,
+            "n_rows": 770,
+            "n_stays": 132,
+            "rmse": 18.34845585732136,
+            "weighted_median_ae_hours": 8.815190739639398
+          },
+          "organ_support": {
+            "auprc": 0.7007240454354198,
+            "auroc": 0.7864683079089886,
+            "brier": 0.20299472616002823,
+            "calibrated_brier": 0.1805792331419026,
+            "log_loss": 0.5956874170061753,
+            "n_rows": 466,
+            "n_stays": 102
+          },
+          "recovery24": {
+            "mae": 0.9358686518841507,
+            "median_ae": 0.6952551305294037,
+            "n_rows": 425,
+            "n_stays": 95,
+            "rmse": 1.2405326043772869
+          },
+          "recovery48": {
+            "mae": 1.4142938324205132,
+            "median_ae": 1.0605233907699585,
+            "n_rows": 157,
+            "n_stays": 37,
+            "rmse": 1.7643875772456563
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.888956350813206,
+            "n_rows": 770,
+            "n_stays": 132,
+            "rmse": 20.7170349365649,
+            "weighted_median_ae_hours": 17.99297034820093
+          },
+          "organ_support": {
+            "auprc": 0.572065927837661,
+            "auroc": 0.7366866665474201,
+            "brier": 0.21184730424618836,
+            "calibrated_brier": 0.2143145790632813,
+            "log_loss": 0.6138228713489475,
+            "n_rows": 466,
+            "n_stays": 102
+          },
+          "recovery24": {
+            "mae": 0.9865669223883068,
+            "median_ae": 0.7959727644920349,
+            "n_rows": 425,
+            "n_stays": 95,
+            "rmse": 1.2700862504908228
+          },
+          "recovery48": {
+            "mae": 1.354294618058701,
+            "median_ae": 1.2542288303375244,
+            "n_rows": 157,
+            "n_stays": 37,
+            "rmse": 1.6811468598266748
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.64412260911377,
+            "n_rows": 770,
+            "n_stays": 132,
+            "rmse": 18.34845585732136,
+            "weighted_median_ae_hours": 8.815190739639398
+          },
+          "organ_support": {
+            "auprc": 0.7190258391754729,
+            "auroc": 0.7909938079570087,
+            "brier": 0.18798607572767287,
+            "calibrated_brier": 0.17888218863821245,
+            "log_loss": 0.5528050219530197,
+            "n_rows": 466,
+            "n_stays": 102
+          },
+          "recovery24": {
+            "mae": 0.8779309000655904,
+            "median_ae": 0.6433659195899963,
+            "n_rows": 425,
+            "n_stays": 95,
+            "rmse": 1.2399804401257883
+          },
+          "recovery48": {
+            "mae": 1.3963043155179777,
+            "median_ae": 1.0929090427478438,
+            "n_rows": 157,
+            "n_stays": 37,
+            "rmse": 1.8243887238990786
+          }
+        }
+      },
+      "SYNTHETIC_HF": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 12.001950987801798,
+            "n_rows": 1118,
+            "n_stays": 198,
+            "rmse": 17.41798163850772,
+            "weighted_median_ae_hours": 8.530383514256641
+          },
+          "organ_support": {
+            "auprc": 0.5913607631079434,
+            "auroc": 0.7030378076255038,
+            "brier": 0.22266111715303916,
+            "calibrated_brier": 0.21520799289803597,
+            "log_loss": 0.6360664283590247,
+            "n_rows": 704,
+            "n_stays": 151
+          },
+          "recovery24": {
+            "mae": 1.059940274323559,
+            "median_ae": 0.7264386415481567,
+            "n_rows": 604,
+            "n_stays": 139,
+            "rmse": 1.4507351906957817
+          },
+          "recovery48": {
+            "mae": 1.2183050651112615,
+            "median_ae": 1.0135564804077148,
+            "n_rows": 206,
+            "n_stays": 53,
+            "rmse": 1.4941227888333732
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.795521840105604,
+            "n_rows": 1118,
+            "n_stays": 198,
+            "rmse": 20.459071557886965,
+            "weighted_median_ae_hours": 18.587161578508127
+          },
+          "organ_support": {
+            "auprc": 0.5271300280350621,
+            "auroc": 0.663522035952247,
+            "brier": 0.2311615061713639,
+            "calibrated_brier": 0.2556311904435598,
+            "log_loss": 0.6536173640737014,
+            "n_rows": 704,
+            "n_stays": 151
+          },
+          "recovery24": {
+            "mae": 1.1102784371797088,
+            "median_ae": 0.808258056640625,
+            "n_rows": 604,
+            "n_stays": 139,
+            "rmse": 1.4920258699461266
+          },
+          "recovery48": {
+            "mae": 1.1974322268409352,
+            "median_ae": 0.9359534978866577,
+            "n_rows": 206,
+            "n_stays": 53,
+            "rmse": 1.492314666582032
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 12.001950987801798,
+            "n_rows": 1118,
+            "n_stays": 198,
+            "rmse": 17.41798163850772,
+            "weighted_median_ae_hours": 8.530383514256641
+          },
+          "organ_support": {
+            "auprc": 0.5876666189599871,
+            "auroc": 0.7002602482321978,
+            "brier": 0.21584788210876474,
+            "calibrated_brier": 0.2159705424220329,
+            "log_loss": 0.6185209041035105,
+            "n_rows": 704,
+            "n_stays": 151
+          },
+          "recovery24": {
+            "mae": 1.043751594583806,
+            "median_ae": 0.7077490389347076,
+            "n_rows": 604,
+            "n_stays": 139,
+            "rmse": 1.4930165005719767
+          },
+          "recovery48": {
+            "mae": 1.1800836319999903,
+            "median_ae": 0.9180423911661342,
+            "n_rows": 206,
+            "n_stays": 53,
+            "rmse": 1.4973215484696558
+          }
+        }
+      },
+      "SYNTHETIC_ISCHEMIC": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 11.653420515101804,
+            "n_rows": 971,
+            "n_stays": 170,
+            "rmse": 16.35770750381594,
+            "weighted_median_ae_hours": 8.742999604525597
+          },
+          "organ_support": {
+            "auprc": 0.7214556240207245,
+            "auroc": 0.7659543464453396,
+            "brier": 0.21791315822084414,
+            "calibrated_brier": 0.19982116763723912,
+            "log_loss": 0.6261700242989157,
+            "n_rows": 600,
+            "n_stays": 120
+          },
+          "recovery24": {
+            "mae": 1.073617049029278,
+            "median_ae": 0.8562629818916321,
+            "n_rows": 528,
+            "n_stays": 111,
+            "rmse": 1.3983402725534522
+          },
+          "recovery48": {
+            "mae": 1.256041586048914,
+            "median_ae": 1.1532368659973145,
+            "n_rows": 180,
+            "n_stays": 48,
+            "rmse": 1.5194627337883517
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.809622593966157,
+            "n_rows": 971,
+            "n_stays": 170,
+            "rmse": 20.112807549438617,
+            "weighted_median_ae_hours": 19.00204836556439
+          },
+          "organ_support": {
+            "auprc": 0.648979109426103,
+            "auroc": 0.7227989839126212,
+            "brier": 0.2267205683978294,
+            "calibrated_brier": 0.24627723331923093,
+            "log_loss": 0.6441368197916684,
+            "n_rows": 600,
+            "n_stays": 120
+          },
+          "recovery24": {
+            "mae": 1.0835406402034888,
+            "median_ae": 0.8734850883483887,
+            "n_rows": 528,
+            "n_stays": 111,
+            "rmse": 1.4116651965636415
+          },
+          "recovery48": {
+            "mae": 1.2795194150756266,
+            "median_ae": 1.0827443599700928,
+            "n_rows": 180,
+            "n_stays": 48,
+            "rmse": 1.5570953694941012
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 11.653420515101804,
+            "n_rows": 971,
+            "n_stays": 170,
+            "rmse": 16.35770750381594,
+            "weighted_median_ae_hours": 8.742999604525597
+          },
+          "organ_support": {
+            "auprc": 0.7139282418111392,
+            "auroc": 0.7571532050543457,
+            "brier": 0.19964246516435716,
+            "calibrated_brier": 0.20144851885933643,
+            "log_loss": 0.5835970953569384,
+            "n_rows": 600,
+            "n_stays": 120
+          },
+          "recovery24": {
+            "mae": 1.055638311679082,
+            "median_ae": 0.8169770985841751,
+            "n_rows": 528,
+            "n_stays": 111,
+            "rmse": 1.4427887668265418
+          },
+          "recovery48": {
+            "mae": 1.1803144591613355,
+            "median_ae": 0.9593643125898352,
+            "n_rows": 180,
+            "n_stays": 48,
+            "rmse": 1.454606200331012
+          }
+        }
+      }
+    },
+    "cutoff_band": {
+      "early_0-1": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 18.177873431456938,
+            "n_rows": 968,
+            "n_stays": 500,
+            "rmse": 25.577897143798253,
+            "weighted_median_ae_hours": 11.797573280653605
+          },
+          "organ_support": {
+            "auprc": 0.5981993727948236,
+            "auroc": 0.7382051047758285,
+            "brier": 0.21284250818185582,
+            "calibrated_brier": 0.2001665361589801,
+            "log_loss": 0.6154626180410594,
+            "n_rows": 680,
+            "n_stays": 372
+          },
+          "recovery24": {
+            "mae": 1.0413675664195223,
+            "median_ae": 0.7464495301246643,
+            "n_rows": 629,
+            "n_stays": 345,
+            "rmse": 1.3971099627278145
+          },
+          "recovery48": {
+            "mae": 1.2929264503932707,
+            "median_ae": 1.0312179811298847,
+            "n_rows": 245,
+            "n_stays": 138,
+            "rmse": 1.6164321202075296
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 17.42410504141554,
+            "n_rows": 968,
+            "n_stays": 500,
+            "rmse": 22.08382094612179,
+            "weighted_median_ae_hours": 15.348625556330731
+          },
+          "organ_support": {
+            "auprc": 0.5447378930372742,
+            "auroc": 0.7084399366471735,
+            "brier": 0.21853945420379303,
+            "calibrated_brier": 0.23173459015877287,
+            "log_loss": 0.6270457788967682,
+            "n_rows": 680,
+            "n_stays": 372
+          },
+          "recovery24": {
+            "mae": 1.065202487755459,
+            "median_ae": 0.7962044477462769,
+            "n_rows": 629,
+            "n_stays": 345,
+            "rmse": 1.4190258688113464
+          },
+          "recovery48": {
+            "mae": 1.2819295633625174,
+            "median_ae": 1.0049002170562744,
+            "n_rows": 245,
+            "n_stays": 138,
+            "rmse": 1.6238001362586547
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 18.177873431456938,
+            "n_rows": 968,
+            "n_stays": 500,
+            "rmse": 25.577897143798253,
+            "weighted_median_ae_hours": 11.797573280653605
+          },
+          "organ_support": {
+            "auprc": 0.6022927737158265,
+            "auroc": 0.7340323464912281,
+            "brier": 0.20200239947049314,
+            "calibrated_brier": 0.2011507026886995,
+            "log_loss": 0.5869727854571453,
+            "n_rows": 680,
+            "n_stays": 372
+          },
+          "recovery24": {
+            "mae": 1.0215110203910929,
+            "median_ae": 0.7464311122894287,
+            "n_rows": 629,
+            "n_stays": 345,
+            "rmse": 1.438472845463842
+          },
+          "recovery48": {
+            "mae": 1.2525093203325603,
+            "median_ae": 0.9056451218450503,
+            "n_rows": 245,
+            "n_stays": 138,
+            "rmse": 1.6167604001195202
+          }
+        }
+      },
+      "late_5+": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 10.980293403490867,
+            "n_rows": 846,
+            "n_stays": 235,
+            "rmse": 14.502356687933204,
+            "weighted_median_ae_hours": 9.050470798631292
+          },
+          "organ_support": {
+            "auprc": 0.7759602544682532,
+            "auroc": 0.7318251454374317,
+            "brier": 0.22761204283009231,
+            "calibrated_brier": 0.21032377445827827,
+            "log_loss": 0.6470334345413137,
+            "n_rows": 457,
+            "n_stays": 127
+          },
+          "recovery24": {
+            "mae": 1.1056510193158098,
+            "median_ae": 0.9204286336898804,
+            "n_rows": 374,
+            "n_stays": 107,
+            "rmse": 1.39052990903305
+          },
+          "recovery48": {
+            "mae": 1.2682677442420807,
+            "median_ae": 1.0788180828094482,
+            "n_rows": 113,
+            "n_stays": 35,
+            "rmse": 1.4870927113708823
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 19.876448341444828,
+            "n_rows": 846,
+            "n_stays": 235,
+            "rmse": 21.568651799677742,
+            "weighted_median_ae_hours": 22.10584017869485
+          },
+          "organ_support": {
+            "auprc": 0.7167336361706673,
+            "auroc": 0.7144385621308917,
+            "brier": 0.23383880186791542,
+            "calibrated_brier": 0.2452943262938703,
+            "log_loss": 0.6599287548567504,
+            "n_rows": 457,
+            "n_stays": 127
+          },
+          "recovery24": {
+            "mae": 1.0996429633555795,
+            "median_ae": 0.8923208266496658,
+            "n_rows": 374,
+            "n_stays": 107,
+            "rmse": 1.3748299500611498
+          },
+          "recovery48": {
+            "mae": 1.2227112775078663,
+            "median_ae": 1.1706550121307373,
+            "n_rows": 113,
+            "n_stays": 35,
+            "rmse": 1.4525271539010864
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 10.980293403490867,
+            "n_rows": 846,
+            "n_stays": 235,
+            "rmse": 14.502356687933204,
+            "weighted_median_ae_hours": 9.050470798631292
+          },
+          "organ_support": {
+            "auprc": 0.7788503406034095,
+            "auroc": 0.7394959340777929,
+            "brier": 0.2079104097947461,
+            "calibrated_brier": 0.20727808733655487,
+            "log_loss": 0.6012534077466065,
+            "n_rows": 457,
+            "n_stays": 127
+          },
+          "recovery24": {
+            "mae": 1.0800657472687822,
+            "median_ae": 0.8500722050666809,
+            "n_rows": 374,
+            "n_stays": 107,
+            "rmse": 1.4174619498973071
+          },
+          "recovery48": {
+            "mae": 1.2065200246751824,
+            "median_ae": 1.0516302426804367,
+            "n_rows": 113,
+            "n_stays": 35,
+            "rmse": 1.5188205805780564
+          }
+        }
+      },
+      "middle_2-4": {
+        "CONTROL": {
+          "icu_stay_time": {
+            "mae": 14.839044499559794,
+            "n_rows": 1045,
+            "n_stays": 416,
+            "rmse": 21.033985229548584,
+            "weighted_median_ae_hours": 9.992806036947542
+          },
+          "organ_support": {
+            "auprc": 0.6603355446975682,
+            "auroc": 0.7453764011450504,
+            "brier": 0.21510058928460135,
+            "calibrated_brier": 0.20008292829415728,
+            "log_loss": 0.6208939397509013,
+            "n_rows": 633,
+            "n_stays": 269
+          },
+          "recovery24": {
+            "mae": 0.9384307365283263,
+            "median_ae": 0.7182786166667938,
+            "n_rows": 554,
+            "n_stays": 235,
+            "rmse": 1.2681709134752228
+          },
+          "recovery48": {
+            "mae": 1.3332844499094658,
+            "median_ae": 1.1967459321022034,
+            "n_rows": 185,
+            "n_stays": 83,
+            "rmse": 1.5837175579582528
+          }
+        },
+        "V2_AS_SERVED": {
+          "icu_stay_time": {
+            "mae": 18.556530286906007,
+            "n_rows": 1045,
+            "n_stays": 416,
+            "rmse": 21.555406377723788,
+            "weighted_median_ae_hours": 19.10407169371979
+          },
+          "organ_support": {
+            "auprc": 0.5495180980607035,
+            "auroc": 0.6899091982884962,
+            "brier": 0.2256178702711014,
+            "calibrated_brier": 0.24393904840524455,
+            "log_loss": 0.6426061533278105,
+            "n_rows": 633,
+            "n_stays": 269
+          },
+          "recovery24": {
+            "mae": 0.9840567769766752,
+            "median_ae": 0.7908418476581573,
+            "n_rows": 554,
+            "n_stays": 235,
+            "rmse": 1.2970720208674444
+          },
+          "recovery48": {
+            "mae": 1.3083591323615198,
+            "median_ae": 1.2542288303375244,
+            "n_rows": 185,
+            "n_stays": 83,
+            "rmse": 1.5413526492068985
+          }
+        },
+        "V3": {
+          "icu_stay_time": {
+            "mae": 14.839044499559794,
+            "n_rows": 1045,
+            "n_stays": 416,
+            "rmse": 21.033985229548584,
+            "weighted_median_ae_hours": 9.992806036947542
+          },
+          "organ_support": {
+            "auprc": 0.674549418561781,
+            "auroc": 0.7436581853403419,
+            "brier": 0.210941996564711,
+            "calibrated_brier": 0.20142219367786832,
+            "log_loss": 0.6066421251554946,
+            "n_rows": 633,
+            "n_stays": 269
+          },
+          "recovery24": {
+            "mae": 0.9170285915140168,
+            "median_ae": 0.7082988917827606,
+            "n_rows": 554,
+            "n_stays": 235,
+            "rmse": 1.2886470705509356
+          },
+          "recovery48": {
+            "mae": 1.2737009172936655,
+            "median_ae": 1.0368773071428707,
+            "n_rows": 185,
+            "n_stays": 83,
+            "rmse": 1.581568772637306
+          }
+        }
+      }
+    }
+  },
+  "wall_seconds": 134.7
+}
