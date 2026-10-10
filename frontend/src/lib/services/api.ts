@@ -3,7 +3,7 @@
 // service (src/serving/v2 + api/v2_app.py). There is no local prediction
 // cache or lookup table: each replay step recomputes from raw history
 // truncated at the requested cutoff.
-import { authToken } from '$lib/stores/auth-token.svelte';
+import { authToken, freshAuthToken } from '$lib/stores/auth-token.svelte';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || '/api';
 const TTS_BASE = import.meta.env.VITE_TTS_BASE_URL || '/tts';
@@ -15,7 +15,10 @@ export async function request<T>(path: string, options: RequestInit = {}) {
 	// predictions (the backend only checks it for CUSTOM- stay ids — see
 	// src/serving/v2/auth.py), required for the backend to verify ownership
 	// of a custom record.
-	if (authToken.value && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${authToken.value}`);
+	if (!headers.has('Authorization')) {
+		const token = await freshAuthToken();
+		if (token) headers.set('Authorization', `Bearer ${token}`);
+	}
 
 	const response = await fetch(`${API_BASE}${path}`, { ...options, headers });
 
@@ -390,7 +393,8 @@ export const api = {
 			if (payload.report_date) form.set('report_date', payload.report_date);
 			form.set('file', payload.file);
 			const headers = new Headers();
-			if (authToken.value) headers.set('Authorization', `Bearer ${authToken.value}`);
+			const token = await freshAuthToken();
+			if (token) headers.set('Authorization', `Bearer ${token}`);
 			// Deliberately not the shared request() helper: it defaults an
 			// unset Content-Type to application/json, which would break the
 			// browser's own multipart/form-data boundary for a FormData body.
@@ -409,7 +413,8 @@ export const api = {
 		},
 		downloadReport: async (report_id: string): Promise<Blob> => {
 			const headers = new Headers();
-			if (authToken.value) headers.set('Authorization', `Bearer ${authToken.value}`);
+			const token = await freshAuthToken();
+			if (token) headers.set('Authorization', `Bearer ${token}`);
 			// A plain <a href> can't attach an Authorization header, so the
 			// download is fetched here and handed to the caller as a Blob to
 			// save via a temporary object URL -- see the Reports panel.

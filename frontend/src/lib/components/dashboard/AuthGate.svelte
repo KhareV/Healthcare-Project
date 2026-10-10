@@ -60,9 +60,12 @@
     };
     void refresh();
     const interval = window.setInterval(refresh, 45_000);
+    const session = ctx.session;
+    authToken.refresh = async () => (await session?.getToken()) ?? null;
     return () => {
       cancelled = true;
       window.clearInterval(interval);
+      authToken.refresh = null;
     };
   });
 
