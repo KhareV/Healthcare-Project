@@ -12,18 +12,18 @@
     "command": "PYTHONPATH=src:tests:. python3 -m pytest -q --junitxml=<pytest-junit.xml>",
     "counts": {
       "errors": 0,
-      "failures": 2,
-      "passed": 1574,
-      "skipped": 21,
-      "tests": 1597
+      "failures": 0,
+      "passed": 1772,
+      "skipped": 26,
+      "tests": 1798
     },
     "evidence_version": "phase16_test_report_v1",
-    "junit_sha256": "b6cb0bb324dd589e7a465273451c6674f5b168923274f6f88ae4d99a1b3a14a3",
+    "junit_sha256": "658c8e16b4eb10668ead66ca55b62b6637fecd8bdbbba37b44462e9856ede3bd",
     "python": "3.9.6",
     "scope": "repository",
-    "status": "BLOCKED"
+    "status": "PASS"
   },
   "scope": "synthetic",
-  "status": "BLOCKED",
+  "status": "PASS",
   "test_source": "tests/test_artifact_compatibility_e2e.py"
 }
