@@ -1,0 +1,57 @@
+{
+  "all_required_passed": true,
+  "artifact_version": "product_v3_verification_v1",
+  "backend_regression": {
+    "command_scope": "tests excluding performance_v3 files and performance_v3_1 directory",
+    "failed": 0,
+    "passed": 1618,
+    "skipped": 21
+  },
+  "frontend": {
+    "playwright": {
+      "authentication": "real Clerk test sign-in",
+      "failed": 0,
+      "passed": 30,
+      "serving_api": "real V3 product API"
+    },
+    "production_build": "PASS",
+    "svelte_check_errors": 0,
+    "svelte_check_warnings": 111
+  },
+  "live_mongodb_and_report_intelligence": {
+    "included_in_backend_regression": true,
+    "test_count": 23
+  },
+  "scientific_immutability": {
+    "files_checked": 563,
+    "inventory_sha256": "a2e874d38848fe416c6e00de1758fbd06de9a76d058911a2e0bc42339d09c915",
+    "mismatches": [],
+    "selected_models_v3_sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961",
+    "status": "PASS",
+    "v3_final_test_ledger_state": "FINAL_RUN_COMPLETED"
+  },
+  "sealed_test_policy": {
+    "new_final_test_inference": false,
+    "v2_comparator_reinference_test": "NOT_RUN_SEALED_TEST_GUARD"
+  },
+  "system_evidence_tests": {
+    "failed": 0,
+    "passed": 6
+  },
+  "v3_1_tests": {
+    "deselected": 1,
+    "deselected_reason": "pre-Phase-2 inventory assertion superseded by the 563-file Phase-2 inventory",
+    "failed": 0,
+    "passed": 12,
+    "skipped": 0
+  },
+  "v3_scientific_test_files_isolated_runner": {
+    "deselected": 1,
+    "deselected_reason": "sealed V2 comparator reinference forbidden by the Phase-2 protocol",
+    "failed": 0,
+    "files": 17,
+    "passed": 174,
+    "skipped": 0
+  },
+  "verified_code_commit": "f9337a4737b83de715634dc78fbc115806cc8697"
+}
