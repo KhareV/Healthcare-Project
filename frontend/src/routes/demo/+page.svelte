@@ -18,7 +18,9 @@
 	import { scenarioParticipant, demoParticipant, showcase, prettySubtype, hhmm, type Participant, type ScenarioList } from '$lib/services/showcase';
 
 	type Mode = 'select' | 'replay' | 'compare';
-	const SPEEDS = [0.5, 1, 2, 4];
+	const SPEEDS = [0.25, 0.5, 1, 2, 4];
+	// Base dwell per cutoff at 1x: long enough to read the forecast cards and story before advancing.
+	const STEP_MS = 8000;
 
 	const session = new ReplaySession();
 	const sessionA = new ReplaySession();
@@ -284,7 +286,7 @@
 		const handle = window.setInterval(() => {
 			const busy = mode === 'compare' ? sessionA.loading || sessionB.loading : session.loading;
 			if (!busy) void next();
-		}, 2600 / speed);
+		}, STEP_MS / speed);
 		return () => window.clearInterval(handle);
 	});
 
