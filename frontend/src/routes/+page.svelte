@@ -817,8 +817,10 @@
 	.flow-node span:last-child { color: var(--text-muted); font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.15em; }
 	.flow-node--active { border-color: rgba(43,184,176,0.4); box-shadow: 0 0 40px rgba(43,184,176,0.1); }
 	
-	.edge__quote { position: relative; z-index: 2; margin: 160px auto 0; text-align: center; }
-	.edge__line-shadow { font-size: clamp(50px, 8vw, 120px); font-weight: 750; letter-spacing: -0.05em; }
+	.edge__quote { position: relative; z-index: 2; margin: 160px auto 0; text-align: center; max-width: 100%; padding: 0 24px; box-sizing: border-box; overflow: hidden; }
+	.edge__line-shadow { font-size: clamp(30px, 5.6vw, 104px); font-weight: 750; letter-spacing: -0.05em; max-width: 100%; }
+	/* LineShadowText forces white-space: pre; let it wrap on narrow screens instead of clipping. */
+	.edge__line-shadow :global(div) { white-space: normal; max-width: 100%; text-wrap: balance; }
 
 	/* =========================================================
 	   FEDERATION
