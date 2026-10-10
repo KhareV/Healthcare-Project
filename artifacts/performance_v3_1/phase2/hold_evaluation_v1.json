@@ -1,0 +1,64 @@
+{
+  "artifact_version": "performance_v3_1_hold_evaluation_v1",
+  "cohort": "V31_HOLD (development decision set)",
+  "gate_c": {
+    "auprc_gap_ge_0.015": false,
+    "brier_ok": true,
+    "lb95_gt_0": false,
+    "log_loss_ok": true,
+    "passes_gate_c": false,
+    "stable_thirds_ge_0.005": false
+  },
+  "metrics": {
+    "CANDIDATE": {
+      "auprc": 0.6559225743472716,
+      "auroc": 0.7335127390558577,
+      "brier": 0.20409038413268984,
+      "ece": 0.02210568905119113,
+      "log_loss": 0.5910909314146401,
+      "n_rows": 5851,
+      "n_stays": 1162,
+      "slope": 0.9943711786686091
+    },
+    "NEW_MODEL_ONLY_CALIBRATED": {
+      "auprc": 0.6549131655110614,
+      "auroc": 0.7340278005985693,
+      "brier": 0.2036939152676106,
+      "ece": 0.02619802732696228,
+      "log_loss": 0.5899676911360026,
+      "n_rows": 5851,
+      "n_stays": 1162,
+      "slope": 1.0570144351308293
+    },
+    "V3_FROZEN": {
+      "auprc": 0.6553131931262817,
+      "auroc": 0.7325002800447934,
+      "brier": 0.20464460268734158,
+      "ece": 0.028660678772492225,
+      "log_loss": 0.5924949095183856,
+      "n_rows": 5851,
+      "n_stays": 1162,
+      "slope": 0.9639870036763362
+    }
+  },
+  "paired_vs_v3": {
+    "ci95": [
+      -0.0010723341722914809,
+      0.002220328028644508
+    ],
+    "diff_auprc": 0.0006093812209899685,
+    "diff_auroc": 0.0010124590110642817,
+    "diff_brier": -0.0005542185546517364,
+    "diff_log_loss": -0.0014039781037454846,
+    "per_seed_auprc_gaps": [
+      0.0008025854091718854,
+      0.0002502178382113307,
+      0.001075937944235883
+    ],
+    "thirds_auprc_gaps": [
+      0.0006020103399522192,
+      0.0006138197995604333,
+      0.000357280155297901
+    ]
+  }
+}

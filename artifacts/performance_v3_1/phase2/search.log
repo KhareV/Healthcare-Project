@@ -1,0 +1,98 @@
+F0 rows 46994 stays 9480 features 557
+F0 v3frozen-1b4c7b33 ok 0.6597 14.8s
+F0 9353d4fa34a2de89 ok 0.66 23.97s
+F0 cedb88e4a02c2e83 ok 0.6599 15.54s
+F0 ca319300038189ae ok 0.6599 17.75s
+F0 c0fb8f09ff893336 ok 0.659 13.6s
+F0 335e7492b6de1be4 ok 0.6605 24.27s
+F0 abdcd5958dc860f9 ok 0.6599 19.15s
+F0 dbc6115f2c5c6e8e ok 0.6598 55.08s
+F1 rows 46994 stays 9480 features 617
+F1 v3frozen-1b4c7b33 ok 0.6612 24.65s
+F1 9353d4fa34a2de89 ok 0.6617 33.46s
+F1 cedb88e4a02c2e83 ok 0.661 22.3s
+F1 ca319300038189ae ok 0.6615 25.56s
+F1 c0fb8f09ff893336 ok 0.6611 19.9s
+F1 335e7492b6de1be4 ok 0.6605 29.02s
+F1 abdcd5958dc860f9 ok 0.6611 20.55s
+F1 dbc6115f2c5c6e8e ok 0.6605 58.92s
+F2 rows 46994 stays 9480 features 587
+F2 v3frozen-1b4c7b33 ok 0.6609 23.74s
+F2 9353d4fa34a2de89 ok 0.6617 32.63s
+F2 cedb88e4a02c2e83 ok 0.6605 21.69s
+F2 ca319300038189ae ok 0.6609 22.01s
+F2 c0fb8f09ff893336 ok 0.6603 18.38s
+F2 335e7492b6de1be4 ok 0.6603 25.56s
+F2 abdcd5958dc860f9 ok 0.6608 23.34s
+F2 dbc6115f2c5c6e8e ok 0.6597 57.46s
+F3 rows 46994 stays 9480 features 647
+F3 v3frozen-1b4c7b33 ok 0.6606 25.11s
+F3 9353d4fa34a2de89 ok 0.6619 41.73s
+F3 cedb88e4a02c2e83 ok 0.6602 26.25s
+F3 ca319300038189ae ok 0.6607 30.64s
+F3 c0fb8f09ff893336 ok 0.6597 20.69s
+F3 335e7492b6de1be4 ok 0.6611 31.11s
+F3 abdcd5958dc860f9 ok 0.6601 22.92s
+F3 dbc6115f2c5c6e8e ok 0.6601 64.88s
+{
+ "rule": "highest OOF stay-balanced AUPRC; tie 0.003 -> fewer features -> lower fold sd",
+ "best_raw": {
+  "trial_id": "V31|organ_support|xgboost|F3|9353d4fa34a2de89|s11|f01234",
+  "variant": "F3",
+  "primary_mean": 0.6619093442226666,
+  "primary_sd": 0.007972703821009446
+ },
+ "winner": {
+  "trial_id": "V31|organ_support|xgboost|F0|ca319300038189ae|s11|f01234",
+  "variant": "F0",
+  "config": {
+   "max_depth": 5,
+   "learning_rate": 0.018390425177032852,
+   "subsample": 0.8078132838929868,
+   "colsample_bytree": 0.8153365111609646,
+   "min_child_weight": 6,
+   "reg_alpha": 0.009894645655845816,
+   "reg_lambda": 0.9134745921322,
+   "gamma": 3.5838336963153083,
+   "weight_mode": "none",
+   "objective": "binary",
+   "class_weight": "none",
+   "n_estimators": 1500,
+   "early_stopping_rounds": 50,
+   "family": "xgboost",
+   "task": "organ_support",
+   "config_hash": "ca319300038189ae"
+  },
+  "config_hash": "ca319300038189ae",
+  "primary_mean": 0.6598981391163923,
+  "primary_sd": 0.009073421846663455,
+  "per_fold_primary": [
+   0.6623128703059811,
+   0.6743215589768489,
+   0.6526023647722813,
+   0.6522385975161676,
+   0.6580153040106828
+  ],
+  "best_iterations": [
+   216,
+   251,
+   202,
+   489,
+   351
+  ],
+  "n_features": 557
+ },
+ "best_F0_baseline": {
+  "trial_id": "V31|organ_support|xgboost|F0|335e7492b6de1be4|s11|f01234",
+  "primary_mean": 0.6604731863232806,
+  "primary_sd": 0.009332633977250886
+ },
+ "tie_group": 32,
+ "n_trials": 32,
+ "by_family_best": {
+  "F0": 0.6604731863232806,
+  "F1": 0.6617153901028786,
+  "F2": 0.6616737086506508,
+  "F3": 0.6619093442226666
+ }
+}

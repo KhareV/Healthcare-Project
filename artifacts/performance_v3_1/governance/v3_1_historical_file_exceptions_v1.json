@@ -1,0 +1,14 @@
+{
+  "artifact_version": "performance_v3_1_historical_file_exceptions_v1",
+  "exceptions": [
+    {
+      "path": "src/data/synthetic/config.py",
+      "change": "additive FINAL_IDENTITIES entries for V3.1 diagnostic/development cohorts: SYN-V31-DF, SYN-V31-DE, SYN-V31-D1, SYN-V31-D2, SYN-V31-H (no removals; sanctioned allow-list mechanism)"
+    },
+    {
+      "path": "docs/evidence/system/system_evidence_manifest_v1.json",
+      "change": "single config.py source-hash entry refreshed so the system-evidence currency test passes"
+    }
+  ],
+  "note": "All other 1,312 inventoried historical files byte-identical; no V1/V2/V3 scientific artifact or ledger changed"
+}

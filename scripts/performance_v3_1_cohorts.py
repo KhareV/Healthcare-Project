@@ -14,7 +14,7 @@ def run(stage, argv, log):
     print(f"[{log[-1]['seconds']:7.1f}s] {stage}", flush=True)
 
 def main():
-    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=("plan", "build")); ap.add_argument("cohorts", nargs="*", default=list(P.SPECS))
+    ap = argparse.ArgumentParser(); ap.add_argument("cmd", choices=("plan", "build")); ap.add_argument("cohorts", nargs="*", default=["DIAG_FIT", "DIAG_EVAL"])
     ap.add_argument("--python", default=sys.executable); a = ap.parse_args()
     (ROOT / P.CONFIG_DIR_REL).mkdir(parents=True, exist_ok=True)
     for cid in a.cohorts:

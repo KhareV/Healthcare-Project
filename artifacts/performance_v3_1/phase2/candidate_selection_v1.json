@@ -1,0 +1,62 @@
+{
+  "best_F0_baseline": {
+    "primary_mean": 0.6604731863232806,
+    "primary_sd": 0.009332633977250886,
+    "trial_id": "V31|organ_support|xgboost|F0|335e7492b6de1be4|s11|f01234"
+  },
+  "best_raw": {
+    "primary_mean": 0.6619093442226666,
+    "primary_sd": 0.007972703821009446,
+    "trial_id": "V31|organ_support|xgboost|F3|9353d4fa34a2de89|s11|f01234",
+    "variant": "F3"
+  },
+  "by_family_best": {
+    "F0": 0.6604731863232806,
+    "F1": 0.6617153901028786,
+    "F2": 0.6616737086506508,
+    "F3": 0.6619093442226666
+  },
+  "n_trials": 32,
+  "rule": "highest OOF stay-balanced AUPRC; tie 0.003 -> fewer features -> lower fold sd",
+  "tie_group": 32,
+  "winner": {
+    "best_iterations": [
+      216,
+      251,
+      202,
+      489,
+      351
+    ],
+    "config": {
+      "class_weight": "none",
+      "colsample_bytree": 0.8153365111609646,
+      "config_hash": "ca319300038189ae",
+      "early_stopping_rounds": 50,
+      "family": "xgboost",
+      "gamma": 3.5838336963153083,
+      "learning_rate": 0.018390425177032852,
+      "max_depth": 5,
+      "min_child_weight": 6,
+      "n_estimators": 1500,
+      "objective": "binary",
+      "reg_alpha": 0.009894645655845816,
+      "reg_lambda": 0.9134745921322,
+      "subsample": 0.8078132838929868,
+      "task": "organ_support",
+      "weight_mode": "none"
+    },
+    "config_hash": "ca319300038189ae",
+    "n_features": 557,
+    "per_fold_primary": [
+      0.6623128703059811,
+      0.6743215589768489,
+      0.6526023647722813,
+      0.6522385975161676,
+      0.6580153040106828
+    ],
+    "primary_mean": 0.6598981391163923,
+    "primary_sd": 0.009073421846663455,
+    "trial_id": "V31|organ_support|xgboost|F0|ca319300038189ae|s11|f01234",
+    "variant": "F0"
+  }
+}

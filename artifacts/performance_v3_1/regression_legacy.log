@@ -1,0 +1,52 @@
+........................................................................ [  4%]
+........................................................................ [  9%]
+........................................................................ [ 13%]
+........................................................................ [ 18%]
+........................................................................ [ 22%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 36%]
+........................................................................ [ 40%]
+........................................................................ [ 45%]
+........................................................................ [ 49%]
+........................................................................ [ 54%]
+........................................................................ [ 58%]
+.....................ssss.sssssssssssssss...................ss.......... [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 72%]
+........................................................................ [ 76%]
+........................................................................ [ 81%]
+........................................................................ [ 85%]
+........................................................................ [ 90%]
+........................................................................ [ 94%]
+........................................................................ [ 99%]
+.............                                                            [100%]
+=============================== warnings summary ===============================
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:64: PyparsingDeprecationWarning: 'oneOf' deprecated - use 'one_of'
+    prop = Group((name + Suppress("=") + comma_separated(value)) | oneOf(_CONSTANTS))
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:85: PyparsingDeprecationWarning: 'parseString' deprecated - use 'parse_string'
+    parse = parser.parseString(pattern)
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_fontconfig_pattern.py:89: PyparsingDeprecationWarning: 'resetCache' deprecated - use 'reset_cache'
+    parser.resetCache()
+
+tests/test_integrated_gradients.py::test_missing_captum_fails_without_fallback_when_dependency_absent
+  /Users/Home/Library/Python/3.9/lib/python/site-packages/matplotlib/_mathtext.py:45: PyparsingDeprecationWarning: 'enablePackrat' deprecated - use 'enable_packrat'
+    ParserElement.enablePackrat()
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+1576 passed, 21 skipped, 14 warnings in 910.54s (0:15:10)

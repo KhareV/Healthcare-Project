@@ -1,0 +1,46 @@
+{
+  "artifact_version": "performance_v3_1_product_handoff_v1",
+  "effective_release": {
+    "heads": {
+      "icu_stay_time": "frozen V3",
+      "organ_support": "frozen V3",
+      "recovery24": "frozen V3",
+      "recovery48": "frozen V3"
+    },
+    "manifest_ref": "artifacts/performance_v3/phase3/selected_models_v3.json",
+    "manifest_sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961"
+  },
+  "evidence": {
+    "decision_doc": "docs/performance_v3_1/V3_1_DEVELOPMENT_AND_DECISION.md",
+    "diagnostic_doc": "docs/performance_v3_1/LATENT_STATE_DIAGNOSTIC.md"
+  },
+  "git_commit": "725d1a759b86f3d086f7f5f61887b08e54db08e5",
+  "new_final_tests": "NONE_CREATED",
+  "outcome": "V3_RETAINED_AFTER_NEGATIVE_V3_1_DEVELOPMENT",
+  "phase_2_instructions": [
+    "Select the effective release from this handoff (currently the frozen V3 four-head bundle); do not hard-code V3 support.",
+    "Keep the defect D1 disclosure (docs/performance_v3/DEFECT_D1.md).",
+    "Do not re-run or re-open any sealed final test; V3.1 produced none.",
+    "Surface the diagnostic as research evidence only: privileged oracle results are not serving metrics.",
+    "Product UI plan unchanged; no V3.1 serving adapter is required."
+  ],
+  "privileged_diagnostics": {
+    "artifacts": [
+      "artifacts/performance_v3_1/diagnostic/oracle_metrics.json",
+      "artifacts/performance_v3_1/diagnostic/oracle_comparison.json",
+      "artifacts/performance_v3_1/diagnostic/oracle_verification_v1.json"
+    ],
+    "never_serving_inputs": true,
+    "status": "DEVELOPMENT_PRIVILEGED_DIAGNOSTIC_ONLY"
+  },
+  "terminal_status": "V3_1_STOPPED_AFTER_DEVELOPMENT \u2014 V3_RETAINED \u2014 NO_NEW_FINAL_TEST_CONSUMED",
+  "v3_1_support_candidate": {
+    "freeze_ref": "artifacts/performance_v3_1/phase3/candidate/candidate_freeze_v1.json",
+    "note": "development candidate only; never a serving model",
+    "serve": false,
+    "status": "NOT_PROMOTED_GATE_C_FAILED"
+  },
+  "v3_final_test_ledger": "artifacts/performance_v3/governance/v3_final_test_access_state.json (FINAL_RUN_COMPLETED, unchanged)",
+  "v3_handoff_ref": "artifacts/performance_v3/product_handoff_v1.json",
+  "v3_handoff_sha256": "814e6bb7b06c45a186cc36ff21fa924f10293762d1fe76b5fc55058435e1f4d9"
+}

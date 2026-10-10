@@ -72,3 +72,7 @@ runtime/uploads/
 .venv-v3/
 artifacts/performance_v3/cohorts/
 artifacts/performance_v3/cache/
+
+# Performance V3.1 (local, regenerable, large)
+artifacts/performance_v3_1/cohorts/
+artifacts/performance_v3_1/cache/

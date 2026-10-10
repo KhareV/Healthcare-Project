@@ -1,0 +1,72 @@
+{
+  "artifact_version": "performance_v3_1_candidate_freeze_v1",
+  "calibrator": {
+    "method": "none",
+    "nested_log_loss": {
+      "beta": 0.580142807799211,
+      "isotonic": 0.5863780522981838,
+      "none": 0.5792541861792233,
+      "platt": 0.5795939698377335
+    },
+    "params": {
+      "method": "none",
+      "version": "performance_v3_calibration_v1"
+    }
+  },
+  "ensemble": {
+    "grid_on_v31_dev": {
+      "0.0": {
+        "auprc": 0.6495597492195904,
+        "auroc": 0.7457783781172784,
+        "log_loss": 0.5775621112852384
+      },
+      "0.25": {
+        "auprc": 0.6494392242504136,
+        "auroc": 0.7459146198786104,
+        "log_loss": 0.5770797902754258
+      },
+      "0.5": {
+        "auprc": 0.648315786101674,
+        "auroc": 0.7455265950703857,
+        "log_loss": 0.5772100067756241
+      },
+      "0.75": {
+        "auprc": 0.646454323866468,
+        "auroc": 0.7445716839392481,
+        "log_loss": 0.5779360343999058
+      },
+      "1.0": {
+        "auprc": 0.6438849993964462,
+        "auroc": 0.7429024542133527,
+        "log_loss": 0.5792541861792233
+      }
+    },
+    "rows": 15560,
+    "stays": 3182,
+    "weight_new": 0.25
+  },
+  "frozen_v3_reference": "artifacts/performance_v3/phase3/selected_models_v3.json",
+  "git_commit": "725d1a759b86f3d086f7f5f61887b08e54db08e5",
+  "kalman_params_ref": "artifacts/performance_v3_1/phase2/kalman_params_v1.json",
+  "kalman_params_sha256": "5db13b6d5b52ccc8a0e29a5825263f5b8acd350a9ec33525bd645d722c6ec810",
+  "selected": {
+    "config_hash": "ca319300038189ae",
+    "feature_names_sha256": "d0ab693d0126ff10bb350d9519f51f8bbf9186435ad5ae6d4672721b6dac6613",
+    "n_estimators": 277,
+    "n_features": 557,
+    "seed_model_sha256": [
+      "d839812c3bb2ed9a9fb9be8ee55ef4f11e927efc171d06f9084222f532d58e2c",
+      "16cf428f11b71b7f149daccf579420b898d64f1bd8019d4c8aa48e969ad90f28",
+      "fa7b6dec837702b16d1d9dd6205ab6a4a691bcc385ba24257592c8c818a6ad68"
+    ],
+    "seeds": [
+      11,
+      23,
+      47
+    ],
+    "variant": "F0"
+  },
+  "status": "FROZEN_BEFORE_HOLD_SCORING",
+  "threshold": 0.33257612787669555,
+  "threshold_f1_dev": 0.6510292242318497
+}

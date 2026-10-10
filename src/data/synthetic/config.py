@@ -38,6 +38,10 @@ FINAL_IDENTITIES = {
     # Performance V3.1 privileged-diagnostic cohorts (seeds SHA-derived from the frozen diagnostic protocol).
     (2852083813, 1600): "SYN-V31-DF",
     (1850882997, 900): "SYN-V31-DE",
+    # Performance V3.1 candidate-development cohorts (seeds SHA-derived from the frozen V3.1 scientific protocol).
+    (956322489, 2000): "SYN-V31-D1",
+    (3057775866, 2000): "SYN-V31-D2",
+    (1544724120, 1500): "SYN-V31-H",
 }
 
 
