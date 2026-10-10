@@ -26,6 +26,10 @@
       "sha256": "0a814a670ae32a29d5eba0fbd68f4122110d21a8298aa0a9a4f541f8feafd7a7"
     }
   ],
+  "ignored_preexisting_untracked_archives": [
+    "artifacts.zip",
+    "models.zip"
+  ],
   "kind": "ENGINEERING_PRODUCT_RELEASE_NOT_SCIENTIFIC_FREEZE",
   "product": {
     "api_entry_point": "api.product_app:app --factory",
@@ -43,7 +47,7 @@
     "screenshot_evidence": [
       {
         "path": "docs/evidence/product_v3/01_landing.png",
-        "sha256": "6369b0bbdfa7b06907a73d51fccd3078f949ead3b1cd03cb3adc25a0ecfdb4f6"
+        "sha256": "3b37e0f9749c779c39dad0512e62c9bfb04ccf288525f810f82a9baf62346f38"
       },
       {
         "path": "docs/evidence/product_v3/02_sign_in.png",
@@ -59,23 +63,23 @@
       },
       {
         "path": "docs/evidence/product_v3/05_demo_patient_replay.png",
-        "sha256": "4fea406b5a8485125bf565dea07e9cde7d6b720ea62fbc2a51bbbcbe2e0adb37"
+        "sha256": "61ac9ede1c4a0bc4f6855b3f568d556fe1ad19a834b1797ad50e38f94cc851f2"
       },
       {
         "path": "docs/evidence/product_v3/06_recovery_trajectory.png",
-        "sha256": "5b4b9cd544aa192b03ed46530840bdc7afc6a341cb3dd42c222fc8db0946adb5"
+        "sha256": "98fd7637cb0228fcccb3787a5541ae5d23a77bd4b1ccb204e44ff723e48ecc56"
       },
       {
         "path": "docs/evidence/product_v3/07_custom_record_entry.png",
-        "sha256": "9154e194988bbc680c1c2e9886aeb51d1c89e49dbf5ebdc83f49fa029cc9b7d3"
+        "sha256": "f8bc512155a7e4d33d09bc4d331bd89b4dea6223f1ea037e6592778e12206b49"
       },
       {
         "path": "docs/evidence/product_v3/08_custom_record_readiness.png",
-        "sha256": "8c038f2a6f963517cd6773ea03c0ccc5e8c91a914841ee4647ebb59b266b43af"
+        "sha256": "b3d99977bd7ae39cb29bb96cc37f1a86cacf0a136096f819f5b17687dfe5be5a"
       },
       {
         "path": "docs/evidence/product_v3/09_custom_record_prediction.png",
-        "sha256": "f031441c24ad774aa0307207e80dc09fa77e6390cf68e60f5d9e95df4d671f3a"
+        "sha256": "4c7772389a340537dfc6cc9adbdaa8faf798d02c802fdf29f51f9d5bb975f238"
       },
       {
         "path": "docs/evidence/product_v3/10_explainability.png",
@@ -83,11 +87,11 @@
       },
       {
         "path": "docs/evidence/product_v3/11_trajectory_copilot.png",
-        "sha256": "0150c5fc4d6659dda0f81686d6bf3c7cd61a26fb2bdcbf6493d228b28eb03be5"
+        "sha256": "7d8dbf02c11ef7e76c966c0bee2c6423bc42daea6ad39e17b383dffdefa7e542"
       },
       {
         "path": "docs/evidence/product_v3/12_model_performance.png",
-        "sha256": "803fae16d567b28d684fd8434017d4a2f9b02d4dd89a6d7299f1c7d4daf7bd06"
+        "sha256": "b8002772c23542ac54c9e2c6a9b995f885800d00e3eafbcc21dbb3afe4a47501"
       },
       {
         "path": "docs/evidence/product_v3/13_data_provenance.png",
@@ -95,27 +99,27 @@
       },
       {
         "path": "docs/evidence/product_v3/14_health_record_overview.png",
-        "sha256": "56edf20c99420d2b96c45e9610417a8a1302c50e1ef184c0d3f40f5f4770d9e7"
+        "sha256": "b67b648d2a4cf9c24d632f5cf76867f51aaed9d41942431b2683e11174643f23"
       },
       {
         "path": "docs/evidence/product_v3/15_health_record_conditions.png",
-        "sha256": "cb0550b4b7543beba87b139807626ec2bc7ce5a3e9efd46d7a89c72deae8c61b"
+        "sha256": "0c92e81b155ce3d492cc512db7781dea662e78c9384f510f16914e26ec3fbe4b"
       },
       {
         "path": "docs/evidence/product_v3/16_health_record_vitals.png",
-        "sha256": "9f7d1ae0920e98dbba3a5569c394ec497d119482d09a22cfdcdfd6955ea361a8"
+        "sha256": "819a65092c9a6ff6351a9fcec009d5c1905a37d11fdd378b5d5552b989f091fe"
       },
       {
         "path": "docs/evidence/product_v3/17_health_record_reports.png",
-        "sha256": "23f866f5a282fec8f1bf73fb146838188d4ed25ff12309474a1e942460e3d733"
+        "sha256": "90373ba2877545ba7c44ea889a1f9e38faf14f477de3f051d4f146c79d8d7df6"
       },
       {
         "path": "docs/evidence/product_v3/18_health_record_predictions.png",
-        "sha256": "308b551c016c5c94b4e34e7ec15beb910033c816842e498a2d8b6cc8b1eef09d"
+        "sha256": "761cff8f4f9aca60a756a3e8cbf5d9c6e0b11349f63898bc9aa9431850e19f2d"
       },
       {
         "path": "docs/evidence/product_v3/19_report_analysis_candidates.png",
-        "sha256": "c77f10b5ebe8fb7a5b875a6ea48ab1388761914113a08318a65d16dee948adf9"
+        "sha256": "f514879b192a7a8b6ca7cec1d83d284f6bd7856a29082da9c79ac90c59e71d47"
       },
       {
         "path": "docs/evidence/product_v3/20_report_measurements_confirmed.png",
@@ -123,19 +127,19 @@
       },
       {
         "path": "docs/evidence/product_v3/v3_cohort_desktop.png",
-        "sha256": "ec402d7b9384556023887775fe3b0fa708c09d6b910994d4da52b285773c9f36"
+        "sha256": "67f8a0d7740f69a68b9482b32eaff40133fa4573a27194a786a1204d0b271949"
       },
       {
         "path": "docs/evidence/product_v3/v3_cohort_mobile.png",
-        "sha256": "2b0250fd47f09f3ae78abd3f601e73a95df5a6ff1bb25aeccd7133b396824581"
+        "sha256": "4cea336df89e0593efe70a409a061071fb3763f960620862c8b600714f878133"
       },
       {
         "path": "docs/evidence/product_v3/v3_cohort_tablet.png",
-        "sha256": "c700533f77fea8872d0aa78d8f34f3a1799032ddcf89e3c7f77572251b9b3285"
+        "sha256": "4d8000c80a80890f05c75341e66682678a7d928fe9dc2a97bed436b7e56b0e79"
       },
       {
         "path": "docs/evidence/product_v3/v3_latent_diagnostic_desktop.png",
-        "sha256": "33c63f1a4f023b1befd67f90e89c9b875fb80a771b1222e291b243d4647c7952"
+        "sha256": "dcc2f9d71fc072e5adaf49171a7d48b79b53ee8c8f70bd7cbc5cefd72e101e64"
       },
       {
         "path": "docs/evidence/product_v3/v3_latent_diagnostic_mobile.png",
@@ -147,7 +151,7 @@
       },
       {
         "path": "docs/evidence/product_v3/v3_model_research_desktop.png",
-        "sha256": "6f4663e95b61870193bb92efc4d9414de3fb3e010a807cee1792b59558e3aa5a"
+        "sha256": "db1339f477287ad337eef3ebb08a0a5bdae01282c6f97a9f51fe8db696119850"
       },
       {
         "path": "docs/evidence/product_v3/v3_model_research_mobile.png",
@@ -155,7 +159,7 @@
       },
       {
         "path": "docs/evidence/product_v3/v3_model_research_tablet.png",
-        "sha256": "60294f5fe7039d74f9e054a7439e463a83fc8a296bbf0b191b7e7d358c9a5179"
+        "sha256": "e22da0d11669375ddff45eb80a6d69502f4ff5af09322bf390a2f1953b27c60a"
       },
       {
         "path": "docs/evidence/product_v3/v3_scenario_studio_desktop.png",
@@ -208,52 +212,65 @@
       "sha256": "d17bf71faf12604542d121b5eb64fc7b29619f452dc1ef2fc5eff65b8b64bf0f"
     }
   },
-  "source_code_commit": "1ebc30f3fae45a27a668da494065bad35518576d",
+  "source_code_commit": "d53c8ebc27e0a9890fcaedcbd7b47f32d2aabc67",
   "status": "READY",
   "verification": {
     "all_required_passed": true,
+    "artifact_version": "product_v3_verification_v1",
     "backend_regression": {
-      "deselected": 6,
-      "deselected_reason": "unavailable sealed bulk V2 cohort (historical comparator test), superseded pre-product inventory assertion, stale system-evidence checks; none reopen a sealed test",
+      "command_scope": "tests excluding performance_v3 files and performance_v3_1 directory",
       "failed": 0,
-      "passed": 1772,
-      "skipped": 26
+      "passed": 1618,
+      "skipped": 21
     },
     "frontend": {
+      "playwright": {
+        "authentication": "real Clerk test sign-in",
+        "failed": 0,
+        "passed": 30,
+        "serving_api": "real V3 product API"
+      },
       "production_build": "PASS",
       "svelte_check_errors": 0,
       "svelte_check_warnings": 111
     },
     "live_mongodb_and_report_intelligence": {
-      "failed": 0,
-      "passed": 23
+      "included_in_backend_regression": true,
+      "test_count": 23
     },
-    "playwright_e2e": {
-      "api": "real V3 API, real Clerk test sign-in",
-      "failed": 0,
-      "passed": 29
+    "scientific_immutability": {
+      "files_checked": 563,
+      "inventory_sha256": "a2e874d38848fe416c6e00de1758fbd06de9a76d058911a2e0bc42339d09c915",
+      "mismatches": [],
+      "selected_models_v3_sha256": "af9014a33d0a219a3f64b713c6812add46b07f44efcb4d212674ea47b7011961",
+      "status": "PASS",
+      "v3_final_test_ledger_state": "FINAL_RUN_COMPLETED"
     },
-    "recorded_from": "Phase 2 integration runs on healthcare-final-product-v3 (isolated checkout, same commit content as 83295b9/1ebc30f)",
-    "scenarios_replayed_with_real_v3_inference": 8,
-    "scientific_inventory": "563/563 frozen files unchanged (scripts/build_product_v3_release_manifest.py --verify-science)",
-    "screenshots": "docs/evidence/product_v3 (desktop/tablet/mobile; no horizontal overflow asserted)",
+    "sealed_test_policy": {
+      "new_final_test_inference": false,
+      "v2_comparator_reinference_test": "NOT_RUN_SEALED_TEST_GUARD"
+    },
+    "system_evidence_tests": {
+      "failed": 0,
+      "passed": 6
+    },
     "v3_1_tests": {
       "deselected": 1,
+      "deselected_reason": "pre-Phase-2 inventory assertion superseded by the 563-file Phase-2 inventory",
       "failed": 0,
-      "passed": 8,
-      "skipped": 4
+      "passed": 12,
+      "skipped": 0
     },
     "v3_scientific_test_files_isolated_runner": {
       "deselected": 1,
+      "deselected_reason": "sealed V2 comparator reinference forbidden by the Phase-2 protocol",
       "failed": 0,
-      "note": "run one file per process (torch/OpenMP); V3 comparator test needing sealed V2 bulk data excluded",
-      "passed": 173,
-      "skipped": 1
+      "files": 17,
+      "passed": 174,
+      "skipped": 0
     },
-    "v3_serving_targeted": {
-      "failed": 0,
-      "passed": 42
-    }
+    "verified_code_commit": "f9337a4737b83de715634dc78fbc115806cc8697"
   },
-  "worktree_dirty_at_generation": true
+  "worktree_changes_at_generation": [],
+  "worktree_dirty_at_generation": false
 }
